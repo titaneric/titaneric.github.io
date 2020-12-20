@@ -1,5 +1,5 @@
 # The URL the site will be built for
-base_url = "http://titaneric.github.io"
+base_url = "https://titaneric.github.io"
 
 # Whether to automatically compile all Sass files in the sass directory
 compile_sass = true
@@ -31,3 +31,6 @@ name = "titaneric"
 
 [extra.social]
 github = "titaneric"
+
+[extra.analytics]
+google = "UA-132691301-1"

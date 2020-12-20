@@ -5,6 +5,9 @@ date = 2019-03-25
 [taxonomies]
 categories = ["Learning"]
 tags = ["course", "os"]
+
+[extra]
+toc = true
 +++
 
 # OSDI lab I
