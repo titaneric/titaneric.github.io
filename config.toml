@@ -4,10 +4,6 @@ base_url = "https://titaneric.github.io"
 # Whether to automatically compile all Sass files in the sass directory
 compile_sass = true
 
-# Whether to do syntax highlighting
-# Theme can be customised by setting the `highlight_theme` variable to a theme supported by Zola
-highlight_code = true
-
 # Whether to build a search index to be used later on by a JavaScript library
 build_search_index = true
 
@@ -17,6 +13,11 @@ taxonomies = [
 	{ name = "categories", feed = true, paginate_by = 10 },
 	{ name = "tags", fees = true, paginate_by = 10 },
 ]
+
+[markdown]
+# Whether to do syntax highlighting
+# Theme can be customised by setting the `highlight_theme` variable to a theme supported by Zola
+highlight_code = true
 
 [extra]
 # Put all your custom variables here
@@ -34,3 +35,8 @@ github = "titaneric"
 
 [extra.analytics]
 google = "UA-132691301-1"
+
+[extra.favicon]
+favicon_16x16 = "/icons/favicon-16x16.png"
+favicon_32x32 = "/icons/favicon-32x32.png"
+apple_touch_icon = "/icons/apple-touch-icon.png"
