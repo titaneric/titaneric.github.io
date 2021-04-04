@@ -5,6 +5,9 @@ date = 2021-01-05
 [taxonomies]
 categories = ["Notes"]
 tags = ["deep-learning"]
+
+[extra]
+comments = true
 +++
 
 ## Introduction
@@ -34,6 +37,7 @@ We all know the graph in data structure created by nodes and edges. In Computer 
 </p>
 
 ![ ](/images/posts/autodiff-from-scratch-p1/autodiff-series-comp-graph.png)
+
 Note that the order of arguments matters. The correct order induces the right result and could receive the correct response (backpropagation) even in the order-invariant calculation (e.g., add and multiply operation).
 
 It's easy to understand the concept by simply glance the computational graph. Besides, the calculation could be in any number of operands, operators, or even high-level modules. For instance, a linear layer may consist of many nodes, layers, and pairs of connections (may not be a complete bipartite graph and could contain self-loop), or even a monster -- the Transformer formed with different modules and layers of encoder or decoder. There is an old saying, a picture is worth of thousand words. It's recommended to sketch the complicated concept, you will gain a lot during the drawing process and explain it to your coworker.

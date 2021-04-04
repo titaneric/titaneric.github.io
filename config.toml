@@ -45,3 +45,6 @@ google = "UA-132691301-1"
 favicon_16x16 = "/icons/favicon-16x16.png"
 favicon_32x32 = "/icons/favicon-32x32.png"
 apple_touch_icon = "/icons/apple-touch-icon.png"
+
+[extra.commenting]
+disqus = "titaneric-github-io"
