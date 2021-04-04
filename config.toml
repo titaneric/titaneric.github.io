@@ -30,6 +30,8 @@ navbar_items = [
         { url = "$BASE_URL/categories", name = "Categories" },
     ] },
 ]
+katex.enabled = true
+katex.auto_render = true
 [extra.author]
 name = "titaneric"
 
