@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rss xmlns:atom="http://www.w3.org/2005/Atom" version="2.0">
+    <channel>
+      <title>Playground - python</title>
+        <link>https://titaneric.github.io</link>
+        <description></description>
+        <generator>Zola</generator>
+        <language>en</language>
+        <atom:link href="https://titaneric.github.io/tags/python/rss.xml" rel="self" type="application/rss+xml"/>
+        <lastBuildDate>Thu, 31 Jan 2019 00:00:00 +0000</lastBuildDate>
+        <item>
+            <title>Find-Minimum-in-Rotated-Sorted-Array</title>
+            <pubDate>Thu, 31 Jan 2019 00:00:00 +0000</pubDate>
+            <link>https://titaneric.github.io/posts/find-minimum-in-rotated-sorted-array/</link>
+            <guid>https://titaneric.github.io/posts/find-minimum-in-rotated-sorted-array/</guid>
+            <description>&lt;h1 id=&quot;find-minimum-in-rotated-sorted-array-153&quot;&gt;&lt;a href=&quot;https:&#x2F;&#x2F;leetcode.com&#x2F;problems&#x2F;find-minimum-in-rotated-sorted-array&#x2F;&quot;&gt;Find Minimum in Rotated Sorted Array (#153)&lt;&#x2F;a&gt;&lt;&#x2F;h1&gt;
+&lt;h2 id=&quot;description&quot;&gt;Description&lt;&#x2F;h2&gt;
+&lt;p&gt;Suppose an array sorted in ascending order is rotated at some pivot unknown to you beforehand.
+(i.e.,  &lt;code&gt;[0,1,2,4,5,6,7]&lt;&#x2F;code&gt; might become  &lt;code&gt;[4,5,6,7,0,1,2]&lt;&#x2F;code&gt;).
+Find the minimum element.
+You may assume no duplicate exists in the array.&lt;&#x2F;p&gt;
+&lt;hr &#x2F;&gt;
+&lt;h2 id=&quot;example&quot;&gt;Example&lt;&#x2F;h2&gt;
+&lt;h3 id=&quot;example-1&quot;&gt;Example 1&lt;&#x2F;h3&gt;
+&lt;pre style=&quot;background-color:#2b303b;&quot;&gt;
+&lt;code&gt;&lt;span style=&quot;color:#c0c5ce;&quot;&gt;Input: [3, 4, 5, 1, 2]
+Output: 1
+&lt;&#x2F;span&gt;&lt;&#x2F;code&gt;&lt;&#x2F;pre&gt;&lt;h3 id=&quot;example-2&quot;&gt;Example 2&lt;&#x2F;h3&gt;
+&lt;pre style=&quot;background-color:#2b303b;&quot;&gt;
+&lt;code&gt;&lt;span style=&quot;color:#c0c5ce;&quot;&gt;Input: [4, 5, 6, 7, 0, 1, 2]
+Output: 0
+&lt;&#x2F;span&gt;&lt;&#x2F;code&gt;&lt;&#x2F;pre&gt;
+&lt;hr &#x2F;&gt;
+&lt;!--more--&gt;
+&lt;h2 id=&quot;solution&quot;&gt;Solution&lt;&#x2F;h2&gt;
+&lt;h3 id=&quot;solution-i-reference&quot;&gt;Solution I (&lt;a href=&quot;https:&#x2F;&#x2F;leetcode.com&#x2F;articles&#x2F;find-minimum-in-rotated-sorted-array&#x2F;&quot;&gt;Reference&lt;&#x2F;a&gt;)&lt;&#x2F;h3&gt;
+&lt;h4 id=&quot;observation&quot;&gt;Observation&lt;&#x2F;h4&gt;
+&lt;p&gt;If the sorted array is not rotated, the last element &lt;em&gt;&lt;strong&gt;always&lt;&#x2F;strong&gt;&lt;&#x2F;em&gt; larger than first element.&lt;&#x2F;p&gt;
+&lt;pre style=&quot;background-color:#2b303b;&quot;&gt;
+&lt;code&gt;&lt;span style=&quot;color:#c0c5ce;&quot;&gt;[2, 3, 4, 5, 6, 7]
+ ^              ^
+&lt;&#x2F;span&gt;&lt;&#x2F;code&gt;&lt;&#x2F;pre&gt;
+&lt;p&gt;However, if the sorted array is rotated, we want to find the &lt;code&gt;Infection Point&lt;&#x2F;code&gt; (i.e. the point whose left element is maximum and right element is minimum).&lt;&#x2F;p&gt;
+&lt;pre style=&quot;background-color:#2b303b;&quot;&gt;
+&lt;code&gt;&lt;span style=&quot;color:#c0c5ce;&quot;&gt;[4, 5, 6, 7, 2, 3]
+           ^
+&lt;&#x2F;span&gt;&lt;&#x2F;code&gt;&lt;&#x2F;pre&gt;
+&lt;p&gt;Furthermore,&lt;&#x2F;p&gt;
+&lt;ul&gt;
+&lt;li&gt;All the elements to the left of inflection point &amp;gt; first element of the array.&lt;&#x2F;li&gt;
+&lt;li&gt;All the elements to the right of inflection point &amp;lt; first element of the array.&lt;&#x2F;li&gt;
+&lt;&#x2F;ul&gt;
+&lt;hr &#x2F;&gt;
+&lt;h4 id=&quot;algorithm&quot;&gt;Algorithm&lt;&#x2F;h4&gt;
+&lt;p&gt;&lt;img src=&quot;https:&#x2F;&#x2F;i.imgur.com&#x2F;goTfIbm.png&quot; alt=&quot;&quot; &#x2F;&gt;&lt;&#x2F;p&gt;
+&lt;pre style=&quot;background-color:#2b303b;&quot;&gt;
+&lt;code&gt;&lt;span style=&quot;color:#c0c5ce;&quot;&gt;[5, 1, 2, 4, 5]
+ l     m     r
+ &amp;lt;-----
+
+[5, 1, 2, 4, 5]
+ l  r
+ m
+&lt;&#x2F;span&gt;&lt;&#x2F;code&gt;&lt;&#x2F;pre&gt;&lt;pre style=&quot;background-color:#2b303b;&quot;&gt;
+&lt;code&gt;&lt;span style=&quot;color:#c0c5ce;&quot;&gt;[4, 5, 6, 7, 2, 3]
+ l     m        r
+         -------&amp;gt;
+
+[4, 5, 6, 7, 2, 3]
+          l  m  r
+&lt;&#x2F;span&gt;&lt;&#x2F;code&gt;&lt;&#x2F;pre&gt;&lt;p&gt;
+Time Complexity:\(O(log\,n)\),
+Space Complexity:\(O(1)\)
+&lt;&#x2F;p&gt;
+---
+&lt;h4 id=&quot;code&quot;&gt;Code&lt;&#x2F;h4&gt;
+&lt;pre style=&quot;background-color:#2b303b;&quot;&gt;
+&lt;code class=&quot;language-python&quot; data-lang=&quot;python&quot;&gt;&lt;span style=&quot;color:#b48ead;&quot;&gt;class &lt;&#x2F;span&gt;&lt;span style=&quot;color:#ebcb8b;&quot;&gt;Solution&lt;&#x2F;span&gt;&lt;span style=&quot;color:#eff1f5;&quot;&gt;:
+    &lt;&#x2F;span&gt;&lt;span style=&quot;color:#b48ead;&quot;&gt;def &lt;&#x2F;span&gt;&lt;span style=&quot;color:#8fa1b3;&quot;&gt;findMin&lt;&#x2F;span&gt;&lt;span style=&quot;color:#c0c5ce;&quot;&gt;(&lt;&#x2F;span&gt;&lt;span style=&quot;color:#bf616a;&quot;&gt;self&lt;&#x2F;span&gt;&lt;span style=&quot;color:#c0c5ce;&quot;&gt;, &lt;&#x2F;span&gt;&lt;span style=&quot;color:#bf616a;&quot;&gt;nums&lt;&#x2F;span&gt;&lt;span style=&quot;color:#c0c5ce;&quot;&gt;):
+        &lt;&#x2F;span&gt;&lt;span style=&quot;color:#65737e;&quot;&gt;&amp;quot;&amp;quot;&amp;quot;
+        :type nums: List[int]
+        :rtype: int
+        &amp;quot;&amp;quot;&amp;quot;
+
+        &lt;&#x2F;span&gt;&lt;span style=&quot;color:#b48ead;&quot;&gt;if &lt;&#x2F;span&gt;&lt;span style=&quot;color:#96b5b4;&quot;&gt;len&lt;&#x2F;span&gt;&lt;span style=&quot;color:#c0c5ce;&quot;&gt;(nums) == &lt;&#x2F;span&gt;&lt;span style=&quot;color:#d08770;&quot;&gt;1&lt;&#x2F;span&gt;&lt;span style=&quot;color:#c0c5ce;&quot;&gt;:
+            &lt;&#x2F;span&gt;&lt;span style=&quot;color:#b48ead;&quot;&gt;return &lt;&#x2F;span&gt;&lt;span style=&quot;color:#c0c5ce;&quot;&gt;nums[&lt;&#x2F;span&gt;&lt;span style=&quot;color:#d08770;&quot;&gt;0&lt;&#x2F;span&gt;&lt;span style=&quot;color:#c0c5ce;&quot;&gt;]
+
+
+        l, h = &lt;&#x2F;span&gt;&lt;span style=&quot;color:#d08770;&quot;&gt;0&lt;&#x2F;span&gt;&lt;span style=&quot;color:#c0c5ce;&quot;&gt;, &lt;&#x2F;span&gt;&lt;span style=&quot;color:#96b5b4;&quot;&gt;len&lt;&#x2F;span&gt;&lt;span style=&quot;color:#c0c5ce;&quot;&gt;(nums) - &lt;&#x2F;span&gt;&lt;span style=&quot;color:#d08770;&quot;&gt;1
+
+        &lt;&#x2F;span&gt;&lt;span style=&quot;color:#b48ead;&quot;&gt;if &lt;&#x2F;span&gt;&lt;span style=&quot;color:#c0c5ce;&quot;&gt;nums[h] &amp;gt; nums[l]:
+            &lt;&#x2F;span&gt;&lt;span style=&quot;color:#b48ead;&quot;&gt;return &lt;&#x2F;span&gt;&lt;span style=&quot;color:#c0c5ce;&quot;&gt;nums[l]
+
+        &lt;&#x2F;span&gt;&lt;span style=&quot;color:#b48ead;&quot;&gt;while &lt;&#x2F;span&gt;&lt;span style=&quot;color:#c0c5ce;&quot;&gt;l &amp;lt;= h:
+            m = l + (h - l) &#x2F;&#x2F; &lt;&#x2F;span&gt;&lt;span style=&quot;color:#d08770;&quot;&gt;2
+            &lt;&#x2F;span&gt;&lt;span style=&quot;color:#b48ead;&quot;&gt;if &lt;&#x2F;span&gt;&lt;span style=&quot;color:#c0c5ce;&quot;&gt;nums[m] &amp;gt; nums[m + &lt;&#x2F;span&gt;&lt;span style=&quot;color:#d08770;&quot;&gt;1&lt;&#x2F;span&gt;&lt;span style=&quot;color:#c0c5ce;&quot;&gt;]:
+                &lt;&#x2F;span&gt;&lt;span style=&quot;color:#b48ead;&quot;&gt;return &lt;&#x2F;span&gt;&lt;span style=&quot;color:#c0c5ce;&quot;&gt;nums[m + &lt;&#x2F;span&gt;&lt;span style=&quot;color:#d08770;&quot;&gt;1&lt;&#x2F;span&gt;&lt;span style=&quot;color:#c0c5ce;&quot;&gt;]
+            &lt;&#x2F;span&gt;&lt;span style=&quot;color:#b48ead;&quot;&gt;if &lt;&#x2F;span&gt;&lt;span style=&quot;color:#c0c5ce;&quot;&gt;nums[m - &lt;&#x2F;span&gt;&lt;span style=&quot;color:#d08770;&quot;&gt;1&lt;&#x2F;span&gt;&lt;span style=&quot;color:#c0c5ce;&quot;&gt;] &amp;gt; nums[m]:
+                &lt;&#x2F;span&gt;&lt;span style=&quot;color:#b48ead;&quot;&gt;return &lt;&#x2F;span&gt;&lt;span style=&quot;color:#c0c5ce;&quot;&gt;nums[m]
+
+            &lt;&#x2F;span&gt;&lt;span style=&quot;color:#b48ead;&quot;&gt;if &lt;&#x2F;span&gt;&lt;span style=&quot;color:#c0c5ce;&quot;&gt;nums[m] &amp;gt; nums[&lt;&#x2F;span&gt;&lt;span style=&quot;color:#d08770;&quot;&gt;0&lt;&#x2F;span&gt;&lt;span style=&quot;color:#c0c5ce;&quot;&gt;]:
+                l = m + &lt;&#x2F;span&gt;&lt;span style=&quot;color:#d08770;&quot;&gt;1
+            &lt;&#x2F;span&gt;&lt;span style=&quot;color:#b48ead;&quot;&gt;else&lt;&#x2F;span&gt;&lt;span style=&quot;color:#c0c5ce;&quot;&gt;:
+                h = m - &lt;&#x2F;span&gt;&lt;span style=&quot;color:#d08770;&quot;&gt;1
+&lt;&#x2F;span&gt;&lt;&#x2F;code&gt;&lt;&#x2F;pre&gt;</description>
+        </item>
+    </channel>
+</rss>

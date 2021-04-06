@@ -1,0 +1,498 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8" />
+  <meta content="width=device-width, initial-scale=1" name="viewport" />
+  <meta content="#ffffff" name="theme-color" />
+  <meta content="#da532c" name="msapplication-TileColor" />
+
+  
+  
+  
+  <link href='&#x2F;icons&#x2F;favicon-16x16.png' rel="icon" sizes="16x16" type="image/png" />
+  
+  
+  <link href='&#x2F;icons&#x2F;favicon-32x32.png' rel="icon" sizes="32x32" type="image/png" />
+  
+  
+  <link href='&#x2F;icons&#x2F;apple-touch-icon.png' rel="apple-touch-icon" sizes="180x180" />
+  
+
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/galleria/1.6.1/themes/folio/galleria.folio.min.css"
+    rel="stylesheet" />
+  <link href="https://cdn.jsdelivr.net/npm/mapbox-gl@2.1.1/dist/mapbox-gl.min.css" rel="stylesheet" />
+  <link href="https:&#x2F;&#x2F;titaneric.github.io&#x2F;deep-thought.css" rel="stylesheet" />
+
+  
+  
+
+  <title>
+    
+Playground | Find-Minimum-in-Rotated-Sorted-Array
+
+  </title>
+
+  <script crossorigin="anonymous" src="https://kit.fontawesome.com/201b8d5e05.js"></script>
+
+  
+  <script async src="https://www.googletagmanager.com/gtag/js?id=UA-132691301-1"></script>
+  <script type="text/javascript">
+    window.dataLayer = window.dataLayer || [];
+    function gtag() {
+      dataLayer.push(arguments);
+    }
+    gtag("js", new Date());
+    gtag("config", "UA-132691301-1");
+  </script>
+  
+
+  
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.css"
+    integrity="sha384-AfEj0r4/OFrOo5t7NnNe46zW/tFgW6x/bCJG8FqQCEo3+Aro6EYUG4+cU+KJWu/X" crossorigin="anonymous">
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.js"
+    integrity="sha384-g7c+Jr9ZivxKLnZTDUhnkOnsh30B4H0rpLUpJ4jAIKs4fnJI+sEnkvrMWph2EDg4"
+    crossorigin="anonymous"></script>
+
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/contrib/mathtex-script-type.min.js"
+    integrity="sha384-LJ2FmexL77rmGm6SIpxq7y+XA6bkLzGZEgCywzKOZG/ws4va9fUVu2neMjvc3zdv"
+    crossorigin="anonymous"></script>
+  
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/contrib/auto-render.min.js"
+    integrity="sha384-mll67QQFJfxn0IYznZYonOWZ644AWYC+Pt2cHqMaRhXVrursRwvLnLaebdGIlYNa" crossorigin="anonymous" onload="renderMathInElement(document.body, {
+				delimiters: [
+					{left: '$$', right: '$$', display: true},
+					{left: '$', right: '$', display: false},
+					{left: '\\(', right: '\\)', display: false},
+					{left: '\\[', right: '\\]', display: true}
+				]
+			});"></script>
+  
+  
+</head>
+
+<body class="has-background-white">
+  
+  <nav aria-label="section navigation" class="navbar is-light" role="navigation">
+    <div class="container">
+      <div class="navbar-brand">
+        <a class="navbar-item has-text-weight-bold" href="https:&#x2F;&#x2F;titaneric.github.io">Playground</a>
+        <a aria-expanded="false" aria-label="menu" class="navbar-burger burger" data-target="navMenu" role="button">
+          <span aria-hidden="true"></span>
+          <span aria-hidden="true"></span>
+          <span aria-hidden="true"></span>
+        </a>
+      </div>
+      <div class="navbar-menu" id="navMenu">
+        <div class="navbar-end has-text-centered">
+          
+          
+          
+          <a class="navbar-item" href='https:&#x2F;&#x2F;titaneric.github.io&#x2F;'>
+            Home
+          </a>
+          
+          <a class="navbar-item" href='https:&#x2F;&#x2F;titaneric.github.io&#x2F;posts'>
+            Posts
+          </a>
+          
+          <a class="navbar-item" href='https:&#x2F;&#x2F;titaneric.github.io&#x2F;tags'>
+            Tags
+          </a>
+          
+          <a class="navbar-item" href='https:&#x2F;&#x2F;titaneric.github.io&#x2F;categories'>
+            Categories
+          </a>
+          
+          
+          
+          <a class="navbar-item" id="nav-search" title="Search" data-target="#search-modal">
+            <span class="icon">
+              <i class="fas fa-search"></i>
+            </span>
+          </a>
+          <a class="navbar-item" id="dark-mode" title="Switch to dark theme">
+            <span class="icon">
+              <i class="fas fa-adjust"></i>
+            </span>
+          </a>
+        </div>
+      </div>
+    </div>
+  </nav>
+  
+
+  
+  
+
+  
+<section class="section">
+  <div class="container">
+    <div class="columns">
+      <div class="column is-8 is-offset-2">
+        <article class="box">
+          <h1 class="title">
+            Find-Minimum-in-Rotated-Sorted-Array
+          </h1>
+          <p class="subtitle"></p>
+          <div class="columns is-multiline is-gapless">
+            <div class="column is-8">
+              
+<span class="icon-text has-text-grey">
+  <span class="icon">
+    <i class="fas fa-user"></i>
+  </span>
+  <span>titaneric published on</span>
+  <span class="icon">
+    <i class="far fa-calendar-alt"></i>
+  </span>
+  <span><time datetime="2019-01-31">January 31, 2019</time></span>
+</span>
+
+            </div>
+            <div class="column is-4 has-text-right-desktop">
+              
+<span class="icon-text has-text-grey">
+  <span class="icon">
+    <i class="far fa-clock"></i>
+  </span>
+  <span>2 min,</span>
+  <span class="icon">
+    <i class="fas fa-pencil-alt"></i>
+  </span>
+  <span>295 words</span>
+</span>
+
+            </div>
+            <div class="column">
+              
+              
+<p>
+  Categories:
+  
+  <a href="https:&#x2F;&#x2F;titaneric.github.io&#x2F;categories&#x2F;practice&#x2F;">
+    <span class="icon-text">
+      <span class="icon">
+        <i class="fas fa-cube"></i>
+      </span>
+      <span>Practice</span>
+    </span>
+  </a>
+  
+</p>
+
+              
+            </div>
+            <div class="column has-text-right-desktop">
+              
+              
+<p>
+  Tags:
+  
+  <a href="https:&#x2F;&#x2F;titaneric.github.io&#x2F;tags&#x2F;problem&#x2F;">
+    <span class="icon-text">
+      <span class="icon">
+        <i class="fas fa-tag"></i>
+      </span>
+      <span>problem</span>
+    </span>
+  </a>
+  
+  <a href="https:&#x2F;&#x2F;titaneric.github.io&#x2F;tags&#x2F;python&#x2F;">
+    <span class="icon-text">
+      <span class="icon">
+        <i class="fas fa-tag"></i>
+      </span>
+      <span>python</span>
+    </span>
+  </a>
+  
+</p>
+
+              
+            </div>
+          </div>
+          <div class="content mt-2">
+            <h1 id="find-minimum-in-rotated-sorted-array-153"><a href="https://leetcode.com/problems/find-minimum-in-rotated-sorted-array/">Find Minimum in Rotated Sorted Array (#153)</a></h1>
+<h2 id="description">Description</h2>
+<p>Suppose an array sorted in ascending order is rotated at some pivot unknown to you beforehand.
+(i.e.,  <code>[0,1,2,4,5,6,7]</code> might become  <code>[4,5,6,7,0,1,2]</code>).
+Find the minimum element.
+You may assume no duplicate exists in the array.</p>
+<hr />
+<h2 id="example">Example</h2>
+<h3 id="example-1">Example 1</h3>
+<pre style="background-color:#2b303b;">
+<code><span style="color:#c0c5ce;">Input: [3, 4, 5, 1, 2]
+Output: 1
+</span></code></pre><h3 id="example-2">Example 2</h3>
+<pre style="background-color:#2b303b;">
+<code><span style="color:#c0c5ce;">Input: [4, 5, 6, 7, 0, 1, 2]
+Output: 0
+</span></code></pre>
+<hr />
+<!--more-->
+<h2 id="solution">Solution</h2>
+<h3 id="solution-i-reference">Solution I (<a href="https://leetcode.com/articles/find-minimum-in-rotated-sorted-array/">Reference</a>)</h3>
+<h4 id="observation">Observation</h4>
+<p>If the sorted array is not rotated, the last element <em><strong>always</strong></em> larger than first element.</p>
+<pre style="background-color:#2b303b;">
+<code><span style="color:#c0c5ce;">[2, 3, 4, 5, 6, 7]
+ ^              ^
+</span></code></pre>
+<p>However, if the sorted array is rotated, we want to find the <code>Infection Point</code> (i.e. the point whose left element is maximum and right element is minimum).</p>
+<pre style="background-color:#2b303b;">
+<code><span style="color:#c0c5ce;">[4, 5, 6, 7, 2, 3]
+           ^
+</span></code></pre>
+<p>Furthermore,</p>
+<ul>
+<li>All the elements to the left of inflection point &gt; first element of the array.</li>
+<li>All the elements to the right of inflection point &lt; first element of the array.</li>
+</ul>
+<hr />
+<h4 id="algorithm">Algorithm</h4>
+<p><img src="https://i.imgur.com/goTfIbm.png" alt="" /></p>
+<pre style="background-color:#2b303b;">
+<code><span style="color:#c0c5ce;">[5, 1, 2, 4, 5]
+ l     m     r
+ &lt;-----
+
+[5, 1, 2, 4, 5]
+ l  r
+ m
+</span></code></pre><pre style="background-color:#2b303b;">
+<code><span style="color:#c0c5ce;">[4, 5, 6, 7, 2, 3]
+ l     m        r
+         -------&gt;
+
+[4, 5, 6, 7, 2, 3]
+          l  m  r
+</span></code></pre><p>
+Time Complexity:\(O(log\,n)\),
+Space Complexity:\(O(1)\)
+</p>
+---
+<h4 id="code">Code</h4>
+<pre style="background-color:#2b303b;">
+<code class="language-python" data-lang="python"><span style="color:#b48ead;">class </span><span style="color:#ebcb8b;">Solution</span><span style="color:#eff1f5;">:
+    </span><span style="color:#b48ead;">def </span><span style="color:#8fa1b3;">findMin</span><span style="color:#c0c5ce;">(</span><span style="color:#bf616a;">self</span><span style="color:#c0c5ce;">, </span><span style="color:#bf616a;">nums</span><span style="color:#c0c5ce;">):
+        </span><span style="color:#65737e;">&quot;&quot;&quot;
+        :type nums: List[int]
+        :rtype: int
+        &quot;&quot;&quot;
+
+        </span><span style="color:#b48ead;">if </span><span style="color:#96b5b4;">len</span><span style="color:#c0c5ce;">(nums) == </span><span style="color:#d08770;">1</span><span style="color:#c0c5ce;">:
+            </span><span style="color:#b48ead;">return </span><span style="color:#c0c5ce;">nums[</span><span style="color:#d08770;">0</span><span style="color:#c0c5ce;">]
+
+
+        l, h = </span><span style="color:#d08770;">0</span><span style="color:#c0c5ce;">, </span><span style="color:#96b5b4;">len</span><span style="color:#c0c5ce;">(nums) - </span><span style="color:#d08770;">1
+
+        </span><span style="color:#b48ead;">if </span><span style="color:#c0c5ce;">nums[h] &gt; nums[l]:
+            </span><span style="color:#b48ead;">return </span><span style="color:#c0c5ce;">nums[l]
+
+        </span><span style="color:#b48ead;">while </span><span style="color:#c0c5ce;">l &lt;= h:
+            m = l + (h - l) // </span><span style="color:#d08770;">2
+            </span><span style="color:#b48ead;">if </span><span style="color:#c0c5ce;">nums[m] &gt; nums[m + </span><span style="color:#d08770;">1</span><span style="color:#c0c5ce;">]:
+                </span><span style="color:#b48ead;">return </span><span style="color:#c0c5ce;">nums[m + </span><span style="color:#d08770;">1</span><span style="color:#c0c5ce;">]
+            </span><span style="color:#b48ead;">if </span><span style="color:#c0c5ce;">nums[m - </span><span style="color:#d08770;">1</span><span style="color:#c0c5ce;">] &gt; nums[m]:
+                </span><span style="color:#b48ead;">return </span><span style="color:#c0c5ce;">nums[m]
+
+            </span><span style="color:#b48ead;">if </span><span style="color:#c0c5ce;">nums[m] &gt; nums[</span><span style="color:#d08770;">0</span><span style="color:#c0c5ce;">]:
+                l = m + </span><span style="color:#d08770;">1
+            </span><span style="color:#b48ead;">else</span><span style="color:#c0c5ce;">:
+                h = m - </span><span style="color:#d08770;">1
+</span></code></pre>
+          </div>
+        </article>
+      </div>
+      
+      <div class="column is-2 is-hidden-mobile">
+        <aside class="menu" style="position: sticky; top: 48px">
+          <p class="heading has-text-weight-bold">Contents</p>
+          <ul class="menu-list">
+            
+            <li>
+              <a id="link-find-minimum-in-rotated-sorted-array-153" class="toc is-size-7 is-active"
+                href="https://titaneric.github.io/posts/find-minimum-in-rotated-sorted-array/#find-minimum-in-rotated-sorted-array-153">
+                Find Minimum in Rotated Sorted Array (#153)
+              </a>
+              
+              <ul>
+                
+                <li>
+                  <a id="link-description" class="toc is-size-7" href="https://titaneric.github.io/posts/find-minimum-in-rotated-sorted-array/#description">
+                    Description
+                  </a>
+                </li>
+                
+                <li>
+                  <a id="link-example" class="toc is-size-7" href="https://titaneric.github.io/posts/find-minimum-in-rotated-sorted-array/#example">
+                    Example
+                  </a>
+                </li>
+                
+                <li>
+                  <a id="link-solution" class="toc is-size-7" href="https://titaneric.github.io/posts/find-minimum-in-rotated-sorted-array/#solution">
+                    Solution
+                  </a>
+                </li>
+                
+              </ul>
+              
+            </li>
+            
+          </ul>
+        </aside>
+      </div>
+      
+    </div>
+  </div>
+</section>
+
+
+  
+  <section class="modal" id="search-modal">
+    <div class="modal-background"></div>
+    <div class="modal-card">
+      <header class="modal-card-head">
+        <p class="modal-card-title">Search</p>
+      </header>
+      <section class="modal-card-body">
+        <div class="field mb-2">
+          <div class="control">
+            <input class="input" id="search" placeholder="Search this website." type="search" />
+          </div>
+        </div>
+        <div class="search-results">
+          <div class="search-results__items"></div>
+        </div>
+      </section>
+    </div>
+    <button aria-label="close" class="modal-close is-large"></button>
+  </section>
+  
+
+
+  
+
+<section class="section">
+  <div class="container">
+    <div class="columns is-centered">
+      <div class="column is-8">
+        <nav class="level">
+          
+          <div class="level-item has-text-centered">
+            <a class="button is-black is-outlined" href="https:&#x2F;&#x2F;titaneric.github.io&#x2F;posts&#x2F;updating-a-dictionary&#x2F;">
+              <span class="icon mr-2">
+                <i class="fas fa-arrow-circle-left"></i>
+              </span>
+              Updating-a-Dictionary
+            </a>
+          </div>
+             
+        </nav>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+
+  
+
+
+
+  
+  <footer class="footer">
+    <div class="content has-text-centered">
+      <p>
+        Built with
+        <span class="icon-text">
+          <span class="icon">
+            <i class="fas fa-code"></i>
+          </span>
+          <span>code</span>
+        </span>
+        and
+        <span class="icon-text">
+          <span class="icon">
+            <i class="fas fa-heart"></i>
+          </span>
+          <span>love</span>
+        </span>
+      </p>
+      <p>
+        Powered by
+        <span class="icon-text">
+          <span class="icon">
+            <i class="fas fa-power-off"></i>
+          </span>
+          <span>zola</span>
+        </span>
+      </p>
+    </div>
+  </footer>
+  
+
+  <script src="https://cdn.jsdelivr.net/npm/jquery@3.6.0/dist/jquery.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/galleria/1.6.1/galleria.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/mermaid@8.9.2/dist/mermaid.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/chart.xkcd@1.1.13/dist/chart.xkcd.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/mapbox-gl@2.1.1/dist/mapbox-gl.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/galleria/1.6.1/themes/folio/galleria.folio.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/elasticlunr/0.9.6/elasticlunr.min.js"></script>
+  <script src="https:&#x2F;&#x2F;titaneric.github.io&#x2F;search_index.en.js"></script>
+  <script src="https:&#x2F;&#x2F;titaneric.github.io&#x2F;js&#x2F;site.js"></script>
+
+  
+
+<script type="text/javascript">
+  const menuBarHeight = $("nav.navbar").height();
+  const tocItems = $('.toc');
+  const navSections = new Array($('.toc').length);
+
+  tocItems.each(function (i) {
+    let id = $(this).attr("id").substring(5);
+    navSections[i] = document.getElementById(id);
+  })
+
+  function isVisible(tocIndex) {
+    const current = navSections[tocIndex];
+    const next = tocIndex < tocItems.length - 1 ? navSections[tocIndex + 1] : $("section.section").get(1);
+
+    const c = current.getBoundingClientRect();
+    const n = next.getBoundingClientRect();
+    const h = (window.innerHeight || document.documentElement.clientHeight);
+
+    return (c.top <= h) && (c.top + (n.top - c.top) - menuBarHeight >= 0);
+  }
+
+  function activateIfVisible() {
+    for (b = true, i = 0; i < tocItems.length; i++) {
+      if (b && isVisible(i)) {
+        tocItems[i].classList.add('is-active');
+        b = false;
+      } else
+        tocItems[i].classList.remove('is-active');
+    }
+  }
+
+  var isTicking = null;
+  window.addEventListener('scroll', () => {
+    if (!isTicking) {
+      window.requestAnimationFrame(() => {
+        activateIfVisible();
+        isTicking = false;
+      });
+      isTicking = true;
+    }
+  }, false);
+</script>
+
+
+
+
+</body>
+
+</html>

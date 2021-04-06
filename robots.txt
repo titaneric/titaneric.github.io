@@ -1,0 +1,3 @@
+User-agent: *
+Allow: /
+Sitemap: https://titaneric.github.io/sitemap.xml
