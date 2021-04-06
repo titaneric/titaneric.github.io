@@ -1,5 +1,5 @@
 +++
-title = "Build a Library from Scratch (Part1)"
+title = "Build a DL Library from Scratch (Part1)"
 date = 2021-01-05
 
 [taxonomies]
