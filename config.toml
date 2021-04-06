@@ -1,8 +1,11 @@
 # The URL the site will be built for
 base_url = "https://titaneric.github.io"
-
+title = "Playground"
 # Whether to automatically compile all Sass files in the sass directory
 compile_sass = true
+
+generate_feed = true
+feed_filename = "rss.xml"
 
 # Whether to build a search index to be used later on by a JavaScript library
 build_search_index = true
@@ -13,7 +16,6 @@ taxonomies = [
 	{ name = "categories", feed = true, paginate_by = 10 },
 	{ name = "tags", feed = true, paginate_by = 10 },
 ]
-
 
 [markdown]
 # Whether to do syntax highlighting
@@ -32,11 +34,13 @@ navbar_items = [
 ]
 katex.enabled = true
 katex.auto_render = true
+
 [extra.author]
 name = "titaneric"
 
 [extra.social]
 github = "titaneric"
+email = "chenyihuang001@gmail.com"
 
 [extra.analytics]
 google = "UA-132691301-1"
