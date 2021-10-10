@@ -19,7 +19,7 @@ jobs:
     - name: Dispatch the mdbook to deploy itself
       uses: peter-evans/repository-dispatch@v1
       with:
-        token: ${{ secrets.REPO_ACCESS_TOKEN }}
+        token: ${{ secrets.TOKEN }}
         repository: titaneric/yew-examples
         event-type: deploy-again
         client-payload: '{"ref": "${{ github.ref }}", "sha": "${{ github.sha }}"}'
