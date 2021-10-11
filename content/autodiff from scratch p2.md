@@ -1,5 +1,5 @@
 +++
-title = "Build a DL Library from Scratch (Part2)"
+title = "Build a DL Library from Scratch (Part2) - Backpropagation"
 date = 2021-04-04
 
 [taxonomies]
