@@ -29,6 +29,7 @@ navbar_items = [
         { url = "$BASE_URL/", name = "Home" },
         { url = "$BASE_URL/tags", name = "Tags" },
         { url = "$BASE_URL/categories", name = "Categories" },
+        { url = "$BASE_URL/yew-examples/", name = "Yew Examples" },
         { url = "https://playground.titaneric.com", name = "Rust Playground" },
     ] },
 ]
