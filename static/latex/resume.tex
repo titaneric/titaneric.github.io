@@ -1,0 +1,214 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% "ModernCV" CV and Cover Letter
+% LaTeX Template
+% Version 1.1 (9/12/12)
+%
+% This template has been downloaded from:
+% http://www.LaTeXTemplates.com
+%
+% Original author:
+% Xavier Danaux (xdanaux@gmail.com)
+%
+% License:
+% CC BY-NC-SA 3.0 (http://creativecommons.org/licenses/by-nc-sa/3.0/)
+%
+% Important note:
+% This template requires the moderncv.cls and .sty files to be in the same 
+% directory as this .tex file. These files provide the resume style and themes 
+% used for structuring the document.
+%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%----------------------------------------------------------------------------------------
+%   PACKAGES AND OTHER DOCUMENT CONFIGURATIONS
+%----------------------------------------------------------------------------------------
+
+\documentclass[11pt,a4paper,sans]{moderncv} % Font sizes: 10, 11, or 12; paper sizes: a4paper, letterpaper, a5paper, legalpaper, executivepaper or landscape; font families: sans or roman
+%\usepackage[15pt]{extsizes}
+\usepackage{xeCJK}
+\setCJKmainfont{Droid Sans Fallback}
+\setCJKsansfont{WenQuanYi Zen Hei}
+\setCJKmonofont{cwTeXFangSong}
+\moderncvstyle{classic} % CV theme - options include: 'casual' (default), 'classic', 'oldstyle' and 'banking'
+\moderncvcolor{blue} % CV color - options include: 'blue' (default), 'orange', 'green', 'red', 'purple', 'grey' and 'black'
+
+\usepackage{lipsum} % Used for inserting dummy 'Lorem ipsum' text into the template
+% \usepackage{CJKutf8} 
+\usepackage[scale=0.85]{geometry} % Reduce document margins
+%\setlength{\hintscolumnwidth}{3cm} % Uncomment to change the width of the dates column
+% \setlength{\makecvtitlenamewidth}{10cm} % For the 'classic' style, uncomment to adjust the width of the space allocated to your name
+\renewcommand*{\namefont}{\fontsize{52}{36}\mdseries\upshape}
+\setlength{\hintscolumnwidth}{0.18\textwidth}
+\newcommand{\obj}[1]{
+%   \strut\sectionstyle{#1\hfill}%
+  \par\nobreak\addvspace{1ex}
+}
+
+
+%----------------------------------------------------------------------------------------
+%   NAME AND CONTACT INFORMATION SECTION
+%----------------------------------------------------------------------------------------
+% \name{CHEN-YI}{HUANG}
+\title{黃晨懿} 
+\firstname{CHEN-YI} % Your first name
+\familyname{HUANG} % Your last name
+% All information in this block is optional, comment out any lines you don't need
+%\title{Curriculum Vitae}
+\mobile{(+886) 986 366 141}
+%\phone{(000) 111 1112}
+%\fax{(000) 111 1113}
+\email{chenyihuang001@gmail.com}
+\homepage{www.titaneric.com/} % The first argument is %the url for the clickable link, the second argument is the url displayed in the %template - this allows special characters to be displayed such as the tilde in this %example
+\social[github]{titaneric}
+\social[linkedin]{chen-yi-huang}
+%\photo[70pt][0.4pt]{picture} % The first bracket is the picture height, the second is %the thickness of the frame around the picture (0pt for no frame)
+
+%----------------------------------------------------------------------------------------
+
+
+\begin{document}
+\makecvtitle % Print the CV title
+\vspace{-2\baselineskip}
+\obj{Objective}
+% seeking a position at the XXX in XXX Inc. where I can apply my skills of data wrangling, machine learning knowledge and data visualization.
+
+%Dedicated software engineer, persistent learner and enthusiastic open source contributor. Strong in Python and experienced with large-scale software code reading and tracing (E.g., CPython, \href{https://github.com/pytorch/pytorch/pull/28651}{PyTorch} \& \href{https://titaneric.github.io/posts/buddy-system/}{Buddy System in Linux kernel}). %Seeking a position as a xxx engineer at xxx Inc, where I can apply my skills of web development, data science knowledge and modern software development experience.
+\href{https://ti-user-certificates.s3.amazonaws.com/e0df7fbf-a057-42af-8a1f-590912be5460/ca820404-2858-41da-9d18-c3268d010348-huang-chen-yi-80c3b11d-2f72-4183-8271-9743fe40b47d-certificate.pdf}{Certified Kubernetes Administrator}, dedicated software engineer, persistent learner and enthusiastic open source contributor. Experienced building system and Kubernetes monitoring architecture, Kubernetes cluster administration, and large-scale software code reading and tracing. I'm honored to received the Arctic Code Vault Contributor at GitHub and give short talks about Kubernetes metrics at K8s summit in 2021.
+\vspace{1\baselineskip}
+
+
+%----------------------------------------------------------------------------------------
+%   COMPUTER SKILLS SECTION
+%----------------------------------------------------------------------------------------
+
+\section{Skills}
+% \cvitem{Data Science}{Pandas, NumPy, PyTorch, Data Preprocessing, Data Visualization}
+\cvitem{Observability}{Prometheus, Grafana, System \& Kubernetes monitoring, Loki, Promtail}
+% \cvitem{Tracing}{}
+% \cvitem{Storage}{LVM, Ceph, ZFS}
+\cvitem{VM, Container}{Kubernetes, Docker, Linux SysAdmin, Nvidia Cloud-Native Technologies, Proxmox}
+\cvitem{Programming}{Python, Golang, C, Rust, PromQL}
+\cvitem{System,Networking}{Linux SysAdmin, TCP/IP, Wireshark, Chrome DevTools}
+\cvitem{IaC, CI/CD}{Ansible, Github Actions, Azure Pipelines}
+\cvitem{Language}{Chinese (native), English}
+
+%----------------------------------------------------------------------------------------
+%   WORK EXPERIENCE SECTION
+%----------------------------------------------------------------------------------------
+
+\section{Work Experience}
+\cventry{May 2021--Present}{Senior Engineer}{\textsc{Intelligent Banking Division, E.SUN Bank} Taipei, Taiwan}{}{}{
+\begin{itemize}
+\item Built, enhanced, and promoted comprehensive monitoring and alerting architecture on \textbf{hundreds} of servers, scraping up to \textbf{8-10 GB} metrics per day.
+\item Multi on-premise, total up to \textbf{40} nodes k8s clusters administration, migration experience in
+\begin{itemize}
+    \item Development for data analysis, training (AI Cloud) with \textbf{95\%} SLA level.
+    \item Production API for model inferencing (MLaaS) with \textbf{99\%} SLA level.
+\end{itemize}
+% \item Improved system, k8s observerity and auditing by introducing Grafana Loki
+\item Experienced CentOS-based Linux SysAdmin, VM orchestration with Proxmox, and Nvidia Cloud Native Technologies with \textbf{hundreds} of GPU devices.
+\item Reduced manual intervention and automated the process of routine, task, and configuration change by developing Ansible playbook, Azure Pipelines, and calling RESTful/GraphQL API.
+\item Share experience with colleagues, help investigated, and resolved the issues in Ansible playbook, system and network administration, observability, and Kubernetes.
+% \item Leverage Kubernetes and Prometheus Go client library to instrument and monitor system.
+\end{itemize}
+}
+
+\cventry{Oct 2020--Jan 2021}{Engineer}{\textsc{Computer Integration Manufacturer, tsmc} Hsinchu, Taiwan}{}{}{
+\begin{itemize}
+\item Responsible for developing the agent and reporting APP for \textbf{thousands} of users in FAB.
+\item Developed the web crawler to download \textbf{hundreds} of candidate resumes and general resume parser which achieved up to \textbf{95\%} extracted information accuracy.
+\item Wrote integration-test under possible scenarios and detailed documents including building procedure and class diagram for senior's project.
+\item Pioneer of Robotic Process Automation and efficient i18n support for reporting APP.
+\end{itemize}
+}
+\cventry{July 2018--Jan 2019}{Web Developer}{\textsc{CS Computer Center, NCTU} Hsinchu, Taiwan}{}{}{
+\begin{itemize}
+\item Developed web services for \textbf{hundreds} of CS students, especially for Account Application System.
+\item Cooperated with teammate to discuss and design the suitable database schema and API routing.
+\item Participated and learned modern software development including testing, deployment, virtualized environments and CI/CD.
+% \item Implemented in Laravel and Vue frameworks.
+% \item Followed the coding style (PSR-2 and Airbnb)
+% \item Applied Git flow on development and Gitlab runner to automate test and deployment jobs.
+\end{itemize}
+}
+
+%----------------------------------------------------------------------------------------
+%   EDUCATION SECTION
+%----------------------------------------------------------------------------------------
+
+\section{Education}
+
+\cventry{2018--2020}{Master of Data Science}{Institute of Data Science \& Engineering}{National Chiao Tung University}{Hsinchu, Taiwan}{}  
+\cventry{2014--2018}{Bachelor of Science}{Department of Computer Science \& Engineering}{Yuan Ze University}{Taoyuan, Taiwan}{}
+
+\newpage
+
+\section{Open Source Contributions}
+\cvlistitem{Found the redundant calculation of derivative of power function \\ in various deep learning frameworks. \hfill @ \href{https://github.com/pytorch/pytorch/pull/28651}{PyTorch}, \href{https://github.com/google/jax/issues/1576}{JAX}, \href{https://github.com/HIPS/autograd/pull/541}{Autograd}}
+\cvlistitem{Provide the HTTP delivery for forwarding article in BBS \hfill @ \href{https://github.com/Ptt-official-app/Ptt-backend/pull/169}{Ptt-Backend}}
+\cvlistitem{Data serialization and deserialization in Golang \hfill @ \href{https://github.com/Ptt-official-app/go-bbs/pull/42}{go-bbs}}
+\cvlistitem{Improved and beautified one of the example \hfill @ \href{https://github.com/yewstack/yew/pull/1650}{Yew}}
+\cvlistitem{Developed some code to be more Pythonic. \hfill @ \href{https://github.com/tensorflow/tensorflow/pull/32126}{TensorFlow}}
+\cvlistitem{Bug reporting \hfill @ \href{https://github.com/microsoft/vscode-python/issues/202}{Python extension for Visual Studio Code}}
+\cvlistitem{Participation of issue discussion. \hfill @ \href{https://github.com/MicrosoftDocs/WSL/issues/404\#issuecomment-504759326}{Windows Subsystem for Linux}}
+
+% \newpage
+\section{Talks \& Slides share}
+\cventry{Dec 2021}{\href{https://www.titaneric.com/the-journey-to-the-kubernetes-metrics/}{The Journey to the Kubernetes metrics} @ \href{https://k8s.ithome.com.tw/lab-page/599}{Kubernetes Summit 2021}}{}{}{}{}
+\cventry{May 2019}{\href{https://www.titaneric.com/buddy-system/}{Buddy System}}{}{}{}{}
+\section{Projects}
+
+\cventry{May 2022}{DCGM exporter extended for aliyun gpushare}{}{}{}{
+\begin{itemize}
+\item Support \href{https://github.com/AliyunContainerService/gpushare-scheduler-extender}{aliyun gpushare-scheduler-extender} in \href{https://github.com/NVIDIA/dcgm-exporter}{Nvidia dcgm-exporter}
+\item Provide k8s GPU instrumentation, monitoring solution in \textbf{memory usage (MB)} level
+\end{itemize}
+}
+
+\cventry{March 2021}{\href{https://playground.titaneric.com/}{Web Assembly rendering in Rust Playground}}{}{}{}{
+\begin{itemize}
+\item Renderred and displayed Web Assembly from compiled Rust code.
+\item Support both Rust Playground (React) and mdBook (native JS) frontend rendering
+\item Support various wasm crates including wasm-pack, yew etc.
+\end{itemize}
+}
+
+\cventry{June 2020}{Real-time Traffic Anomaly Detector}{}{}{}{
+\begin{itemize}
+\item Anomaly detection in NCTU administration networks.
+\item Designed and implemented the data pre-processing pipeline \\with Apache Kafka, Spark and MongoDB.
+\item Processed data-stream in real time up to \textbf{30 kB/sec} and transformed into feature vectors to further predict.
+\end{itemize}
+}
+
+
+\cventry{Sep 2019}{\href{https://github.com/titaneric/AutoDiff-from-scratch}{AutoDiff from Scratch}}{}{}{}{
+\begin{itemize}
+\item Simple neural network library supporting auto-differentiation
+\item Reported an issue and solved it in various deep-learning libraries during the development.
+\item Enabled high-level layer usage and had already tested on real-world dataset.
+\end{itemize}
+}
+
+% \cventry{Sep 2018}{ \href{https://account.cs.nctu.edu.tw/}{Account Application System}}{}{}{}{
+% \begin{itemize}
+% \item Web service for NCTU CS students to apply their account
+% \item Developed in Laravel MVC architecture with additional Repository pattern.
+% \item Designed the database schema.
+% \item Implemented the business logic and account-activation-status API.
+% \end{itemize}
+% }
+
+\section{Master thesis}
+\cvitem{Title}{\emph{Solving Traveling Salesman Problem with the Kernel-enabled Attention}}
+\cvitem{Supervisor}{Shi-Chun Tsai}
+\cvitem{Description}{We built on top of the prior state-of-the-art work who borrow the Transformer to solve the TSP. Motivated by the implicit dot product inside the kernel methods, we replace the scaled dot product with kernel in the attention mechanism. In our experiment, we archive shorter tour with a similar approach.}
+
+\section{Certification \& Award}
+
+\cvlistitem{\href{https://ti-user-certificates.s3.amazonaws.com/e0df7fbf-a057-42af-8a1f-590912be5460/ca820404-2858-41da-9d18-c3268d010348-huang-chen-yi-80c3b11d-2f72-4183-8271-9743fe40b47d-certificate.pdf}{Certified Kubernetes Administrator (CKA)}}
+\cvlistitem{Arctic Code Vault Contributor @ GitHub}
+%\cvlistitem{\href{https://www.coursera.org/account/accomplishments/specialization/R7JFTLE6TT34}{Machine Learning with TensorFlow on Google Cloud Platform}}% \\ by Google Cloud on Coursera, Sep 2019}}
+%\cvlistitem{\href{https://academy.microsoft.com/en-us/certificates/8a73f8a2-605a-40bc-97f4-7fee715ce38c/}{Querying Data with Transact-SQL}} %by Microsoft on edX, Dec 2019}}
+
+\end{document}
