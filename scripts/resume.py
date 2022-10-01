@@ -17,8 +17,8 @@ csrf_token_selector = "ol-csrfToken"
 login_url = "https://www.overleaf.com/login"
 page_url = "https://www.overleaf.com/project/{}".format(project_id)
 compile_url = "https://www.overleaf.com/project/{}/compile".format(project_id)
-# print(page_url)
-# print(compile_url)
+print(page_url)
+print(compile_url)
 print(account)
 
 
