@@ -23,3 +23,23 @@ jobs:
     #     repository: titaneric/yew-examples
     #     event-type: deploy-again
     #     client-payload: '{"ref": "${{ github.ref }}", "sha": "${{ github.sha }}"}'
+  get_resume:
+    runs-on: ubuntu-latest
+    environment: github-pages
+    steps:
+    - uses: actions/checkout@master
+    - uses: actions/setup-python@v4
+      with:
+        python-version: '3.10' 
+    - run: |
+        cd scripts
+        ls
+        pip install -r requirements.txt
+        playwright install chromium
+        python resume.py
+        stat resume.pdf
+      env:
+        ACCOUNT: ${{ env.ACCOUNT }}
+        PASSWORD: ${{ env.PASSWORD }}
+        DOCID: ${{ env.DOCID }}
+        PROJID: ${{ env.PROJID }}
