@@ -8,18 +8,18 @@ jobs:
     steps:
     # Checkout
     - uses: actions/checkout@master
-    # Build & deploy
+    # Build and deploy
     - name: shalzz/zola-deploy-action
-      uses: shalzz/zola-deploy-action@v0.14.1
+      uses: shalzz/zola-deploy-action@v0.16.1
       env:
         # Target branch
         PAGES_BRANCH: gh-pages
         # Provide personal access token
         TOKEN: ${{ secrets.TOKEN }}
-    - name: Dispatch the mdbook to deploy itself
-      uses: peter-evans/repository-dispatch@v1
-      with:
-        token: ${{ secrets.TOKEN }}
-        repository: titaneric/yew-examples
-        event-type: deploy-again
-        client-payload: '{"ref": "${{ github.ref }}", "sha": "${{ github.sha }}"}'
+    # - name: Dispatch the mdbook to deploy itself
+    #   uses: peter-evans/repository-dispatch@v1
+    #   with:
+    #     token: ${{ secrets.TOKEN }}
+    #     repository: titaneric/yew-examples
+    #     event-type: deploy-again
+    #     client-payload: '{"ref": "${{ github.ref }}", "sha": "${{ github.sha }}"}'
