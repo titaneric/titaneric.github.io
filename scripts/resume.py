@@ -12,6 +12,7 @@ account = os.environ.get("ACCOUNT")
 password = os.environ.get("PASSWORD")
 doc_id = os.environ.get("DOCID")
 project_id = os.environ.get("PROJID")
+WAIT_TIMEOUT = float(os.environ.get("TIMEOUT"))
 csrf_token_selector = "ol-csrfToken"
 
 login_url = "https://www.overleaf.com/login"
@@ -130,10 +131,10 @@ if __name__ == "__main__":
             page.click(submit_btn)
             print("go to project URL")
             # page.screenshot(path=f"login-{browser_type.name}.png")
-            page.wait_for_url(project_url, timeout=60)
+            page.wait_for_url(project_url, timeout=WAIT_TIMEOUT)
             # page.screenshot(path=f"project-{browser_type.name}.png")
             page.goto(page_url)
-            page.wait_for_url(page_url, timeout=60)
+            page.wait_for_url(page_url, timeout=WAIT_TIMEOUT)
             # page.screenshot(path=f"page-{browser_type.name}.png")
             content = page.content()
             csrf_token = get_csrf_token(content)

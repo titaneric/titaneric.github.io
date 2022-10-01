@@ -48,6 +48,7 @@ jobs:
         PASSWORD: ${{ secrets.PASSWORD }}
         DOCID: ${{ secrets.DOCID }}
         PROJID: ${{ secrets.PROJID }}
+        TIMEOUT: 60000
     - name: commit downloaded resume
       uses: stefanzweifel/git-auto-commit-action@v4
       with:
