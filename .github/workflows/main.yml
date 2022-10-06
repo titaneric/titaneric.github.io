@@ -29,7 +29,7 @@ jobs:
     steps:
     - name: Download resume from latexonline.cc
       run: |
-        curl -O resume.pdf https://latexonline.cc/compile?url=https://raw.githubusercontent.com/titaneric/titaneric.github.io/master/static/latex/resume.tex&command=xelatex
+        curl -vv -o resume.pdf https://latexonline.cc/compile?url=https://raw.githubusercontent.com/titaneric/titaneric.github.io/master/static/latex/resume.tex&command=xelatex
         stat resume.pdf
     # (deprecated) get overleaf compiled pdf by playwright
     # - uses: actions/checkout@master
