@@ -14,8 +14,16 @@ doc_id = os.environ.get("DOCID")
 project_id = os.environ.get("PROJID")
 WAIT_TIMEOUT = float(os.environ.get("TIMEOUT"))
 csrf_token_selector = "ol-csrfToken"
+account_input = "#email"
+password_input = "#password"
+submit_btn = (
+    "#main-content > div.card.login-register-card > form > div.actions > button"
+)
+download_pdf_btn = "#ide-body > div.ui-layout-center.ui-layout-pane.ui-layout-pane-center > div.full-size.ui-layout-container > div.ui-layout-east.ui-layout-pane.ui-layout-pane-east > div > pdf-preview > div.pdf.full-size > div.toolbar.toolbar-pdf.toolbar-pdf-hybrid.btn-toolbar > div.toolbar-pdf-left > a > i"
+project_url = "https://www.overleaf.com/project"
 
 login_url = "https://www.overleaf.com/login"
+
 page_url = "https://www.overleaf.com/project/{}".format(project_id)
 compile_url = "https://www.overleaf.com/project/{}/compile".format(project_id)
 print(page_url)
@@ -113,16 +121,9 @@ def compile(csrf_token, cookie):
 
 
 if __name__ == "__main__":
-    account_input = "#email"
-    password_input = "#password"
-    submit_btn = (
-        "#main-content > div.card.login-register-card > form > div.actions > button"
-    )
-    download_pdf_btn = "#ide-body > div.ui-layout-center.ui-layout-pane.ui-layout-pane-center > div.full-size.ui-layout-container > div.ui-layout-east.ui-layout-pane.ui-layout-pane-east > div > pdf-preview > div.pdf.full-size > div.toolbar.toolbar-pdf.toolbar-pdf-hybrid.btn-toolbar > div.toolbar-pdf-left > a > i"
-    project_url = "https://www.overleaf.com/project"
     with sync_playwright() as p:
         for browser_type in [p.chromium]:
-            browser = browser_type.launch()
+            browser = browser_type.launch(devtools=True)
             page = browser.new_page()
             print("login the overleaf page")
             page.goto(login_url)
@@ -132,22 +133,22 @@ if __name__ == "__main__":
             print("go to project URL")
             page.screenshot(path=f"login-{browser_type.name}.png")
             page.wait_for_url(project_url, timeout=WAIT_TIMEOUT)
-            page.screenshot(path=f"project-{browser_type.name}.png")
-            page.goto(page_url)
-            page.wait_for_url(page_url, timeout=WAIT_TIMEOUT)
-            page.screenshot(path=f"page-{browser_type.name}.png")
-            content = page.content()
-            csrf_token = get_csrf_token(content)
-            # print(csrf_token)
-            cookie = page.context.cookies()
-            # print(cookie)
-            accepted_cookie = {"GCLB", "overleaf_session2"}
-            cookies = {
-                c["name"]: c["value"] for c in cookie if c["name"] in accepted_cookie
-            }
-            # print(cookies)
-            print("call overleaf compile API")
-            compile_response = compile(csrf_token, cookies)
-            print("starts to download the resume pdf")
-            download_resume(compile_response, cookies)
-            browser.close()
+            # page.screenshot(path=f"project-{browser_type.name}.png")
+            # page.goto(page_url)
+            # page.wait_for_url(page_url, timeout=WAIT_TIMEOUT)
+            # page.screenshot(path=f"page-{browser_type.name}.png")
+            # content = page.content()
+            # csrf_token = get_csrf_token(content)
+            # # print(csrf_token)
+            # cookie = page.context.cookies()
+            # # print(cookie)
+            # accepted_cookie = {"GCLB", "overleaf_session2"}
+            # cookies = {
+            #     c["name"]: c["value"] for c in cookie if c["name"] in accepted_cookie
+            # }
+            # # print(cookies)
+            # print("call overleaf compile API")
+            # compile_response = compile(csrf_token, cookies)
+            # print("starts to download the resume pdf")
+            # download_resume(compile_response, cookies)
+            # browser.close()
