@@ -31,6 +31,12 @@ jobs:
       run: |
         curl -vv -o resume.pdf -L "https://latexonline.cc/compile?url=https://raw.githubusercontent.com/titaneric/titaneric.github.io/master/static/latex/resume.tex&command=xelatex"
         stat resume.pdf
+        mv resume.pdf static/pdfs
+    - name: commit downloaded resume
+      uses: stefanzweifel/git-auto-commit-action@v4
+      with:
+        commit_message: Update resume by bot
+        file_pattern: 'static/pdfs/*.pdf'
     # (deprecated) get overleaf compiled pdf by playwright
     # - uses: actions/checkout@master
     # - uses: actions/setup-python@v4
