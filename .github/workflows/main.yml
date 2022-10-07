@@ -2,27 +2,6 @@
 on: push
 name: Build and deploy GH Pages
 jobs:
-  build:
-    name: shalzz/zola-deploy-action
-    runs-on: ubuntu-latest
-    steps:
-    # Checkout
-    - uses: actions/checkout@master
-    # Build and deploy
-    - name: shalzz/zola-deploy-action
-      uses: shalzz/zola-deploy-action@v0.16.1
-      env:
-        # Target branch
-        PAGES_BRANCH: gh-pages
-        # Provide personal access token
-        TOKEN: ${{ secrets.TOKEN }}
-    # - name: Dispatch the mdbook to deploy itself
-    #   uses: peter-evans/repository-dispatch@v1
-    #   with:
-    #     token: ${{ secrets.TOKEN }}
-    #     repository: titaneric/yew-examples
-    #     event-type: deploy-again
-    #     client-payload: '{"ref": "${{ github.ref }}", "sha": "${{ github.sha }}"}'
   get_resume:
     runs-on: ubuntu-latest
     environment: github-pages
@@ -63,3 +42,25 @@ jobs:
     #   with:
     #     commit_message: Update resume by bot
     #     file_pattern: 'static/pdfs/*.pdf'
+  build:
+    name: shalzz/zola-deploy-action
+    runs-on: ubuntu-latest
+    needs: get_resume
+    steps:
+    # Checkout
+    - uses: actions/checkout@master
+    # Build and deploy
+    - name: shalzz/zola-deploy-action
+      uses: shalzz/zola-deploy-action@v0.16.1
+      env:
+        # Target branch
+        PAGES_BRANCH: gh-pages
+        # Provide personal access token
+        TOKEN: ${{ secrets.TOKEN }}
+    # - name: Dispatch the mdbook to deploy itself
+    #   uses: peter-evans/repository-dispatch@v1
+    #   with:
+    #     token: ${{ secrets.TOKEN }}
+    #     repository: titaneric/yew-examples
+    #     event-type: deploy-again
+    #     client-payload: '{"ref": "${{ github.ref }}", "sha": "${{ github.sha }}"}'
