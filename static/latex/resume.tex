@@ -29,8 +29,8 @@
 \setCJKmainfont{Droid Sans Fallback}
 \setCJKsansfont{WenQuanYi Zen Hei}
 \setCJKmonofont{cwTeXFangSong}
-\moderncvstyle{classic} % CV theme - options include: 'casual' (default), 'classic', 'oldstyle' and 'banking'
-\moderncvcolor{blue} % CV color - options include: 'blue' (default), 'orange', 'green', 'red', 'purple', 'grey' and 'black'
+\moderncvstyle{casual} % CV theme - options include: 'casual' (default), 'classic', 'oldstyle' and 'banking'
+\moderncvcolor{orange} % CV color - options include: 'blue' (default), 'orange', 'green', 'red', 'purple', 'grey' and 'black'
 
 \usepackage{lipsum} % Used for inserting dummy 'Lorem ipsum' text into the template
 % \usepackage{CJKutf8} 
@@ -54,13 +54,12 @@
 \familyname{HUANG} % Your last name
 % All information in this block is optional, comment out any lines you don't need
 %\title{Curriculum Vitae}
-%\address{}{宜蘭縣員山鄉員山路一段312巷23號}
 \mobile{(+886) 986 366 141}
 %\phone{(000) 111 1112}
 %\fax{(000) 111 1113}
 \email{chenyihuang001@gmail.com}
 % \homepage{www.titaneric.com/} % The first argument is %the url for the clickable link, the second argument is the url displayed in the %template - this allows special characters to be displayed such as the tilde in this %example
-\homepage{https://titaneric.github.io/}
+\homepage{www.titaneric.com/}
 \social[github]{titaneric}
 \social[linkedin]{chen-yi-huang}
 %\photo[70pt][0.4pt]{picture} % The first bracket is the picture height, the second is %the thickness of the frame around the picture (0pt for no frame)
@@ -70,11 +69,8 @@
 
 \begin{document}
 \makecvtitle % Print the CV title
-\vspace{-2\baselineskip}
+\vspace{-3\baselineskip}
 \obj{Objective}
-% seeking a position at the XXX in XXX Inc. where I can apply my skills of data wrangling, machine learning knowledge and data visualization.
-
-%Dedicated software engineer, persistent learner and enthusiastic open source contributor. Strong in Python and experienced with large-scale software code reading and tracing (E.g., CPython, \href{https://github.com/pytorch/pytorch/pull/28651}{PyTorch} \& \href{https://titaneric.github.io/posts/buddy-system/}{Buddy System in Linux kernel}). %Seeking a position as a xxx engineer at xxx Inc, where I can apply my skills of web development, data science knowledge and modern software development experience.
 \href{https://ti-user-certificates.s3.amazonaws.com/e0df7fbf-a057-42af-8a1f-590912be5460/ca820404-2858-41da-9d18-c3268d010348-huang-chen-yi-80c3b11d-2f72-4183-8271-9743fe40b47d-certificate.pdf}{Certified Kubernetes Administrator}, dedicated software engineer, persistent learner, and enthusiastic open source contributor. Have 6 years experience in Python and 3 years experience in Linux administration. Skilled in automation of system administration, operation, monitoring, and cloud-native solution such as Kubernetes and Containerization. Confident in self-learning and large-scale code tracing. I'm honored to receive the Arctic Code Vault Contributor at GitHub and give short talks about Kubernetes metrics at K8s summit in 2021.
 \vspace{1\baselineskip}
 
@@ -87,7 +83,6 @@
 % \cvitem{Data Science}{Pandas, NumPy, PyTorch, Data Preprocessing, Data Visualization}
 \cvitem{Observability}{Prometheus, Grafana, System \& Kubernetes monitoring, Loki, Promtail}
 % \cvitem{Tracing}{}
-% \cvitem{Storage}{LVM, Ceph, ZFS}
 \cvitem{VM, Container}{Kubernetes, Docker, Linux SysAdmin, Nvidia Cloud-Native Technologies, Proxmox}
 \cvitem{Programming}{Python, Golang, C, Rust, PromQL}
 \cvitem{System,Networking}{Linux SysAdmin, TCP/IP, Wireshark, Chrome DevTools}
@@ -101,7 +96,7 @@
 \section{Work Experience}
 \cventry{May 2021--Present}{Senior Engineer}{\textsc{Intelligent Banking Division, E.SUN Bank} Taipei, Taiwan}{}{}{
 \begin{itemize}
-\item Built, enhanced, and promoted comprehensive monitoring and alerting architecture on \textbf{hundreds} of servers, scraping up to \textbf{8-10 GB} metrics per day.
+\item Built, enhanced, and promoted comprehensive monitoring and alerting architecture on \textbf{hundreds} of servers, scraping up to \textbf{15 GB} metrics per day.
 \item \textbf{7} on-premise, total up to \textbf{40} nodes Kubernetes clusters administration, migration experience in
 \begin{itemize}
     \item Development for data analysis, training (AI Cloud) with \textbf{95\%} SLA level.
@@ -110,7 +105,7 @@
 % \item Improved system, k8s observerity and auditing by introducing Grafana Loki
 \item Experienced CentOS-based Linux SysAdmin, VM orchestration with Proxmox, and Nvidia Cloud Native Technologies with \textbf{hundreds} of GPU devices.
 \item Reduced manual intervention and automated the process of routine, task, and configuration change by developing Ansible playbook, Azure Pipelines, and calling RESTful/GraphQL API.
-\item Share experience with colleagues, help investigated, and resolved the issues in Ansible playbook, system and network administration, observability, and Kubernetes.
+\item Share experience with colleagues, help investigated, and resolved the issues in Ansible playbook, system, network/TLS  observability, and Kubernetes.
 % \item Leverage Kubernetes and Prometheus Go client library to instrument and monitor system.
 \end{itemize}
 }

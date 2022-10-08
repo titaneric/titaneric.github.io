@@ -1,0 +1,80 @@
+{
+	"workbench.colorCustomizations": {
+		"activityBar.activeBackground": "#fbed80",
+		"activityBar.activeBorder": "#06b9a5",
+		"activityBar.background": "#fbed80",
+		"activityBar.foreground": "#15202b",
+		"activityBar.inactiveForeground": "#15202b99",
+		"activityBarBadge.background": "#06b9a5",
+		"activityBarBadge.foreground": "#15202b",
+		"sash.hoverBorder": "#fbed80",
+		"statusBar.background": "#f9e64f",
+		"statusBar.foreground": "#15202b",
+		"statusBarItem.hoverBackground": "#f7df1e",
+		"statusBarItem.remoteBackground": "#f9e64f",
+		"statusBarItem.remoteForeground": "#15202b",
+		"titleBar.activeBackground": "#f9e64f",
+		"titleBar.activeForeground": "#15202b",
+		"titleBar.inactiveBackground": "#f9e64f99",
+		"titleBar.inactiveForeground": "#15202b99",
+		"commandCenter.border": "#15202b99"
+	},
+	"peacock.remoteColor": "#f9e64f",
+	"latex-workshop.latex.recipe.default": "latexmk (xelatex)",
+	"latex-workshop.latex.recipes": [
+
+		{
+			"name": "latexmk 🔃",
+			"tools": [
+				"latexmk"
+			]
+		},
+		{
+			"name": "latexmk (latexmkrc)",
+			"tools": [
+				"latexmk_rconly"
+			]
+		},
+		{
+			"name": "latexmk (lualatex)",
+			"tools": [
+				"lualatexmk"
+			]
+		},
+		{
+			"name": "latexmk (xelatex)",
+			"tools": [
+				"xelatexmk"
+			]
+		},
+		{
+			"name": "pdflatex ➞ bibtex ➞ pdflatex × 2",
+			"tools": [
+				"pdflatex",
+				"bibtex",
+				"pdflatex",
+				"pdflatex"
+			]
+		},
+		{
+			"name": "Compile Rnw files",
+			"tools": [
+				"rnw2tex",
+				"latexmk"
+			]
+		},
+		{
+			"name": "Compile Jnw files",
+			"tools": [
+				"jnw2tex",
+				"latexmk"
+			]
+		},
+		{
+			"name": "tectonic",
+			"tools": [
+				"tectonic"
+			]
+		}
+	]
+}
