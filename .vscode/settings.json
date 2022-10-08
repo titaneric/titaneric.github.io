@@ -76,5 +76,6 @@
 				"tectonic"
 			]
 		}
-	]
+	],
+	"latex-workshop.latex.outDir": "../pdfs"
 }
