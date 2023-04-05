@@ -81,7 +81,7 @@
       #c.text
     ] else [
       #icon(c.type)
-      #underline(link(c.link, text(theme, c.text)))
+      #underline(link(c.link, text(c.text)))
     ]
   })
       )]
@@ -107,8 +107,13 @@
           ] )
         #if s.subTitle != none or s.subTitleEnd != none { 
         box[
-          #text(9pt)[#icon("calendar")#s.subTitle#h(1fr)#icon("location") #s.subTitleEnd]
-        ]}
+          #text(9pt)[
+            #if s.subTitle != none {
+            [#icon("calendar") #s.subTitle]
+            }
+            #h(1fr)#icon("location") #s.subTitleEnd]
+        ]
+        }
         #s.content
       ]
     })
@@ -300,15 +305,15 @@ Experienced in Kubernetes administration & cluster and service migration for *8*
       content: (
         subSection(
           title: "MEng",
-          titleEnd: "Inst. of Data Science & Engineering, National Chiao Tung Univ.",
+          titleEnd: "Data Science",
           subTitle: "2018 – 2020",
-          subTitleEnd: "Hsinchu, Taiwan",
+          subTitleEnd: "National Chiao Tung Univ.",
         ),
         subSection(
           title: "BSc",
-          titleEnd: "Dept. of Computer Science & Engineering, Yuan Ze Univ.",
+          titleEnd: "Computer Science",
           subTitle: "2014 – 2018",
-          subTitleEnd: "Taoyuan, Taiwan",
+          subTitleEnd: "Yuan Ze Univ.",
         ),
       ),
     ),
