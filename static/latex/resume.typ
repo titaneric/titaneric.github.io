@@ -218,9 +218,9 @@
           content: list(
             [Co-developed, troubleshooted, and wrote acceptance tests for internal Terraform provider in *cross-country cooperation*.
 ],
-            [Pioneer of adopting Terraform in LINE Taiwan to deploy internal infra.
+            [Pioneer of adopting Terraform, wrote Terraform modules in LINE Taiwan to import/deploy internal infra achieving *80%* terraform managed resource.
 ],
-            [Designed and implemented workflow automation to greatly improve present operational process.],
+            [Designed and implemented slack-based workflow automation framework to greatly improve operational cost and reduce manual error.],
             [Documented comprehensive system architecture, network traffic tracing and application deployment process.
 ],
           ),
