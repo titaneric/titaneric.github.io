@@ -216,13 +216,15 @@
           subTitle: "Dec. 2022 – Present",
           subTitleEnd: "Taipei, Taiwan",
           content: list(
-            [Co-developed, troubleshooted, and wrote acceptance tests for internal Terraform provider in *cross-country cooperation*.
+            [Co-developed, troubleshooted, and wrote acceptance tests for internal Terraform provider #underline(link("https://engineering.linecorp.com/en/blog/terraform-for-verda", "terda")) in *transnational cooperation*.
+],
+            [Extended terraform provider #underline(link("https://engineering.linecorp.com/en/blog/terraform-for-verda", "terda")) to #underline(link("https://github.com/GoogleCloudPlatform/terraformer", "terraformer")), which lead to greatly help existing *Infrastructure to Code*.
 ],
             [Pioneer of adopting Terraform, wrote Terraform modules in LINE Taiwan to import/deploy internal infra achieving *80%* terraform managed resource.
 ],
             [Designed and implemented slack-based workflow automation framework to greatly improve operational cost and reduce manual error.],
-            [Documented comprehensive system architecture, network traffic tracing and application deployment process.
-],
+//             [Documented comprehensive system architecture, network traffic tracing and application deployment process.
+// ],
           ),
         ),
         subSection(
@@ -237,9 +239,9 @@
 Experienced in Kubernetes administration & cluster and service migration for *8* cluster (*60+* nodes) with *95%* & *99%* SLA.],
 [Adopted automation tool to construct *production-grade* and *GPU-accelerated* k8s cluster, and contributed to upstream #underline(link("https://github.com/kubernetes-sigs/kubespray", "Kubespray")) & backported to existing playbook. ],
 [ Developed tools for automating process of daily routine, config management, app deployment, system validation task, which lead to effectively reduce operational costs.],
-[ Documented thorough k8s installation and operation guide that help pre-trained member leveraing automation tool and deploying a cluster within *1 day*.],
- [Assisted colleagues in resolving the issue in Ansible, Linux SysAdmin, and Kubernetes.
-]
+// [ Documented thorough k8s installation and operation guide that help pre-trained member leveraing automation tool and deploying a cluster within *1 day*.],
+//  [Assisted colleagues in resolving the issue in Ansible, Linux SysAdmin, and Kubernetes.
+// ]
           ),
         ),
         subSection(
@@ -248,13 +250,32 @@ Experienced in Kubernetes administration & cluster and service migration for *8*
           subTitle: "Oct 2020 – Jan 2021",
           subTitleEnd: "Hsinchu, Taiwan",
           content: list(
-[Developed the web crawler to download *hundreds* of candidate resumes and general resume parser which achieved up to *95%* extracted information accuracy.],
-[ Wrote integration-test under possible scenarios and detailed documents including building procedure and class diagram for senior's project.],
-[ Pioneer of Robotic Process Automation and efficient i18n support for reporting APP.]
+// [Developed the web crawler to download *hundreds* of candidate resumes and general resume parser which achieved up to *95%* extracted information accuracy.],
+// [ Wrote integration-test under possible scenarios and detailed documents including building procedure and class diagram for senior's project.],
+// [ Pioneer of Robotic Process Automation and efficient i18n support for reporting APP.]
           ),
         ),
       ),
     ),
+ section(
+      title: "Projects",
+      content: (
+        subSection(
+          title: underline(link("https://playground.titaneric.com/", "Rust Playground with WASM frontend rendering")),
+          content: list(
+            [Renderr and display Web Assembly from compiled Rust code on website.],
+            [Support both Rust Playground (React) and mdBook (native JS)],
+          ),
+        ),
+        subSection(
+          title: "Court Reservation CLI",
+          content: list(
+            [CLI program for court reservation in the concurrency way to avoided manual clicking on APP.],
+            [Captured HTTP packets from Wi-Fi, followed reservation procedure and implemented in Rust],
+          ),
+        ),
+      )
+ ),
   ),
   sidebar: (
     section(
