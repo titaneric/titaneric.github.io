@@ -2,46 +2,24 @@
 on: push
 name: Build and deploy GH Pages
 jobs:
-  # get_resume:
-  #   runs-on: ubuntu-latest
-  #   environment: github-pages
-  #   steps:
-  #   - uses: actions/checkout@master
-  #   - name: Download resume from latexonline.cc
-  #     run: |
-  #       curl -vv -o resume.pdf -L "https://latexonline.cc/compile?url=https://raw.githubusercontent.com/titaneric/titaneric.github.io/master/static/latex/resume.tex&command=xelatex"
-  #       stat resume.pdf
-  #       mv resume.pdf static/pdfs
-  #   - name: commit downloaded resume
-  #     uses: stefanzweifel/git-auto-commit-action@v4
-  #     with:
-  #       commit_message: Update resume by bot
-  #       file_pattern: 'static/pdfs/*.pdf'
-    # (deprecated) get overleaf compiled pdf by playwright
-    # - uses: actions/checkout@master
-    # - uses: actions/setup-python@v4
-    #   with:
-    #     python-version: '3.10' 
-    # - name: install dependencies
-    #   run: |
-    #     pip install -r scripts/requirements.txt
-    #     playwright install chromium
-    # - name: download resume
-    #   run: |
-    #     python scripts/resume.py
-    #     stat resume.pdf
-    #     mv resume.pdf static/pdfs
-    #   env:
-    #     ACCOUNT: ${{ secrets.ACCOUNT }}
-    #     PASSWORD: ${{ secrets.PASSWORD }}
-    #     DOCID: ${{ secrets.DOCID }}
-    #     PROJID: ${{ secrets.PROJID }}
-    #     TIMEOUT: 60000
-    # - name: commit downloaded resume
-    #   uses: stefanzweifel/git-auto-commit-action@v4
-    #   with:
-    #     commit_message: Update resume by bot
-    #     file_pattern: 'static/pdfs/*.pdf'
+  get_resume:
+    runs-on: ubuntu-latest
+    environment: github-pages
+    steps:
+    - uses: actions/checkout@master
+    - name: Download resume from latexonline.cc
+      run: |
+        wget https://github.com/typst/typst/releases/download/v0.4.0/typst-x86_64-unknown-linux-musl.tar.xz
+        tar -xvf typst-x86_64-unknown-linux-musl.tar.xz
+        chmod +x ./typst-x86_64-unknown-linux-musl/typst
+        ./typst-x86_64-unknown-linux-musl/typst -v compile static/latex/resume.typ
+        mv -v static/latex/resume.pdf static/pdfs
+        stat static/pdfs/resume.pdf
+    - name: commit downloaded resume
+      uses: stefanzweifel/git-auto-commit-action@v4
+      with:
+        commit_message: Update resume by bot
+        file_pattern: 'static/pdfs/*.pdf'
   build:
     name: shalzz/zola-deploy-action
     runs-on: ubuntu-latest
