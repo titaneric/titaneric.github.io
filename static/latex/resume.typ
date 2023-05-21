@@ -223,6 +223,7 @@
             [Pioneer of adopting Terraform, wrote Terraform modules in LINE Taiwan to import/deploy internal infra achieving *80%* terraform managed resource.
 ],
             [Designed and implemented slack-based workflow automation framework to greatly improve operational cost and reduce manual error.],
+            [Developed and refactored Go-based system to export the metrics of infra cost for each project, helping the cost estimation and reduction],
 //             [Documented comprehensive system architecture, network traffic tracing and application deployment process.
 // ],
           ),
@@ -263,15 +264,15 @@ Experienced in Kubernetes administration & cluster and service migration for *8*
         subSection(
           title: underline(link("https://playground.titaneric.com/", "Rust Playground with WASM frontend rendering")),
           content: list(
-            [Renderr and display Web Assembly from compiled Rust code on website.],
+            [Render and display Web Assembly from compiled Rust code on self-hosted and bought-domain website.],
             [Support both Rust Playground (React) and mdBook (native JS)],
           ),
         ),
         subSection(
           title: "Court Reservation CLI",
           content: list(
-            [CLI program for court reservation in the concurrency way to avoided manual clicking on APP.],
-            [Captured HTTP packets from Wi-Fi, followed reservation procedure and implemented in Rust],
+            [CLI program for court reservation in the concurrency way to avoid manual clicking on APP.],
+            [Captured Wi-Fi packets, HTTP packets dissection and implemented in Rust],
           ),
         ),
       )
