@@ -216,14 +216,14 @@
           subTitle: "Dec. 2022 – Present",
           subTitleEnd: "Taipei, Taiwan",
           content: list(
-            [Co-developed, troubleshooted, and wrote acceptance tests for internal Terraform provider #underline(link("https://engineering.linecorp.com/en/blog/terraform-for-verda", "terda")) in *transnational cooperation*.
+            [Co-developed, wrote acceptance tests, and maintained community for internal Terraform provider #underline(link("https://engineering.linecorp.com/en/blog/terraform-for-verda", "terda")) in *transnational cooperation*.
 ],
-            [Extended terraform provider #underline(link("https://engineering.linecorp.com/en/blog/terraform-for-verda", "terda")) to #underline(link("https://github.com/GoogleCloudPlatform/terraformer", "terraformer")), which lead to greatly help existing *Infrastructure to Code*.
-],
-            [Pioneer of adopting Terraform, wrote Terraform modules in LINE Taiwan to import/deploy internal infra achieving *80%* terraform managed resource.
+//             [Extended terraform provider #underline(link("https://engineering.linecorp.com/en/blog/terraform-for-verda", "terda")) to #underline(link("https://github.com/GoogleCloudPlatform/terraformer", "terraformer")), which lead to greatly help existing *Infrastructure to Code*.
+// ],
+            [Pioneer of adopting Terraform, developing Terraform modules in LINE Taiwan to manage *80%* internal infra.
 ],
             [Designed and implemented slack-based workflow automation framework to greatly improve operational cost and reduce manual error.],
-            [Developed and refactored scraper to export the metrics of infra cost for each project and different region, helping the cost estimation and reduction.],
+            [Developed metrics scraper and archiver to help internal infra cost estimation and reduction.],
 //             [Documented comprehensive system architecture, network traffic tracing and application deployment process.
 // ],
           ),
