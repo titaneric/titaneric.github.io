@@ -216,16 +216,15 @@
           subTitle: "Dec. 2022 – Present",
           subTitleEnd: "Taipei, Taiwan",
           content: list(
-            [Co-developed, wrote acceptance tests, and maintained community for internal Terraform provider #underline(link("https://engineering.linecorp.com/en/blog/terraform-for-verda", "terda")) in *transnational cooperation*.
+            [One of major maintainer of internal Terraform provider #underline(link("https://engineering.linecorp.com/en/blog/terraform-for-verda", "terda")), developed, wrote acceptance tests, and maintained community, and worked in *transnational cooperation*.
 ],
 //             [Extended terraform provider #underline(link("https://engineering.linecorp.com/en/blog/terraform-for-verda", "terda")) to #underline(link("https://github.com/GoogleCloudPlatform/terraformer", "terraformer")), which lead to greatly help existing *Infrastructure to Code*.
 // ],
-            [Pioneer of adopting Terraform, developing Terraform modules in LINE Taiwan to manage *80%* internal infra.
+            [Pioneer of adopting and advocating Terraform in LINE Taiwan, developed Terraform modules, co-hosted terraform tutorial, and managed *80%* internal infra in SRE team.
 ],
-            [Designed and implemented slack-based workflow automation framework to greatly improve operational cost and reduce manual error.],
-            [Developed metrics scraper and archiver to help internal infra cost estimation and reduction.],
-//             [Documented comprehensive system architecture, network traffic tracing and application deployment process.
-// ],
+            [Designed and implemented slack-based workflow automation framework to greatly improve operational cost and avoid manual error.],
+            [Developed metrics collector, metrics snapshotter (for long-term usage), and dashboards to help internal infra cost estimation and reduction.],
+            [Analyzed the root cause of present technical debt, proposed and developed solution to mitigate it. Also helped sunsetting high operational-cost internal system.],
           ),
         ),
         subSection(
@@ -239,7 +238,7 @@
 [
 Experienced in Kubernetes administration & cluster and service migration for *8* cluster (*60+* nodes) with *95%* & *99%* SLA.],
 [Adopted automation tool to construct *production-grade* and *GPU-accelerated* k8s cluster, and contributed to upstream #underline(link("https://github.com/kubernetes-sigs/kubespray", "Kubespray")) & backported to existing playbook. ],
-[ Developed tools for automating process of daily routine, config management, app deployment, system validation task, which lead to effectively reduce operational costs.],
+[ Developed tools for automating process of daily routine, config management, app deployment, and system validation task, which lead to effectively reduce operational costs.],
 // [ Documented thorough k8s installation and operation guide that help pre-trained member leveraing automation tool and deploying a cluster within *1 day*.],
 //  [Assisted colleagues in resolving the issue in Ansible, Linux SysAdmin, and Kubernetes.
 // ]
