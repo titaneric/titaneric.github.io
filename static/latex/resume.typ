@@ -205,7 +205,7 @@
   ),
   main: (
     section(
-        content: "Certified Kubernetes Administrator, dedicated software engineer, persistent learner, and enthusiastic open source contributor. Skilled in automation of system administration, operation, monitoring, and cloud-native solution such as Kubernetes and Containerization. Confident in self-learning, large-scale and multi-repo code tracing."// I'm honored to receive the Arctic Code Vault Contributor at GitHub and give short talks about Kubernetes metrics at K8s summit in 2021."
+        content: "Certified Kubernetes Administrator, dedicated software engineer, persistent learner. Skilled in automation of system administration, operation, monitoring, and cloud-native solution such as Kubernetes and Containerization. Confident in self-learning, large-scale and multi-repo code tracing."// I'm honored to receive the Arctic Code Vault Contributor at GitHub and give short talks about Kubernetes metrics at K8s summit in 2021."
     ),
     section(
       title: "Work Experience",
@@ -224,7 +224,7 @@
 ],
             [Designed and implemented slack-based workflow automation framework to greatly improve operational cost and avoid manual error.],
             [Developed metrics collector, metrics snapshotter (for long-term usage), and dashboards to help internal infra cost estimation and reduction.],
-            [Analyzed the root cause of present technical debt, proposed and developed solution to mitigate it. Also helped sunsetting high operational-cost internal system.],
+            [Analyzed the root cause of technical debt, proposed and developed solution to mitigate it. Also helped sunsetting high operational-cost internal system.],
           ),
         ),
         subSection(
@@ -261,17 +261,16 @@ Experienced in Kubernetes administration & cluster and service migration for *8*
       title: "Projects",
       content: (
         subSection(
-          title: underline(link("https://playground.titaneric.com/", "Rust Playground with WASM frontend rendering")),
+          title: underline(link("https://playground.titaneric.com/", "Rust Playground with WASM")),
           content: list(
-            [Render Web Assembly from compiled Rust code on self-hosted website.],
-            [Support both Rust Playground (React) and mdBook (native JS)],
+            [Forked #underline(link("https://play.rust-lang.org/?version=stable&mode=debug&edition=2021", "Rust Playground")) to render Web Assembly from compiled Rust],
           ),
         ),
         subSection(
           title: "Court Reservation CLI",
           content: list(
-            [CLI program for court reservation in the concurrency way to avoid manual clicking on APP.],
-            [Captured Wi-Fi packets, TLS traffic decryption from bypassing certificate pinning, HTTP packets dissection and implemented in Rust],
+            [CLI program for court reservation in the concurrency way to avoid manual operation on APP for individual usage only.],
+            // [Captured packets from #underline(link("https://httptoolkit.com/","HTTP Toolkit")) on Android devices, TLS traffic decryption by bypassing certificate pinning, HTTP packets dissection and implemented in Rust, ran in concurrency to avoid manual operation on APP.],
           ),
         ),
       )
