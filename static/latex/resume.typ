@@ -273,6 +273,12 @@ Experienced in Kubernetes administration & cluster and service migration for *8*
             // [Captured packets from #underline(link("https://httptoolkit.com/","HTTP Toolkit")) on Android devices, TLS traffic decryption by bypassing certificate pinning, HTTP packets dissection and implemented in Rust, ran in concurrency to avoid manual operation on APP.],
           ),
         ),
+                subSection(
+          title: "OCR Helper",
+          content: list(
+            [2023 LINE Taiwan Hackthon project, provide RWD web interface for image OCR, summary, and translation.],
+          ),
+        ),
       )
  ),
   ),
@@ -373,10 +379,12 @@ underline(link("https://github.com/HIPS/autograd/pull/541", "autograd")),
       ),
     ),
   section(
-      title: "Awards",
+      title: "Awards & Certs",
       content: (
         subSection(
           content: list(
+            "LINE Dev Governance Best Practice",
+            "LINE 2023 Q2 Spot Bonus",
 underline(link("https://ti-user-certificates.s3.amazonaws.com/e0df7fbf-a057-42af-8a1f-590912be5460/ca820404-2858-41da-9d18-c3268d010348-huang-chen-yi-80c3b11d-2f72-4183-8271-9743fe40b47d-certificate.pdf", "Certified Kubernetes Administrator")),
 underline(link("https://github.com/titaneric?achievement=arctic-code-vault-contributor&tab=achievements", "Arctic Code Vault Contributor"))
           ),
