@@ -10,25 +10,27 @@ jobs:
       with:
         token: ${{ secrets.TOKEN }}
 
+    - uses: yusancky/setup-typst@v2
+      id: setup-typst
+      with:
+        version: 'v0.9.0'
+        token: ${{ secrets.TOKEN }}
+
+    - name: Compile resume by typst
+      run: |
+        typst compile static/latex/resume.typ static/pdfs/resume.pdf
+
     - name: Get changed files
       id: changed-files
-      uses: tj-actions/changed-files@v35
+      uses: dorny/paths-filter@v2
       with:
-        files: |
-          static/latex/resume.typ
-        
-    - name: Compile resume by typst
-      if: steps.changed-files.outputs.any_changed == 'true'
-      run: |
-        wget https://github.com/typst/typst/releases/download/v0.4.0/typst-x86_64-unknown-linux-musl.tar.xz
-        tar -xf typst-x86_64-unknown-linux-musl.tar.xz
-        chmod +x ./typst-x86_64-unknown-linux-musl/typst
-        ./typst-x86_64-unknown-linux-musl/typst compile static/latex/resume.typ
-        mv static/latex/resume.pdf static/pdfs
-        git status
+        base: HEAD
+        filters: |
+          typst_source:
+          - static/latex/**
         
     - name: commit downloaded resume
-      if: steps.changed-files.outputs.any_changed == 'true'
+      if: steps.changed-files.outputs.typst_source == 'true'
       uses: stefanzweifel/git-auto-commit-action@v4
       with:
         commit_message: Update resume by bot
