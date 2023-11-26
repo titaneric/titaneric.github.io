@@ -8,7 +8,7 @@ jobs:
     runs-on: ubuntu-latest
     environment: github-pages
     steps:
-    - uses: actions/checkout@master
+    - uses: actions/checkout@v4
 
     - uses: yusancky/setup-typst@v2
       id: setup-typst
@@ -40,7 +40,9 @@ jobs:
     needs: get_resume
     steps:
     # Checkout
-    - uses: actions/checkout@master
+    - uses: actions/checkout@v4
+      with:
+        ref: "master"
     # Build and deploy
     - name: shalzz/zola-deploy-action
       uses: shalzz/zola-deploy-action@v0.17.2
