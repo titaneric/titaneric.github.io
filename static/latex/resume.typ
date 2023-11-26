@@ -216,15 +216,15 @@
           subTitle: "Dec. 2022 – Present",
           subTitleEnd: "Taipei, Taiwan",
           content: list(
-            [One of major maintainer of internal Terraform provider #underline(link("https://engineering.linecorp.com/en/blog/terraform-for-verda", "terda")), developed, wrote acceptance tests, and maintained community, and worked in *transnational cooperation*.
+            [One of major maintainer of internal Terraform provider #underline(link("https://engineering.linecorp.com/en/blog/terraform-for-verda", "terda")), maintained community, and worked in *transnational cooperation*.
 ],
 //             [Extended terraform provider #underline(link("https://engineering.linecorp.com/en/blog/terraform-for-verda", "terda")) to #underline(link("https://github.com/GoogleCloudPlatform/terraformer", "terraformer")), which lead to greatly help existing *Infrastructure to Code*.
 // ],
-            [Pioneer of adopting and advocating Terraform in LINE Taiwan, developed Terraform modules, co-hosted terraform tutorial, and managed *80%* internal infra in SRE team.
+            [Pioneer of adopting and advocating Terraform in LINE Taiwan, and managed *80%* internal infra in SRE team.
 ],
             [Designed and implemented slack-based workflow automation framework to greatly improve operational cost and avoid manual error.],
-            [Developed metrics collector, metrics snapshotter (for long-term usage), and dashboards to help internal infra cost estimation and reduction.],
-            [Analyzed the root cause of technical debt, proposed and developed solution to mitigate it. Also helped sunsetting high operational-cost internal system.],
+            [Developed internal infra cost calculator, metrics snapshotter (for long-term usage), and dashboards to demonstrate cost estimation.],
+            [Analyzed the root cause of technical debt, and developed alternative solution to resolve it. Also helped sunsetting high operational-cost internal system.],
           ),
         ),
         subSection(
@@ -269,7 +269,7 @@ Experienced in Kubernetes administration & cluster and service migration for *8*
         subSection(
           title: "Court Reservation CLI",
           content: list(
-            [CLI program for court reservation in the concurrency way to avoid manual operation on APP for individual usage only.],
+            [CLI program for Taipei Metropolitan court reservation in the concurrency way to avoid manual operation on APP for individual usage only.],
             // [Captured packets from #underline(link("https://httptoolkit.com/","HTTP Toolkit")) on Android devices, TLS traffic decryption by bypassing certificate pinning, HTTP packets dissection and implemented in Rust, ran in concurrency to avoid manual operation on APP.],
           ),
         ),
@@ -345,10 +345,11 @@ Experienced in Kubernetes administration & cluster and service migration for *8*
     ),
   
     section(
-      title: "Slides & Talks",
+      title: "Articles",
       content: (
         subSection(
           content: list(
+underline(link("https://techblog.lycorp.co.jp/zh-hant/terraform-for-verda", "[transl.] Terraform for Verda - A journey of Infrastructure as Code for our private cloud")),
 underline(link("https://www.titaneric.com/the-journey-to-the-kubernetes-networking/", "The Journey to the Kubernetes Networking")),
 underline(link( "https://www.titaneric.com/the-journey-to-the-kubernetes-metrics/", "The Journey to the Kubernetes metrics")),
 underline(link("https://github.com/titaneric/AutoDiff-from-scratch/blob/master/Final\%20Presentation.ipynb", "Auto Differentiation")),
@@ -372,10 +373,10 @@ underline(link("https://github.com/HIPS/autograd/pull/541", "autograd")),
           title: "Support kubeadm patch",
           subTitleEnd: underline(link("https://github.com/kubernetes-sigs/kubespray/pull/9326", "kubespray")),
         ),
-        subSection(
-          title: "Bug reporting",
-          subTitleEnd: underline(link("https://github.com/microsoft/vscode-python/issues/202", "vscode-python")),
-        ),
+        // subSection(
+        //   title: "Bug reporting",
+        //   subTitleEnd: underline(link("https://github.com/microsoft/vscode-python/issues/202", "vscode-python")),
+        // ),
       ),
     ),
   section(
