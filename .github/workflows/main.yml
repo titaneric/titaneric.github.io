@@ -1,20 +1,19 @@
 # On every push this script is executed
 on: push
 name: Build and deploy GH Pages
+permissions:
+  contents: write
 jobs:
   get_resume:
     runs-on: ubuntu-latest
     environment: github-pages
     steps:
     - uses: actions/checkout@master
-      with:
-        token: ${{ secrets.TOKEN }}
 
     - uses: yusancky/setup-typst@v2
       id: setup-typst
       with:
         version: 'v0.9.0'
-        token: ${{ secrets.TOKEN }}
 
     - name: Compile resume by typst
       run: |
@@ -26,11 +25,11 @@ jobs:
       with:
         base: HEAD
         filters: |
-          typst_source:
-          - static/latex/**
+          typst_dest:
+          - static/pdfs/**
         
     - name: commit downloaded resume
-      if: steps.changed-files.outputs.typst_source == 'true'
+      if: steps.changed-files.outputs.typst_dest == 'true'
       uses: stefanzweifel/git-auto-commit-action@v4
       with:
         commit_message: Update resume by bot
@@ -49,7 +48,6 @@ jobs:
         # Target branch
         PAGES_BRANCH: gh-pages
         # Provide personal access token
-        TOKEN: ${{ secrets.TOKEN }}
     # - name: Dispatch the mdbook to deploy itself
     #   uses: peter-evans/repository-dispatch@v1
     #   with:
