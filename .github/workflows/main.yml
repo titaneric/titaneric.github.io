@@ -48,6 +48,7 @@ jobs:
         # Target branch
         PAGES_BRANCH: gh-pages
         # Provide personal access token
+        GITHUB_TOKEN: ${{ github.token }}
     # - name: Dispatch the mdbook to deploy itself
     #   uses: peter-evans/repository-dispatch@v1
     #   with:
