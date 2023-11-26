@@ -174,7 +174,7 @@
 #set text(font: "Mulish")
 
 #show: project.with(
-  theme: rgb(95%,55%,15%, 10%),
+  theme: rgb(95%,55%,15%),
   name: "Eric",
   title: "Site Reliability Engineer",
   contact: (
