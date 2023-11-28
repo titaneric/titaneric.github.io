@@ -287,7 +287,7 @@ Experienced in Kubernetes administration & cluster and service migration for *8*
       title: "Skills",
       content: (
         subSection(
-          title: "Programing",
+          title: "Programming",
           content: (
             "Python",
             "Golang",
@@ -312,9 +312,9 @@ Experienced in Kubernetes administration & cluster and service migration for *8*
         subSection(
           title: "IaC, CI/CD",
           content: (
-            "Ansible",
             "Github Actions",
             "Terraform",
+            "Ansible",
           ).join(" • "),
         ),
         subSection(
