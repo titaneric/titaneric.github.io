@@ -216,11 +216,11 @@
           subTitle: "Dec. 2022 – Present",
           subTitleEnd: "Taipei, Taiwan",
           content: list(
-            [One of major maintainer of internal Terraform provider #underline(link("https://engineering.linecorp.com/en/blog/terraform-for-verda", "terda")), maintained community, and worked in *transnational cooperation*.
+            [One of the major maintainer for internal Terraform provider #underline(link("https://engineering.linecorp.com/en/blog/terraform-for-verda", "terda")), contributed community in transnational way.
 ],
 //             [Extended terraform provider #underline(link("https://engineering.linecorp.com/en/blog/terraform-for-verda", "terda")) to #underline(link("https://github.com/GoogleCloudPlatform/terraformer", "terraformer")), which lead to greatly help existing *Infrastructure to Code*.
 // ],
-            [Pioneer of adopting and advocating Terraform in LINE Taiwan, and managed *80%* internal infra in SRE team.
+            [Pioneer of adopting and advocating Terraform in LINE Taiwan, managed *80%* internal infra in SRE team.
 ],
             [Designed and implemented slack-based workflow automation framework to greatly improve operational cost and avoid manual error.],
             [Developed internal infra cost calculator, metrics snapshotter (for long-term usage), and dashboards to demonstrate cost estimation.],
@@ -263,22 +263,22 @@ Experienced in Kubernetes administration & cluster and service migration for *8*
         subSection(
           title: underline(link("https://playground.titaneric.com/", "Rust Playground with WASM")),
           content: list(
-            [Forked #underline(link("https://play.rust-lang.org/?version=stable&mode=debug&edition=2021", "Rust Playground")) to render Web Assembly from compiled Rust],
+            [Forked #underline(link("https://play.rust-lang.org/?version=stable&mode=debug&edition=2021", "Rust Playground")) to render Web Assembly from compiled Rust, and managed to render on #underline(link("https://github.com/rust-lang/mdBook/pull/1501", "mdBook")) as well.],
           ),
         ),
         subSection(
-          title: "Court Reservation CLI",
+          title: "Court Reserver",
           content: list(
-            [CLI program for Taipei Metropolitan court reservation in the concurrency way to avoid manual operation on APP for individual usage only.],
+            [CLI program for Taipei Metropolitan court reservation, runs in the concurrency way to avoid manual operation on APP for individual usage only.],
             // [Captured packets from #underline(link("https://httptoolkit.com/","HTTP Toolkit")) on Android devices, TLS traffic decryption by bypassing certificate pinning, HTTP packets dissection and implemented in Rust, ran in concurrency to avoid manual operation on APP.],
           ),
         ),
-                subSection(
-          title: "OCR Helper",
-          content: list(
-            [2023 LINE Taiwan Hackthon project, provide RWD web interface for image OCR, summary, and translation.],
-          ),
-        ),
+        //         subSection(
+        //   title: "OCR Helper",
+        //   content: list(
+        //     [2023 LINE Taiwan Hackthon project, provide RWD web interface for image OCR, summary, and translation.],
+        //   ),
+        // ),
       )
  ),
   ),
@@ -291,7 +291,6 @@ Experienced in Kubernetes administration & cluster and service migration for *8*
           content: (
             "Python",
             "Golang",
-            "C",
             "Rust",
             "Typst",
           ).join(" • "),
@@ -300,13 +299,12 @@ Experienced in Kubernetes administration & cluster and service migration for *8*
           title: "Technologies",
           content: (
             "Kubernetes",
-            "Docker",
+            "Containerization",
             "Nvidia Cloud-Native tech",
             "Linux SysAdmin",
             "TCP/IP",
             "Wireshark",
-            "Prometheus",
-            "Loki",
+            "Observability",
           ).join(" • "),
         ),
         subSection(
