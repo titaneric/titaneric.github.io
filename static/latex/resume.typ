@@ -205,7 +205,7 @@
   ),
   main: (
     section(
-        content: "Certified Kubernetes Administrator, dedicated software engineer, persistent learner. Skilled in automation of system administration, operation, monitoring, and cloud-native solution such as Kubernetes and Containerization. Confident in self-learning, large-scale and multi-repo code tracing."// I'm honored to receive the Arctic Code Vault Contributor at GitHub and give short talks about Kubernetes metrics at K8s summit in 2021."
+        content: "Certified Kubernetes Administrator, conscientious software engineer, and persistent learner. Believer in automation and skilled in observability, and cloud-native solution such as Kubernetes and Containerization. Confident in self-learning, large-scaled and multi-repo code tracing."// I'm honored to receive the Arctic Code Vault Contributor at GitHub and give short talks about Kubernetes metrics at K8s summit in 2021."
     ),
     section(
       title: "Work Experience",
@@ -222,9 +222,10 @@
 // ],
             [Pioneer of adopting and advocating Terraform in LINE Taiwan, managed *80%* internal infra in SRE team.
 ],
+            // [Introduced Grafana Agent and Faro SDK in LINE Taiwan to achieve full-chained tracing, which improved the observability and reduced the time to resolve the issue.],
             [Designed and implemented slack-based workflow automation framework to greatly improve operational cost and avoid manual error.],
             [Developed internal infra cost calculator, metrics snapshotter (for long-term usage), and dashboards to demonstrate cost estimation.],
-            [Analyzed the root cause of technical debt, and developed alternative solution to resolve it. Also helped sunsetting high operational-cost internal system.],
+            [Analyzed the root cause of technical debt, and developed alternative solution to resolve it. Also helped sunsetting highly operational cost internal system.],
           ),
         ),
         subSection(
