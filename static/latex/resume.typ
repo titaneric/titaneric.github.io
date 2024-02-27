@@ -216,16 +216,14 @@
           subTitle: "Dec. 2022 – Present",
           subTitleEnd: "Taipei, Taiwan",
           content: list(
-            [One of the major maintainer for internal Terraform provider #underline(link("https://engineering.linecorp.com/en/blog/terraform-for-verda", "terda")), contributed community in transnational way.
+            [One of the major maintainer for internal Terraform provider #underline(link("https://engineering.linecorp.com/en/blog/terraform-for-verda", "terda")) and pioneer of adopting and advocating Terraform in LINE Taiwan.
 ],
-//             [Extended terraform provider #underline(link("https://engineering.linecorp.com/en/blog/terraform-for-verda", "terda")) to #underline(link("https://github.com/GoogleCloudPlatform/terraformer", "terraformer")), which lead to greatly help existing *Infrastructure to Code*.
-// ],
-            [Pioneer of adopting and advocating Terraform in LINE Taiwan, managed *80%* internal infra in SRE team.
-],
+            [Profiling and tuning Loki log collector system, managed to maintain log query performance and reduce S3-compatible storage overhead by *80%*.
+            ],
             // [Introduced Grafana Agent and Faro SDK in LINE Taiwan to achieve full-chained tracing, which improved the observability and reduced the time to resolve the issue.],
-            [Designed and implemented slack-based workflow automation framework to greatly improve operational cost and avoid manual error.],
+            [Developed slack-based workflow automation framework, and migrated pipelines from Drone to GitHub Action, to greatly improve operational cost and avoid manual error.],
             [Developed internal infra cost calculator, metrics snapshotter (for long-term usage), and dashboards to demonstrate cost estimation.],
-            [Analyzed the root cause of technical debt, and developed alternative solution to resolve it. Also helped sunsetting highly operational cost internal system.],
+            // [Analyzed the root cause of technical debt, and developed alternative solution to resolve it. Also helped sunsetting highly operational cost internal system.],
           ),
         ),
         subSection(
