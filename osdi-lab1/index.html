@@ -1,0 +1,656 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8" />
+  <meta content="width=device-width, initial-scale=1" name="viewport" />
+  <meta content="#ffffff" name="theme-color" />
+  <meta content="#da532c" name="msapplication-TileColor" />
+
+  
+  
+  
+  <link href='&#x2F;icons&#x2F;favicon-16x16.png' rel="icon" sizes="16x16" type="image/png" />
+  
+  
+  <link href='&#x2F;icons&#x2F;favicon-32x32.png' rel="icon" sizes="32x32" type="image/png" />
+  
+  
+  <link href='&#x2F;icons&#x2F;apple-touch-icon.png' rel="apple-touch-icon" sizes="180x180" />
+  
+
+  
+
+  
+
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/jpswalsh/academicons@1.9.1/css/academicons.min.css" integrity="sha384-FIue+PI4SsI9XfHCz8dBLg33b0c1fMJgNU3X//L26FYbGnlSEfWmNT7zgWc2N9b6" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.2.0/css/all.min.css" integrity="sha256-AbA177XfpSnFEvgpYu1jMygiLabzPCJCRIBtR5jGc0k=" crossorigin="anonymous">
+  <link href="https://titaneric.github.io/deep-thought.css" rel="stylesheet" />
+  
+  
+
+  <title>
+    
+Playground | OSDI-lab1
+
+  </title>
+
+  
+  
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-HSJPSHBTCN"></script>
+  <script type="text/javascript">
+    window.dataLayer = window.dataLayer || [];
+    function gtag() {
+      dataLayer.push(arguments);
+    }
+    gtag("js", new Date());
+    gtag("config", "G-HSJPSHBTCN");
+  </script>
+  
+  
+
+  
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.15.1/dist/katex.min.css" integrity="sha384-R4558gYOUz8mP9YWpZJjofhk+zx0AS11p36HnD2ZKj/6JR5z27gSSULCNHIRReVs" crossorigin="anonymous">
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.15.1/dist/katex.min.js" integrity="sha384-z1fJDqw8ZApjGO3/unPWUPsIymfsJmyrDVWC8Tv/a1HeOtGmkwNd/7xUS0Xcnvsx" crossorigin="anonymous"></script>
+
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.15.1/dist/contrib/mathtex-script-type.min.js" integrity="sha384-jiBVvJ8NGGj5n7kJaiWwWp9AjC+Yh8rhZY3GtAX8yU28azcLgoRo4oukO87g7zDT" crossorigin="anonymous"></script>
+  
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.15.1/dist/contrib/auto-render.min.js" integrity="sha384-+XBljXPPiv+OzfbB3cVmLHf4hdUFHlWNZN5spNQ7rmHTXpd7WvJum6fIACpNNfIR" crossorigin="anonymous"></script>
+  
+  
+</head>
+
+<body class="has-background-white">
+  <nav aria-label="section navigation" class="navbar is-light" role="navigation">
+    <div class="container">
+      <div class="navbar-brand">
+        <a class="navbar-item is-size-5 has-text-weight-bold" href="https:&#x2F;&#x2F;titaneric.github.io">Playground</a>
+        <a aria-expanded="false" aria-label="menu" class="navbar-burger burger" data-target="navMenu" role="button">
+          <span aria-hidden="true"></span>
+          <span aria-hidden="true"></span>
+          <span aria-hidden="true"></span>
+        </a>
+      </div>
+      <div class="navbar-menu" id="navMenu">
+        <div class="navbar-end has-text-centered">
+          
+          
+          
+          <a class="navbar-item has-text-weight-semibold" href="https:&#x2F;&#x2F;titaneric.github.io&#x2F;">
+            Home
+          </a>
+          
+          <a class="navbar-item has-text-weight-semibold" href="https:&#x2F;&#x2F;titaneric.github.io&#x2F;tags">
+            Tags
+          </a>
+          
+          <a class="navbar-item has-text-weight-semibold" href="https:&#x2F;&#x2F;titaneric.github.io&#x2F;categories">
+            Categories
+          </a>
+          
+          <a class="navbar-item has-text-weight-semibold" href="https:&#x2F;&#x2F;titaneric.github.io&#x2F;pdfs&#x2F;resume.pdf">
+            Resume
+          </a>
+          
+          <a class="navbar-item has-text-weight-semibold" href="https:&#x2F;&#x2F;playground.titaneric.com">
+            Rust Playground
+          </a>
+          
+          
+          
+          <a class="navbar-item" id="nav-search" title="Search" data-target="#search-modal">
+            <span class="icon">
+              <i class="fas fa-search"></i>
+            </span>
+          </a>
+          <a class="navbar-item" id="dark-mode" title="Switch to dark theme">
+            <span class="icon">
+              <i class="fas fa-adjust"></i>
+            </span>
+          </a>
+        </div>
+      </div>
+    </div>
+  </nav>
+
+  
+  
+
+  
+<section class="section">
+  <div class="container">
+    <div class="columns">
+      <div class="column is-8 is-offset-2">
+        <article class="box">
+          <h1 class="title">
+            OSDI-lab1
+          </h1>
+          <p class="subtitle"></p>
+          <div class="columns is-multiline is-gapless">
+            <div class="column is-8">
+              
+<span class="icon-text has-text-grey">
+  <span class="icon">
+    <i class="fas fa-user"></i>
+  </span>
+  <span>titaneric published on</span>
+  <span class="icon">
+    <i class="far fa-calendar-alt"></i>
+  </span>
+  <span><time datetime="2019-03-25">March 25, 2019</time></span>
+</span>
+
+            </div>
+            <div class="column is-4 has-text-right-desktop">
+              
+<span class="icon-text has-text-grey">
+  <span class="icon">
+    <i class="far fa-clock"></i>
+  </span>
+  <span>6 min,</span>
+  <span class="icon">
+    <i class="fas fa-pencil-alt"></i>
+  </span>
+  <span>1175 words</span>
+</span>
+
+            </div>
+            <div class="column">
+              
+              
+<p>
+  Categories:
+  
+  <a class="has-text-info-dark has-text-weight-semibold" href="https://titaneric.github.io/categories/learning/">
+    <span class="icon-text">
+      <span class="icon">
+        <i class="fas fa-cube"></i>
+      </span>
+      <span>Learning</span>
+    </span>
+  </a>
+  
+</p>
+
+              
+            </div>
+            <div class="column has-text-right-desktop">
+              
+              
+<p>
+  Tags:
+  
+  <a class="has-text-info-dark has-text-weight-semibold" href="https://titaneric.github.io/tags/course/">
+    <span class="icon-text">
+      <span class="icon">
+        <i class="fas fa-tag"></i>
+      </span>
+      <span>course</span>
+    </span>
+  </a>
+  
+  <a class="has-text-info-dark has-text-weight-semibold" href="https://titaneric.github.io/tags/os/">
+    <span class="icon-text">
+      <span class="icon">
+        <i class="fas fa-tag"></i>
+      </span>
+      <span>os</span>
+    </span>
+  </a>
+  
+</p>
+
+              
+            </div>
+          </div>
+          <div class="content mt-2">
+            <h1 id="osdi-lab-i">OSDI lab I</h1>
+<h2 id="objective">Objective</h2>
+<ul>
+<li>Understand version control system and makefile project</li>
+<li>Learn how to use QEMU and GDB to debug Linux 0.11 kernel</li>
+<li>Learn how to commit to GIT system</li>
+</ul>
+<!--more-->
+<hr />
+<h2 id="lab1-1-linux-0-11-development-environment-setup">Lab1.1 Linux 0.11 Development Environment Setup</h2>
+<h3 id="fix-syntax-error-of-makefile">Fix syntax error of <code>Makefile</code></h3>
+<p>From <a href="https://www.gnu.org/software/make/manual/html_node/Rule-Syntax.html#Rule-Syntax">Rule Syntax</a>:</p>
+<blockquote>
+<p>the <em>recipe</em> must start with a tab character</p>
+</blockquote>
+<pre data-lang="cmake" style="background-color:#2b303b;color:#c0c5ce;" class="language-cmake "><code class="language-cmake" data-lang="cmake"><span>...
+</span><span>
+</span><span>.</span><span style="color:#bf616a;">c</span><span>.s:
+</span><span>	@$(</span><span style="color:#bf616a;">CC</span><span>) $(</span><span style="color:#bf616a;">CFLAGS</span><span>) -S -o $*.s $&lt;
+</span><span>.</span><span style="color:#bf616a;">s</span><span>.</span><span style="color:#bf616a;">o</span><span>:
+</span><span>	@$(</span><span style="color:#bf616a;">AS</span><span>)  -</span><span style="color:#bf616a;">o</span><span> $*.</span><span style="color:#bf616a;">o </span><span>$&lt;
+</span><span>.</span><span style="color:#bf616a;">c</span><span>.</span><span style="color:#bf616a;">o</span><span>:
+</span><span>	@$(</span><span style="color:#bf616a;">CC</span><span>) $(</span><span style="color:#bf616a;">CFLAGS</span><span>) -</span><span style="color:#bf616a;">c</span><span> -</span><span style="color:#bf616a;">o</span><span> $*.</span><span style="color:#bf616a;">o </span><span>$&lt;
+</span><span>
+</span><span>...
+</span></code></pre>
+<h3 id="give-execute-permission-to-tools-build-sh">Give execute permission to <code>tools/build.sh</code></h3>
+<pre data-lang="bash" style="background-color:#2b303b;color:#c0c5ce;" class="language-bash "><code class="language-bash" data-lang="bash"><span style="color:#bf616a;">chmod</span><span> +x tools/build.sh
+</span></code></pre>
+<h3 id="change-gcc-version-to-4-8">Change GCC version to 4.8</h3>
+<pre data-lang="cmake" style="background-color:#2b303b;color:#c0c5ce;" class="language-cmake "><code class="language-cmake" data-lang="cmake"><span style="color:#65737e;"># This file is the Makefile Header for every sub Makefile, which designed to
+</span><span style="color:#65737e;"># simplfy the porting and maintaining operation
+</span><span style="color:#65737e;"># author: falcon &lt;wuzhangjin@gmail.com&gt;
+</span><span style="color:#65737e;"># update: 2008-10-29
+</span><span>
+</span><span style="color:#bf616a;">AS</span><span>	= as --32
+</span><span>LD	= ld
+</span><span style="color:#65737e;">#LDFLAGS = -m elf_i386 -x 
+</span><span>LDFLAGS = -m elf_i386
+</span><span>CC	= gcc-4.8
+</span><span>CFLAGS  = -g -m32 -fno-builtin -fno-stack-protector -fomit-frame-pointer -fstrength-reduce </span><span style="color:#65737e;">#-Wall
+</span><span>
+</span><span>CPP	= cpp-4.8 -nostdinc
+</span><span>AR	= ar
+</span><span>
+</span><span style="color:#65737e;"># we should use -fno-stack-protector with gcc 4.3
+</span><span>gcc_version=$(shell ls -l `which $(</span><span style="color:#bf616a;">CC</span><span>)` | </span><span style="color:#bf616a;">tr</span><span> &#39;-&#39; &#39;\n&#39; | tail -1)
+</span></code></pre>
+<h3 id="compile-and-install-newest-qemu">Compile and install newest QEMU</h3>
+<p>On Ubuntu 18.04</p>
+<h4 id="setup-the-dependencies">Setup the dependencies</h4>
+<pre data-lang="bash" style="background-color:#2b303b;color:#c0c5ce;" class="language-bash "><code class="language-bash" data-lang="bash"><span style="color:#bf616a;">sudo</span><span> apt-get install checkinstall
+</span><span style="color:#bf616a;">sudo</span><span> apt-get install python
+</span><span style="color:#bf616a;">sudo</span><span> apt-get install build-essential zlib1g-dev pkg-config libglib2.0-dev binutils-dev libboost-all-dev autoconf libtool libssl-dev libpixman-1-dev libpython-dev python-pip python-capstone virtualenv
+</span><span style="color:#bf616a;">sudo</span><span> apt-get install flex bison g++-4.8
+</span></code></pre>
+<p><a href="https://github.com/Cisco-Talos/pyrebox/issues/41">ref</a></p>
+<h4 id="start-to-install-qemu">Start to install qemu</h4>
+<pre data-lang="bash" style="background-color:#2b303b;color:#c0c5ce;" class="language-bash "><code class="language-bash" data-lang="bash"><span style="color:#bf616a;">git</span><span> clone https://git.qemu.org/git/qemu.git
+</span><span style="color:#96b5b4;">cd</span><span> qemu
+</span><span style="color:#bf616a;">git</span><span> submodule init
+</span><span style="color:#bf616a;">git</span><span> submodule update</span><span style="color:#bf616a;"> --recursive
+</span><span style="color:#bf616a;">./configure
+</span><span style="color:#bf616a;">make
+</span><span style="color:#bf616a;">sudo</span><span> checkinstall make install
+</span></code></pre>
+<p><a href="https://www.qemu.org/download/#source">ref</a></p>
+<p>Validate the version must be larger than 2.5.x</p>
+<h3 id="run-the-linux-0-11">Run the Linux 0.11</h3>
+<pre data-lang="bash" style="background-color:#2b303b;color:#c0c5ce;" class="language-bash "><code class="language-bash" data-lang="bash"><span style="color:#bf616a;">qemu-system-i386 -m</span><span> 16M</span><span style="color:#bf616a;"> -boot</span><span> a</span><span style="color:#bf616a;"> -fda</span><span> Image</span><span style="color:#bf616a;"> -hda</span><span> ../osdi.img
+</span></code></pre>
+<p><img src="https://i.imgur.com/xD0vffk.png" alt="" /></p>
+<h2 id="lab-1-2-debug-kernel">Lab 1-2 Debug kernel</h2>
+<h3 id="look-the-problem-of-panic">Look the problem of <code>panic</code></h3>
+<p>The kernel stuck on the <code>panic(&quot;&quot;)</code> at <code>init/maic.c</code>.</p>
+<p>Look at <code>kernel/panic.c</code>.</p>
+<pre data-lang="c" style="background-color:#2b303b;color:#c0c5ce;" class="language-c "><code class="language-c" data-lang="c"><span style="color:#65737e;">/*
+</span><span style="color:#65737e;"> *  linux/kernel/panic.c
+</span><span style="color:#65737e;"> *
+</span><span style="color:#65737e;"> *  (C) 1991  Linus Torvalds
+</span><span style="color:#65737e;"> */
+</span><span>
+</span><span style="color:#65737e;">/*
+</span><span style="color:#65737e;"> * This function is used through-out the kernel (includeinh mm and fs)
+</span><span style="color:#65737e;"> * to indicate a major problem.
+</span><span style="color:#65737e;"> */
+</span><span style="color:#b48ead;">#define </span><span>PANIC
+</span><span>
+</span><span style="color:#b48ead;">#include </span><span>&lt;</span><span style="color:#a3be8c;">linux/kernel.h</span><span>&gt;
+</span><span style="color:#b48ead;">#include </span><span>&lt;</span><span style="color:#a3be8c;">linux/sched.h</span><span>&gt;
+</span><span>
+</span><span style="color:#b48ead;">void </span><span style="color:#8fa1b3;">sys_sync</span><span>(</span><span style="color:#b48ead;">void</span><span>);	</span><span style="color:#65737e;">/* it&#39;s really int */
+</span><span>
+</span><span style="color:#b48ead;">void </span><span style="color:#8fa1b3;">panic</span><span>(</span><span style="color:#b48ead;">const char </span><span>* </span><span style="color:#bf616a;">s</span><span>)
+</span><span>{
+</span><span>	</span><span style="color:#bf616a;">printk</span><span>(&quot;</span><span style="color:#a3be8c;">Kernel panic: </span><span style="color:#d08770;">%s</span><span style="color:#96b5b4;">\n\r</span><span>&quot;,s);
+</span><span>	</span><span style="color:#b48ead;">if </span><span>(current == task[</span><span style="color:#d08770;">0</span><span>])
+</span><span>		</span><span style="color:#bf616a;">printk</span><span>(&quot;</span><span style="color:#a3be8c;">In swapper task - not syncing</span><span style="color:#96b5b4;">\n\r</span><span>&quot;);
+</span><span>	</span><span style="color:#b48ead;">else
+</span><span>		</span><span style="color:#bf616a;">sys_sync</span><span>();
+</span><span>	</span><span style="color:#b48ead;">for</span><span>(;;);
+</span><span>}
+</span><span>
+</span></code></pre>
+<p>Due to the description of <code>panic</code>, it may not suitable to put <code>panic</code> at <code>init/main.c</code>.</p>
+<pre data-lang="c" style="background-color:#2b303b;color:#c0c5ce;" class="language-c "><code class="language-c" data-lang="c"><span style="color:#b48ead;">void </span><span style="color:#8fa1b3;">main</span><span>(</span><span style="color:#b48ead;">void</span><span>){
+</span><span>...
+</span><span>	</span><span style="color:#bf616a;">mem_init</span><span>(main_memory_start,memory_end);
+</span><span>	</span><span style="color:#bf616a;">trap_init</span><span>();
+</span><span>	</span><span style="color:#bf616a;">blk_dev_init</span><span>();
+</span><span>	</span><span style="color:#bf616a;">chr_dev_init</span><span>();
+</span><span>	</span><span style="color:#bf616a;">tty_init</span><span>();
+</span><span>	</span><span style="color:#bf616a;">time_init</span><span>();
+</span><span>	</span><span style="color:#bf616a;">sched_init</span><span>();
+</span><span>	</span><span style="color:#bf616a;">buffer_init</span><span>(buffer_memory_end);
+</span><span>	</span><span style="color:#bf616a;">hd_init</span><span>();
+</span><span>	</span><span style="color:#bf616a;">floppy_init</span><span>();
+</span><span>	</span><span style="color:#bf616a;">sti</span><span>();
+</span><span>	</span><span style="color:#65737e;">// panic(&quot;&quot;); 
+</span><span>	</span><span style="color:#bf616a;">move_to_user_mode</span><span>();
+</span><span>	</span><span style="color:#b48ead;">if </span><span>(!</span><span style="color:#bf616a;">fork</span><span>()) {		</span><span style="color:#65737e;">/* we count on this going ok */
+</span><span>		</span><span style="color:#bf616a;">init</span><span>();
+</span><span>	}
+</span><span>...
+</span><span>}
+</span></code></pre>
+<p>Uncomment it and try it.</p>
+<p><img src="https://i.imgur.com/T1mKZna.png" alt="" /></p>
+<p>Here it is, fix next bug.</p>
+<h3 id="look-the-problem-of-out-of-memory">Look the problem of <code>out of memory</code></h3>
+<p><img src="https://i.imgur.com/JIRQ5YR.png" alt="" /></p>
+<p>Actually, there are several warnings relating to <code>task</code> at <code>sched.c</code>.</p>
+<pre data-lang="c" style="background-color:#2b303b;color:#c0c5ce;" class="language-c "><code class="language-c" data-lang="c"><span style="color:#b48ead;">struct</span><span> task_struct * task[NR_TASKS] = {&amp;(init_task.</span><span style="color:#bf616a;">task</span><span>), };
+</span></code></pre>
+<p><code>task</code> has at leat one <code>task_struct</code>, checkout the <code>NR_TASKS</code>.</p>
+<pre data-lang="c" style="background-color:#2b303b;color:#c0c5ce;" class="language-c "><code class="language-c" data-lang="c"><span style="color:#b48ead;">#define </span><span>NR_TASKS </span><span style="color:#d08770;">0
+</span></code></pre>
+<p>The value of <code>NR_TASKS</code> is zero, which is unreasonable.</p>
+<p>Check out <a href="http://oldlinux.org/download/ECLK-5.0-WithCover.pdf">document</a> at P994.</p>
+<p><img src="https://i.imgur.com/4mAhfLo.png" alt="" /></p>
+<p>Therefore, change 0 to 64, and try it.</p>
+<p><img src="https://i.imgur.com/fbap7SK.png" alt="" /></p>
+<p>Fortunately, no error happened!</p>
+<p><img src="https://i.imgur.com/cmQyHsq.png" alt="" /></p>
+<p>Work perfectly!</p>
+<h3 id="print-your-student-id">Print your student id</h3>
+<p>We need to print out the student ID before shell startup, so look at <code>main.c</code>.</p>
+<pre data-lang="c" style="background-color:#2b303b;color:#c0c5ce;" class="language-c "><code class="language-c" data-lang="c"><span>...
+</span><span>	</span><span style="color:#96b5b4;">printf</span><span>(&quot;</span><span style="color:#d08770;">%d</span><span style="color:#a3be8c;"> buffers = </span><span style="color:#d08770;">%d</span><span style="color:#a3be8c;"> bytes buffer space</span><span style="color:#96b5b4;">\n\r</span><span>&quot;,NR_BUFFERS,
+</span><span>		NR_BUFFERS*BLOCK_SIZE);
+</span><span>	</span><span style="color:#bf616a;">printf</span><span>(&quot;</span><span style="color:#a3be8c;">Free mem: </span><span style="color:#d08770;">%d</span><span style="color:#a3be8c;"> bytes</span><span style="color:#96b5b4;">\n\r</span><span>&quot;,memory_end-main_memory_start);
+</span><span>	</span><span style="color:#b48ead;">if </span><span>(!(pid=</span><span style="color:#bf616a;">fork</span><span>())) {
+</span><span>		</span><span style="color:#bf616a;">close</span><span>(</span><span style="color:#d08770;">0</span><span>);
+</span><span>		</span><span style="color:#b48ead;">if </span><span>(</span><span style="color:#bf616a;">open</span><span>(&quot;</span><span style="color:#a3be8c;">/etc/rc</span><span>&quot;,O_RDONLY,</span><span style="color:#d08770;">0</span><span>))
+</span><span>			</span><span style="color:#bf616a;">_exit</span><span>(</span><span style="color:#d08770;">1</span><span>);
+</span><span>		</span><span style="color:#bf616a;">execve</span><span>(&quot;</span><span style="color:#a3be8c;">/bin/sh</span><span>&quot;,argv_rc,envp_rc);
+</span><span>		</span><span style="color:#bf616a;">_exit</span><span>(</span><span style="color:#d08770;">2</span><span>);
+</span><span>	}
+</span><span>	</span><span style="color:#b48ead;">if </span><span>(pid&gt;</span><span style="color:#d08770;">0</span><span>)
+</span><span>		</span><span style="color:#b48ead;">while </span><span>(pid != </span><span style="color:#bf616a;">wait</span><span>(&amp;i))
+</span><span>			</span><span style="color:#65737e;">/* nothing */</span><span>;
+</span><span>	</span><span style="color:#b48ead;">while </span><span>(</span><span style="color:#d08770;">1</span><span>) {
+</span><span>		</span><span style="color:#b48ead;">if </span><span>((pid=</span><span style="color:#bf616a;">fork</span><span>())&lt;</span><span style="color:#d08770;">0</span><span>) {
+</span><span>			</span><span style="color:#96b5b4;">printf</span><span>(&quot;</span><span style="color:#a3be8c;">Fork failed in init</span><span style="color:#96b5b4;">\r\n</span><span>&quot;);
+</span><span>			</span><span style="color:#b48ead;">continue</span><span>;
+</span><span>		}
+</span><span>		</span><span style="color:#b48ead;">if </span><span>(!pid) {
+</span><span>			</span><span style="color:#bf616a;">close</span><span>(</span><span style="color:#d08770;">0</span><span>);</span><span style="color:#bf616a;">close</span><span>(</span><span style="color:#d08770;">1</span><span>);</span><span style="color:#bf616a;">close</span><span>(</span><span style="color:#d08770;">2</span><span>);
+</span><span>			</span><span style="color:#bf616a;">setsid</span><span>();
+</span><span>			(</span><span style="color:#b48ead;">void</span><span>) </span><span style="color:#bf616a;">open</span><span>(&quot;</span><span style="color:#a3be8c;">/dev/tty0</span><span>&quot;,O_RDWR,</span><span style="color:#d08770;">0</span><span>);
+</span><span>			(</span><span style="color:#b48ead;">void</span><span>) </span><span style="color:#bf616a;">dup</span><span>(</span><span style="color:#d08770;">0</span><span>);
+</span><span>			(</span><span style="color:#b48ead;">void</span><span>) </span><span style="color:#bf616a;">dup</span><span>(</span><span style="color:#d08770;">0</span><span>);
+</span><span>			</span><span style="color:#bf616a;">_exit</span><span>(</span><span style="color:#bf616a;">execve</span><span>(&quot;</span><span style="color:#a3be8c;">/bin/sh</span><span>&quot;,argv,envp));
+</span><span>		}
+</span><span>        ...
+</span><span>...
+</span></code></pre>
+<p>There are two shell startup, if we print out the student ID before first shell.</p>
+<p><img src="https://i.imgur.com/HK9suMP.png" alt="" /></p>
+<p>The OK message will print before student ID.</p>
+<p>So print student ID before second shell.</p>
+<p><img src="https://i.imgur.com/OM2s8Ca.png" alt="" /></p>
+<p>Work great! All done!!!</p>
+<h2 id="questions">Questions</h2>
+<p>Q1: QEMU</p>
+<pre style="background-color:#2b303b;color:#c0c5ce;"><code><span>qemu-system-i386 -m 16M -boot a -fda Image -hda ../osdi.img -s -S -serial stdio
+</span></code></pre>
+<p>According to the above command:
+Q1.1: What’s the difference between -S and -s in the command?</p>
+<blockquote>
+<p>According to <a href="https://manned.org/qemu-system-i386/eeff8ce3">man</a> page of <code>qemu-system-i386</code>:
+<code>-s</code>: Wait gdb connection to port 1234.
+<code>-S</code>: Do not start CPU at startup (you must type 'c' in the monitor).</p>
+</blockquote>
+<p>Q1.2: What are -boot, -fda and -hda used for? If I want to boot with ../osdi.img(supposed it’s a bootable image) what should I do?</p>
+<blockquote>
+<p><code>-boot a</code>: Boot from floppy.
+<code>-fda Image</code>: Use <code>Image</code> as floppy.
+<code>-hda ../osdi.img</code>: Use <code>../osdi.img</code> as hard disk.
+<code>-boot c -hda ../osdi.img</code>.</p>
+</blockquote>
+<p>Q2: Git</p>
+<p>Q2.1: Please explain all the flags and options used in below command:</p>
+<pre style="background-color:#2b303b;color:#c0c5ce;"><code><span>git checkout -b lab1 origin/lab1
+</span></code></pre>
+<blockquote>
+<p>There is a remote repo called <code>origin</code> and has a branch named <code>lab1</code>, we want to create a local branch called <code>lab1</code> attach on it and move the <code>HEAD</code> on it.</p>
+</blockquote>
+<p>Q2.2 What are the differences among git add, git commit, and git push? What’s the timing you will use them?</p>
+<blockquote>
+<p>There are three <code>working directory</code>, <code>stagin area</code> and <code>repository</code>. When you <code>add</code> something, you move these into from <code>working direcotory</code> to <code>staging area</code>, and when you <code>commit</code> it, you move to <code>repository</code>. At last, when you <code>push</code> it, you push your code from <code>local repo</code> to <code>remote repo</code>.</p>
+</blockquote>
+<p>Q3: Makefile</p>
+<p>Q3.1: What happened when you run the below command? Please explain it according to the Makefile.</p>
+<pre style="background-color:#2b303b;color:#c0c5ce;"><code><span>make clean &amp;&amp; make
+</span></code></pre>
+<blockquote>
+<p>According to <code>Makefile</code>, <code>make clean</code> will remove all object file, image etc. <code>make</code> will follow the instruction on <code>Makefile</code> and build it.</p>
+</blockquote>
+<p>Q3.2: I did edit the include/linux/sched.h file and run make command successfully but the Image file remains the same. However, if I edit the init/main.c file and run make command. My Image will be recompile. What’s the difference between these two operations?</p>
+<blockquote>
+<p>The <code>Makefile</code> didn't write carefully, you should execute <code>make clean &amp;&amp; make</code> to rebuild.</p>
+</blockquote>
+<p>Q4: After making, what does the kernel Image ‘Image’ look like?</p>
+<blockquote>
+<p>According to <code>build.sh</code>, <code>bootsect</code> will put first and <code>setup</code> will be the second. Finally, the <code>system</code> will be at last.</p>
+</blockquote>
+<pre data-lang="bash" style="background-color:#2b303b;color:#c0c5ce;" class="language-bash "><code class="language-bash" data-lang="bash"><span style="color:#65737e;"># Write bootsect (512 bytes, one sector) to stdout
+</span><span style="color:#96b5b4;">[ </span><span>! </span><span style="color:#bf616a;">-f </span><span>&quot;$</span><span style="color:#bf616a;">bootsect</span><span>&quot; </span><span style="color:#96b5b4;">] </span><span>&amp;&amp; </span><span style="color:#96b5b4;">echo </span><span>&quot;</span><span style="color:#a3be8c;">there is no bootsect binary file there</span><span>&quot; &amp;&amp; </span><span style="color:#96b5b4;">exit</span><span> -1
+</span><span style="color:#bf616a;">dd</span><span> if=$</span><span style="color:#bf616a;">bootsect</span><span> bs=512 count=1 of=$</span><span style="color:#bf616a;">IMAGE </span><span style="color:#d08770;">2</span><span>&gt;&amp;</span><span style="color:#d08770;">1 </span><span>&gt;/dev/null
+</span><span>
+</span><span style="color:#65737e;"># Write setup(4 * 512bytes, four sectors) to stdout
+</span><span style="color:#96b5b4;">[ </span><span>! </span><span style="color:#bf616a;">-f </span><span>&quot;$</span><span style="color:#bf616a;">setup</span><span>&quot; </span><span style="color:#96b5b4;">] </span><span>&amp;&amp; </span><span style="color:#96b5b4;">echo </span><span>&quot;</span><span style="color:#a3be8c;">there is no setup binary file there</span><span>&quot; &amp;&amp; </span><span style="color:#96b5b4;">exit</span><span> -1
+</span><span style="color:#bf616a;">dd</span><span> if=$</span><span style="color:#bf616a;">setup</span><span> seek=1 bs=512 count=4 of=$</span><span style="color:#bf616a;">IMAGE </span><span style="color:#d08770;">2</span><span>&gt;&amp;</span><span style="color:#d08770;">1 </span><span>&gt;/dev/null
+</span><span>
+</span><span style="color:#65737e;"># Write system(&lt; SYS_SIZE) to stdout
+</span><span style="color:#96b5b4;">[ </span><span>! </span><span style="color:#bf616a;">-f </span><span>&quot;$</span><span style="color:#bf616a;">system</span><span>&quot; </span><span style="color:#96b5b4;">] </span><span>&amp;&amp; </span><span style="color:#96b5b4;">echo </span><span>&quot;</span><span style="color:#a3be8c;">there is no system binary file there</span><span>&quot; &amp;&amp; </span><span style="color:#96b5b4;">exit</span><span> -1
+</span><span style="color:#bf616a;">system_size</span><span>=`</span><span style="color:#bf616a;">wc -c </span><span>$</span><span style="color:#bf616a;">system </span><span>|</span><span style="color:#bf616a;">cut -d</span><span>&quot; &quot;</span><span style="color:#bf616a;"> -f1</span><span>`
+</span><span style="color:#96b5b4;">[ </span><span>$</span><span style="color:#bf616a;">system_size -gt </span><span>$</span><span style="color:#bf616a;">SYS_SIZE </span><span style="color:#96b5b4;">] </span><span>&amp;&amp; </span><span style="color:#96b5b4;">echo </span><span>&quot;</span><span style="color:#a3be8c;">the system binary is too big</span><span>&quot; &amp;&amp; </span><span style="color:#96b5b4;">exit</span><span> -1
+</span><span style="color:#bf616a;">dd</span><span> if=$</span><span style="color:#bf616a;">system</span><span> seek=5 bs=512 count=$((</span><span style="color:#d08770;">2888</span><span>-</span><span style="color:#d08770;">1</span><span>-</span><span style="color:#d08770;">4</span><span>)) of=$</span><span style="color:#bf616a;">IMAGE </span><span style="color:#d08770;">2</span><span>&gt;&amp;</span><span style="color:#d08770;">1 </span><span>&gt;/dev/null
+</span></code></pre>
+
+          </div>
+        </article>
+      </div>
+      
+      <div class="column is-2 is-hidden-mobile">
+        <aside class="menu" style="position: sticky; top: 48px">
+          <p class="heading has-text-weight-bold">Contents</p>
+          <ul class="menu-list">
+            
+            <li>
+              <a id="link-osdi-lab-i" class="toc is-size-7 is-active"
+                href="https://titaneric.github.io/osdi-lab1/#osdi-lab-i">
+                OSDI lab I
+              </a>
+              
+              <ul>
+                
+                <li>
+                  <a id="link-objective" class="toc is-size-7" href="https://titaneric.github.io/osdi-lab1/#objective">
+                    Objective
+                  </a>
+                </li>
+                
+                <li>
+                  <a id="link-lab1-1-linux-0-11-development-environment-setup" class="toc is-size-7" href="https://titaneric.github.io/osdi-lab1/#lab1-1-linux-0-11-development-environment-setup">
+                    Lab1.1 Linux 0.11 Development Environment Setup
+                  </a>
+                </li>
+                
+                <li>
+                  <a id="link-lab-1-2-debug-kernel" class="toc is-size-7" href="https://titaneric.github.io/osdi-lab1/#lab-1-2-debug-kernel">
+                    Lab 1-2 Debug kernel
+                  </a>
+                </li>
+                
+                <li>
+                  <a id="link-questions" class="toc is-size-7" href="https://titaneric.github.io/osdi-lab1/#questions">
+                    Questions
+                  </a>
+                </li>
+                
+              </ul>
+              
+            </li>
+            
+          </ul>
+        </aside>
+      </div>
+      
+    </div>
+  </div>
+</section>
+
+
+  
+  <section class="modal" id="search-modal">
+    <div class="modal-background"></div>
+    <div class="modal-card">
+      <header class="modal-card-head">
+        <p class="modal-card-title">Search</p>
+      </header>
+      <section class="modal-card-body">
+        <div class="field mb-2">
+          <div class="control">
+            <input class="input" id="search" placeholder="Search this website." type="search" />
+          </div>
+        </div>
+        <div class="search-results">
+          <div class="search-results__items"></div>
+        </div>
+      </section>
+    </div>
+    <button aria-label="close" class="modal-close is-large"></button>
+  </section>
+  
+
+
+  
+
+<section class="section">
+  <div class="container">
+    <div class="columns is-centered">
+      <div class="column is-8">
+        <nav class="level">
+              
+          <div class="level-item has-text-centered">
+            <a class="button is-black is-outlined" href="https:&#x2F;&#x2F;titaneric.github.io&#x2F;osdi-lab2&#x2F;">
+              <span class="icon mr-2">
+                <i class="fas fa-arrow-circle-left"></i>
+              </span>
+              OSDI-lab2
+            </a>
+          </div>
+           
+          <div class="level-item has-text-centered">
+            <a class="button is-black is-outlined" href="https:&#x2F;&#x2F;titaneric.github.io&#x2F;buddy-system&#x2F;">
+              Buddy-system<span class="icon ml-2">
+                <i class="fas fa-arrow-circle-right"></i>
+              </span>
+            </a>
+          </div>
+          
+        </nav>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+
+  
+
+
+
+  
+  <footer class="footer py-4">
+    <div class="content has-text-centered">
+      <p>
+        Built with
+        <span class="icon-text">
+          <span class="icon">
+            <i class="fas fa-code"></i>
+          </span>
+          <span>code</span>
+        </span>
+        and
+        <span class="icon-text">
+          <span class="icon">
+            <i class="fas fa-heart"></i>
+          </span>
+          <span>love</span>
+        </span>
+      </p>
+      <p>
+        Powered by
+        <span class="icon-text">
+          <span class="icon">
+            <i class="fas fa-power-off"></i>
+          </span>
+          <span>zola</span>
+        </span>
+      </p>
+    </div>
+  </footer>
+  
+
+  
+  
+  
+  
+  <script src="https://titaneric.github.io/elasticlunr.min.js"></script>
+  <script src="https://titaneric.github.io/search_index.en.js"></script><script src="https://titaneric.github.io/js/site.js"></script>
+
+  
+
+<script type="text/javascript">
+  const menuBarHeight = document.querySelector("nav.navbar").clientHeight;
+  const tocItems = document.querySelectorAll(".toc");
+  const navSections = new Array(tocItems.length);
+
+  tocItems.forEach((el, i) => {
+    let id = el.getAttribute("id").substring(5);
+    navSections[i] = document.getElementById(id);
+  })
+
+  function isVisible(tocIndex) {
+    const current = navSections[tocIndex];
+    const next = tocIndex < tocItems.length - 1 ? navSections[tocIndex + 1]
+      : document.querySelectorAll("section.section").item(1);
+
+    const c = current.getBoundingClientRect();
+    const n = next.getBoundingClientRect();
+    const h = (window.innerHeight || document.documentElement.clientHeight);
+
+    return (c.top <= h) && (n.top - menuBarHeight >= 0);
+  }
+
+  function activateIfVisible() {
+    for (b = true, i = 0; i < tocItems.length; i++) {
+      if (b && isVisible(i)) {
+        tocItems[i].classList.add('is-active');
+        b = false;
+      } else
+        tocItems[i].classList.remove('is-active');
+    }
+  }
+
+  var isTicking = null;
+  window.addEventListener('scroll', () => {
+    if (!isTicking) {
+      window.requestAnimationFrame(() => {
+        activateIfVisible();
+        isTicking = false;
+      });
+      isTicking = true;
+    }
+  }, false);
+</script>
+
+
+
+
+
+  
+  
+</body>
+
+</html>

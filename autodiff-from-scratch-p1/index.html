@@ -1,0 +1,439 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8" />
+  <meta content="width=device-width, initial-scale=1" name="viewport" />
+  <meta content="#ffffff" name="theme-color" />
+  <meta content="#da532c" name="msapplication-TileColor" />
+
+  
+  
+  
+  <link href='&#x2F;icons&#x2F;favicon-16x16.png' rel="icon" sizes="16x16" type="image/png" />
+  
+  
+  <link href='&#x2F;icons&#x2F;favicon-32x32.png' rel="icon" sizes="32x32" type="image/png" />
+  
+  
+  <link href='&#x2F;icons&#x2F;apple-touch-icon.png' rel="apple-touch-icon" sizes="180x180" />
+  
+
+  
+
+  
+
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/jpswalsh/academicons@1.9.1/css/academicons.min.css" integrity="sha384-FIue+PI4SsI9XfHCz8dBLg33b0c1fMJgNU3X//L26FYbGnlSEfWmNT7zgWc2N9b6" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.2.0/css/all.min.css" integrity="sha256-AbA177XfpSnFEvgpYu1jMygiLabzPCJCRIBtR5jGc0k=" crossorigin="anonymous">
+  <link href="https://titaneric.github.io/deep-thought.css" rel="stylesheet" />
+  
+  
+
+  <title>
+    
+Playground | Build a DL Library from Scratch (Part1) - Background
+
+  </title>
+
+  
+  
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-HSJPSHBTCN"></script>
+  <script type="text/javascript">
+    window.dataLayer = window.dataLayer || [];
+    function gtag() {
+      dataLayer.push(arguments);
+    }
+    gtag("js", new Date());
+    gtag("config", "G-HSJPSHBTCN");
+  </script>
+  
+  
+
+  
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.15.1/dist/katex.min.css" integrity="sha384-R4558gYOUz8mP9YWpZJjofhk+zx0AS11p36HnD2ZKj/6JR5z27gSSULCNHIRReVs" crossorigin="anonymous">
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.15.1/dist/katex.min.js" integrity="sha384-z1fJDqw8ZApjGO3/unPWUPsIymfsJmyrDVWC8Tv/a1HeOtGmkwNd/7xUS0Xcnvsx" crossorigin="anonymous"></script>
+
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.15.1/dist/contrib/mathtex-script-type.min.js" integrity="sha384-jiBVvJ8NGGj5n7kJaiWwWp9AjC+Yh8rhZY3GtAX8yU28azcLgoRo4oukO87g7zDT" crossorigin="anonymous"></script>
+  
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.15.1/dist/contrib/auto-render.min.js" integrity="sha384-+XBljXPPiv+OzfbB3cVmLHf4hdUFHlWNZN5spNQ7rmHTXpd7WvJum6fIACpNNfIR" crossorigin="anonymous"></script>
+  
+  
+</head>
+
+<body class="has-background-white">
+  <nav aria-label="section navigation" class="navbar is-light" role="navigation">
+    <div class="container">
+      <div class="navbar-brand">
+        <a class="navbar-item is-size-5 has-text-weight-bold" href="https:&#x2F;&#x2F;titaneric.github.io">Playground</a>
+        <a aria-expanded="false" aria-label="menu" class="navbar-burger burger" data-target="navMenu" role="button">
+          <span aria-hidden="true"></span>
+          <span aria-hidden="true"></span>
+          <span aria-hidden="true"></span>
+        </a>
+      </div>
+      <div class="navbar-menu" id="navMenu">
+        <div class="navbar-end has-text-centered">
+          
+          
+          
+          <a class="navbar-item has-text-weight-semibold" href="https:&#x2F;&#x2F;titaneric.github.io&#x2F;">
+            Home
+          </a>
+          
+          <a class="navbar-item has-text-weight-semibold" href="https:&#x2F;&#x2F;titaneric.github.io&#x2F;tags">
+            Tags
+          </a>
+          
+          <a class="navbar-item has-text-weight-semibold" href="https:&#x2F;&#x2F;titaneric.github.io&#x2F;categories">
+            Categories
+          </a>
+          
+          <a class="navbar-item has-text-weight-semibold" href="https:&#x2F;&#x2F;titaneric.github.io&#x2F;pdfs&#x2F;resume.pdf">
+            Resume
+          </a>
+          
+          <a class="navbar-item has-text-weight-semibold" href="https:&#x2F;&#x2F;playground.titaneric.com">
+            Rust Playground
+          </a>
+          
+          
+          
+          <a class="navbar-item" id="nav-search" title="Search" data-target="#search-modal">
+            <span class="icon">
+              <i class="fas fa-search"></i>
+            </span>
+          </a>
+          <a class="navbar-item" id="dark-mode" title="Switch to dark theme">
+            <span class="icon">
+              <i class="fas fa-adjust"></i>
+            </span>
+          </a>
+        </div>
+      </div>
+    </div>
+  </nav>
+
+  
+  
+
+  
+<section class="section">
+  <div class="container">
+    <div class="columns">
+      <div class="column is-8 is-offset-2">
+        <article class="box">
+          <h1 class="title">
+            Build a DL Library from Scratch (Part1) - Background
+          </h1>
+          <p class="subtitle"></p>
+          <div class="columns is-multiline is-gapless">
+            <div class="column is-8">
+              
+<span class="icon-text has-text-grey">
+  <span class="icon">
+    <i class="fas fa-user"></i>
+  </span>
+  <span>titaneric published on</span>
+  <span class="icon">
+    <i class="far fa-calendar-alt"></i>
+  </span>
+  <span><time datetime="2021-01-05">January 05, 2021</time></span>
+</span>
+
+            </div>
+            <div class="column is-4 has-text-right-desktop">
+              
+<span class="icon-text has-text-grey">
+  <span class="icon">
+    <i class="far fa-clock"></i>
+  </span>
+  <span>8 min,</span>
+  <span class="icon">
+    <i class="fas fa-pencil-alt"></i>
+  </span>
+  <span>1491 words</span>
+</span>
+
+            </div>
+            <div class="column">
+              
+              
+<p>
+  Categories:
+  
+  <a class="has-text-info-dark has-text-weight-semibold" href="https://titaneric.github.io/categories/notes/">
+    <span class="icon-text">
+      <span class="icon">
+        <i class="fas fa-cube"></i>
+      </span>
+      <span>Notes</span>
+    </span>
+  </a>
+  
+</p>
+
+              
+            </div>
+            <div class="column has-text-right-desktop">
+              
+              
+<p>
+  Tags:
+  
+  <a class="has-text-info-dark has-text-weight-semibold" href="https://titaneric.github.io/tags/deep-learning/">
+    <span class="icon-text">
+      <span class="icon">
+        <i class="fas fa-tag"></i>
+      </span>
+      <span>deep-learning</span>
+    </span>
+  </a>
+  
+</p>
+
+              
+            </div>
+          </div>
+          <div class="content mt-2">
+            <h2 id="introduction">Introduction</h2>
+<p>This is an article to elaborate on the detail of how I build my personal project <a href="https://github.com/titaneric/AutoDiff-from-scratch">Autodiff from scratch</a>. It may take several parts to finish, including the fundamental backpropagation, computational graph, auto differentiation concept, implementation detail, brief prior frameworks implementation detail, demonstration results, testing, and finally, what I learn during the process. Please be patient and I promised I'll finish the series this year (2021).</p>
+<h3 id="disclaimer">Disclaimer</h3>
+<p>I am not a native speaker and I do not consider myself a deep learning expert, these series act more like personal notes rather than lessons. However, I'll be glad to hear someone point out my grammar issue and give their professional insight. These series are the extension of my <a href="https://github.com/titaneric/AutoDiff-from-scratch/blob/master/Final%20Presentation.ipynb">Final presentation</a>, please take a look if you don't have much time to read the whole series.</p>
+<h2 id="motivation">Motivation</h2>
+<p>First, let's talk about the reason why I wrote this project. In my learning experience of deep learning, I observed that a few online lessons and books just listed the APIs that the framework provided e.g., CNN, RNN, the Transformer, etc. However, the API may be deprecated, the discovery in this domain remain continuously changed. Equipped with something unchanged including the fundamental knowledge is more important than knowing how to call a 3-Linear Layers in PyTorch.</p>
+<p>Of course, some great lessons talk about the math behind network design, its architecture, and application. They are kindly shared freely on the Internet, and lots of audiences are impressed and highly educated (including me).  Be aware of this knowledge help the learner level up their ability. However, I want to get my hand dirty and build my unique library, so that's the reason why I start this project.</p>
+<p>Nevertheless, starting everything from scratch is hard for me. I need an existed project to teach me which are the necessary steps so I could digest and simplify them. I was lucky to find one of the <a href="http://www.cs.toronto.edu/~rgrosse/courses/csc321_2018/slides/lec10.pdf">lessons taught at the University of Toronto</a> which introduced a concept called automatic differentiation and its implementation i.e., <a href="https://github.com/HIPS/autograd">Autograd</a>. I was fascinated and took lots of time to learn from the various lesson and trace some source code. After that, I create my unique deep learning library which is simple enough to tackle the real-world problem.</p>
+<h2 id="background">Background</h2>
+<p>It's too wordy to talk about my motivation. Let's begin our journey to introduce some concepts. We'll introduce the computational graph and the backpropagation algorithm in this post. In these series, I assume the reader may have basic knowledge of Calculus, some deep learning background, or at least, the eagerness to learn something new.</p>
+<h3 id="computational-graph">Computational Graph</h3>
+<p>
+We all know the graph in data structure created by nodes and edges. In Computer Science, we could solve many graph problems explicitly (e.g., Traveling Salesman Problem, single-source shortest path, etc.) or implicitly (by reduction, e.g., SAT problem); In Deep Learning, the computation could also be represented by the graph, i.e., the node indicates the operands (input) and the edge indicates the operator (computation). For example, given a simple formula \((3 - 2) + 1\), the corresponding graph is
+</p>
+<p><img src="/images/posts/autodiff-from-scratch-p1/autodiff-series-comp-graph.png" alt=" " /></p>
+<p>Note that the order of arguments matters. The correct order induces the right result and could receive the correct response (backpropagation) even in the order-invariant calculation (e.g., add and multiply operation).</p>
+<p>It's easy to understand the concept by simply glance the computational graph. Besides, the calculation could be in any number of operands, operators, or even high-level modules. For instance, a linear layer may consist of many nodes, layers, and pairs of connections (may not be a complete bipartite graph and could contain self-loop), or even a monster -- the Transformer formed with different modules and layers of encoder or decoder. There is an old saying, a picture is worth of thousand words. It's recommended to sketch the complicated concept, you will gain a lot during the drawing process and explain it to your coworker.</p>
+<h3 id="backpropagation-algorithm">Backpropagation algorithm</h3>
+<p>The core of deep learning is the backpropagation algorithm. In the computational graph session, we build the graph by a forward pass, i.e., evaluating the computation. On the other hand, we could calculate the gradient of the given calculation by backpropagation.</p>
+<p>
+We could use the last example, \((3 - 2) + 1\) to illustrate and transform them into algebraic way \(z = (a - b) + c\). Suppose we want to compute the gradient of \(z\) w.r.t. \(c\). It's easy to get it directly.
+\[\frac{\partial z}{\partial c}=\frac{\partial[(a-b) + c]}{\partial c} = 0 + 1 = 1\]
+\((a-b)\) could be seemed as an constant to \(c\), so we get zero;
+On the other hand, the derivative of variable \(c\) w.r.t. \(c\) is \(1\).
+</p>
+<p>Next, we try to take the derivative of z w.r.t. b by the <strong>chain rule</strong>. We could use the following procedure to compute the result.</p>
+<p>
+Let \(d = (a - b)\), so we let \(z = d + c\).
+\[
+\begin{aligned}
+    \frac{\partial[(a-b) + c]}{\partial b}
+    &=\frac{\partial d+c}{\partial d}\cdot \frac{\partial d}{\partial b}\\
+    &=1\cdot \frac{\partial a-b}{\partial b}\\
+    &=1\cdot -1\\
+    &= -1
+\end{aligned}
+\]
+</p>
+<p>We could use the chain rule to easily calculate the complicated derivative w.r.t. any variable. It seems easy to take the derivatives of the above equation without chain rule, but what about a slightly difficult equation called the sigmoid function?</p>
+<p>
+\[y = \frac{1}{1 + e^{-z}}\]
+</p>
+<p>
+If we want to get the derivative of above equation w.r.t. \(z\), the interesting way to compute is
+</p>
+<p>
+Let \(a = 1 + e^{-z}\),
+\[
+\begin{aligned}
+ \frac{\partial y}{\partial z} &= \frac{\partial \frac{1}{a}}{\partial z}\\
+ &= \frac{\partial ({\color{red}{{a}^{-1}}})}{\partial a} \cdot \frac{\partial a}{\partial z}\\
+ &= -1 {a}^{-2} \cdot \frac{\partial a}{\partial z}\\
+ &= -1 {(1 + e^{-z})}^{-2} \cdot \frac{\partial (1 + e^{-z})}{\partial z}\\
+\end{aligned}
+ \]
+ Let \(b = e^{-z}\),
+ \[
+\begin{aligned}
+ \frac{\partial y}{\partial z} &= -1 {(1 + e^{-z})}^{-2} \cdot \frac{\partial (1 + e^{-z})}{\partial z}\\
+ &= -1 {(1 + e^{-z})}^{-2} \cdot \frac{\partial ({\color{red}{1 + b}})}{\partial b}\cdot \frac{\partial (b)}{\partial z}\\
+ &= -1 {(1 + e^{-z})}^{-2} \cdot 1 \cdot \frac{\partial (e^{-z})}{\partial z}\\
+\end{aligned}
+ \]
+ Let \(c = -z\),
+ \[
+\begin{aligned}
+\frac{\partial y}{\partial z} &= -1 {(1 + e^{-z})}^{-2} \cdot 1 \cdot \frac{\partial (e^{-z})}{\partial z}\\
+&= -1 {(1 + e^{-z})}^{-2} \cdot 1 \cdot \frac{\partial ({\color{red}{e^{c}}})}{\partial c} \cdot \frac{\partial (c)}{\partial z}\\
+&= -1 {(1 + e^{-z})}^{-2} \cdot 1 \cdot e^{c} \cdot \frac{\partial (c)}{\partial z}\\
+&= -1 {(1 + e^{-z})}^{-2} \cdot 1 \cdot e^{-z} \cdot \frac{\partial (-z)}{\partial z}\\
+\end{aligned}
+\]
+Let \(d = z\)
+\[
+\begin{aligned}
+ \frac{\partial y}{\partial z} &= -1 {(1 + e^{-z})}^{-2} \cdot 1 \cdot e^{-z} \cdot \frac{\partial (-z)}{\partial z}\\
+ &= -1 {(1 + e^{-z})}^{-2} \cdot 1 \cdot e^{-z} \cdot \frac{\partial ({\color{red}{-d}})}{\partial d} \cdot \frac{\partial (d)}{\partial z}\\
+ &= -1 {(1 + e^{-z})}^{-2} \cdot 1 \cdot e^{-z} \cdot -1 \cdot \frac{\partial (z)}{\partial z}\\
+ &= -1 {(1 + e^{-z})}^{-2} \cdot 1 \cdot e^{-z} \cdot -1 \cdot 1\\
+\end{aligned}
+\]
+</p>
+<p>
+Notice that some operation are replaced by fundamental operation colored with red like reciprocal (\(a^{-1}\)), exponential (\(e^{c}\)), negative (\(-d\)), and add operation (\(1+b\)).
+</p>
+<p>In this way, we could systematically calculate the derivative of the given formula <em>only</em> known for the <strong>corresponding derivative of fundamental operation</strong> and <strong>chain rule</strong>. In other words, we could write a program to compute the derivative in a systematic manner.
+Besides, we <em>don't</em> have to make a program to learn extra knowledge like sum, product, and quotient rules, since the program has already been educated for add, multiplication, and division operation, respectively.</p>
+<p>Let's combine this with the computational graph below</p>
+<p><img src="/images/posts/autodiff-from-scratch-p1/autodiff-series-sigmoid-comp-graph.png" alt=" " /></p>
+<p>The figure shows that the forward-pass builds the graph from the variables, to some basic operation and finally to the results, but we compute the gradient backwardly from the result to the last, the second last, and to the first basic operation.</p>
+<h2 id="conclusion">Conclusion</h2>
+<p>We could conclude today's content with the following</p>
+<ul>
+<li>The computational graph could be any form, from the basic operation in math to the more complicated one like layers, modules, and models.</li>
+<li>The forward pass builds the computational graph, the backward pass computes the gradient with respect to some variable.</li>
+</ul>
+<p>Hope that the readers could understand today's concept because, in the next part, we will introduce the auto differentiation by these two ideas. (Spoiled alert: gradient calculation in Backpropagation session)</p>
+<p>Thank you for reading and please be patient with the next part.</p>
+
+          </div>
+        </article>
+      </div>
+      
+    </div>
+  </div>
+</section>
+
+
+  
+  <section class="modal" id="search-modal">
+    <div class="modal-background"></div>
+    <div class="modal-card">
+      <header class="modal-card-head">
+        <p class="modal-card-title">Search</p>
+      </header>
+      <section class="modal-card-body">
+        <div class="field mb-2">
+          <div class="control">
+            <input class="input" id="search" placeholder="Search this website." type="search" />
+          </div>
+        </div>
+        <div class="search-results">
+          <div class="search-results__items"></div>
+        </div>
+      </section>
+    </div>
+    <button aria-label="close" class="modal-close is-large"></button>
+  </section>
+  
+
+
+  
+
+<section class="section">
+  <div class="container">
+    <div class="columns is-centered">
+      <div class="column is-8">
+        <nav class="level">
+              
+          <div class="level-item has-text-centered">
+            <a class="button is-black is-outlined" href="https:&#x2F;&#x2F;titaneric.github.io&#x2F;buddy-system&#x2F;">
+              <span class="icon mr-2">
+                <i class="fas fa-arrow-circle-left"></i>
+              </span>
+              Buddy-system
+            </a>
+          </div>
+           
+          <div class="level-item has-text-centered">
+            <a class="button is-black is-outlined" href="https:&#x2F;&#x2F;titaneric.github.io&#x2F;autodiff-from-scratch-p2&#x2F;">
+              Build a DL Library from Scratch (Part2) - Backpropagation<span class="icon ml-2">
+                <i class="fas fa-arrow-circle-right"></i>
+              </span>
+            </a>
+          </div>
+          
+        </nav>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+
+  
+
+<section class="section">
+  <div class="container">
+    <div class="columns is-centered">
+      <div class="column is-6">
+        <div id="disqus_thread"></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+
+  
+  <footer class="footer py-4">
+    <div class="content has-text-centered">
+      <p>
+        Built with
+        <span class="icon-text">
+          <span class="icon">
+            <i class="fas fa-code"></i>
+          </span>
+          <span>code</span>
+        </span>
+        and
+        <span class="icon-text">
+          <span class="icon">
+            <i class="fas fa-heart"></i>
+          </span>
+          <span>love</span>
+        </span>
+      </p>
+      <p>
+        Powered by
+        <span class="icon-text">
+          <span class="icon">
+            <i class="fas fa-power-off"></i>
+          </span>
+          <span>zola</span>
+        </span>
+      </p>
+    </div>
+  </footer>
+  
+
+  
+  
+  
+  
+  <script src="https://titaneric.github.io/elasticlunr.min.js"></script>
+  <script src="https://titaneric.github.io/search_index.en.js"></script><script src="https://titaneric.github.io/js/site.js"></script>
+
+  
+
+
+
+<script>
+  var disqus_config = function () {
+    this.page.url = "https://titaneric.github.io";
+    this.page.identifier = "/autodiff-from-scratch-p1/";
+  };
+
+  (function () {
+    var d = document, s = d.createElement('script');
+    s.src = 'https://titaneric-github-io.disqus.com/embed.js';
+    s.setAttribute('data-timestamp', +new Date());
+    (d.head || d.body).appendChild(s);
+  })();
+</script>
+
+
+
+  
+  
+</body>
+
+</html>
