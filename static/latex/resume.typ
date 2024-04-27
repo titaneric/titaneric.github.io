@@ -205,7 +205,7 @@
   ),
   main: (
     section(
-        content: "Certified Kubernetes Administrator and conscientious software engineer. I aim to leverage my skills in automation, observability, cloud-native solutions, and problem solving abilities to improve system reliability and efficiency."
+        content: "Certified Kubernetes Administrator and conscientious software engineer. Aiming to leverage my skills in automation, observability, cloud-native solutions, and problem solving abilities to improve system reliability and efficiency."
     ),
     section(
       title: "Work Experience",
@@ -218,12 +218,12 @@
           content: list(
             [Co-maintained internal Terraform provider #underline(link("https://engineering.linecorp.com/en/blog/terraform-for-verda", "terda")) and promoted Terraform adoption and advocacy at LINE Taiwan.
 ],
-            [Profiled and tuned the Loki log collector system, reducing storage overhead by 80% and maintaining query performance.
+            [Profiled and tuned the Loki log collector system, reducing storage overhead by *80%* and keeping query performance.
             ],
-            // [Introduced Grafana Agent and Faro SDK at LINE Taiwan, achieving end-to-end tracing and improving observability and issue resolution.],
+            [Introduced Grafana Alloy and Faro SDK at LINE Taiwan, achieving end-to-end tracing and improving observability and issue resolution.],
             [Developed slack-based workflow automation framework and migrated pipelines to GitHub Action, improving operational cost and quality.],
             [Designed and built internal infra cost calculator, metrics snapshotter, and dashboards, providing cloud spending visibility and optimization.],
-            // [Analyzed the root cause of technical debt, and developed alternative solution to resolve it. Also helped sunsetting highly operational cost internal system.],
+            [Analyzed the root cause of technical debt, and developed alternative solution to resolve it. Also helped sunsetting highly operational cost internal system.],
           ),
         ),
         subSection(
@@ -260,9 +260,9 @@ Experienced in Kubernetes administration & cluster and service migration for *8*
       title: "Projects",
       content: (
         subSection(
-          title: underline(link("https://playground.titaneric.com/", "Rust Playground with WASM")),
+          title: underline(link("https://private-user-images.githubusercontent.com/12388235/114809686-39eb7e80-9ddd-11eb-96fd-a8b9e221e147.mp4?jwt=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJnaXRodWIuY29tIiwiYXVkIjoicmF3LmdpdGh1YnVzZXJjb250ZW50LmNvbSIsImtleSI6ImtleTUiLCJleHAiOjE3MTQyMDA4MzUsIm5iZiI6MTcxNDIwMDUzNSwicGF0aCI6Ii8xMjM4ODIzNS8xMTQ4MDk2ODYtMzllYjdlODAtOWRkZC0xMWViLTk2ZmQtYThiOWUyMjFlMTQ3Lm1wND9YLUFtei1BbGdvcml0aG09QVdTNC1ITUFDLVNIQTI1NiZYLUFtei1DcmVkZW50aWFsPUFLSUFWQ09EWUxTQTUzUFFLNFpBJTJGMjAyNDA0MjclMkZ1cy1lYXN0LTElMkZzMyUyRmF3czRfcmVxdWVzdCZYLUFtei1EYXRlPTIwMjQwNDI3VDA2NDg1NVomWC1BbXotRXhwaXJlcz0zMDAmWC1BbXotU2lnbmF0dXJlPTVmMmM0ZDAxOWViYzQxNmRmMGY2YTIwZGQ1ZDJjYTA5OTI1ZWFhZDY0NWU5Yzg2MDE3MjYyMjQ4MDFlODdhNDAmWC1BbXotU2lnbmVkSGVhZGVycz1ob3N0JmFjdG9yX2lkPTAma2V5X2lkPTAmcmVwb19pZD0wIn0.-KvjQr9bDF-w5CvgB-xCO_HdE7YcMvri4sUSChMsnfo", "Rust Playground with WASM")),
           content: list(
-            [Forked #underline(link("https://play.rust-lang.org/?version=stable&mode=debug&edition=2021", "Rust Playground")) to render Web Assembly from compiled Rust, and managed to render on #underline(link("https://github.com/rust-lang/mdBook/pull/1501", "mdBook")) as well.],
+            [Forked #underline(link("https://play.rust-lang.org/?version=stable&mode=debug&edition=2021", "Rust Playground")) to render Web Assembly from compiled Rust, and managed to render on #underline(link("https://private-user-images.githubusercontent.com/12388235/114810242-3b697680-9dde-11eb-85f3-a6e746aaa0c1.mp4?jwt=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJnaXRodWIuY29tIiwiYXVkIjoicmF3LmdpdGh1YnVzZXJjb250ZW50LmNvbSIsImtleSI6ImtleTUiLCJleHAiOjE3MTQyMDA4MzUsIm5iZiI6MTcxNDIwMDUzNSwicGF0aCI6Ii8xMjM4ODIzNS8xMTQ4MTAyNDItM2I2OTc2ODAtOWRkZS0xMWViLTg1ZjMtYTZlNzQ2YWFhMGMxLm1wND9YLUFtei1BbGdvcml0aG09QVdTNC1ITUFDLVNIQTI1NiZYLUFtei1DcmVkZW50aWFsPUFLSUFWQ09EWUxTQTUzUFFLNFpBJTJGMjAyNDA0MjclMkZ1cy1lYXN0LTElMkZzMyUyRmF3czRfcmVxdWVzdCZYLUFtei1EYXRlPTIwMjQwNDI3VDA2NDg1NVomWC1BbXotRXhwaXJlcz0zMDAmWC1BbXotU2lnbmF0dXJlPTBlZmEwZTlkYjdlZWJjNzdmN2FlNDUwZTgwNmRlNmFlZWNmMjA1ZjQ1NmUxYzIyOWEyZGNkNGU5ODQ3NTJhMTQmWC1BbXotU2lnbmVkSGVhZGVycz1ob3N0JmFjdG9yX2lkPTAma2V5X2lkPTAmcmVwb19pZD0wIn0.rpJWkf0zgK_sBz1Dc2dz_S2k4CKZ1oQQXvEo1ADz138", "mdBook")) as well.],
           ),
         ),
         subSection(
@@ -302,8 +302,8 @@ Experienced in Kubernetes administration & cluster and service migration for *8*
             "Nvidia Cloud-Native tech",
             "Linux SysAdmin",
             "TCP/IP",
-            "Wireshark",
             "Observability",
+            "ArgoCD",
           ).join(" • "),
         ),
         subSection(
