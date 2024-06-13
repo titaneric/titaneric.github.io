@@ -1,0 +1,241 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rss xmlns:atom="http://www.w3.org/2005/Atom" version="2.0">
+    <channel>
+      <title>Playground - Practice</title>
+      <link>https://titaneric.github.io</link>
+      <description></description>
+      <generator>Zola</generator>
+      <language>en</language>
+      <atom:link href="https://titaneric.github.io/categories/practice/rss.xml" rel="self" type="application/rss+xml"/>
+      <lastBuildDate>Sun, 17 Feb 2019 00:00:00 +0000</lastBuildDate>
+      <item>
+          <title>Updating-a-Dictionary</title>
+          <pubDate>Sun, 17 Feb 2019 00:00:00 +0000</pubDate>
+          <author>Unknown</author>
+          <link>https://titaneric.github.io/updating-a-dictionary/</link>
+          <guid>https://titaneric.github.io/updating-a-dictionary/</guid>
+          <description>&lt;h1 id=&quot;updating-a-dictionary&quot;&gt;&lt;a href=&quot;https:&#x2F;&#x2F;uva.onlinejudge.org&#x2F;index.php?option=com_onlinejudge&amp;amp;Itemid=8&amp;amp;page=show_problem&amp;amp;problem=3948&quot;&gt;Updating a Dictionary&lt;&#x2F;a&gt;&lt;&#x2F;h1&gt;
+&lt;h2 id=&quot;solution&quot;&gt;Solution&lt;&#x2F;h2&gt;
+&lt;ol&gt;
+&lt;li&gt;Use the regex to parse key, value.&lt;&#x2F;li&gt;
+&lt;li&gt;Save the parsed keys, values to real map.&lt;&#x2F;li&gt;
+&lt;li&gt;Compare two maps.
+&lt;ol&gt;
+&lt;li&gt;Use the overloading = operator to compare if two maps have no difference.&lt;&#x2F;li&gt;
+&lt;li&gt;The intersection between current map&#x27;s keys and previous map&#x27;s keys is possible the edit one or equal one.&lt;&#x2F;li&gt;
+&lt;li&gt;The difference between current map and intersection mentioned at 3.2 is the new one.&lt;&#x2F;li&gt;
+&lt;li&gt;The difference between previous map and intersection mentioned at 3.2 is the delete one.&lt;&#x2F;li&gt;
+&lt;li&gt;At last, filter the keys that corresponding value of current map and previous map are not the same. That is the edit one.&lt;&#x2F;li&gt;
+&lt;&#x2F;ol&gt;
+&lt;&#x2F;li&gt;
+&lt;&#x2F;ol&gt;
+&lt;!--more--&gt;
+&lt;h2 id=&quot;what-i-learn&quot;&gt;What I learn&lt;&#x2F;h2&gt;
+&lt;ol&gt;
+&lt;li&gt;Use the regex lib at C++ for the first time.&lt;&#x2F;li&gt;
+&lt;li&gt;Practice the C++ 11. E.g., copy_if, lambda.&lt;&#x2F;li&gt;
+&lt;&#x2F;ol&gt;
+&lt;h2 id=&quot;code&quot;&gt;Code&lt;&#x2F;h2&gt;
+&lt;pre data-lang=&quot;c++&quot; style=&quot;background-color:#2b303b;color:#c0c5ce;&quot; class=&quot;language-c++ &quot;&gt;&lt;code class=&quot;language-c++&quot; data-lang=&quot;c++&quot;&gt;&lt;span style=&quot;color:#b48ead;&quot;&gt;#include &lt;&#x2F;span&gt;&lt;span&gt;&amp;lt;&lt;&#x2F;span&gt;&lt;span style=&quot;color:#a3be8c;&quot;&gt;iostream&lt;&#x2F;span&gt;&lt;span&gt;&amp;gt;
+&lt;&#x2F;span&gt;&lt;span style=&quot;color:#b48ead;&quot;&gt;#include &lt;&#x2F;span&gt;&lt;span&gt;&amp;lt;&lt;&#x2F;span&gt;&lt;span style=&quot;color:#a3be8c;&quot;&gt;map&lt;&#x2F;span&gt;&lt;span&gt;&amp;gt;
+&lt;&#x2F;span&gt;&lt;span style=&quot;color:#b48ead;&quot;&gt;#include &lt;&#x2F;span&gt;&lt;span&gt;&amp;lt;&lt;&#x2F;span&gt;&lt;span style=&quot;color:#a3be8c;&quot;&gt;algorithm&lt;&#x2F;span&gt;&lt;span&gt;&amp;gt;
+&lt;&#x2F;span&gt;&lt;span style=&quot;color:#b48ead;&quot;&gt;#include &lt;&#x2F;span&gt;&lt;span&gt;&amp;lt;&lt;&#x2F;span&gt;&lt;span style=&quot;color:#a3be8c;&quot;&gt;string&lt;&#x2F;span&gt;&lt;span&gt;&amp;gt;
+&lt;&#x2F;span&gt;&lt;span style=&quot;color:#b48ead;&quot;&gt;#include &lt;&#x2F;span&gt;&lt;span&gt;&amp;lt;&lt;&#x2F;span&gt;&lt;span style=&quot;color:#a3be8c;&quot;&gt;regex&lt;&#x2F;span&gt;&lt;span&gt;&amp;gt;
+&lt;&#x2F;span&gt;&lt;span style=&quot;color:#b48ead;&quot;&gt;#include &lt;&#x2F;span&gt;&lt;span&gt;&amp;lt;&lt;&#x2F;span&gt;&lt;span style=&quot;color:#a3be8c;&quot;&gt;vector&lt;&#x2F;span&gt;&lt;span&gt;&amp;gt;
+&lt;&#x2F;span&gt;&lt;span style=&quot;color:#b48ead;&quot;&gt;#include &lt;&#x2F;span&gt;&lt;span&gt;&amp;lt;&lt;&#x2F;span&gt;&lt;span style=&quot;color:#a3be8c;&quot;&gt;set&lt;&#x2F;span&gt;&lt;span&gt;&amp;gt;
+&lt;&#x2F;span&gt;&lt;span style=&quot;color:#b48ead;&quot;&gt;#include &lt;&#x2F;span&gt;&lt;span&gt;&amp;lt;&lt;&#x2F;span&gt;&lt;span style=&quot;color:#a3be8c;&quot;&gt;iterator&lt;&#x2F;span&gt;&lt;span&gt;&amp;gt;
+&lt;&#x2F;span&gt;&lt;span&gt;
+&lt;&#x2F;span&gt;&lt;span style=&quot;color:#b48ead;&quot;&gt;using namespace&lt;&#x2F;span&gt;&lt;span&gt; std;
+&lt;&#x2F;span&gt;&lt;span&gt;
+&lt;&#x2F;span&gt;&lt;span&gt;regex &lt;&#x2F;span&gt;&lt;span style=&quot;color:#8fa1b3;&quot;&gt;key_regex&lt;&#x2F;span&gt;&lt;span&gt;(&amp;quot;&lt;&#x2F;span&gt;&lt;span style=&quot;color:#a3be8c;&quot;&gt;([a-z]+)&lt;&#x2F;span&gt;&lt;span&gt;&amp;quot;);
+&lt;&#x2F;span&gt;&lt;span&gt;regex &lt;&#x2F;span&gt;&lt;span style=&quot;color:#8fa1b3;&quot;&gt;value_regex&lt;&#x2F;span&gt;&lt;span&gt;(&amp;quot;&lt;&#x2F;span&gt;&lt;span style=&quot;color:#a3be8c;&quot;&gt;([0-9]+)&lt;&#x2F;span&gt;&lt;span&gt;&amp;quot;);
+&lt;&#x2F;span&gt;&lt;span&gt;
+&lt;&#x2F;span&gt;&lt;span style=&quot;color:#b48ead;&quot;&gt;void &lt;&#x2F;span&gt;&lt;span style=&quot;color:#8fa1b3;&quot;&gt;parse2Dict&lt;&#x2F;span&gt;&lt;span&gt;(string &amp;amp;&lt;&#x2F;span&gt;&lt;span style=&quot;color:#bf616a;&quot;&gt;line&lt;&#x2F;span&gt;&lt;span&gt;, map&amp;lt;string, string&amp;gt; &amp;amp;&lt;&#x2F;span&gt;&lt;span style=&quot;color:#bf616a;&quot;&gt;dict&lt;&#x2F;span&gt;&lt;span&gt;)
+&lt;&#x2F;span&gt;&lt;span&gt;{
+&lt;&#x2F;span&gt;&lt;span&gt;    &lt;&#x2F;span&gt;&lt;span style=&quot;color:#b48ead;&quot;&gt;auto&lt;&#x2F;span&gt;&lt;span&gt; key_begin = &lt;&#x2F;span&gt;&lt;span style=&quot;color:#bf616a;&quot;&gt;sregex_iterator&lt;&#x2F;span&gt;&lt;span&gt;(line.&lt;&#x2F;span&gt;&lt;span style=&quot;color:#bf616a;&quot;&gt;begin&lt;&#x2F;span&gt;&lt;span&gt;(), line.&lt;&#x2F;span&gt;&lt;span style=&quot;color:#bf616a;&quot;&gt;end&lt;&#x2F;span&gt;&lt;span&gt;(), key_regex);
+&lt;&#x2F;span&gt;&lt;span&gt;    &lt;&#x2F;span&gt;&lt;span style=&quot;color:#b48ead;&quot;&gt;auto&lt;&#x2F;span&gt;&lt;span&gt; key_end = &lt;&#x2F;span&gt;&lt;span style=&quot;color:#bf616a;&quot;&gt;sregex_iterator&lt;&#x2F;span&gt;&lt;span&gt;();
+&lt;&#x2F;span&gt;&lt;span&gt;
+&lt;&#x2F;span&gt;&lt;span&gt;    &lt;&#x2F;span&gt;&lt;span style=&quot;color:#b48ead;&quot;&gt;auto&lt;&#x2F;span&gt;&lt;span&gt; value_begin = &lt;&#x2F;span&gt;&lt;span style=&quot;color:#bf616a;&quot;&gt;sregex_iterator&lt;&#x2F;span&gt;&lt;span&gt;(line.&lt;&#x2F;span&gt;&lt;span style=&quot;color:#bf616a;&quot;&gt;begin&lt;&#x2F;span&gt;&lt;span&gt;(), line.&lt;&#x2F;span&gt;&lt;span style=&quot;color:#bf616a;&quot;&gt;end&lt;&#x2F;span&gt;&lt;span&gt;(), value_regex);
+&lt;&#x2F;span&gt;&lt;span&gt;    &lt;&#x2F;span&gt;&lt;span style=&quot;color:#b48ead;&quot;&gt;auto&lt;&#x2F;span&gt;&lt;span&gt; value_end = &lt;&#x2F;span&gt;&lt;span style=&quot;color:#bf616a;&quot;&gt;sregex_iterator&lt;&#x2F;span&gt;&lt;span&gt;();
+&lt;&#x2F;span&gt;&lt;span&gt;    &lt;&#x2F;span&gt;&lt;span style=&quot;color:#b48ead;&quot;&gt;for &lt;&#x2F;span&gt;&lt;span&gt;(&lt;&#x2F;span&gt;&lt;span style=&quot;color:#b48ead;&quot;&gt;auto&lt;&#x2F;span&gt;&lt;span&gt; k = key_begin, v = value_begin; k != key_end &amp;amp;&amp;amp; v != value_end; ++k, ++v)
+&lt;&#x2F;span&gt;&lt;span&gt;    {
+&lt;&#x2F;span&gt;&lt;span&gt;        dict[k-&amp;gt;&lt;&#x2F;span&gt;&lt;span style=&quot;color:#bf616a;&quot;&gt;str&lt;&#x2F;span&gt;&lt;span&gt;()] = v-&amp;gt;&lt;&#x2F;span&gt;&lt;span style=&quot;color:#bf616a;&quot;&gt;str&lt;&#x2F;span&gt;&lt;span&gt;();
+&lt;&#x2F;span&gt;&lt;span&gt;    }
+&lt;&#x2F;span&gt;&lt;span&gt;}
+&lt;&#x2F;span&gt;&lt;span style=&quot;color:#b48ead;&quot;&gt;void &lt;&#x2F;span&gt;&lt;span style=&quot;color:#8fa1b3;&quot;&gt;output&lt;&#x2F;span&gt;&lt;span&gt;(&lt;&#x2F;span&gt;&lt;span style=&quot;color:#b48ead;&quot;&gt;char &lt;&#x2F;span&gt;&lt;span style=&quot;color:#bf616a;&quot;&gt;op&lt;&#x2F;span&gt;&lt;span&gt;, set&amp;lt;string&amp;gt; &amp;amp;&lt;&#x2F;span&gt;&lt;span style=&quot;color:#bf616a;&quot;&gt;target&lt;&#x2F;span&gt;&lt;span&gt;)
+&lt;&#x2F;span&gt;&lt;span&gt;{
+&lt;&#x2F;span&gt;&lt;span&gt;    vector&amp;lt;string&amp;gt; &lt;&#x2F;span&gt;&lt;span style=&quot;color:#bf616a;&quot;&gt;target_vec&lt;&#x2F;span&gt;&lt;span&gt;(target.&lt;&#x2F;span&gt;&lt;span style=&quot;color:#bf616a;&quot;&gt;begin&lt;&#x2F;span&gt;&lt;span&gt;(), target.&lt;&#x2F;span&gt;&lt;span style=&quot;color:#bf616a;&quot;&gt;end&lt;&#x2F;span&gt;&lt;span&gt;());
+&lt;&#x2F;span&gt;&lt;span&gt;    cout &amp;lt;&amp;lt; op;
+&lt;&#x2F;span&gt;&lt;span&gt;    &lt;&#x2F;span&gt;&lt;span style=&quot;color:#b48ead;&quot;&gt;for &lt;&#x2F;span&gt;&lt;span&gt;(&lt;&#x2F;span&gt;&lt;span style=&quot;color:#b48ead;&quot;&gt;auto&lt;&#x2F;span&gt;&lt;span&gt; k : target_vec)
+&lt;&#x2F;span&gt;&lt;span&gt;    {
+&lt;&#x2F;span&gt;&lt;span&gt;        cout &amp;lt;&amp;lt; k;
+&lt;&#x2F;span&gt;&lt;span&gt;        &lt;&#x2F;span&gt;&lt;span style=&quot;color:#b48ead;&quot;&gt;if &lt;&#x2F;span&gt;&lt;span&gt;(k != target_vec.&lt;&#x2F;span&gt;&lt;span style=&quot;color:#bf616a;&quot;&gt;back&lt;&#x2F;span&gt;&lt;span&gt;())
+&lt;&#x2F;span&gt;&lt;span&gt;            cout &amp;lt;&amp;lt; &amp;quot;&lt;&#x2F;span&gt;&lt;span style=&quot;color:#a3be8c;&quot;&gt;,&lt;&#x2F;span&gt;&lt;span&gt;&amp;quot;;
+&lt;&#x2F;span&gt;&lt;span&gt;    }
+&lt;&#x2F;span&gt;&lt;span&gt;    cout &amp;lt;&amp;lt; endl;
+&lt;&#x2F;span&gt;&lt;span&gt;}
+&lt;&#x2F;span&gt;&lt;span style=&quot;color:#b48ead;&quot;&gt;void &lt;&#x2F;span&gt;&lt;span style=&quot;color:#8fa1b3;&quot;&gt;compareDict&lt;&#x2F;span&gt;&lt;span&gt;(map&amp;lt;string, string&amp;gt; &amp;amp;&lt;&#x2F;span&gt;&lt;span style=&quot;color:#bf616a;&quot;&gt;previous&lt;&#x2F;span&gt;&lt;span&gt;, map&amp;lt;string, string&amp;gt; &amp;amp;&lt;&#x2F;span&gt;&lt;span style=&quot;color:#bf616a;&quot;&gt;current&lt;&#x2F;span&gt;&lt;span&gt;)
+&lt;&#x2F;span&gt;&lt;span&gt;{
+&lt;&#x2F;span&gt;&lt;span&gt;    &lt;&#x2F;span&gt;&lt;span style=&quot;color:#b48ead;&quot;&gt;if &lt;&#x2F;span&gt;&lt;span&gt;(previous == current)
+&lt;&#x2F;span&gt;&lt;span&gt;    {
+&lt;&#x2F;span&gt;&lt;span&gt;        &lt;&#x2F;span&gt;&lt;span style=&quot;color:#96b5b4;&quot;&gt;printf&lt;&#x2F;span&gt;&lt;span&gt;(&amp;quot;&lt;&#x2F;span&gt;&lt;span style=&quot;color:#a3be8c;&quot;&gt;No changes&lt;&#x2F;span&gt;&lt;span style=&quot;color:#96b5b4;&quot;&gt;\n&lt;&#x2F;span&gt;&lt;span&gt;&amp;quot;);
+&lt;&#x2F;span&gt;&lt;span&gt;    }
+&lt;&#x2F;span&gt;&lt;span&gt;    &lt;&#x2F;span&gt;&lt;span style=&quot;color:#b48ead;&quot;&gt;else
+&lt;&#x2F;span&gt;&lt;span&gt;    {
+&lt;&#x2F;span&gt;&lt;span&gt;        set&amp;lt;string&amp;gt; previous_key;
+&lt;&#x2F;span&gt;&lt;span&gt;        &lt;&#x2F;span&gt;&lt;span style=&quot;color:#b48ead;&quot;&gt;for &lt;&#x2F;span&gt;&lt;span&gt;(&lt;&#x2F;span&gt;&lt;span style=&quot;color:#b48ead;&quot;&gt;auto&lt;&#x2F;span&gt;&lt;span&gt; iter : previous)
+&lt;&#x2F;span&gt;&lt;span&gt;        {
+&lt;&#x2F;span&gt;&lt;span&gt;            previous_key.&lt;&#x2F;span&gt;&lt;span style=&quot;color:#bf616a;&quot;&gt;insert&lt;&#x2F;span&gt;&lt;span&gt;(iter.&lt;&#x2F;span&gt;&lt;span style=&quot;color:#bf616a;&quot;&gt;first&lt;&#x2F;span&gt;&lt;span&gt;);
+&lt;&#x2F;span&gt;&lt;span&gt;        }
+&lt;&#x2F;span&gt;&lt;span&gt;
+&lt;&#x2F;span&gt;&lt;span&gt;        set&amp;lt;string&amp;gt; current_key;
+&lt;&#x2F;span&gt;&lt;span&gt;        &lt;&#x2F;span&gt;&lt;span style=&quot;color:#b48ead;&quot;&gt;for &lt;&#x2F;span&gt;&lt;span&gt;(&lt;&#x2F;span&gt;&lt;span style=&quot;color:#b48ead;&quot;&gt;auto&lt;&#x2F;span&gt;&lt;span&gt; iter : current)
+&lt;&#x2F;span&gt;&lt;span&gt;        {
+&lt;&#x2F;span&gt;&lt;span&gt;            current_key.&lt;&#x2F;span&gt;&lt;span style=&quot;color:#bf616a;&quot;&gt;insert&lt;&#x2F;span&gt;&lt;span&gt;(iter.&lt;&#x2F;span&gt;&lt;span style=&quot;color:#bf616a;&quot;&gt;first&lt;&#x2F;span&gt;&lt;span&gt;);
+&lt;&#x2F;span&gt;&lt;span&gt;        }
+&lt;&#x2F;span&gt;&lt;span&gt;
+&lt;&#x2F;span&gt;&lt;span&gt;        &lt;&#x2F;span&gt;&lt;span style=&quot;color:#65737e;&quot;&gt;&#x2F;&#x2F; *
+&lt;&#x2F;span&gt;&lt;span&gt;        set&amp;lt;string&amp;gt; possible_star;
+&lt;&#x2F;span&gt;&lt;span&gt;        &lt;&#x2F;span&gt;&lt;span style=&quot;color:#bf616a;&quot;&gt;set_intersection&lt;&#x2F;span&gt;&lt;span&gt;(current_key.&lt;&#x2F;span&gt;&lt;span style=&quot;color:#bf616a;&quot;&gt;begin&lt;&#x2F;span&gt;&lt;span&gt;(), current_key.&lt;&#x2F;span&gt;&lt;span style=&quot;color:#bf616a;&quot;&gt;end&lt;&#x2F;span&gt;&lt;span&gt;(), previous_key.&lt;&#x2F;span&gt;&lt;span style=&quot;color:#bf616a;&quot;&gt;begin&lt;&#x2F;span&gt;&lt;span&gt;(), previous_key.&lt;&#x2F;span&gt;&lt;span style=&quot;color:#bf616a;&quot;&gt;end&lt;&#x2F;span&gt;&lt;span&gt;(), &lt;&#x2F;span&gt;&lt;span style=&quot;color:#bf616a;&quot;&gt;inserter&lt;&#x2F;span&gt;&lt;span&gt;(possible_star, possible_star.&lt;&#x2F;span&gt;&lt;span style=&quot;color:#bf616a;&quot;&gt;begin&lt;&#x2F;span&gt;&lt;span&gt;()));
+&lt;&#x2F;span&gt;&lt;span&gt;
+&lt;&#x2F;span&gt;&lt;span&gt;        &lt;&#x2F;span&gt;&lt;span style=&quot;color:#65737e;&quot;&gt;&#x2F;&#x2F; +
+&lt;&#x2F;span&gt;&lt;span&gt;        set&amp;lt;string&amp;gt; plus;
+&lt;&#x2F;span&gt;&lt;span&gt;        &lt;&#x2F;span&gt;&lt;span style=&quot;color:#bf616a;&quot;&gt;set_difference&lt;&#x2F;span&gt;&lt;span&gt;(current_key.&lt;&#x2F;span&gt;&lt;span style=&quot;color:#bf616a;&quot;&gt;begin&lt;&#x2F;span&gt;&lt;span&gt;(), current_key.&lt;&#x2F;span&gt;&lt;span style=&quot;color:#bf616a;&quot;&gt;end&lt;&#x2F;span&gt;&lt;span&gt;(), possible_star.&lt;&#x2F;span&gt;&lt;span style=&quot;color:#bf616a;&quot;&gt;begin&lt;&#x2F;span&gt;&lt;span&gt;(), possible_star.&lt;&#x2F;span&gt;&lt;span style=&quot;color:#bf616a;&quot;&gt;end&lt;&#x2F;span&gt;&lt;span&gt;(), &lt;&#x2F;span&gt;&lt;span style=&quot;color:#bf616a;&quot;&gt;inserter&lt;&#x2F;span&gt;&lt;span&gt;(plus, plus.&lt;&#x2F;span&gt;&lt;span style=&quot;color:#bf616a;&quot;&gt;begin&lt;&#x2F;span&gt;&lt;span&gt;()));
+&lt;&#x2F;span&gt;&lt;span&gt;        &lt;&#x2F;span&gt;&lt;span style=&quot;color:#b48ead;&quot;&gt;if &lt;&#x2F;span&gt;&lt;span&gt;(plus.&lt;&#x2F;span&gt;&lt;span style=&quot;color:#bf616a;&quot;&gt;size&lt;&#x2F;span&gt;&lt;span&gt;())
+&lt;&#x2F;span&gt;&lt;span&gt;            &lt;&#x2F;span&gt;&lt;span style=&quot;color:#bf616a;&quot;&gt;output&lt;&#x2F;span&gt;&lt;span&gt;(&amp;#39;&lt;&#x2F;span&gt;&lt;span style=&quot;color:#a3be8c;&quot;&gt;+&lt;&#x2F;span&gt;&lt;span&gt;&amp;#39;, plus);
+&lt;&#x2F;span&gt;&lt;span&gt;
+&lt;&#x2F;span&gt;&lt;span&gt;        &lt;&#x2F;span&gt;&lt;span style=&quot;color:#65737e;&quot;&gt;&#x2F;&#x2F; -
+&lt;&#x2F;span&gt;&lt;span&gt;        set&amp;lt;string&amp;gt; minus;
+&lt;&#x2F;span&gt;&lt;span&gt;        &lt;&#x2F;span&gt;&lt;span style=&quot;color:#bf616a;&quot;&gt;set_difference&lt;&#x2F;span&gt;&lt;span&gt;(previous_key.&lt;&#x2F;span&gt;&lt;span style=&quot;color:#bf616a;&quot;&gt;begin&lt;&#x2F;span&gt;&lt;span&gt;(), previous_key.&lt;&#x2F;span&gt;&lt;span style=&quot;color:#bf616a;&quot;&gt;end&lt;&#x2F;span&gt;&lt;span&gt;(), possible_star.&lt;&#x2F;span&gt;&lt;span style=&quot;color:#bf616a;&quot;&gt;begin&lt;&#x2F;span&gt;&lt;span&gt;(), possible_star.&lt;&#x2F;span&gt;&lt;span style=&quot;color:#bf616a;&quot;&gt;end&lt;&#x2F;span&gt;&lt;span&gt;(), &lt;&#x2F;span&gt;&lt;span style=&quot;color:#bf616a;&quot;&gt;inserter&lt;&#x2F;span&gt;&lt;span&gt;(minus, minus.&lt;&#x2F;span&gt;&lt;span style=&quot;color:#bf616a;&quot;&gt;begin&lt;&#x2F;span&gt;&lt;span&gt;()));
+&lt;&#x2F;span&gt;&lt;span&gt;        &lt;&#x2F;span&gt;&lt;span style=&quot;color:#b48ead;&quot;&gt;if &lt;&#x2F;span&gt;&lt;span&gt;(minus.&lt;&#x2F;span&gt;&lt;span style=&quot;color:#bf616a;&quot;&gt;size&lt;&#x2F;span&gt;&lt;span&gt;())
+&lt;&#x2F;span&gt;&lt;span&gt;            &lt;&#x2F;span&gt;&lt;span style=&quot;color:#bf616a;&quot;&gt;output&lt;&#x2F;span&gt;&lt;span&gt;(&amp;#39;&lt;&#x2F;span&gt;&lt;span style=&quot;color:#a3be8c;&quot;&gt;-&lt;&#x2F;span&gt;&lt;span&gt;&amp;#39;, minus);
+&lt;&#x2F;span&gt;&lt;span&gt;
+&lt;&#x2F;span&gt;&lt;span&gt;        &lt;&#x2F;span&gt;&lt;span style=&quot;color:#65737e;&quot;&gt;&#x2F;&#x2F; *
+&lt;&#x2F;span&gt;&lt;span&gt;        set&amp;lt;string&amp;gt; star;
+&lt;&#x2F;span&gt;&lt;span&gt;        &lt;&#x2F;span&gt;&lt;span style=&quot;color:#bf616a;&quot;&gt;copy_if&lt;&#x2F;span&gt;&lt;span&gt;(possible_star.&lt;&#x2F;span&gt;&lt;span style=&quot;color:#bf616a;&quot;&gt;begin&lt;&#x2F;span&gt;&lt;span&gt;(), possible_star.&lt;&#x2F;span&gt;&lt;span style=&quot;color:#bf616a;&quot;&gt;end&lt;&#x2F;span&gt;&lt;span&gt;(), &lt;&#x2F;span&gt;&lt;span style=&quot;color:#bf616a;&quot;&gt;inserter&lt;&#x2F;span&gt;&lt;span&gt;(star, star.&lt;&#x2F;span&gt;&lt;span style=&quot;color:#bf616a;&quot;&gt;begin&lt;&#x2F;span&gt;&lt;span&gt;()), [&amp;amp;](string k) { &lt;&#x2F;span&gt;&lt;span style=&quot;color:#b48ead;&quot;&gt;return&lt;&#x2F;span&gt;&lt;span&gt; current[k] != previous[k]; });
+&lt;&#x2F;span&gt;&lt;span&gt;        &lt;&#x2F;span&gt;&lt;span style=&quot;color:#b48ead;&quot;&gt;if &lt;&#x2F;span&gt;&lt;span&gt;(star.&lt;&#x2F;span&gt;&lt;span style=&quot;color:#bf616a;&quot;&gt;size&lt;&#x2F;span&gt;&lt;span&gt;())
+&lt;&#x2F;span&gt;&lt;span&gt;            &lt;&#x2F;span&gt;&lt;span style=&quot;color:#bf616a;&quot;&gt;output&lt;&#x2F;span&gt;&lt;span&gt;(&amp;#39;&lt;&#x2F;span&gt;&lt;span style=&quot;color:#a3be8c;&quot;&gt;*&lt;&#x2F;span&gt;&lt;span&gt;&amp;#39;, star);
+&lt;&#x2F;span&gt;&lt;span&gt;    }
+&lt;&#x2F;span&gt;&lt;span&gt;}
+&lt;&#x2F;span&gt;&lt;span style=&quot;color:#b48ead;&quot;&gt;int &lt;&#x2F;span&gt;&lt;span style=&quot;color:#8fa1b3;&quot;&gt;main&lt;&#x2F;span&gt;&lt;span&gt;()
+&lt;&#x2F;span&gt;&lt;span&gt;{
+&lt;&#x2F;span&gt;&lt;span&gt;    &lt;&#x2F;span&gt;&lt;span style=&quot;color:#b48ead;&quot;&gt;int&lt;&#x2F;span&gt;&lt;span&gt; n;
+&lt;&#x2F;span&gt;&lt;span&gt;    string line;
+&lt;&#x2F;span&gt;&lt;span&gt;    &lt;&#x2F;span&gt;&lt;span style=&quot;color:#96b5b4;&quot;&gt;scanf&lt;&#x2F;span&gt;&lt;span&gt;(&amp;quot;&lt;&#x2F;span&gt;&lt;span style=&quot;color:#d08770;&quot;&gt;%d&lt;&#x2F;span&gt;&lt;span&gt;&amp;quot;, &amp;amp;n);
+&lt;&#x2F;span&gt;&lt;span&gt;    &lt;&#x2F;span&gt;&lt;span style=&quot;color:#bf616a;&quot;&gt;getline&lt;&#x2F;span&gt;&lt;span&gt;(cin, line);
+&lt;&#x2F;span&gt;&lt;span&gt;
+&lt;&#x2F;span&gt;&lt;span&gt;    &lt;&#x2F;span&gt;&lt;span style=&quot;color:#b48ead;&quot;&gt;for &lt;&#x2F;span&gt;&lt;span&gt;(&lt;&#x2F;span&gt;&lt;span style=&quot;color:#b48ead;&quot;&gt;int&lt;&#x2F;span&gt;&lt;span&gt; i = &lt;&#x2F;span&gt;&lt;span style=&quot;color:#d08770;&quot;&gt;0&lt;&#x2F;span&gt;&lt;span&gt;; i &amp;lt; n; i++)
+&lt;&#x2F;span&gt;&lt;span&gt;    {
+&lt;&#x2F;span&gt;&lt;span&gt;        &lt;&#x2F;span&gt;&lt;span style=&quot;color:#bf616a;&quot;&gt;getline&lt;&#x2F;span&gt;&lt;span&gt;(cin, line);
+&lt;&#x2F;span&gt;&lt;span&gt;        map&amp;lt;string, string&amp;gt; previous_map;
+&lt;&#x2F;span&gt;&lt;span&gt;        &lt;&#x2F;span&gt;&lt;span style=&quot;color:#bf616a;&quot;&gt;parse2Dict&lt;&#x2F;span&gt;&lt;span&gt;(line, previous_map);
+&lt;&#x2F;span&gt;&lt;span&gt;
+&lt;&#x2F;span&gt;&lt;span&gt;        &lt;&#x2F;span&gt;&lt;span style=&quot;color:#bf616a;&quot;&gt;getline&lt;&#x2F;span&gt;&lt;span&gt;(cin, line);
+&lt;&#x2F;span&gt;&lt;span&gt;        map&amp;lt;string, string&amp;gt; current_map;
+&lt;&#x2F;span&gt;&lt;span&gt;        &lt;&#x2F;span&gt;&lt;span style=&quot;color:#bf616a;&quot;&gt;parse2Dict&lt;&#x2F;span&gt;&lt;span&gt;(line, current_map);
+&lt;&#x2F;span&gt;&lt;span&gt;
+&lt;&#x2F;span&gt;&lt;span&gt;        &lt;&#x2F;span&gt;&lt;span style=&quot;color:#bf616a;&quot;&gt;compareDict&lt;&#x2F;span&gt;&lt;span&gt;(previous_map, current_map);
+&lt;&#x2F;span&gt;&lt;span&gt;        cout &amp;lt;&amp;lt; endl;
+&lt;&#x2F;span&gt;&lt;span&gt;    }
+&lt;&#x2F;span&gt;&lt;span&gt;
+&lt;&#x2F;span&gt;&lt;span&gt;    &lt;&#x2F;span&gt;&lt;span style=&quot;color:#b48ead;&quot;&gt;return &lt;&#x2F;span&gt;&lt;span style=&quot;color:#d08770;&quot;&gt;0&lt;&#x2F;span&gt;&lt;span&gt;;
+&lt;&#x2F;span&gt;&lt;span&gt;}
+&lt;&#x2F;span&gt;&lt;&#x2F;code&gt;&lt;&#x2F;pre&gt;
+</description>
+      </item>
+      <item>
+          <title>Find-Minimum-in-Rotated-Sorted-Array</title>
+          <pubDate>Thu, 31 Jan 2019 00:00:00 +0000</pubDate>
+          <author>Unknown</author>
+          <link>https://titaneric.github.io/find-minimum-in-rotated-sorted-array/</link>
+          <guid>https://titaneric.github.io/find-minimum-in-rotated-sorted-array/</guid>
+          <description>&lt;h1 id=&quot;find-minimum-in-rotated-sorted-array-153&quot;&gt;&lt;a href=&quot;https:&#x2F;&#x2F;leetcode.com&#x2F;problems&#x2F;find-minimum-in-rotated-sorted-array&#x2F;&quot;&gt;Find Minimum in Rotated Sorted Array (#153)&lt;&#x2F;a&gt;&lt;&#x2F;h1&gt;
+&lt;h2 id=&quot;description&quot;&gt;Description&lt;&#x2F;h2&gt;
+&lt;p&gt;Suppose an array sorted in ascending order is rotated at some pivot unknown to you beforehand.
+(i.e.,  &lt;code&gt;[0,1,2,4,5,6,7]&lt;&#x2F;code&gt; might become  &lt;code&gt;[4,5,6,7,0,1,2]&lt;&#x2F;code&gt;).
+Find the minimum element.
+You may assume no duplicate exists in the array.&lt;&#x2F;p&gt;
+&lt;hr &#x2F;&gt;
+&lt;h2 id=&quot;example&quot;&gt;Example&lt;&#x2F;h2&gt;
+&lt;h3 id=&quot;example-1&quot;&gt;Example 1&lt;&#x2F;h3&gt;
+&lt;pre style=&quot;background-color:#2b303b;color:#c0c5ce;&quot;&gt;&lt;code&gt;&lt;span&gt;Input: [3, 4, 5, 1, 2]
+&lt;&#x2F;span&gt;&lt;span&gt;Output: 1
+&lt;&#x2F;span&gt;&lt;&#x2F;code&gt;&lt;&#x2F;pre&gt;
+&lt;h3 id=&quot;example-2&quot;&gt;Example 2&lt;&#x2F;h3&gt;
+&lt;pre style=&quot;background-color:#2b303b;color:#c0c5ce;&quot;&gt;&lt;code&gt;&lt;span&gt;Input: [4, 5, 6, 7, 0, 1, 2]
+&lt;&#x2F;span&gt;&lt;span&gt;Output: 0
+&lt;&#x2F;span&gt;&lt;&#x2F;code&gt;&lt;&#x2F;pre&gt;
+&lt;hr &#x2F;&gt;
+&lt;!--more--&gt;
+&lt;h2 id=&quot;solution&quot;&gt;Solution&lt;&#x2F;h2&gt;
+&lt;h3 id=&quot;solution-i-reference&quot;&gt;Solution I (&lt;a href=&quot;https:&#x2F;&#x2F;leetcode.com&#x2F;articles&#x2F;find-minimum-in-rotated-sorted-array&#x2F;&quot;&gt;Reference&lt;&#x2F;a&gt;)&lt;&#x2F;h3&gt;
+&lt;h4 id=&quot;observation&quot;&gt;Observation&lt;&#x2F;h4&gt;
+&lt;p&gt;If the sorted array is not rotated, the last element &lt;em&gt;&lt;strong&gt;always&lt;&#x2F;strong&gt;&lt;&#x2F;em&gt; larger than first element.&lt;&#x2F;p&gt;
+&lt;pre style=&quot;background-color:#2b303b;color:#c0c5ce;&quot;&gt;&lt;code&gt;&lt;span&gt;[2, 3, 4, 5, 6, 7]
+&lt;&#x2F;span&gt;&lt;span&gt; ^              ^
+&lt;&#x2F;span&gt;&lt;&#x2F;code&gt;&lt;&#x2F;pre&gt;
+&lt;p&gt;However, if the sorted array is rotated, we want to find the &lt;code&gt;Infection Point&lt;&#x2F;code&gt; (i.e. the point whose left element is maximum and right element is minimum).&lt;&#x2F;p&gt;
+&lt;pre style=&quot;background-color:#2b303b;color:#c0c5ce;&quot;&gt;&lt;code&gt;&lt;span&gt;[4, 5, 6, 7, 2, 3]
+&lt;&#x2F;span&gt;&lt;span&gt;           ^
+&lt;&#x2F;span&gt;&lt;&#x2F;code&gt;&lt;&#x2F;pre&gt;
+&lt;p&gt;Furthermore,&lt;&#x2F;p&gt;
+&lt;ul&gt;
+&lt;li&gt;All the elements to the left of inflection point &amp;gt; first element of the array.&lt;&#x2F;li&gt;
+&lt;li&gt;All the elements to the right of inflection point &amp;lt; first element of the array.&lt;&#x2F;li&gt;
+&lt;&#x2F;ul&gt;
+&lt;hr &#x2F;&gt;
+&lt;h4 id=&quot;algorithm&quot;&gt;Algorithm&lt;&#x2F;h4&gt;
+&lt;p&gt;&lt;img src=&quot;https:&#x2F;&#x2F;i.imgur.com&#x2F;goTfIbm.png&quot; alt=&quot;&quot; &#x2F;&gt;&lt;&#x2F;p&gt;
+&lt;pre style=&quot;background-color:#2b303b;color:#c0c5ce;&quot;&gt;&lt;code&gt;&lt;span&gt;[5, 1, 2, 4, 5]
+&lt;&#x2F;span&gt;&lt;span&gt; l     m     r
+&lt;&#x2F;span&gt;&lt;span&gt; &amp;lt;-----
+&lt;&#x2F;span&gt;&lt;span&gt;
+&lt;&#x2F;span&gt;&lt;span&gt;[5, 1, 2, 4, 5]
+&lt;&#x2F;span&gt;&lt;span&gt; l  r
+&lt;&#x2F;span&gt;&lt;span&gt; m
+&lt;&#x2F;span&gt;&lt;&#x2F;code&gt;&lt;&#x2F;pre&gt;
+&lt;pre style=&quot;background-color:#2b303b;color:#c0c5ce;&quot;&gt;&lt;code&gt;&lt;span&gt;[4, 5, 6, 7, 2, 3]
+&lt;&#x2F;span&gt;&lt;span&gt; l     m        r
+&lt;&#x2F;span&gt;&lt;span&gt;         -------&amp;gt;
+&lt;&#x2F;span&gt;&lt;span&gt;
+&lt;&#x2F;span&gt;&lt;span&gt;[4, 5, 6, 7, 2, 3]
+&lt;&#x2F;span&gt;&lt;span&gt;          l  m  r
+&lt;&#x2F;span&gt;&lt;&#x2F;code&gt;&lt;&#x2F;pre&gt;
+&lt;p&gt;
+Time Complexity:\(O(log\,n)\),
+Space Complexity:\(O(1)\)
+&lt;&#x2F;p&gt;
+---
+&lt;h4 id=&quot;code&quot;&gt;Code&lt;&#x2F;h4&gt;
+&lt;pre data-lang=&quot;python&quot; style=&quot;background-color:#2b303b;color:#c0c5ce;&quot; class=&quot;language-python &quot;&gt;&lt;code class=&quot;language-python&quot; data-lang=&quot;python&quot;&gt;&lt;span style=&quot;color:#b48ead;&quot;&gt;class &lt;&#x2F;span&gt;&lt;span style=&quot;color:#ebcb8b;&quot;&gt;Solution&lt;&#x2F;span&gt;&lt;span style=&quot;color:#eff1f5;&quot;&gt;:
+&lt;&#x2F;span&gt;&lt;span&gt;    &lt;&#x2F;span&gt;&lt;span style=&quot;color:#b48ead;&quot;&gt;def &lt;&#x2F;span&gt;&lt;span style=&quot;color:#8fa1b3;&quot;&gt;findMin&lt;&#x2F;span&gt;&lt;span&gt;(&lt;&#x2F;span&gt;&lt;span style=&quot;color:#bf616a;&quot;&gt;self&lt;&#x2F;span&gt;&lt;span&gt;, &lt;&#x2F;span&gt;&lt;span style=&quot;color:#bf616a;&quot;&gt;nums&lt;&#x2F;span&gt;&lt;span&gt;):
+&lt;&#x2F;span&gt;&lt;span&gt;        &lt;&#x2F;span&gt;&lt;span style=&quot;color:#65737e;&quot;&gt;&amp;quot;&amp;quot;&amp;quot;
+&lt;&#x2F;span&gt;&lt;span style=&quot;color:#65737e;&quot;&gt;        :type nums: List[int]
+&lt;&#x2F;span&gt;&lt;span style=&quot;color:#65737e;&quot;&gt;        :rtype: int
+&lt;&#x2F;span&gt;&lt;span style=&quot;color:#65737e;&quot;&gt;        &amp;quot;&amp;quot;&amp;quot;
+&lt;&#x2F;span&gt;&lt;span&gt;
+&lt;&#x2F;span&gt;&lt;span&gt;        &lt;&#x2F;span&gt;&lt;span style=&quot;color:#b48ead;&quot;&gt;if &lt;&#x2F;span&gt;&lt;span style=&quot;color:#96b5b4;&quot;&gt;len&lt;&#x2F;span&gt;&lt;span&gt;(nums) == &lt;&#x2F;span&gt;&lt;span style=&quot;color:#d08770;&quot;&gt;1&lt;&#x2F;span&gt;&lt;span&gt;:
+&lt;&#x2F;span&gt;&lt;span&gt;            &lt;&#x2F;span&gt;&lt;span style=&quot;color:#b48ead;&quot;&gt;return &lt;&#x2F;span&gt;&lt;span&gt;nums[&lt;&#x2F;span&gt;&lt;span style=&quot;color:#d08770;&quot;&gt;0&lt;&#x2F;span&gt;&lt;span&gt;]
+&lt;&#x2F;span&gt;&lt;span&gt;
+&lt;&#x2F;span&gt;&lt;span&gt;
+&lt;&#x2F;span&gt;&lt;span&gt;        l, h = &lt;&#x2F;span&gt;&lt;span style=&quot;color:#d08770;&quot;&gt;0&lt;&#x2F;span&gt;&lt;span&gt;, &lt;&#x2F;span&gt;&lt;span style=&quot;color:#96b5b4;&quot;&gt;len&lt;&#x2F;span&gt;&lt;span&gt;(nums) - &lt;&#x2F;span&gt;&lt;span style=&quot;color:#d08770;&quot;&gt;1
+&lt;&#x2F;span&gt;&lt;span&gt;
+&lt;&#x2F;span&gt;&lt;span&gt;        &lt;&#x2F;span&gt;&lt;span style=&quot;color:#b48ead;&quot;&gt;if &lt;&#x2F;span&gt;&lt;span&gt;nums[h] &amp;gt; nums[l]:
+&lt;&#x2F;span&gt;&lt;span&gt;            &lt;&#x2F;span&gt;&lt;span style=&quot;color:#b48ead;&quot;&gt;return &lt;&#x2F;span&gt;&lt;span&gt;nums[l]
+&lt;&#x2F;span&gt;&lt;span&gt;
+&lt;&#x2F;span&gt;&lt;span&gt;        &lt;&#x2F;span&gt;&lt;span style=&quot;color:#b48ead;&quot;&gt;while &lt;&#x2F;span&gt;&lt;span&gt;l &amp;lt;= h:
+&lt;&#x2F;span&gt;&lt;span&gt;            m = l + (h - l) &#x2F;&#x2F; &lt;&#x2F;span&gt;&lt;span style=&quot;color:#d08770;&quot;&gt;2
+&lt;&#x2F;span&gt;&lt;span&gt;            &lt;&#x2F;span&gt;&lt;span style=&quot;color:#b48ead;&quot;&gt;if &lt;&#x2F;span&gt;&lt;span&gt;nums[m] &amp;gt; nums[m + &lt;&#x2F;span&gt;&lt;span style=&quot;color:#d08770;&quot;&gt;1&lt;&#x2F;span&gt;&lt;span&gt;]:
+&lt;&#x2F;span&gt;&lt;span&gt;                &lt;&#x2F;span&gt;&lt;span style=&quot;color:#b48ead;&quot;&gt;return &lt;&#x2F;span&gt;&lt;span&gt;nums[m + &lt;&#x2F;span&gt;&lt;span style=&quot;color:#d08770;&quot;&gt;1&lt;&#x2F;span&gt;&lt;span&gt;]
+&lt;&#x2F;span&gt;&lt;span&gt;            &lt;&#x2F;span&gt;&lt;span style=&quot;color:#b48ead;&quot;&gt;if &lt;&#x2F;span&gt;&lt;span&gt;nums[m - &lt;&#x2F;span&gt;&lt;span style=&quot;color:#d08770;&quot;&gt;1&lt;&#x2F;span&gt;&lt;span&gt;] &amp;gt; nums[m]:
+&lt;&#x2F;span&gt;&lt;span&gt;                &lt;&#x2F;span&gt;&lt;span style=&quot;color:#b48ead;&quot;&gt;return &lt;&#x2F;span&gt;&lt;span&gt;nums[m]
+&lt;&#x2F;span&gt;&lt;span&gt;
+&lt;&#x2F;span&gt;&lt;span&gt;            &lt;&#x2F;span&gt;&lt;span style=&quot;color:#b48ead;&quot;&gt;if &lt;&#x2F;span&gt;&lt;span&gt;nums[m] &amp;gt; nums[&lt;&#x2F;span&gt;&lt;span style=&quot;color:#d08770;&quot;&gt;0&lt;&#x2F;span&gt;&lt;span&gt;]:
+&lt;&#x2F;span&gt;&lt;span&gt;                l = m + &lt;&#x2F;span&gt;&lt;span style=&quot;color:#d08770;&quot;&gt;1
+&lt;&#x2F;span&gt;&lt;span&gt;            &lt;&#x2F;span&gt;&lt;span style=&quot;color:#b48ead;&quot;&gt;else&lt;&#x2F;span&gt;&lt;span&gt;:
+&lt;&#x2F;span&gt;&lt;span&gt;                h = m - &lt;&#x2F;span&gt;&lt;span style=&quot;color:#d08770;&quot;&gt;1
+&lt;&#x2F;span&gt;&lt;&#x2F;code&gt;&lt;&#x2F;pre&gt;
+</description>
+      </item>
+    </channel>
+</rss>
