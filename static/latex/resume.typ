@@ -16,27 +16,28 @@
   title: none,
   contact: ((text: [], link: "")),
   skills: (
-    languages: ()
+    languages: (),
   ),
-  main: (
-    (title: "", content: [])
-  ),
+  main: ((title: "", content: [])),
   sidebar: (),
-  body) = {
+  body,
+) = {
 
   let backgroundTitle(content) = heading(
     level: 1,
     numbering: none,
-  text(
+    text(
       fill: theme,
       size: 1.25em,
       weight: "bold",
-    [
-      #{content}
-      #v(-0.75em)
-      #line(length: 100%, stroke: 1pt + theme)
-    ]
-  )
+      [
+        #{
+          content
+        }
+        #v(-0.75em)
+        #line(length: 100%, stroke: 1pt + theme)
+      ],
+    ),
   )
 
   let secondaryTitle(content) = {
@@ -49,96 +50,97 @@
 
 
   let formattedName = stack(
-        dir: ltr,
-        spacing: 1em,
-        text(strong[#name], weight: 100, 4.5em),
-        text(strong[Huang], weight: 100, 4.5em, fill: rgb(95%,55%,15%,80%)),
-      )
+    dir: ltr,
+    spacing: 1em,
+    text(strong[#name], weight: 100, 4.5em),
+    text(strong[Huang], weight: 100, 4.5em, fill: rgb(95%, 55%, 15%, 80%)),
+  )
 
   let formattedTitle = text(strong[#title], weight: 100, 1.5em)
 
   let titleColumn = align(center)[
     #stack(
-        dir: ttb,
-        spacing: 1.5em,
-        formattedName,
-        formattedTitle,
+      dir: ttb,
+      spacing: 1.5em,
+      formattedName,
+      formattedTitle,
     )
   ]
-  let icon(name, shift: 1.5pt) = {  box(
-    baseline: shift,
-    height: 10pt,
-    image(name + ".svg")
-  )
+  let icon(name, shift: 1.5pt) = {
+    box(
+      baseline: shift,
+      height: 10pt,
+      image(name + ".svg"),
+    )
   }
 
   let contactColumn = align(left)[#stack(
-        dir: ttb,
-        spacing: 0.25em,
-        ..contact.map(c => {
-    if c.link == none [
-      #icon(c.type)
-      #c.text
-    ] else [
-      #icon(c.type)
-      #underline(link(c.link, text(c.text)))
-    ]
-  })
-      )]
+      dir: ttb,
+      spacing: 0.25em,
+      ..contact.map(c => {
+        if c.link == none [
+          #icon(c.type)
+          #c.text
+        ] else [
+          #icon(c.type)
+          #underline(link(c.link, text(c.text)))
+        ]
+      }),
+    )]
 
 
   grid(
     columns: (2fr, 1fr),
     column-gutter: 1em,
-    titleColumn,
-    contactColumn,
+    titleColumn, contactColumn,
   )
-  
+
   set par(justify: true)
 
   let parseSubSections(subSections) = {
     stack(
-        dir: ttb,
-        spacing: 1em,
-    ..subSections.map(s => {
-      [
-        #box([
-          #secondaryTitle(s.title)#h(1fr)#italicColorTitle(s.titleEnd)
-          ] )
-        #if s.subTitle != none or s.subTitleEnd != none { 
-        box[
-          #text(9pt)[
-            #if s.subTitle != none {
-            [#icon("calendar") #s.subTitle]
-            }
-            #h(1fr)#icon("location") #s.subTitleEnd]
+      dir: ttb,
+      spacing: 1em,
+      ..subSections.map(s => {
+        [
+          #box([
+            #secondaryTitle(s.title)#h(1fr)#italicColorTitle(s.titleEnd)
+          ])
+          #if s.subTitle != none or s.subTitleEnd != none {
+            box[
+              #text(9pt)[
+                #if s.subTitle != none {
+                  [#icon("calendar") #s.subTitle]
+                }
+                #h(1fr)#icon("location") #s.subTitleEnd]
+            ]
+          }
+          #s.content
         ]
-        }
-        #s.content
-      ]
-    })
+      }),
     )
   }
 
   let parseSection(section) = {
     stack(
-        dir: ttb,
-        spacing: 1em,
-    ..section.map(m => {
-      if m.title == "" {
-        [
+      dir: ttb,
+      spacing: 1em,
+      ..section.map(m => {
+        if m.title == "" {
+          [
 
-#m.content
-        ]
+            #m.content
+          ]
 
-      } else {
+        } else {
 
-      [
-        #backgroundTitle(m.title)
-        #parseSubSections(m.content)
-      ]
-      }
-    }))
+          [
+            #backgroundTitle(m.title)
+            #parseSubSections(m.content)
+          ]
+        }
+      }),
+    )
   }
 
   let mainSection = parseSection(main)
@@ -149,8 +151,7 @@
   grid(
     columns: (2fr, 1fr),
     column-gutter: 1em,
-    mainSection,
-    sidebarSection,
+    mainSection, sidebarSection,
   )
 
   // Main body.
@@ -162,19 +163,17 @@
 
 // #import "template.typ": *
 
-#set page(
-  margin: (
-    left: 10mm, 
-    right: 10mm, 
-    top: 15mm, 
-    bottom: 15mm
-  ),
-)
+#set page(margin: (
+  left: 10mm,
+  right: 10mm,
+  top: 15mm,
+  bottom: 15mm,
+))
 
 #set text(font: "Mulish")
 
 #show: project.with(
-  theme: rgb(95%,55%,15%),
+  theme: rgb(95%, 55%, 15%),
   name: "Eric",
   title: "Site Reliability Engineer",
   contact: (
@@ -183,30 +182,28 @@
       type: "phone",
     ),
     contact(
-      text: "chen-yi-huang", 
+      text: "chen-yi-huang",
       link: "https://www.linkedin.com/in/chen-yi-huang/",
       type: "linkedin",
     ),
     contact(
-      text: "titaneric", 
+      text: "titaneric",
       link: "https://www.github.com/titaneric",
       type: "github",
     ),
     contact(
-      text: "www.titaneric.com", 
+      text: "www.titaneric.com",
       link: "https://www.titaneric.com",
       type: "website",
     ),
     contact(
-      text: "chenyihuang001@gmail.com", 
+      text: "chenyihuang001@gmail.com",
       link: "mailto:chenyihuang001@gmail.com",
       type: "email",
     ),
   ),
   main: (
-    section(
-        content: "Certified Kubernetes Administrator and conscientious software engineer. Aiming to leverage my skills in automation, observability, cloud-native solutions, and problem solving abilities to improve system reliability and efficiency."
-    ),
+    section(content: "Certified Kubernetes Administrator and conscientious software engineer. Aiming to leverage my skills in automation, observability, cloud-native solutions, and problem solving abilities to improve system reliability and efficiency."),
     section(
       title: "Work Experience",
       content: (
@@ -217,7 +214,7 @@
           subTitleEnd: "Taipei, Taiwan",
           content: list(
             [Co-maintained internal Terraform provider #underline(link("https://engineering.linecorp.com/en/blog/terraform-for-verda", "terda")) and promoted Terraform adoption and advocacy at LINE Taiwan.
-],
+            ],
             [Profiled and tuned the Loki log collector system, reducing storage overhead by *80%* and keeping query performance.
             ],
             [Introduced Grafana Alloy and Faro SDK at LINE Taiwan, achieving end-to-end tracing and improving observability and issue resolution.],
@@ -248,15 +245,11 @@ Experienced in Kubernetes administration & cluster and service migration for *8*
           titleEnd: "Computer Integration Manufacturer, tsmc",
           subTitle: "Oct 2020 – Jan 2021",
           subTitleEnd: "Hsinchu, Taiwan",
-          content: list(
-// [Developed the web crawler to download *hundreds* of candidate resumes and general resume parser which achieved up to *95%* extracted information accuracy.],
-// [ Wrote integration-test under possible scenarios and detailed documents including building procedure and class diagram for senior's project.],
-// [ Pioneer of Robotic Process Automation and efficient i18n support for reporting APP.]
-          ),
+          content: list(),
         ),
       ),
     ),
- section(
+    section(
       title: "Projects",
       content: (
         subSection(
@@ -278,8 +271,8 @@ Experienced in Kubernetes administration & cluster and service migration for *8*
         //     [2023 LINE Taiwan Hackthon project, provide RWD web interface for image OCR, summary, and translation.],
         //   ),
         // ),
-      )
- ),
+      ),
+    ),
   ),
   sidebar: (
     section(
@@ -340,20 +333,39 @@ Experienced in Kubernetes administration & cluster and service migration for *8*
         ),
       ),
     ),
-  
     section(
       title: "Articles",
       content: (
         subSection(
           content: list(
-underline(link("https://techblog.lycorp.co.jp/zh-hant/terraform-for-verda", "[transl.] Terraform for Verda - A journey of Infrastructure as Code for our private cloud")),
-underline(link("https://www.titaneric.com/the-journey-to-the-kubernetes-networking/", "The Journey to the Kubernetes Networking")),
-underline(link( "https://www.titaneric.com/the-journey-to-the-kubernetes-metrics/", "The Journey to the Kubernetes metrics")),
-underline(link("https://github.com/titaneric/AutoDiff-from-scratch/blob/master/Final\%20Presentation.ipynb", "Auto Differentiation")),
-underline(link("https://www.titaneric.com/buddy-system/", "Buddy System")),
+            underline(
+              link(
+                "https://techblog.lycorp.co.jp/zh-hant/terraform-for-verda",
+                "[transl.] Terraform for Verda - A journey of Infrastructure as Code for our private cloud",
+              ),
+            ),
+            underline(
+              link(
+                "https://www.titaneric.com/the-journey-to-the-kubernetes-networking/",
+                "The Journey to the Kubernetes Networking",
+              ),
+            ),
+            underline(
+              link(
+                "https://www.titaneric.com/the-journey-to-the-kubernetes-metrics/",
+                "The Journey to the Kubernetes metrics",
+              ),
+            ),
+            underline(
+              link(
+                "https://github.com/titaneric/AutoDiff-from-scratch/blob/master/Final\%20Presentation.ipynb",
+                "Auto Differentiation",
+              ),
+            ),
+            underline(link("https://www.titaneric.com/buddy-system/", "Buddy System")),
+          ),
         ),
       ),
-    ),
     ),
     section(
       title: "Contributions",
@@ -380,7 +392,7 @@ underline(link("https://github.com/HIPS/autograd/pull/541", "autograd")),
         // ),
       ),
     ),
-  section(
+    section(
       title: "Awards & Certs",
       content: (
         subSection(
