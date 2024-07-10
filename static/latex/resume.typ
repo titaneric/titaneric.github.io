@@ -221,7 +221,7 @@
             [Profiled and tuned the Loki log collector system, reducing storage overhead by *80%* and keeping query performance.
             ],
             [Introduced Grafana Alloy and Faro SDK at LINE Taiwan, achieving end-to-end tracing and improving observability and issue resolution.],
-            [Developed slack-based workflow automation framework and migrated pipelines to GitHub Action, improving operational cost and quality.],
+            [Developed slack-based workflow automation framework and migrated pipelines to GitHub Action, improving operational quality.],
             [Designed and built internal infra cost calculator, metrics snapshotter, and dashboards, providing cloud spending visibility and optimization.],
             [Analyzed the root cause of technical debt, and developed alternative solution to resolve it. Also helped sunsetting highly operational cost internal system.],
           ),
@@ -262,13 +262,13 @@ Experienced in Kubernetes administration & cluster and service migration for *8*
         subSection(
           title: underline(link("https://www.titaneric.com/videos/rust-playground-wasm.mp4", "Rust Playground with WASM")),
           content: list(
-            [Forked #underline(link("https://play.rust-lang.org/?version=stable&mode=debug&edition=2021", "Rust Playground")) to render Web Assembly from compiled Rust, and managed to render on #underline(link("https://www.titaneric.com/videos/mdbook-wasm.mp4", "mdBook")) as well.],
+            [Forked #underline(link("https://play.rust-lang.org/?version=stable&mode=debug&edition=2021", "Rust Playground")) to render Web Assembly from compiled Rust, and managed to render them on #underline(link("https://www.titaneric.com/videos/mdbook-wasm.mp4", "mdBook")) as well.],
           ),
         ),
         subSection(
           title: "Court Reserver",
           content: list(
-            [CLI program for Taipei Metropolitan court reservation, runs in the concurrency way to avoid manual operation on APP for individual usage only.],
+            [Rust CLI program for Taipei Metropolitan court reservation, runs in the concurrency way to avoid manual operation on APP.],
             // [Captured packets from #underline(link("https://httptoolkit.com/","HTTP Toolkit")) on Android devices, TLS traffic decryption by bypassing certificate pinning, HTTP packets dissection and implemented in Rust, ran in concurrency to avoid manual operation on APP.],
           ),
         ),
