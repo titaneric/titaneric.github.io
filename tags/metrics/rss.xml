@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rss xmlns:atom="http://www.w3.org/2005/Atom" version="2.0">
+    <channel>
+      <title>Playground - metrics</title>
+      <link>https://titaneric.github.io</link>
+      <description></description>
+      <generator>Zola</generator>
+      <language>en</language>
+      <atom:link href="https://titaneric.github.io/tags/metrics/rss.xml" rel="self" type="application/rss+xml"/>
+      <lastBuildDate>Sun, 26 Dec 2021 00:00:00 +0000</lastBuildDate>
+      <item>
+          <title>The Journey to the Kubernetes Metrics</title>
+          <pubDate>Sun, 26 Dec 2021 00:00:00 +0000</pubDate>
+          <author>Unknown</author>
+          <link>https://titaneric.github.io/the-journey-to-the-kubernetes-metrics/</link>
+          <guid>https://titaneric.github.io/the-journey-to-the-kubernetes-metrics/</guid>
+          <description>&lt;div&gt;
+    &lt;iframe src=&quot;&amp;#x2F;&amp;#x2F;www.slideshare.net&amp;#x2F;slideshow&amp;#x2F;embed_code&amp;#x2F;key&amp;#x2F;Hu3wS60GLyDXVk&quot; frameborder=&quot;0&quot; width=&quot;900&quot; height=&quot;600&quot;
+        marginwidth=&quot;0&quot; marginheight=&quot;0&quot; scrolling=&quot;no&quot;
+        style=&quot;border:1px solid #CCC; border-width:1px; margin-bottom:5px; max-width: 100%;&quot; allowfullscreen&gt; &lt;&#x2F;iframe&gt;
+&lt;&#x2F;div&gt;</description>
+      </item>
+    </channel>
+</rss>
