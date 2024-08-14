@@ -307,13 +307,13 @@ Experienced in Kubernetes administration & cluster and service migration for *8*
             "Ansible",
           ).join(" • "),
         ),
-        subSection(
-          title: "Language",
-          content: (
-            "Chinese",
-            "English",
-          ).join(" • "),
-        ),
+        // subSection(
+        //   title: "Language",
+        //   content: (
+        //     "Chinese",
+        //     "English",
+        //   ).join(" • "),
+        // ),
       ),
     ),
     section(
@@ -338,6 +338,12 @@ Experienced in Kubernetes administration & cluster and service migration for *8*
       content: (
         subSection(
           content: list(
+            underline(
+              link(
+                "https://www.titaneric.com/grafana-alloy-best-practice/",
+                "Grafana Alloy Best Practice",
+              ),
+            ),
             underline(
               link(
                 "https://techblog.lycorp.co.jp/zh-hant/terraform-for-verda",
