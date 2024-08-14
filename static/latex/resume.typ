@@ -215,9 +215,9 @@
           content: list(
             [Co-maintained internal Terraform provider #underline(link("https://engineering.linecorp.com/en/blog/terraform-for-verda", "terda")) and promoted Terraform adoption and advocacy at LINE Taiwan.
             ],
-            [Profiled and tuned the Loki log collector system, reducing storage overhead by *80%* and keeping query performance.
+            [Profiled and tuned the self-hosted Loki, reducing storage overhead by *80%* and keeping query performance.
             ],
-            [Introduced Grafana Alloy and Faro SDK at LINE Taiwan, achieving end-to-end tracing and improving observability and issue resolution.],
+            [Introduced Grafana Alloy and Faro SDK at LINE Taiwan, achieving end-to-end tracing, RUM, and improving issue resolution.],
             [Developed slack-based workflow automation framework and migrated pipelines to GitHub Action, improving operational quality.],
             [Designed and built internal infra cost calculator, metrics snapshotter, and dashboards, providing cloud spending visibility and optimization.],
             [Analyzed the root cause of technical debt, and developed alternative solution to resolve it. Also helped sunsetting highly operational cost internal system.],
@@ -385,7 +385,7 @@ underline(link("https://github.com/HIPS/autograd/pull/541", "autograd")),
           ).join(", "),
         ),
         subSection(
-          title: "Update golang map iteration",
+          title: "Fix golang map iteration (BPF)",
           subTitleEnd: underline(link("https://github.com/grafana/beyla/pull/804", "beyla")),
         ),
         subSection(
