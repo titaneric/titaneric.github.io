@@ -217,7 +217,7 @@
             ],
             [Profiled and tuned the self-hosted Loki, reducing storage overhead by *80%* and keeping query performance.
             ],
-            [Introduced Grafana Alloy and Faro SDK at LINE Taiwan, achieving end-to-end tracing, RUM, and improving issue resolution.],
+            [Introduced Grafana Alloy and Faro SDK at LINE Taiwan, achieving end-to-end tracing, RUM, and presented the work at #underline(link("https://coscup.org/2024/en/session/VESN7N", "COSCUP 2024")) .],
             [Developed slack-based workflow automation framework and migrated pipelines to GitHub Action, improving operational quality.],
             [Designed and built internal infra cost calculator, metrics snapshotter, and dashboards, providing cloud spending visibility and optimization.],
             [Analyzed the root cause of technical debt, and developed alternative solution to resolve it. Also helped sunsetting highly operational cost internal system.],
