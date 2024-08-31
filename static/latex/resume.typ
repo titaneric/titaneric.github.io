@@ -220,6 +220,7 @@
             [Introduced Grafana Alloy and Faro SDK at LINE Taiwan, achieving end-to-end tracing, RUM, and presented the work at #underline(link("https://coscup.org/2024/en/session/VESN7N", "COSCUP 2024")) .],
             [Developed slack-based workflow automation framework and migrated pipelines to GitHub Action, improving operational quality.],
             [Designed and built internal infra cost calculator, metrics snapshotter, and dashboards, providing cloud spending visibility and optimization.],
+            [Developed internal secret management system integration toolkit, including GitHub Action and ArgoCD plugin, to enhance security and compliance.],
             [Analyzed the root cause of technical debt, and developed alternative solution to resolve it. Also helped sunsetting highly operational cost internal system.],
           ),
         ),
