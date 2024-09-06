@@ -45,23 +45,29 @@ Grafana Faro是JS的library，可以引用在前端的應用中，用來蒐集�
 
 在基本的infra上，底層是由OpenStack建立的私有雲架構，上層提供了Kubernetes、Load Balancer、Object Storage、Redis及MySQL等服務，這些infra主要由日本及韓國負責維運。
 
-在這架構上，台灣的SRE在Kubernetes上部屬了Traefik或Contour Ingress Controller，再上層的服務包含Tempo, Loki, ArgoCD, Grafana。
+在這架構上，台灣的SRE在Kubernetes上部署了Traefik或Contour Ingress Controller，再上層的服務包含Tempo, Loki, ArgoCD, Grafana。
+
+![alt text](/images/posts/grafana-alloy/tech-stack.png)
 
 ## 應用團隊監控架構
 
-應用團隊的服務也是部屬在k8s上，前面的流量經過Load Balancer進來之後進到Traefik部屬的那些節點上，Traefik聆聽Ingress或是IngressRoute設定的規則將流量送進服務內。
+應用團隊的服務也是部署在k8s上，前面的流量經過Load Balancer進來之後進到Traefik部署的那些節點上，Traefik聆聽Ingress或是IngressRoute設定的規則將流量送進服務內。
 
-這些應用服務會產生log, metrics及trace。metrics抓取規則主要是由PodMonitor或者ServiceMonitor定義，收進cluster上的Agent mode的Prometheus(Statefulset部屬)上，會進一步透過remote write機制送進其他團隊管理的Prometheus存放。
+這些應用服務會產生log, metrics及trace。metrics抓取規則主要是由PodMonitor或者ServiceMonitor定義，收進cluster上的Agent mode的Prometheus(Statefulset部署)上，會進一步透過remote write機制送進其他團隊管理的Prometheus存放。
 
 log主要會將stdout及stderr寫到節點上的log file上存放，我們使用promtail(Daemonset部暑)將這些log做前處理(加入敏感資料mask及k8s attributes等)之後，會直接送進SRE管理的Loki裡。
 
 trace會先拋到cluster上的otel collector(Deployment部暑)上，一樣會先做些前處理(memory限制，限制每一個span的attributes數量等)，因為數量比較大我們選擇先拋到Kafka topic上，之後會在SRE cluster進行處理。
 
+![alt text](/images/posts/grafana-alloy/user-o11y-arch.png)
+
 ## SRE監控架構
 
-同樣在SRE cluster會部屬Traefik負責接受監控的流量，上面如技術堆疊中提到的部屬ArgoCD、Grafana、Tempo、Loki等服務。Grafana的資料來源主要是其他團隊管理的Prometheus，本地的Tempo及Loki，滿足metrics、log及trace的視覺化及告警需求。
+同樣在SRE cluster會部署Traefik負責接受監控的流量，上面如技術堆疊中提到的部署ArgoCD、Grafana、Tempo、Loki等服務。Grafana的資料來源主要是其他團隊管理的Prometheus，本地的Tempo及Loki，滿足metrics、log及trace的視覺化及告警需求。
 
-在metrics部分，我們僅是使用Prometheus remote read功能讀取其他團隊的遠端Prometheus；在logs部分，透過Loki push API打進來的logs都會被Loki cluster消化，並存放到兼容S3 API的Object Storage中；SRE cluster上會另外部屬一套otel collector，負責consume來自Kafka topic的trace，之後送進Tempo cluster進一步消化，也存在Object Storage中，
+在metrics部分，我們僅是使用Prometheus remote read功能讀取其他團隊的遠端Prometheus；在logs部分，透過Loki push API打進來的logs都會被Loki cluster消化，並存放到兼容S3 API的Object Storage中；SRE cluster上會另外部署一套otel collector，負責consume來自Kafka topic的trace，之後送進Tempo cluster進一步消化，也存在Object Storage中，
+
+![alt text](/images/posts/grafana-alloy/sre-o11y-arch.png)
 
 # 如何設計Alloy
 
@@ -90,11 +96,15 @@ Alloy收進來的log是直接透過`loki.write`直接拋到SRE掌管的Loki clus
 
 Alloy會開啟`faro.receiver`元件功能，在Alloy Deployment前面會掛一個k8s Service，不同於一般的ClusterIP，我們選擇LoadBalancer type，底層的controller聆聽到之後會自動在cluster前面再創建一個LoadBalancer，基本上這樣就可以供應用程式使用。不過Faro SDK蒐集到的telemetry資料並不是直接進入這個LB，前面會再經過一個gateway。
 
+![alt text](/images/posts/grafana-alloy/user-alloy-arch.png)
+
 ## SRE端Alloy Gateway架構
 
 為了能更方便的掌握各個團隊的telemetry流量，我們選擇在SRE的cluster上部暑Contour當作gateway，Contour的data plane是超高效能的Envoy，也提供了rate limit，如果必要我們可以針對某一些團隊的流量進行限流避免影響到gateway本身，以及對應用團隊cluster的衝擊。
 
 我們使用了Contour提供的HTTPProxy，將相同domain但不同path的請求，送到應用團隊cluster的Alloy入口LB。也用了Endpoint及Service將Alloy入口LB的IP作為k8s service的封裝。
+
+![alt text](/images/posts/grafana-alloy/sre-alloy-arch.png)
 
 ## 設計緣由
 
