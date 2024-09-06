@@ -1,0 +1,681 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8" />
+  <meta content="width=device-width, initial-scale=1" name="viewport" />
+  <meta content="#ffffff" name="theme-color" />
+  <meta content="#da532c" name="msapplication-TileColor" />
+
+  
+  
+  
+  <link href='&#x2F;icons&#x2F;favicon-16x16.png' rel="icon" sizes="16x16" type="image/png" />
+  
+  
+  <link href='&#x2F;icons&#x2F;favicon-32x32.png' rel="icon" sizes="32x32" type="image/png" />
+  
+  
+  <link href='&#x2F;icons&#x2F;apple-touch-icon.png' rel="apple-touch-icon" sizes="180x180" />
+  
+
+  
+
+  
+
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/jpswalsh/academicons@1.9.1/css/academicons.min.css" integrity="sha384-FIue+PI4SsI9XfHCz8dBLg33b0c1fMJgNU3X//L26FYbGnlSEfWmNT7zgWc2N9b6" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.2.0/css/all.min.css" integrity="sha256-AbA177XfpSnFEvgpYu1jMygiLabzPCJCRIBtR5jGc0k=" crossorigin="anonymous">
+  <link href="https://titaneric.github.io/deep-thought.css" rel="stylesheet" />
+  
+  
+
+  <title>
+    
+Playground | Kubernetes metrics-server
+
+  </title>
+
+  
+  
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-HSJPSHBTCN"></script>
+  <script type="text/javascript">
+    window.dataLayer = window.dataLayer || [];
+    function gtag() {
+      dataLayer.push(arguments);
+    }
+    gtag("js", new Date());
+    gtag("config", "G-HSJPSHBTCN");
+  </script>
+  
+  
+
+  
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.15.1/dist/katex.min.css" integrity="sha384-R4558gYOUz8mP9YWpZJjofhk+zx0AS11p36HnD2ZKj/6JR5z27gSSULCNHIRReVs" crossorigin="anonymous">
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.15.1/dist/katex.min.js" integrity="sha384-z1fJDqw8ZApjGO3/unPWUPsIymfsJmyrDVWC8Tv/a1HeOtGmkwNd/7xUS0Xcnvsx" crossorigin="anonymous"></script>
+
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.15.1/dist/contrib/mathtex-script-type.min.js" integrity="sha384-jiBVvJ8NGGj5n7kJaiWwWp9AjC+Yh8rhZY3GtAX8yU28azcLgoRo4oukO87g7zDT" crossorigin="anonymous"></script>
+  
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.15.1/dist/contrib/auto-render.min.js" integrity="sha384-+XBljXPPiv+OzfbB3cVmLHf4hdUFHlWNZN5spNQ7rmHTXpd7WvJum6fIACpNNfIR" crossorigin="anonymous"></script>
+  
+  
+</head>
+
+<body class="has-background-white">
+  <nav aria-label="section navigation" class="navbar is-light" role="navigation">
+    <div class="container">
+      <div class="navbar-brand">
+        <a class="navbar-item is-size-5 has-text-weight-bold" href="https:&#x2F;&#x2F;titaneric.github.io">Playground</a>
+        <a aria-expanded="false" aria-label="menu" class="navbar-burger burger" data-target="navMenu" role="button">
+          <span aria-hidden="true"></span>
+          <span aria-hidden="true"></span>
+          <span aria-hidden="true"></span>
+        </a>
+      </div>
+      <div class="navbar-menu" id="navMenu">
+        <div class="navbar-end has-text-centered">
+          
+          
+          
+          <a class="navbar-item has-text-weight-semibold" href="https:&#x2F;&#x2F;titaneric.github.io&#x2F;">
+            Home
+          </a>
+          
+          <a class="navbar-item has-text-weight-semibold" href="https:&#x2F;&#x2F;titaneric.github.io&#x2F;tags">
+            Tags
+          </a>
+          
+          <a class="navbar-item has-text-weight-semibold" href="https:&#x2F;&#x2F;titaneric.github.io&#x2F;categories">
+            Categories
+          </a>
+          
+          <a class="navbar-item has-text-weight-semibold" href="https:&#x2F;&#x2F;titaneric.github.io&#x2F;pdfs&#x2F;resume.pdf">
+            Resume
+          </a>
+          
+          
+          
+          <a class="navbar-item" id="nav-search" title="Search" data-target="#search-modal">
+            <span class="icon">
+              <i class="fas fa-search"></i>
+            </span>
+          </a>
+          <a class="navbar-item" id="dark-mode" title="Switch to dark theme">
+            <span class="icon">
+              <i class="fas fa-adjust"></i>
+            </span>
+          </a>
+        </div>
+      </div>
+    </div>
+  </nav>
+
+  
+  
+
+  
+<section class="section">
+  <div class="container">
+    <div class="columns">
+      <div class="column is-8 is-offset-2">
+        <article class="box">
+          <h1 class="title">
+            Kubernetes metrics-server
+          </h1>
+          <p class="subtitle"></p>
+          <div class="columns is-multiline is-gapless">
+            <div class="column is-8">
+              
+<span class="icon-text has-text-grey">
+  <span class="icon">
+    <i class="fas fa-user"></i>
+  </span>
+  <span>titaneric published on</span>
+  <span class="icon">
+    <i class="far fa-calendar-alt"></i>
+  </span>
+  <span><time datetime="2021-10-10">October 10, 2021</time></span>
+</span>
+
+            </div>
+            <div class="column is-4 has-text-right-desktop">
+              
+<span class="icon-text has-text-grey">
+  <span class="icon">
+    <i class="far fa-clock"></i>
+  </span>
+  <span>11 min,</span>
+  <span class="icon">
+    <i class="fas fa-pencil-alt"></i>
+  </span>
+  <span>2140 words</span>
+</span>
+
+            </div>
+            <div class="column">
+              
+              
+<p>
+  Categories:
+  
+  <a class="has-text-info-dark has-text-weight-semibold" href="https://titaneric.github.io/categories/notes/">
+    <span class="icon-text">
+      <span class="icon">
+        <i class="fas fa-cube"></i>
+      </span>
+      <span>Notes</span>
+    </span>
+  </a>
+  
+</p>
+
+              
+            </div>
+            <div class="column has-text-right-desktop">
+              
+              
+<p>
+  Tags:
+  
+  <a class="has-text-info-dark has-text-weight-semibold" href="https://titaneric.github.io/tags/k8s/">
+    <span class="icon-text">
+      <span class="icon">
+        <i class="fas fa-tag"></i>
+      </span>
+      <span>k8s</span>
+    </span>
+  </a>
+  
+  <a class="has-text-info-dark has-text-weight-semibold" href="https://titaneric.github.io/tags/trace-source-code/">
+    <span class="icon-text">
+      <span class="icon">
+        <i class="fas fa-tag"></i>
+      </span>
+      <span>trace source code</span>
+    </span>
+  </a>
+  
+</p>
+
+              
+            </div>
+          </div>
+          <div class="content mt-2">
+            <h1 id="bei-jing">背景</h1>
+<p><strong>metrics-server</strong>是kubernetes用來量測cluster中node以及pod中的CPU以及記憶體使用率的工具，這些被量測到的資訊會被kubectl top以及HPA controller收集，分別做為查看目前k8s系統狀態以及擴充服務的依據。</p>
+<p>metrics-server本身也如同k8s的絕大多數物件一樣，它是以web service的形式存在k8s當中，原始碼在<a href="https://github.com/kubernetes-sigs/metrics-server">kubernetes-sigs
+/
+metrics-server</a>，本篇文章要來解析metrics-server中entry point、所使用的metrics基本物件、metrics如何被收集以及何時會被更新。</p>
+<h1 id="dive-in">Dive in</h1>
+<h2 id="entry-point">Entry point</h2>
+<p>metrics-server在build過後，是用Docker image的形式將服務包裝成在k8s中運行的container。在原始碼當中的根目錄中，Dockerfile先是執行<code>make metrics-server</code>將metrics-server build成binary file，最後在entrypoint運行<code>cmd/metrics-server</code>。</p>
+<pre data-lang="Dockerfile" style="background-color:#2b303b;color:#c0c5ce;" class="language-Dockerfile "><code class="language-Dockerfile" data-lang="Dockerfile"><span>...
+</span><span>WORKDIR /go/src/sigs.k8s.io/metrics-server
+</span><span>COPY go.mod .
+</span><span>COPY go.sum .
+</span><span>RUN go mod download
+</span><span>
+</span><span>COPY pkg pkg
+</span><span>COPY cmd cmd
+</span><span>COPY Makefile Makefile
+</span><span>...
+</span><span>RUN make metrics-server
+</span><span>...
+</span><span>ENTRYPOINT [&quot;/metrics-server&quot;]
+</span></code></pre>
+<pre data-lang="Makefile" style="background-color:#2b303b;color:#c0c5ce;" class="language-Makefile "><code class="language-Makefile" data-lang="Makefile"><span style="color:#8fa1b3;">metrics-server</span><span>: </span><span style="color:#b48ead;">$(</span><span style="color:#bf616a;">SRC_DEPS</span><span style="color:#b48ead;">)
+</span><span>	</span><span style="color:#bf616a;">GOARCH</span><span>=</span><span style="color:#b48ead;">$(</span><span style="color:#bf616a;">ARCH</span><span style="color:#b48ead;">) </span><span style="color:#bf616a;">CGO_ENABLED</span><span>=</span><span style="color:#a3be8c;">0 </span><span style="color:#bf616a;">go</span><span> build</span><span style="color:#bf616a;"> -ldflags </span><span>&quot;</span><span style="color:#b48ead;">$(</span><span style="color:#bf616a;">LDFLAGS</span><span style="color:#b48ead;">)</span><span>&quot;</span><span style="color:#bf616a;"> -o</span><span> metrics-server sigs.k8s.io/metrics-server/cmd/metrics-server
+</span></code></pre>
+<p>在上面Makefile可以看到，go build的來源是metrics-server下的<code>cmd/metrics-server</code>，該目錄下的metrics-server.go執行在<code>cmd/metrics-server/app</code>中定義的cobra指令。</p>
+<pre data-lang="go" style="background-color:#2b303b;color:#c0c5ce;" class="language-go "><code class="language-go" data-lang="go"><span style="color:#b48ead;">import </span><span>(
+</span><span>	...
+</span><span>	&quot;</span><span style="color:#a3be8c;">sigs.k8s.io/metrics-server/cmd/metrics-server/app</span><span>&quot;
+</span><span>)
+</span><span style="color:#b48ead;">func </span><span style="color:#8fa1b3;">main</span><span>() {
+</span><span>	...
+</span><span>	</span><span style="color:#bf616a;">cmd </span><span>:= </span><span style="color:#bf616a;">app</span><span>.</span><span style="color:#bf616a;">NewMetricsServerCommand</span><span>(</span><span style="color:#bf616a;">genericapiserver</span><span>.</span><span style="color:#bf616a;">SetupSignalHandler</span><span>())
+</span><span>	</span><span style="color:#bf616a;">cmd</span><span>.</span><span style="color:#bf616a;">Flags</span><span>().</span><span style="color:#bf616a;">AddGoFlagSet</span><span>(</span><span style="color:#bf616a;">flag</span><span>.</span><span style="color:#bf616a;">CommandLine</span><span>)
+</span><span>	</span><span style="color:#b48ead;">if </span><span style="color:#bf616a;">err </span><span>:= </span><span style="color:#bf616a;">cmd</span><span>.</span><span style="color:#bf616a;">Execute</span><span>(); </span><span style="color:#bf616a;">err </span><span>!= </span><span style="color:#d08770;">nil </span><span>{
+</span><span>		</span><span style="color:#96b5b4;">panic</span><span>(</span><span style="color:#bf616a;">err</span><span>)
+</span><span>	}
+</span><span>}
+</span></code></pre>
+<p>在<code>cmd/metrics-server/app/metrics-server.go</code>中的<code>NewMetricsServerCommand()</code>function用到<code>cmd/metrics-server/app/options/options.go</code>中定義的<code>NewOptions()</code> function。定義metrics-server需要用到的設定<code>Options</code> struct，該設定會傳給<code>runCommand()</code> function最後透過cobra的<code>Execute()</code> method執行。</p>
+<pre data-lang="go" style="background-color:#2b303b;color:#c0c5ce;" class="language-go "><code class="language-go" data-lang="go"><span style="color:#b48ead;">import </span><span>(
+</span><span>	...
+</span><span>	&quot;</span><span style="color:#a3be8c;">sigs.k8s.io/metrics-server/cmd/metrics-server/app/options</span><span>&quot;
+</span><span>)
+</span><span style="color:#65737e;">// NewMetricsServerCommand provides a CLI handler for the metrics server entrypoint
+</span><span style="color:#b48ead;">func </span><span style="color:#8fa1b3;">NewMetricsServerCommand</span><span>(</span><span style="color:#bf616a;">stopCh </span><span>&lt;-</span><span style="color:#b48ead;">chan struct</span><span>{}) *</span><span style="color:#bf616a;">cobra</span><span>.</span><span style="color:#b48ead;">Command </span><span>{
+</span><span>	</span><span style="color:#bf616a;">opts </span><span>:= </span><span style="color:#bf616a;">options</span><span>.</span><span style="color:#bf616a;">NewOptions</span><span>()
+</span><span>
+</span><span>	</span><span style="color:#bf616a;">cmd </span><span>:= &amp;</span><span style="color:#bf616a;">cobra</span><span>.</span><span style="color:#bf616a;">Command</span><span>{
+</span><span>		</span><span style="color:#bf616a;">Short</span><span>: &quot;</span><span style="color:#a3be8c;">Launch metrics-server</span><span>&quot;,
+</span><span>		</span><span style="color:#bf616a;">Long</span><span>:  &quot;</span><span style="color:#a3be8c;">Launch metrics-server</span><span>&quot;,
+</span><span>		</span><span style="color:#bf616a;">RunE</span><span>: </span><span style="color:#b48ead;">func</span><span>(</span><span style="color:#bf616a;">c </span><span>*</span><span style="color:#bf616a;">cobra</span><span>.</span><span style="color:#b48ead;">Command</span><span>, </span><span style="color:#bf616a;">args </span><span>[]</span><span style="color:#b48ead;">string</span><span>) </span><span style="color:#b48ead;">error </span><span>{
+</span><span>			</span><span style="color:#b48ead;">if </span><span style="color:#bf616a;">err </span><span>:= </span><span style="color:#bf616a;">runCommand</span><span>(</span><span style="color:#bf616a;">opts</span><span>, </span><span style="color:#bf616a;">stopCh</span><span>); </span><span style="color:#bf616a;">err </span><span>!= </span><span style="color:#d08770;">nil </span><span>{
+</span><span>				</span><span style="color:#b48ead;">return </span><span style="color:#bf616a;">err
+</span><span>			}
+</span><span>			</span><span style="color:#b48ead;">return </span><span style="color:#d08770;">nil
+</span><span>		},
+</span><span>	}
+</span><span>	...
+</span><span>	</span><span style="color:#b48ead;">return </span><span style="color:#bf616a;">cmd
+</span><span>}
+</span></code></pre>
+<p>下面的ServerConfig method回傳定義在<code>pkg/server</code>中定義的<code>Config</code> struct，會被當作web service需要的參數最後在<code>Complete()</code> method中回傳<code>Server</code> struct，即是metrics-server自身的web server，一直執行該server直到收到stop signal為止，這樣程式的進入點就結束了，接著細部看各項server設定以及metrics用到的struct。</p>
+<pre data-lang="go" style="background-color:#2b303b;color:#c0c5ce;" class="language-go "><code class="language-go" data-lang="go"><span style="color:#b48ead;">func </span><span style="color:#8fa1b3;">runCommand</span><span>(</span><span style="color:#bf616a;">o </span><span>*</span><span style="color:#bf616a;">options</span><span>.</span><span style="color:#b48ead;">Options</span><span>, </span><span style="color:#bf616a;">stopCh </span><span>&lt;-</span><span style="color:#b48ead;">chan struct</span><span>{}) </span><span style="color:#b48ead;">error </span><span>{
+</span><span>	...
+</span><span>	</span><span style="color:#bf616a;">config</span><span>, </span><span style="color:#bf616a;">err </span><span>:= </span><span style="color:#bf616a;">o</span><span>.</span><span style="color:#bf616a;">ServerConfig</span><span>()
+</span><span>	...
+</span><span>	</span><span style="color:#bf616a;">s</span><span>, </span><span style="color:#bf616a;">err </span><span>:= </span><span style="color:#bf616a;">config</span><span>.</span><span style="color:#bf616a;">Complete</span><span>()
+</span><span>	...
+</span><span>	</span><span style="color:#b48ead;">return </span><span style="color:#bf616a;">s</span><span>.</span><span style="color:#bf616a;">RunUntil</span><span>(</span><span style="color:#bf616a;">stopCh</span><span>)
+</span><span>}
+</span></code></pre>
+<h2 id="metricsji-ben-wu-jian">metrics基本物件</h2>
+<h3 id="servercan-shu">Server參數</h3>
+<p>前面有提過<code>NewOptions()</code> function會回傳<code>Options</code> struct，裡面有<code>MetricResolution</code>，該項目定義了metrics-server多久抓一次在node及pod中的metrics，預設是60秒抓一次。</p>
+<pre data-lang="go" style="background-color:#2b303b;color:#c0c5ce;" class="language-go "><code class="language-go" data-lang="go"><span style="color:#b48ead;">func </span><span style="color:#8fa1b3;">NewOptions</span><span>() *</span><span style="color:#b48ead;">Options </span><span>{
+</span><span>	</span><span style="color:#b48ead;">return </span><span>&amp;</span><span style="color:#bf616a;">Options</span><span>{
+</span><span>		...
+</span><span>		</span><span style="color:#bf616a;">KubeletClient</span><span>:  </span><span style="color:#bf616a;">NewKubeletClientOptions</span><span>(),
+</span><span>
+</span><span>		</span><span style="color:#bf616a;">MetricResolution</span><span>: </span><span style="color:#d08770;">60 </span><span>* </span><span style="color:#bf616a;">time</span><span>.</span><span style="color:#bf616a;">Second</span><span>,
+</span><span>	}
+</span><span>}
+</span></code></pre>
+<pre data-lang="go" style="background-color:#2b303b;color:#c0c5ce;" class="language-go "><code class="language-go" data-lang="go"><span style="color:#b48ead;">type </span><span>Options </span><span style="color:#b48ead;">struct </span><span>{
+</span><span>	...
+</span><span>	</span><span style="color:#bf616a;">KubeletClient  </span><span>*</span><span style="color:#b48ead;">KubeletClientOptions
+</span><span>
+</span><span>	</span><span style="color:#bf616a;">MetricResolution time</span><span>.</span><span style="color:#b48ead;">Duration
+</span><span>	...
+</span><span>}
+</span></code></pre>
+<p>在<code>runCommand()</code>function中會使用<code>ServerConfig()</code>method建立Config，<code>MetricResolution</code>即是剛才在Options中定義的，<code>ScrapeTimeout</code>是抓取後隔多久會發生timeout的情形，預設是<code>MetricResolution</code>*0.9。</p>
+<pre data-lang="go" style="background-color:#2b303b;color:#c0c5ce;" class="language-go "><code class="language-go" data-lang="go"><span style="color:#b48ead;">func </span><span>(</span><span style="color:#bf616a;">o </span><span style="color:#b48ead;">Options</span><span>) </span><span style="color:#8fa1b3;">ServerConfig</span><span>() (*</span><span style="color:#bf616a;">server</span><span>.</span><span style="color:#b48ead;">Config</span><span>, </span><span style="color:#b48ead;">error</span><span>) {
+</span><span>	...
+</span><span>	</span><span style="color:#b48ead;">return </span><span>&amp;</span><span style="color:#bf616a;">server</span><span>.</span><span style="color:#bf616a;">Config</span><span>{
+</span><span>		...
+</span><span>		</span><span style="color:#bf616a;">MetricResolution</span><span>: </span><span style="color:#bf616a;">o</span><span>.</span><span style="color:#bf616a;">MetricResolution</span><span>,
+</span><span>		</span><span style="color:#bf616a;">ScrapeTimeout</span><span>:    </span><span style="color:#bf616a;">time</span><span>.</span><span style="color:#bf616a;">Duration</span><span>(</span><span style="color:#bf616a;">float64</span><span>(</span><span style="color:#bf616a;">o</span><span>.</span><span style="color:#bf616a;">MetricResolution</span><span>) * </span><span style="color:#d08770;">0.90</span><span>), </span><span style="color:#65737e;">// scrape timeout is 90% of the scrape interval
+</span><span>	}, </span><span style="color:#d08770;">nil
+</span><span>}
+</span></code></pre>
+<pre data-lang="go" style="background-color:#2b303b;color:#c0c5ce;" class="language-go "><code class="language-go" data-lang="go"><span style="color:#b48ead;">type </span><span>Config </span><span style="color:#b48ead;">struct </span><span>{
+</span><span>	</span><span style="color:#bf616a;">Apiserver        </span><span>*</span><span style="color:#bf616a;">genericapiserver</span><span>.</span><span style="color:#b48ead;">Config
+</span><span>	</span><span style="color:#bf616a;">Rest             </span><span>*</span><span style="color:#bf616a;">rest</span><span>.</span><span style="color:#b48ead;">Config
+</span><span>	</span><span style="color:#bf616a;">Kubelet          </span><span>*</span><span style="color:#bf616a;">client</span><span>.</span><span style="color:#b48ead;">KubeletClientConfig
+</span><span>	</span><span style="color:#bf616a;">MetricResolution time</span><span>.</span><span style="color:#b48ead;">Duration
+</span><span>	</span><span style="color:#bf616a;">ScrapeTimeout    time</span><span>.</span><span style="color:#b48ead;">Duration
+</span><span>}
+</span></code></pre>
+<h3 id="metricszhua-qu-wu-jian">metrics抓取物件</h3>
+<p><code>scraper</code>是真正向node以及pods抓取metrics的必要物件，裡面有一項是實現了<code>KubeletMetricsInterface</code>的<code>kubeletClient</code>，另外的<code>scrapeTimeout</code>即是前面<code>Config</code> struct的<code>ScrapeTimeout</code>，scraper會每隔<code>scrapeTimeout</code>定時透過<code>kubeletClient</code>跟kubelet要資料。</p>
+<pre data-lang="go" style="background-color:#2b303b;color:#c0c5ce;" class="language-go "><code class="language-go" data-lang="go"><span style="color:#b48ead;">type </span><span>scraper </span><span style="color:#b48ead;">struct </span><span>{
+</span><span>	</span><span style="color:#bf616a;">nodeLister    v1listers</span><span>.</span><span style="color:#b48ead;">NodeLister
+</span><span>	</span><span style="color:#bf616a;">kubeletClient client</span><span>.</span><span style="color:#b48ead;">KubeletMetricsInterface
+</span><span>	</span><span style="color:#bf616a;">scrapeTimeout time</span><span>.</span><span style="color:#b48ead;">Duration
+</span><span>}
+</span></code></pre>
+<p><code>MetricsBatch</code>是scraper抓到metrics後回傳的物V，包含了針對node以及pod的metrics，<code>Nodes</code>是node名稱映到MetricsPoint的map；<code>Pods</code>是namespace映到container名稱再映到MetricsPoint的map。MetricsPoint包含<code>CumulativeCpuUsed</code>及<code>MemoryUsage</code>兩個CPU以及Memory的使用率。</p>
+<pre data-lang="go" style="background-color:#2b303b;color:#c0c5ce;" class="language-go "><code class="language-go" data-lang="go"><span style="color:#65737e;">// MetricsBaVch is a single batch of pod, container, and node metrics from some source.
+</span><span style="color:#b48ead;">type </span><span>MetricsBatch </span><span style="color:#b48ead;">struct </span><span>{
+</span><span>	</span><span style="color:#bf616a;">Nodes </span><span style="color:#b48ead;">map</span><span>[</span><span style="color:#b48ead;">string</span><span>]</span><span style="color:#b48ead;">MetricsPoint
+</span><span>	</span><span style="color:#bf616a;">Pods  </span><span style="color:#b48ead;">map</span><span>[</span><span style="color:#bf616a;">apitypes</span><span>.</span><span style="color:#b48ead;">NamespacedName</span><span>]</span><span style="color:#b48ead;">PodMetricsPoint
+</span><span>}
+</span></code></pre>
+<pre data-lang="go" style="background-color:#2b303b;color:#c0c5ce;" class="language-go "><code class="language-go" data-lang="go"><span style="color:#65737e;">// PodMetricsPoint contains the metrics for some pod&#39;s containers.
+</span><span style="color:#b48ead;">type </span><span>PodMetricsPoint </span><span style="color:#b48ead;">struct </span><span>{
+</span><span>	</span><span style="color:#bf616a;">Containers </span><span style="color:#b48ead;">map</span><span>[</span><span style="color:#b48ead;">string</span><span>]</span><span style="color:#b48ead;">MetricsPoint
+</span><span>}
+</span><span>
+</span><span style="color:#65737e;">// MetricsPoint represents the a set of specific metrics at some point in time.
+</span><span style="color:#b48ead;">type </span><span>MetricsPoint </span><span style="color:#b48ead;">struct </span><span>{
+</span><span>	...
+</span><span>	</span><span style="color:#bf616a;">Timestamp time</span><span>.</span><span style="color:#b48ead;">Time
+</span><span>	</span><span style="color:#65737e;">// CumulativeCpuUsed is the cumulative cpu used at Timestamp from the StartTime of container/node. Unit: nano core * seconds.
+</span><span>	</span><span style="color:#bf616a;">CumulativeCpuUsed </span><span style="color:#b48ead;">uint64
+</span><span>	</span><span style="color:#65737e;">// MemoryUsage is the working set size. Unit: bytes.
+</span><span>	</span><span style="color:#bf616a;">MemoryUsage </span><span style="color:#b48ead;">uint64
+</span><span>}
+</span></code></pre>
+<h3 id="metricscun-fang-wu-jian">metrics存放物件</h3>
+<p><code>storage</code>存放的是前面<code>scraper</code>收集而來的metrics，並有個別分<code>podStorage</code>以及<code>nodeStorage</code>。</p>
+<pre data-lang="go" style="background-color:#2b303b;color:#c0c5ce;" class="language-go "><code class="language-go" data-lang="go"><span style="color:#65737e;">// nodeStorage is a thread save nodeStorage for node and pod metrics.
+</span><span style="color:#b48ead;">type </span><span>storage </span><span style="color:#b48ead;">struct </span><span>{
+</span><span>	</span><span style="color:#bf616a;">mu    sync</span><span>.</span><span style="color:#b48ead;">RWMutex
+</span><span>	</span><span style="color:#bf616a;">pods  </span><span style="color:#b48ead;">podStorage
+</span><span>	</span><span style="color:#bf616a;">nodes </span><span style="color:#b48ead;">nodeStorage
+</span><span>}
+</span></code></pre>
+<p>從下面的<code>podStorage</code>以及<code>nodeStorage</code>可以注意到這兩個struct都有存放last以及prev兩個metrics，即是現在的metrics內容以及上次抓到的metrics內容，之後會根據兩者metrics差異計算資源的使用率。</p>
+<pre data-lang="go" style="background-color:#2b303b;color:#c0c5ce;" class="language-go "><code class="language-go" data-lang="go"><span style="color:#b48ead;">type </span><span>podStorage </span><span style="color:#b48ead;">struct </span><span>{
+</span><span>	</span><span style="color:#65737e;">// last stores pod metric points from last scrape
+</span><span>	</span><span style="color:#bf616a;">last </span><span style="color:#b48ead;">map</span><span>[</span><span style="color:#bf616a;">apitypes</span><span>.</span><span style="color:#b48ead;">NamespacedName</span><span>]</span><span style="color:#b48ead;">PodMetricsPoint
+</span><span>	</span><span style="color:#65737e;">// prev sVores pod metric points from scrape preceding the last one.
+</span><span>	</span><span style="color:#65737e;">// Points timestamp should proceed the corresponding points from last and have same start time (no restart between them).
+</span><span>	</span><span style="color:#bf616a;">prev </span><span style="color:#b48ead;">map</span><span>[</span><span style="color:#bf616a;">apitypes</span><span>.</span><span style="color:#b48ead;">NamespacedName</span><span>]</span><span style="color:#b48ead;">PodMetricsPoint
+</span><span>	</span><span style="color:#65737e;">// scrape period of metrics server
+</span><span>	</span><span style="color:#bf616a;">metricResolution time</span><span>.</span><span style="color:#b48ead;">Duration
+</span><span>}
+</span></code></pre>
+<pre data-lang="go" style="background-color:#2b303b;color:#c0c5ce;" class="language-go "><code class="language-go" data-lang="go"><span style="color:#b48ead;">type </span><span>nodeStorage </span><span style="color:#b48ead;">struct </span><span>{
+</span><span>	</span><span style="color:#65737e;">// last stores node metric points from last scrape
+</span><span>	</span><span style="color:#bf616a;">last </span><span style="color:#b48ead;">map</span><span>[</span><span style="color:#b48ead;">string</span><span>]</span><span style="color:#b48ead;">MetricsPoint
+</span><span>	</span><span style="color:#65737e;">// prev stores node metric points from scrape preceding the last one.
+</span><span>	</span><span style="color:#65737e;">// Points timestamp should proceed the corresponding points from last.
+</span><span>	</span><span style="color:#bf616a;">prev </span><span style="color:#b48ead;">map</span><span>[</span><span style="color:#b48ead;">string</span><span>]</span><span style="color:#b48ead;">MetricsPoint
+</span><span>}
+</span></code></pre>
+<h2 id="metricsshou-ji">metrics收集</h2>
+<p>同樣在<code>runCommand</code>中的，取得<code>Config</code> instance之後，會呼叫<code>Complete</code> method建立<code>Server</code> instance。其中有兩個很重要的物件，一個是名為<code>scrape</code>的<code>scraper</code> instance，主要負責進行node及pod metrics的抓取，所以要將<code>ScrapeTimeout</code>傳給它；另外一個是<code>storage</code> instance，就跟它的名字一樣主要負責存放抓下來的metrics。</p>
+<p>另外要注意的是，<code>kubeletClient</code>也會被建立出來傳給<code>scrape</code>，真正拿metrics是透過這個client去跟kubelet拿，會在之後做說明。</p>
+<pre data-lang="go" style="background-color:#2b303b;color:#c0c5ce;" class="language-go "><code class="language-go" data-lang="go"><span style="color:#b48ead;">func </span><span>(</span><span style="color:#bf616a;">c </span><span style="color:#b48ead;">Config</span><span>) </span><span style="color:#8fa1b3;">Complete</span><span>() (*</span><span style="color:#b48ead;">server</span><span>, </span><span style="color:#b48ead;">error</span><span>) {
+</span><span>	</span><span style="color:#bf616a;">kubeletClient</span><span>, </span><span style="color:#bf616a;">err </span><span>:= </span><span style="color:#bf616a;">resource</span><span>.</span><span style="color:#bf616a;">NewClient</span><span>(*</span><span style="color:#bf616a;">c</span><span>.</span><span style="color:#bf616a;">Kubelet</span><span>)
+</span><span>	...
+</span><span>	</span><span style="color:#bf616a;">nodes </span><span>:= </span><span style="color:#bf616a;">informer</span><span>.</span><span style="color:#bf616a;">Core</span><span>().</span><span style="color:#bf616a;">V1</span><span>().</span><span style="color:#bf616a;">Nodes</span><span>()
+</span><span>	</span><span style="color:#bf616a;">scrape </span><span>:= </span><span style="color:#bf616a;">scraper</span><span>.</span><span style="color:#bf616a;">NewScraper</span><span>(</span><span style="color:#bf616a;">nodes</span><span>.</span><span style="color:#bf616a;">Lister</span><span>(), </span><span style="color:#bf616a;">kubeletClient</span><span>, </span><span style="color:#bf616a;">c</span><span>.</span><span style="color:#bf616a;">ScrapeTimeout</span><span>)
+</span><span>
+</span><span>	...
+</span><span>	</span><span style="color:#bf616a;">store </span><span>:= </span><span style="color:#bf616a;">storage</span><span>.</span><span style="color:#bf616a;">NewStorage</span><span>(</span><span style="color:#bf616a;">c</span><span>.</span><span style="color:#bf616a;">MetricResolution</span><span>)
+</span><span>
+</span><span>	</span><span style="color:#bf616a;">s </span><span>:= </span><span style="color:#bf616a;">NewServer</span><span>(
+</span><span>		...
+</span><span>		</span><span style="color:#bf616a;">store</span><span>,
+</span><span>		</span><span style="color:#bf616a;">scrape</span><span>,
+</span><span>		</span><span style="color:#bf616a;">c</span><span>.</span><span style="color:#bf616a;">MetricResolution</span><span>,
+</span><span>	)
+</span><span>	...
+</span><span>	</span><span style="color:#b48ead;">return </span><span style="color:#bf616a;">s</span><span>, </span><span style="color:#d08770;">nil
+</span><span>}
+</span></code></pre>
+<p>在建立完<code>Server</code> instance之後，最終會執行<code>RunUntil</code> method，它會起一個go routine執行<code>runScrape</code> method進行metrics的抓取及存放。</p>
+<pre data-lang="go" style="background-color:#2b303b;color:#c0c5ce;" class="language-go "><code class="language-go" data-lang="go"><span style="color:#65737e;">// RunUntil starts background scraping goroutine and runs apiserver serving metrics.
+</span><span style="color:#b48ead;">func </span><span>(</span><span style="color:#bf616a;">s </span><span>*</span><span style="color:#b48ead;">server</span><span>) </span><span style="color:#8fa1b3;">RunUntil</span><span>(</span><span style="color:#bf616a;">stopCh </span><span>&lt;-</span><span style="color:#b48ead;">chan struct</span><span>{}) </span><span style="color:#b48ead;">error </span><span>{
+</span><span>	...
+</span><span>	</span><span style="color:#65737e;">// Start serving API and scrape loop
+</span><span>	</span><span style="color:#b48ead;">go </span><span style="color:#bf616a;">s</span><span>.</span><span style="color:#bf616a;">runScrape</span><span>(</span><span style="color:#bf616a;">ctx</span><span>)
+</span><span>	...
+</span><span>}
+</span></code></pre>
+<p><code>runScrape</code> method會利用<code>NewTicker</code>建立一個ticker，當中包含一個channel，每隔<code>resolution</code>時間後，ticker會敲一次並把時間傳給channel。之後會進行無窮迴圈，從channel中取得當前時間，並呼叫<code>tick</code> method執行核心的metrics抓取。</p>
+<pre data-lang="go" style="background-color:#2b303b;color:#c0c5ce;" class="language-go "><code class="language-go" data-lang="go"><span style="color:#b48ead;">func </span><span>(</span><span style="color:#bf616a;">s </span><span>*</span><span style="color:#b48ead;">server</span><span>) </span><span style="color:#8fa1b3;">runScrape</span><span>(</span><span style="color:#bf616a;">ctx context</span><span>.</span><span style="color:#b48ead;">Context</span><span>) {
+</span><span>	</span><span style="color:#bf616a;">ticker </span><span>:= </span><span style="color:#bf616a;">time</span><span>.</span><span style="color:#bf616a;">NewTicker</span><span>(</span><span style="color:#bf616a;">s</span><span>.</span><span style="color:#bf616a;">resolution</span><span>)
+</span><span>	</span><span style="color:#b48ead;">defer </span><span style="color:#bf616a;">ticker</span><span>.</span><span style="color:#bf616a;">Stop</span><span>()
+</span><span>	</span><span style="color:#bf616a;">s</span><span>.</span><span style="color:#bf616a;">tick</span><span>(</span><span style="color:#bf616a;">ctx</span><span>, </span><span style="color:#bf616a;">time</span><span>.</span><span style="color:#bf616a;">Now</span><span>())
+</span><span>
+</span><span>	</span><span style="color:#b48ead;">for </span><span>{
+</span><span>		</span><span style="color:#b48ead;">select </span><span>{
+</span><span>		</span><span style="color:#b48ead;">case </span><span style="color:#bf616a;">startTime </span><span>:= &lt;-</span><span style="color:#bf616a;">ticker</span><span>.</span><span style="color:#bf616a;">C</span><span>:
+</span><span>			</span><span style="color:#bf616a;">s</span><span>.</span><span style="color:#bf616a;">tick</span><span>(</span><span style="color:#bf616a;">ctx</span><span>, </span><span style="color:#bf616a;">startTime</span><span>)
+</span><span>		</span><span style="color:#b48ead;">case </span><span>&lt;-</span><span style="color:#bf616a;">ctx</span><span>.</span><span style="color:#bf616a;">Done</span><span>():
+</span><span>			</span><span style="color:#b48ead;">return
+</span><span>		}
+</span><span>	}
+</span><span>}
+</span></code></pre>
+<p>剛才在<code>Complete</code> method中定義的scraper以及storage instance就是在這裡會被呼叫到。scraper會呼叫<code>Scrape</code> method抓取metrics，回傳的metrics內容是<code>MetricsBatch</code> instance。</p>
+<pre data-lang="go" style="background-color:#2b303b;color:#c0c5ce;" class="language-go "><code class="language-go" data-lang="go"><span style="color:#b48ead;">func </span><span>(</span><span style="color:#bf616a;">s </span><span>*</span><span style="color:#b48ead;">server</span><span>) </span><span style="color:#8fa1b3;">tick</span><span>(</span><span style="color:#bf616a;">ctx context</span><span>.</span><span style="color:#b48ead;">Context</span><span>, </span><span style="color:#bf616a;">startTime time</span><span>.</span><span style="color:#b48ead;">Time</span><span>) {
+</span><span>	...
+</span><span>	</span><span style="color:#bf616a;">klog</span><span>.</span><span style="color:#bf616a;">V</span><span>(</span><span style="color:#d08770;">6</span><span>).</span><span style="color:#bf616a;">InfoS</span><span>(&quot;</span><span style="color:#a3be8c;">Scraping metrics</span><span>&quot;)
+</span><span>	</span><span style="color:#bf616a;">data </span><span>:= </span><span style="color:#bf616a;">s</span><span>.</span><span style="color:#bf616a;">scraper</span><span>.</span><span style="color:#bf616a;">Scrape</span><span>(</span><span style="color:#bf616a;">ctx</span><span>)
+</span><span>
+</span><span>	</span><span style="color:#bf616a;">klog</span><span>.</span><span style="color:#bf616a;">V</span><span>(</span><span style="color:#d08770;">6</span><span>).</span><span style="color:#bf616a;">InfoS</span><span>(&quot;</span><span style="color:#a3be8c;">Storing metrics</span><span>&quot;)
+</span><span>	</span><span style="color:#bf616a;">s</span><span>.</span><span style="color:#bf616a;">storage</span><span>.</span><span style="color:#bf616a;">Store</span><span>(</span><span style="color:#bf616a;">data</span><span>)
+</span><span>	...
+</span><span>}
+</span></code></pre>
+<p>scraper的<code>Scraper</code> method會對node以及pod進行metrics的抓取，首先列出所有的nodes之後，建立一個大小為nodes數量的<code>responseChannel</code>存放收集而來的metrics。之後針對nodes中個別的node起一個go routine，並呼叫<code>collectNode</code> method，針對node拿對應的metrics，非同步地將回傳結果放入剛才建立的<code>responseChannel</code>。</p>
+<pre data-lang="go" style="background-color:#2b303b;color:#c0c5ce;" class="language-go "><code class="language-go" data-lang="go"><span style="color:#b48ead;">func </span><span>(</span><span style="color:#bf616a;">c </span><span>*</span><span style="color:#b48ead;">scraper</span><span>) </span><span style="color:#8fa1b3;">Scrape</span><span>(</span><span style="color:#bf616a;">baseCtx context</span><span>.</span><span style="color:#b48ead;">C</span><span>:</span><span style="color:#bf616a;">ntext</span><span>) *</span><span style="color:#bf616a;">storage</span><span>.</span><span style="color:#b48ead;">MetricsBatch </span><span>{
+</span><span>	</span><span style="color:#bf616a;">nodes</span><span>, </span><span style="color:#bf616a;">err </span><span>:= </span><span style="color:#bf616a;">c</span><span>.</span><span style="color:#bf616a;">nodeLister</span><span>.</span><span style="color:#bf616a;">List</span><span>(</span><span style="color:#bf616a;">labels</span><span>.</span><span style="color:#bf616a;">Everything</span><span>())
+</span><span>	...
+</span><span>	</span><span style="color:#bf616a;">klog</span><span>.</span><span style="color:#bf616a;">V</span><span>(</span><span style="color:#d08770;">1</span><span>).</span><span style="color:#bf616a;">InfoS</span><span>(&quot;</span><span style="color:#a3be8c;">Scraping metrics from nodes</span><span>&quot;, &quot;</span><span style="color:#a3be8c;">nodeCount</span><span>&quot;, </span><span style="color:#96b5b4;">len</span><span>(</span><span style="color:#bf616a;">nodes</span><span>))
+</span><span>
+</span><span>	</span><span style="color:#bf616a;">responseChannel </span><span>:= </span><span style="color:#96b5b4;">make</span><span>(</span><span style="color:#b48ead;">chan </span><span>*</span><span style="color:#bf616a;">storage</span><span>.</span><span style="color:#b48ead;">MetricsBatch</span><span>, </span><span style="color:#96b5b4;">len</span><span>(</span><span style="color:#bf616a;">nodes</span><span>))
+</span><span>	</span><span style="color:#b48ead;">defer </span><span style="color:#96b5b4;">close</span><span>(</span><span style="color:#bf616a;">responseChannel</span><span>)
+</span><span>
+</span><span>
+</span><span>	</span><span style="color:#b48ead;">for </span><span style="color:#bf616a;">_</span><span>, </span><span style="color:#bf616a;">node </span><span>:= </span><span style="color:#b48ead;">range </span><span style="color:#bf616a;">nodes </span><span>{
+</span><span>		</span><span style="color:#b48ead;">go func</span><span>(</span><span style="color:#bf616a;">node </span><span>*</span><span style="color:#bf616a;">corev1</span><span>.</span><span style="color:#b48ead;">Node</span><span>) {
+</span><span>			...
+</span><span>			</span><span style="color:#bf616a;">klog</span><span>.</span><span style="color:#bf616a;">V</span><span>(</span><span style="color:#d08770;">2</span><span>).</span><span style="color:#bf616a;">InfoS</span><span>(&quot;</span><span style="color:#a3be8c;">Scraping node</span><span>&quot;, &quot;</span><span style="color:#a3be8c;">node</span><span>&quot;, </span><span style="color:#bf616a;">klog</span><span>.</span><span style="color:#bf616a;">KObj</span><span>(</span><span style="color:#bf616a;">node</span><span>))
+</span><span>			</span><span style="color:#bf616a;">m</span><span>, </span><span style="color:#bf616a;">err </span><span>:= </span><span style="color:#bf616a;">c</span><span>.</span><span style="color:#bf616a;">collectNode</span><span>(</span><span style="color:#bf616a;">ctx</span><span>, </span><span style="color:#bf616a;">node</span><span>)
+</span><span>			...
+</span><span>			</span><span style="color:#bf616a;">responseChannel </span><span>&lt;- </span><span style="color:#bf616a;">m
+</span><span>		}(</span><span style="color:#bf616a;">node</span><span>)
+</span><span>	}
+</span><span>	...
+</span><span>}
+</span></code></pre>
+<p><code>collectNode</code> method會透過剛在<code>Complete</code> method中建立的<code>kubeletClient</code>跟kubelet拿node的metrics。<code>kubeletClient</code>實現了<code>KubeletMetricsInterface</code>，並透過RESTful API去跟kubelet拿metrics。kubelet如何實現這部分有點超出本文範圍等之後再來trace。</p>
+<pre data-lang="go" style="background-color:#2b303b;color:#c0c5ce;" class="language-go "><code class="language-go" data-lang="go"><span style="color:#b48ead;">func </span><span>(</span><span style="color:#bf616a;">c </span><span>*</span><span style="color:#b48ead;">scraper</span><span>) </span><span style="color:#8fa1b3;">collectNode</span><span>(</span><span style="color:#bf616a;">ctx context</span><span>.</span><span style="color:#b48ead;">Context</span><span>, </span><span style="color:#bf616a;">node </span><span>*</span><span style="color:#bf616a;">corev1</span><span>.</span><span style="color:#b48ead;">Node</span><span>) (*</span><span style="color:#bf616a;">storage</span><span>.</span><span style="color:#b48ead;">MetricsBatch</span><span>, </span><span style="color:#b48ead;">error</span><span>) {
+</span><span>	...
+</span><span>	</span><span style="color:#bf616a;">ms</span><span>, </span><span style="color:#bf616a;">err </span><span>:= </span><span style="color:#bf616a;">c</span><span>.</span><span style="color:#bf616a;">kubeletClient</span><span>.</span><span style="color:#bf616a;">GetMetrics</span><span>(</span><span style="color:#bf616a;">ctx</span><span>, </span><span style="color:#bf616a;">node</span><span>)
+</span><span>	...
+</span><span>	</span><span style="color:#b48ead;">return </span><span style="color:#bf616a;">ms</span><span>, </span><span style="color:#d08770;">nil
+</span><span>}
+</span></code></pre>
+<pre data-lang="go" style="background-color:#2b303b;color:#c0c5ce;" class="language-go "><code class="language-go" data-lang="go"><span style="color:#65737e;">// KubeletMetricsInterface knows how to fetch metrics from the Kubelet
+</span><span style="color:#b48ead;">type </span><span>KubeletMetricsInterface </span><span style="color:#b48ead;">interface </span><span>{
+</span><span>	</span><span style="color:#65737e;">// GetMetrics fetches Resource metrics from the given Kubelet
+</span><span>	</span><span style="color:#8fa1b3;">GetMetrics</span><span>(</span><span style="color:#bf616a;">ctx context</span><span>.</span><span style="color:#b48ead;">Context</span><span>, </span><span style="color:#bf616a;">node </span><span>*</span><span style="color:#bf616a;">v1</span><span>.</span><span style="color:#b48ead;">Node</span><span>) (*</span><span style="color:#bf616a;">storage</span><span>.</span><span style="color:#b48ead;">MetricsBatch</span><span>, </span><span style="color:#b48ead;">error</span><span>)
+</span><span>}
+</span></code></pre>
+<pre data-lang="go" style="background-color:#2b303b;color:#c0c5ce;" class="language-go "><code class="language-go" data-lang="go"><span style="color:#65737e;">//GetMetrics get metrics from kubelet /metrics/resource endpoint
+</span><span style="color:#b48ead;">func </span><span>(</span><span style="color:#bf616a;">kc </span><span>*</span><span style="color:#b48ead;">kubeletClient</span><span>) </span><span style="color:#8fa1b3;">GetMetrics</span><span>(</span><span style="color:#bf616a;">ctx context</span><span>.</span><span style="color:#b48ead;">Context</span><span>, </span><span style="color:#bf616a;">node </span><span>*</span><span style="color:#bf616a;">corev1</span><span>.</span><span style="color:#b48ead;">Node</span><span>) (*</span><span style="color:#bf616a;">storage</span><span>.</span><span style="color:#b48ead;">MetricsBatch</span><span>, </span><span style="color:#b48ead;">error</span><span>) {
+</span><span>	</span><span style="color:#bf616a;">port </span><span>:= </span><span style="color:#bf616a;">kc</span><span>.</span><span style="color:#bf616a;">defaultPort
+</span><span>	...
+</span><span>	</span><span style="color:#bf616a;">addr</span><span>, </span><span style="color:#bf616a;">err </span><span>:= </span><span style="color:#bf616a;">kc</span><span>.</span><span style="color:#bf616a;">addrResolver</span><span>.</span><span style="color:#bf616a;">NodeAddress</span><span>(</span><span style="color:#bf616a;">node</span><span>)
+</span><span>	</span><span style="color:#b48ead;">if </span><span style="color:#bf616a;">err </span><span>!= </span><span style="color:#d08770;">nil </span><span>{
+</span><span>		</span><span style="color:#b48ead;">return </span><span style="color:#d08770;">nil</span><span>, </span><span style="color:#bf616a;">err
+</span><span>	}
+</span><span>	</span><span style="color:#bf616a;">url </span><span>:= </span><span style="color:#bf616a;">url</span><span>.</span><span style="color:#bf616a;">URL</span><span>{
+</span><span>		</span><span style="color:#bf616a;">Scheme</span><span>: </span><span style="color:#bf616a;">kc</span><span>.</span><span style="color:#bf616a;">scheme</span><span>,
+</span><span>		</span><span style="color:#bf616a;">Host</span><span>:   </span><span style="color:#bf616a;">net</span><span>.</span><span style="color:#bf616a;">JoinHostPort</span><span>(</span><span style="color:#bf616a;">addr</span><span>, </span><span style="color:#bf616a;">strconv</span><span>.</span><span style="color:#bf616a;">Itoa</span><span>(</span><span style="color:#bf616a;">port</span><span>)),
+</span><span>		</span><span style="color:#bf616a;">Path</span><span>:   &quot;</span><span style="color:#a3be8c;">/metrics/resource</span><span>&quot;,
+</span><span>	}
+</span><span>
+</span><span>	</span><span style="color:#bf616a;">req</span><span>, </span><span style="color:#bf616a;">err </span><span>:= </span><span style="color:#bf616a;">http</span><span>.</span><span style="color:#bf616a;">NewRequest</span><span>(&quot;</span><span style="color:#a3be8c;">GET</span><span>&quot;, </span><span style="color:#bf616a;">url</span><span>.</span><span style="color:#bf616a;">String</span><span>(), </span><span style="color:#d08770;">nil</span><span>)
+</span><span>	...
+</span><span>}
+</span></code></pre>
+<h2 id="metricschu-fang">metrics儲放</h2>
+<p>接下來要看存放metrics的<code>Store</code> method，這裡會針對nodes以及pods個別呼叫<code>Store</code> method。同時也會更新物件中的last以及prev內容。</p>
+<pre data-lang="go" style="background-color:#2b303b;color:#c0c5ce;" class="language-go "><code class="language-go" data-lang="go"><span style="color:#b48ead;">func </span><span>(</span><span style="color:#bf616a;">s </span><span>*</span><span style="color:#b48ead;">storage</span><span>) </span><span style="color:#8fa1b3;">Store</span><span>(</span><span style="color:#bf616a;">batch </span><span>*</span><span style="color:#b48ead;">MetricsBatch</span><span>) {
+</span><span>	</span><span style="color:#bf616a;">s</span><span>.</span><span style="color:#bf616a;">mu</span><span>.</span><span style="color:#bf616a;">Lock</span><span>()
+</span><span>	</span><span style="color:#b48ead;">defer </span><span style="color:#bf616a;">s</span><span>.</span><span style="color:#bf616a;">mu</span><span>.</span><span style="color:#bf616a;">Unlock</span><span>()
+</span><span>	</span><span style="color:#bf616a;">s</span><span>.</span><span style="color:#bf616a;">nodes</span><span>.</span><span style="color:#bf616a;">Store</span><span>(</span><span style="color:#bf616a;">batch</span><span>)
+</span><span>	</span><span style="color:#bf616a;">s</span><span>.</span><span style="color:#bf616a;">pods</span><span>.</span><span style="color:#bf616a;">Store</span><span>(</span><span style="color:#bf616a;">batch</span><span>)
+</span><span>}
+</span></code></pre>
+<pre data-lang="go" style="background-color:#2b303b;color:#c0c5ce;" class="language-go "><code class="language-go" data-lang="go"><span style="color:#b48ead;">func </span><span>(</span><span style="color:#bf616a;">s </span><span>*</span><span style="color:#b48ead;">nodeStorage</span><span>) </span><span style="color:#8fa1b3;">Store</span><span>(</span><span style="color:#bf616a;">batch </span><span>*</span><span style="color:#b48ead;">MetricsBatch</span><span>) {
+</span><span>	</span><span style="color:#bf616a;">lastNodes </span><span>:= </span><span style="color:#96b5b4;">make</span><span>(</span><span style="color:#b48ead;">map</span><span>[</span><span style="color:#b48ead;">string</span><span>]</span><span style="color:#b48ead;">MetricsPoint</span><span>, </span><span style="color:#96b5b4;">len</span><span>(</span><span style="color:#bf616a;">batch</span><span>.</span><span style="color:#bf616a;">Nodes</span><span>))
+</span><span>	</span><span style="color:#bf616a;">prevNodes </span><span>:= </span><span style="color:#96b5b4;">make</span><span>(</span><span style="color:#b48ead;">map</span><span>[</span><span style="color:#b48ead;">string</span><span>]</span><span style="color:#b48ead;">MetricsPoint</span><span>, </span><span style="color:#96b5b4;">len</span><span>(</span><span style="color:#bf616a;">batch</span><span>.</span><span style="color:#bf616a;">Nodes</span><span>))
+</span><span>	</span><span style="color:#b48ead;">for </span><span style="color:#bf616a;">nodeName</span><span>, </span><span style="color:#bf616a;">newPoint </span><span>:= </span><span style="color:#b48ead;">range </span><span style="color:#bf616a;">batch</span><span>.</span><span style="color:#bf616a;">Nodes </span><span>{
+</span><span>		</span><span style="color:#b48ead;">if </span><span style="color:#bf616a;">_</span><span>, </span><span style="color:#bf616a;">exists </span><span>:= </span><span style="color:#bf616a;">lastNodes</span><span>[</span><span style="color:#bf616a;">nodeName</span><span>]; </span><span style="color:#bf616a;">exists </span><span>{
+</span><span>			</span><span style="color:#bf616a;">klog</span><span>.</span><span style="color:#bf616a;">ErrorS</span><span>(</span><span style="color:#d08770;">nil</span><span>, &quot;</span><span style="color:#a3be8c;">Got duplicate node point</span><span>&quot;, &quot;</span><span style="color:#a3be8c;">node</span><span>&quot;, </span><span style="color:#bf616a;">klog</span><span>.</span><span style="color:#bf616a;">KRef</span><span>(&quot;&quot;, </span><span style="color:#bf616a;">nodeName</span><span>))
+</span><span>			</span><span style="color:#b48ead;">continue
+</span><span>		}
+</span><span>		</span><span style="color:#bf616a;">lastNodes</span><span>[</span><span style="color:#bf616a;">nodeName</span><span>] = </span><span style="color:#bf616a;">newPoint
+</span><span>		...
+</span><span>	}
+</span><span>	</span><span style="color:#bf616a;">s</span><span>.</span><span style="color:#bf616a;">last </span><span>= </span><span style="color:#bf616a;">lastNodes
+</span><span>	</span><span style="color:#bf616a;">s</span><span>.</span><span style="color:#bf616a;">prev </span><span>= </span><span style="color:#bf616a;">prevNodes
+</span><span>
+</span><span>	</span><span style="color:#65737e;">// Only count last for which metrics can be returned.
+</span><span>	</span><span style="color:#bf616a;">pointsStored</span><span>.</span><span style="color:#bf616a;">WithLabelValues</span><span>(&quot;</span><span style="color:#a3be8c;">node</span><span>&quot;).</span><span style="color:#bf616a;">Set</span><span>(</span><span style="color:#bf616a;">float64</span><span>(</span><span style="color:#96b5b4;">len</span><span>(</span><span style="color:#bf616a;">prevNodes</span><span>)))
+</span><span>}
+</span></code></pre>
+<pre data-lang="go" style="background-color:#2b303b;color:#c0c5ce;" class="language-go "><code class="language-go" data-lang="go"><span style="color:#b48ead;">func </span><span>(</span><span style="color:#bf616a;">s </span><span>*</span><span style="color:#b48ead;">podStorage</span><span>) </span><span style="color:#8fa1b3;">Store</span><span>(</span><span style="color:#bf616a;">newPods </span><span>*</span><span style="color:#b48ead;">MetricsBatch</span><span>) {
+</span><span>	</span><span style="color:#bf616a;">lastPods </span><span>:= </span><span style="color:#96b5b4;">make</span><span>(</span><span style="color:#b48ead;">map</span><span>[</span><span style="color:#bf616a;">apitypes</span><span>.</span><span style="color:#b48ead;">NamespacedName</span><span>]</span><span style="color:#b48ead;">PodMetricsPoint</span><span>, </span><span style="color:#96b5b4;">len</span><span>(</span><span style="color:#bf616a;">newPods</span><span>.</span><span style="color:#bf616a;">Pods</span><span>))
+</span><span>	</span><span style="color:#bf616a;">prevPods </span><span>:= </span><span style="color:#96b5b4;">make</span><span>(</span><span style="color:#b48ead;">map</span><span>[</span><span style="color:#bf616a;">apitypes</span><span>.</span><span style="color:#b48ead;">NamespacedName</span><span>]</span><span style="color:#b48ead;">PodMetricsPoint</span><span>, </span><span style="color:#96b5b4;">len</span><span>(</span><span style="color:#bf616a;">newPods</span><span>.</span><span style="color:#bf616a;">Pods</span><span>))
+</span><span>	</span><span style="color:#b48ead;">var </span><span style="color:#bf616a;">containerCount </span><span style="color:#b48ead;">int
+</span><span>	</span><span style="color:#b48ead;">for </span><span style="color:#bf616a;">podRef</span><span>, </span><span style="color:#bf616a;">newPod </span><span>:= </span><span style="color:#b48ead;">range </span><span style="color:#bf616a;">newPods</span><span>.</span><span style="color:#bf616a;">Pods </span><span>{
+</span><span>		...
+</span><span>		</span><span style="color:#b48ead;">for </span><span style="color:#bf616a;">containerName</span><span>, </span><span style="color:#bf616a;">newPoint </span><span>:= </span><span style="color:#b48ead;">range </span><span style="color:#bf616a;">newPod</span><span>.</span><span style="color:#bf616a;">Containers </span><span>{
+</span><span>			...
+</span><span>			</span><span style="color:#bf616a;">newLastPod</span><span>.</span><span style="color:#bf616a;">Containers</span><span>[</span><span style="color:#bf616a;">containerName</span><span>] = </span><span style="color:#bf616a;">newPoint
+</span><span>			...
+</span><span>		}
+</span><span>		</span><span style="color:#bf616a;">containerPoints </span><span>:= </span><span style="color:#96b5b4;">len</span><span>(</span><span style="color:#bf616a;">newPrevPod</span><span>.</span><span style="color:#bf616a;">Containers</span><span>)
+</span><span>		</span><span style="color:#b48ead;">if </span><span style="color:#bf616a;">containerPoints </span><span>&gt; </span><span style="color:#d08770;">0 </span><span>{
+</span><span>			</span><span style="color:#bf616a;">prevPods</span><span>[</span><span style="color:#bf616a;">podRef</span><span>] = </span><span style="color:#bf616a;">newPrevPod
+</span><span>		}
+</span><span>		</span><span style="color:#bf616a;">lastPods</span><span>[</span><span style="color:#bf616a;">podRef</span><span>] = </span><span style="color:#bf616a;">newLastPod
+</span><span>
+</span><span>		</span><span style="color:#65737e;">// Only count containers for which metrics can be returned.
+</span><span>		</span><span style="color:#bf616a;">containerCount </span><span>+= </span><span style="color:#bf616a;">containerPoints
+</span><span>	}
+</span><span>	</span><span style="color:#bf616a;">s</span><span>.</span><span style="color:#bf616a;">last </span><span>= </span><span style="color:#bf616a;">lastPods
+</span><span>	</span><span style="color:#bf616a;">s</span><span>.</span><span style="color:#bf616a;">prev </span><span>= </span><span style="color:#bf616a;">prevPods
+</span><span>
+</span><span>	</span><span style="color:#bf616a;">pointsStored</span><span>.</span><span style="color:#bf616a;">WithLabelValues</span><span>(&quot;</span><span style="color:#a3be8c;">container</span><span>&quot;).</span><span style="color:#bf616a;">Set</span><span>(</span><span style="color:#bf616a;">float64</span><span>(</span><span style="color:#bf616a;">containerCount</span><span>))
+</span><span>}
+</span></code></pre>
+<h1 id="jie-yu">結語</h1>
+<p>本篇文章trace了metrics-server的進入點、如何抓取nodes及pods的metrics以及如何存放剛抓到的metrics。metrics-server每隔一段時間就會抓取metrics，並存放到內部定義的資料結構中。其實<code>podStorage</code>以及<code>nodeStorage</code>還有一個method是<code>GetMetrics</code>，這之後會被kubectl top以及HPA controller呼叫到，該method會從這些資料結構中抓取metrics以及計算metrics差異，這會在之後的文章做說明。</p>
+
+          </div>
+        </article>
+      </div>
+      
+    </div>
+  </div>
+</section>
+
+
+  
+  <section class="modal" id="search-modal">
+    <div class="modal-background"></div>
+    <div class="modal-card">
+      <header class="modal-card-head">
+        <p class="modal-card-title">Search</p>
+      </header>
+      <section class="modal-card-body">
+        <div class="field mb-2">
+          <div class="control">
+            <input class="input" id="search" placeholder="Search this website." type="search" />
+          </div>
+        </div>
+        <div class="search-results">
+          <div class="search-results__items"></div>
+        </div>
+      </section>
+    </div>
+    <button aria-label="close" class="modal-close is-large"></button>
+  </section>
+  
+
+
+  
+
+<section class="section">
+  <div class="container">
+    <div class="columns is-centered">
+      <div class="column is-8">
+        <nav class="level">
+              
+          <div class="level-item has-text-centered">
+            <a class="button is-black is-outlined" href="https:&#x2F;&#x2F;titaneric.github.io&#x2F;autodiff-from-scratch-p2&#x2F;">
+              <span class="icon mr-2">
+                <i class="fas fa-arrow-circle-left"></i>
+              </span>
+              Build a DL Library from Scratch (Part2) - Backpropagation
+            </a>
+          </div>
+           
+          <div class="level-item has-text-centered">
+            <a class="button is-black is-outlined" href="https:&#x2F;&#x2F;titaneric.github.io&#x2F;the-journey-to-the-kubernetes-metrics&#x2F;">
+              The Journey to the Kubernetes Metrics<span class="icon ml-2">
+                <i class="fas fa-arrow-circle-right"></i>
+              </span>
+            </a>
+          </div>
+          
+        </nav>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+
+  
+
+<section class="section">
+  <div class="container">
+    <div class="columns is-centered">
+      <div class="column is-6">
+        <div id="disqus_thread"></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+
+  
+  <footer class="footer py-4">
+    <div class="content has-text-centered">
+      <p>
+        Built with
+        <span class="icon-text">
+          <span class="icon">
+            <i class="fas fa-code"></i>
+          </span>
+          <span>code</span>
+        </span>
+        and
+        <span class="icon-text">
+          <span class="icon">
+            <i class="fas fa-heart"></i>
+          </span>
+          <span>love</span>
+        </span>
+      </p>
+      <p>
+        Powered by
+        <span class="icon-text">
+          <span class="icon">
+            <i class="fas fa-power-off"></i>
+          </span>
+          <span>zola</span>
+        </span>
+      </p>
+    </div>
+  </footer>
+  
+
+  
+  
+  
+  
+  <script src="https://titaneric.github.io/elasticlunr.min.js"></script>
+  <script src="https://titaneric.github.io/search_index.en.js"></script><script src="https://titaneric.github.io/js/site.js"></script>
+
+  
+
+
+
+<script>
+  var disqus_config = function () {
+    this.page.url = "https://titaneric.github.io";
+    this.page.identifier = "/k8s-metrics-server/";
+  };
+
+  (function () {
+    var d = document, s = d.createElement('script');
+    s.src = 'https://titaneric-github-io.disqus.com/embed.js';
+    s.setAttribute('data-timestamp', +new Date());
+    (d.head || d.body).appendChild(s);
+  })();
+</script>
+
+
+
+  
+  
+</body>
+
+</html>
