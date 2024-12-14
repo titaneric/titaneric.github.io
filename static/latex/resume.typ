@@ -213,17 +213,15 @@
           subTitle: "Dec. 2022 – Present",
           subTitleEnd: "Taipei, Taiwan",
           content: list(
-            [Developed golang-based sdk to wrap new internal infra API, designing for easily maintained and client agnostic.
-            ],
-            [Co-maintained internal Terraform provider #underline(link("https://engineering.linecorp.com/en/blog/terraform-for-verda", "terda")) and promoted Terraform adoption and advocacy at LINE Taiwan.
-            ],
-            [Redesigned log collecting pipelines at LINE Taiwan, and profiled and tuned the self-hosted Loki, reducing storage overhead by *80%*.
-            ],
-            // [Introduced Vector log collector, Designed and implemented new build self-hosted Loki, and migration plan.
+            // [Developed golang-based sdk to wrap new internal infra API, designing for easily maintained and client agnostic.
             // ],
+            [Co-maintained organization-wide internal Terraform provider #underline(link("https://engineering.linecorp.com/en/blog/terraform-for-verda", "terda")), and promoted Terraform adoption and advocacy at LINE Taiwan.
+            ],
+            [Optimized log collecting pipelines at LINE Taiwan, and profiled and tuned the self-hosted Loki, reducing storage overhead by *80%* and cutting down required resource by *70%*.
+            ],
             [Introduced Grafana Alloy and Faro SDK at LINE Taiwan, achieving end-to-end tracing, RUM, and presented the work at #underline(link("https://coscup.org/2024/en/session/VESN7N", "COSCUP 2024")) .],
-            [Developed slack-based workflow automation framework and migrated pipelines to GitHub Action, improving operational quality.],
-            [Designed and built internal infra cost calculator, metrics snapshotter, and dashboards, providing cloud spending visibility and optimization.],
+            [Designed and developed automation tools such as slack-based workflow automation framework and GitHub Action to improve operational quality.],
+            [Designed and built internal infra cost calculator, metrics snapshotter, and dashboards, providing private cloud spending visibility and optimization.],
             // [Developed internal secret management system integration toolkit, including GitHub Action and ArgoCD plugin, to enhance security and compliance.],
             // [Analyzed the root cause of technical debt, and developed alternative solution to resolve it. Also helped sunsetting highly operational cost internal system.],
           ),
