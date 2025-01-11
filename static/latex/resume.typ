@@ -14,15 +14,14 @@
   theme: rgb("#4273B0"),
   name: "",
   title: none,
-  contact: ((text: [], link: "")),
+  contact: (text: [], link: ""),
   skills: (
     languages: (),
   ),
-  main: ((title: "", content: [])),
+  main: (title: "", content: []),
   sidebar: (),
   body,
 ) = {
-
   let backgroundTitle(content) = heading(
     level: 1,
     numbering: none,
@@ -103,16 +102,21 @@
       spacing: 1em,
       ..subSections.map(s => {
         [
-          #box([
-            #secondaryTitle(s.title)#h(1fr)#italicColorTitle(s.titleEnd)
-          ])
+          #if s.title != "" {
+            box([
+              #secondaryTitle(s.title)
+              #h(1fr)
+              #italicColorTitle(s.titleEnd)
+            ])
+          }
           #if s.subTitle != none or s.subTitleEnd != none {
             box[
               #text(9pt)[
                 #if s.subTitle != none {
                   [#icon("calendar") #s.subTitle]
                 }
-                #h(1fr)#icon("location") #s.subTitleEnd]
+                #h(1fr)
+                #icon("location") #s.subTitleEnd]
             ]
           }
           #s.content
@@ -128,12 +132,9 @@
       ..section.map(m => {
         if m.title == "" {
           [
-
             #m.content
           ]
-
         } else {
-
           [
             #backgroundTitle(m.title)
             #parseSubSections(m.content)
@@ -163,12 +164,14 @@
 
 // #import "template.typ": *
 
-#set page(margin: (
-  left: 10mm,
-  right: 10mm,
-  top: 15mm,
-  bottom: 15mm,
-))
+#set page(
+  margin: (
+    left: 10mm,
+    right: 10mm,
+    top: 15mm,
+    bottom: 15mm,
+  ),
+)
 
 #set text(font: "Mulish")
 
@@ -203,7 +206,9 @@
     ),
   ),
   main: (
-    section(content: "Certified Kubernetes Administrator and conscientious software engineer. Aiming to leverage my skills in automation, observability, cloud-native solutions, and problem solving abilities to improve system reliability and efficiency."),
+    section(
+      content: "Certified Kubernetes Administrator, open source enthusiast, and conscientious software engineer. Aiming to leverage my skills in automation, observability, cloud-native solutions, and problem solving abilities to improve system reliability, observability, and efficiency.",
+    ),
     section(
       title: "Work Experience",
       content: (
@@ -233,14 +238,14 @@
           subTitleEnd: "Taipei, Taiwan",
           content: list(
             [Designed & built up a robust monitoring/alerting system that collect *15+* GB metrics per day across *100+* servers.
-],
-[
-Experienced in Kubernetes administration & cluster and service migration for *8* cluster (*60+* nodes) with *95%* & *99%* SLA.],
-[Adopted automation tool to construct *production-grade* and *GPU-accelerated* k8s cluster, and contributed to upstream #underline(link("https://github.com/kubernetes-sigs/kubespray", "Kubespray")) & backported to existing playbook. ],
-[ Developed tools for automating process of daily routine, config management, app deployment, and system validation task, which lead to effectively reduce operational costs.],
-// [ Documented thorough k8s installation and operation guide that help pre-trained member leveraing automation tool and deploying a cluster within *1 day*.],
-//  [Assisted colleagues in resolving the issue in Ansible, Linux SysAdmin, and Kubernetes.
-// ]
+            ],
+            [
+              Experienced in Kubernetes administration & cluster and service migration for *8* cluster (*60+* nodes) with *95%* & *99%* SLA.],
+            [Adopted automation tool to construct *production-grade* and *GPU-accelerated* k8s cluster, and contributed to upstream #underline(link("https://github.com/kubernetes-sigs/kubespray", "Kubespray")) & backported to existing playbook. ],
+            [ Developed tools for automating process of daily routine, config management, app deployment, and system validation task, which lead to effectively reduce operational costs.],
+            // [ Documented thorough k8s installation and operation guide that help pre-trained member leveraing automation tool and deploying a cluster within *1 day*.],
+            //  [Assisted colleagues in resolving the issue in Ansible, Linux SysAdmin, and Kubernetes.
+            // ]
           ),
         ),
         subSection(
@@ -256,10 +261,10 @@ Experienced in Kubernetes administration & cluster and service migration for *8*
       title: "Projects",
       content: (
         subSection(
-          title: underline(link("https://www.titaneric.com/videos/rust-playground-wasm.mp4", "Rust Playground with WASM")),
-          content: list(
-            [Forked #underline(link("https://play.rust-lang.org/?version=stable&mode=debug&edition=2021", "Rust Playground")) to render Web Assembly from compiled Rust, and managed to render them on #underline(link("https://www.titaneric.com/videos/mdbook-wasm.mp4", "mdBook")) as well.],
+          title: underline(
+            link("https://www.titaneric.com/videos/rust-playground-wasm.mp4", "Rust Playground with WASM"),
           ),
+          content: list([Forked #underline(link("https://play.rust-lang.org/?version=stable&mode=debug&edition=2021", "Rust Playground")) to render Web Assembly from compiled Rust, and managed to render them on #underline(link("https://www.titaneric.com/videos/mdbook-wasm.mp4", "mdBook")) as well.]),
         ),
         subSection(
           title: underline(link("/images/courts-reserver-tracing.png", "Court Reserver")),
@@ -380,21 +385,37 @@ Experienced in Kubernetes administration & cluster and service migration for *8*
       title: "Contributions",
       content: (
         subSection(
-          title: "Reduce redundant calculation",
+          title: "Improved VRL functions and Vector's components",
           subTitleEnd: (
-underline(link("https://github.com/pytorch/pytorch/pull/28651", "pytorch")),
-underline(link("https://github.com/google/jax/issues/1576", "jax")),
-underline(link("https://github.com/HIPS/autograd/pull/541", "autograd")),
+            underline(
+              link(
+                "https://github.com/vectordotdev/vrl/pulls?q=is%3Apr+is%3Amerged+author%3Atitaneric",
+                "vectordotdev/vrl",
+              ),
+            ),
+            underline(
+              link(
+                "https://github.com/vectordotdev/vector/pulls?q=is%3Apr+is%3Amerged+author%3Atitaneric",
+                "vectordotdev/vector",
+              ),
+            ),
           ).join(", "),
         ),
         subSection(
-          title: "Fix golang map iteration (BPF)",
-          subTitleEnd: underline(link("https://github.com/grafana/beyla/pull/804", "beyla")),
+          title: "Reduced redundant calculation",
+          subTitleEnd: (
+            underline(link("https://github.com/pytorch/pytorch/pull/28651", "pytorch/pytorch")),
+            underline(link("https://github.com/jax-ml/jax/issues/1576", "jax-ml/jax")),
+          ).join(", "),
         ),
         subSection(
-          title: "Support kubeadm patch",
-          subTitleEnd: underline(link("https://github.com/kubernetes-sigs/kubespray/pull/9326", "kubespray")),
+          title: "Fixed golang map iteration (BPF)",
+          subTitleEnd: underline(link("https://github.com/grafana/beyla/pull/804", "grafana/beyla")),
         ),
+        // subSection(
+        //   title: "Supported kubeadm patch",
+        //   subTitleEnd: underline(link("https://github.com/kubernetes-sigs/kubespray/pull/9326", "kubernetes-sigs/kubespray")),
+        // ),
         // subSection(
         //   title: "Bug reporting",
         //   subTitleEnd: underline(link("https://github.com/microsoft/vscode-python/issues/202", "vscode-python")),
@@ -408,8 +429,18 @@ underline(link("https://github.com/HIPS/autograd/pull/541", "autograd")),
           content: list(
             "LINE Dev Governance Best Practice",
             // "LINE 2023 Q2 Spot Bonus",
-underline(link("https://ti-user-certificates.s3.amazonaws.com/e0df7fbf-a057-42af-8a1f-590912be5460/ca820404-2858-41da-9d18-c3268d010348-huang-chen-yi-80c3b11d-2f72-4183-8271-9743fe40b47d-certificate.pdf", "Certified Kubernetes Administrator")),
-underline(link("https://github.com/titaneric?achievement=arctic-code-vault-contributor&tab=achievements", "Arctic Code Vault Contributor"))
+            underline(
+              link(
+                "https://ti-user-certificates.s3.amazonaws.com/e0df7fbf-a057-42af-8a1f-590912be5460/ca820404-2858-41da-9d18-c3268d010348-huang-chen-yi-80c3b11d-2f72-4183-8271-9743fe40b47d-certificate.pdf",
+                "Certified Kubernetes Administrator",
+              ),
+            ),
+            underline(
+              link(
+                "https://github.com/titaneric?achievement=arctic-code-vault-contributor&tab=achievements",
+                "Arctic Code Vault Contributor",
+              ),
+            ),
           ),
         ),
       ),
