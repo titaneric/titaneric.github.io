@@ -385,7 +385,7 @@
       title: "Contributions",
       content: (
         subSection(
-          title: "Improved VRL functions and Vector's components",
+          title: "Enhanced VRL functions and Vector's components",
           subTitleEnd: (
             underline(
               link(
@@ -402,14 +402,14 @@
           ).join(", "),
         ),
         subSection(
-          title: "Reduced redundant calculation",
+          title: "Reduced redundant calculation in backpropagation",
           subTitleEnd: (
             underline(link("https://github.com/pytorch/pytorch/pull/28651", "pytorch/pytorch")),
             underline(link("https://github.com/jax-ml/jax/issues/1576", "jax-ml/jax")),
           ).join(", "),
         ),
         subSection(
-          title: "Fixed golang map iteration (BPF)",
+          title: "Fixed Golang's map bucket iteration in eBPF",
           subTitleEnd: underline(link("https://github.com/grafana/beyla/pull/804", "grafana/beyla")),
         ),
         // subSection(
@@ -435,12 +435,12 @@
                 "Certified Kubernetes Administrator",
               ),
             ),
-            underline(
-              link(
-                "https://github.com/titaneric?achievement=arctic-code-vault-contributor&tab=achievements",
-                "Arctic Code Vault Contributor",
-              ),
-            ),
+            // underline(
+            //   link(
+            //     "https://github.com/titaneric?achievement=arctic-code-vault-contributor&tab=achievements",
+            //     "Arctic Code Vault Contributor",
+            //   ),
+            // ),
           ),
         ),
       ),
