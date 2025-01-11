@@ -207,7 +207,7 @@
   ),
   main: (
     section(
-      content: "Certified Kubernetes Administrator, open source enthusiast, and conscientious software engineer. Aiming to leverage my skills in automation, observability, cloud-native solutions, and problem solving abilities to improve system reliability, observability, and efficiency.",
+      content: "Certified Kubernetes Administrator, open source enthusiast, and conscientious software engineer with skills in automation, observability, and cloud-native solutions. Possesses strong problem-solving abilities and a keen eye for detail, aiming to improve system reliability, observability, and efficiency.",
     ),
     section(
       title: "Work Experience",
