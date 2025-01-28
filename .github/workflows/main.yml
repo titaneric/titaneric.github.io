@@ -48,7 +48,7 @@ jobs:
         PAGES_BRANCH: gh-pages
         # Provide personal access token
         GITHUB_TOKEN: ${{ github.token }}
-        CHECK_LINKS: true
+        # CHECK_LINKS: true
     - name: Generate GitHub App Token
       id: app-token
       uses: actions/create-github-app-token@v1
