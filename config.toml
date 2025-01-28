@@ -29,6 +29,7 @@ menu = [
     { url = "/categories", name = "categories" },
     # { url = "$BASE_URL/yew-examples/", name = "Yew Examples" },
     { url = "/pdfs/resume.pdf", name = "about" },
+    { url = "/notes/index.html", name = "notes" },
 ]
 mathjax = true
 mathjax_dollar_inline_enable = true
