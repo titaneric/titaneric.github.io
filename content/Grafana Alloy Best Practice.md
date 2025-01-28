@@ -4,7 +4,7 @@ date = 2024-08-04
 
 [taxonomies]
 categories = ["Learning"]
-tags = ["grafana", "k8s", "RUM"]
+tags = ["grafana", "k8s", "monitoring"]
 +++
 
 {{ pdf(source="//www.slideshare.net/slideshow/embed_code/key/gxSQKJ88aLrpQS")}}
