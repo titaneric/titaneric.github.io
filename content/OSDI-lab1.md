@@ -191,7 +191,7 @@ struct task_struct * task[NR_TASKS] = {&(init_task.task), };
 
 The value of `NR_TASKS` is zero, which is unreasonable.
 
-Check out [document](http://oldlinux.org/download/ECLK-5.0-WithCover.pdf) at P994.
+Check out [document](https://download.oldlinux.org/ECLK-5.0-WithCover.pdf) at P994.
 
 ![](https://i.imgur.com/4mAhfLo.png)
 
