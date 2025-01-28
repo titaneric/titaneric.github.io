@@ -1,8 +1,6 @@
-# The URL the site will be built for
 base_url = "https://titaneric.github.io"
 title = "titaneric"
 
-# Whether to automatically compile all Sass files in the sass directory
 compile_sass = true
 generate_feeds = false
 feed_filenames = ["rss.xml"]
@@ -22,12 +20,10 @@ highlight_theme = "ayu-light"
 
 [extra]
 theme = "toggle"
-# Put all your custom variables here
 menu = [
     { url = "/", name = "home" },
     { url = "/tags", name = "tags" },
     { url = "/categories", name = "categories" },
-    # { url = "$BASE_URL/yew-examples/", name = "Yew Examples" },
     { url = "/pdfs/resume.pdf", name = "about" },
     { url = "/notes/index.html", name = "notes" },
 ]
