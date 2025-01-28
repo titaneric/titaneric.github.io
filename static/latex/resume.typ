@@ -51,14 +51,14 @@
         subSection(
           title: "Site Reliability Engineer",
           titleEnd: "Engineering Dept., LINE Taiwan Limited",
-          subTitle: "Dec. 2022 – Present",
+          subTitle: "Dec 2022 – Present",
           subTitleEnd: "Taipei, Taiwan",
           content: list(
             // [Developed golang-based sdk to wrap new internal infra API, designing for easily maintained and client agnostic.
             // ],
             [Co-maintained organization-wide internal Terraform provider #underline(link("https://engineering.linecorp.com/en/blog/terraform-for-verda", "terda")), and promoted Terraform adoption and advocacy at LINE Taiwan.
             ],
-            [Optimized log collecting pipelines at LINE Taiwan, and profiled and tuned the self-hosted Loki, reducing storage overhead by *80%* and cutting down required resource by *70%*.
+            [Optimized log collecting pipelines at LINE Taiwan, profiled and tuned the self-hosted Loki, *completely eliminating overhead* of object storage and *cutting down required resource by 70%*.
             ],
             [Introduced Grafana Alloy and Faro SDK at LINE Taiwan, achieving end-to-end tracing, RUM, and presented the work at #underline(link("https://coscup.org/2024/en/session/VESN7N", "COSCUP 2024")) .],
             [Designed and developed automation tools such as slack-based workflow automation framework and GitHub Action to improve operational quality.],
@@ -70,7 +70,7 @@
         subSection(
           title: "Senior Engineer",
           titleEnd: "Intelligent Banking Division, E.SUN bank",
-          subTitle: "May 2021 – Dec. 2022",
+          subTitle: "May 2021 – Dec 2022",
           subTitleEnd: "Taipei, Taiwan",
           content: list(
             [Designed & built up a robust monitoring/alerting system that collect *15+* GB metrics per day across *100+* servers.
