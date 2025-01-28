@@ -4,7 +4,7 @@ date = 2021-10-10
 
 [taxonomies]
 categories = ["Notes"]
-tags = ["k8s", "trace source code"]
+tags = ["k8s", "deep dive"]
 
 [extra]
 comments = true
@@ -14,9 +14,7 @@ comments = true
 
 **metrics-server**是kubernetes用來量測cluster中node以及pod中的CPU以及記憶體使用率的工具，這些被量測到的資訊會被kubectl top以及HPA controller收集，分別做為查看目前k8s系統狀態以及擴充服務的依據。
 
-metrics-server本身也如同k8s的絕大多數物件一樣，它是以web service的形式存在k8s當中，原始碼在[kubernetes-sigs
-/
-metrics-server](https://github.com/kubernetes-sigs/metrics-server)，本篇文章要來解析metrics-server中entry point、所使用的metrics基本物件、metrics如何被收集以及何時會被更新。
+metrics-server本身也如同k8s的絕大多數物件一樣，它是以web service的形式存在k8s當中，原始碼在[kubernetes-sigs/metrics-server](https://github.com/kubernetes-sigs/metrics-server)，本篇文章要來解析metrics-server中entry point、所使用的metrics基本物件、metrics如何被收集以及何時會被更新。
 
 # Dive in
 
