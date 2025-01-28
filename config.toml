@@ -14,20 +14,21 @@ taxonomies = [
     { name = "tags", feed = true, paginate_by = 10 },
 ]
 
+build_search_index = true
+
 [markdown]
-# Whether to do syntax highlighting
-# Theme can be customised by setting the `highlight_theme` variable to a theme supported by Zola
 highlight_code = true
+highlight_theme = "ayu-light"
 
 [extra]
 theme = "toggle"
 # Put all your custom variables here
 menu = [
-    { url = "/", name = "Home" },
-    { url = "/tags", name = "Tags" },
-    { url = "/categories", name = "Categories" },
+    { url = "/", name = "home" },
+    { url = "/tags", name = "tags" },
+    { url = "/categories", name = "categories" },
     # { url = "$BASE_URL/yew-examples/", name = "Yew Examples" },
-    { url = "/pdfs/resume.pdf", name = "Resume" },
+    { url = "/pdfs/resume.pdf", name = "about" },
 ]
 mathjax = true
 mathjax_dollar_inline_enable = true
@@ -37,7 +38,6 @@ socials = [
     { name = "github", url = "https://github.com/titaneric/", icon = "github" },
 ]
 toc = true
-build_search_index = true
 favicon = "/icons/favicon-16x16.png"
 fancy_code = true
 dynamic_note = true
