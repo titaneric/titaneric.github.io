@@ -6,7 +6,6 @@ permissions:
 jobs:
   get_resume:
     runs-on: ubuntu-latest
-    environment: github-pages
     steps:
     - uses: actions/checkout@v4
 
@@ -49,10 +48,19 @@ jobs:
         PAGES_BRANCH: gh-pages
         # Provide personal access token
         GITHUB_TOKEN: ${{ github.token }}
-    # - name: Dispatch the mdbook to deploy itself
-    #   uses: peter-evans/repository-dispatch@v1
-    #   with:
-    #     token: ${{ secrets.TOKEN }}
-    #     repository: titaneric/yew-examples
-    #     event-type: deploy-again
-    #     client-payload: '{"ref": "${{ github.ref }}", "sha": "${{ github.sha }}"}'
+        CHECK_LINKS: true
+    - name: Generate GitHub App Token
+      id: app-token
+      uses: actions/create-github-app-token@v1
+      with:
+        app-id: ${{ vars.GH_APP_ID }}
+        private-key: ${{ secrets.GH_APP_PVT_KEY }}
+        owner: ${{ github.repository_owner }}
+        repositories: |
+          notes
+    - name: Dispatch the notes to deploy itself
+      uses: peter-evans/repository-dispatch@v3
+      with:
+        token: ${{ steps.app-token.outputs.token }}
+        repository: titaneric/notes
+        event-type: deploy-again

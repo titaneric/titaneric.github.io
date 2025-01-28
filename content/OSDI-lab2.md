@@ -124,7 +124,7 @@ If we print the config before the first if condition, we will find that
 
 Therefore, the `CONFIG_BOOTMENU` is 1 but `etc/show-boot-menu` is 0, so the `interactive_bootmenu` will return early without executing the rest of code including the `enable_bootsplash` method.
 
-After did some [researches](https://github.com/qemu/qemu/blob/master/docs/specs/fw_cfg.txt), qemu provide an option `-fw_cfg` to provide some file as
+After did some [researches](https://github.com/qemu/qemu/blob/master/docs/specs/fw_cfg.rst), qemu provide an option `-fw_cfg` to provide some file as
 
 - `-fw_cfg [name=]<item_name>,file=<path>`. or
 - `-fw_cfg [name=]<item_name>,string=<string>`
