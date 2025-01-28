@@ -7,7 +7,6 @@ categories = ["Learning"]
 tags =  ["k8s", "monitoring"]
 +++
 
-{{ pdf(source="//www.slideshare.net/slideshow/embed_code/key/gxSQKJ88aLrpQS")}}
 
 # TLDR
 
@@ -47,7 +46,7 @@ Grafana Faro是JS的library，可以引用在前端的應用中，用來蒐集�
 
 在這架構上，台灣的SRE在Kubernetes上部署了Traefik或Contour Ingress Controller，再上層的服務包含Tempo, Loki, ArgoCD, Grafana。
 
-![alt text](/images/posts/grafana-alloy/tech-stack.png)
+{{ pdf(source="//www.slideshare.net/slideshow/embed_code/key/gxSQKJ88aLrpQS", start=18)}}
 
 ## 應用團隊監控架構
 
@@ -59,7 +58,7 @@ log主要會將stdout及stderr寫到節點上的log file上存放，我們使用
 
 trace會先拋到cluster上的otel collector(Deployment部暑)上，一樣會先做些前處理(memory限制，限制每一個span的attributes數量等)，因為數量比較大我們選擇先拋到Kafka topic上，之後會在SRE cluster進行處理。
 
-![alt text](/images/posts/grafana-alloy/user-o11y-arch.png)
+{{ pdf(source="//www.slideshare.net/slideshow/embed_code/key/gxSQKJ88aLrpQS", start=19)}}
 
 ## SRE監控架構
 
@@ -67,7 +66,7 @@ trace會先拋到cluster上的otel collector(Deployment部暑)上，一樣會先
 
 在metrics部分，我們僅是使用Prometheus remote read功能讀取其他團隊的遠端Prometheus；在logs部分，透過Loki push API打進來的logs都會被Loki cluster消化，並存放到兼容S3 API的Object Storage中；SRE cluster上會另外部署一套otel collector，負責consume來自Kafka topic的trace，之後送進Tempo cluster進一步消化，也存在Object Storage中，
 
-![alt text](/images/posts/grafana-alloy/sre-o11y-arch.png)
+{{ pdf(source="//www.slideshare.net/slideshow/embed_code/key/gxSQKJ88aLrpQS", start=20)}}
 
 # 如何設計Alloy
 
@@ -96,7 +95,7 @@ Alloy收進來的log是直接透過`loki.write`直接拋到SRE掌管的Loki clus
 
 Alloy會開啟`faro.receiver`元件功能，在Alloy Deployment前面會掛一個k8s Service，不同於一般的ClusterIP，我們選擇LoadBalancer type，底層的controller聆聽到之後會自動在cluster前面再創建一個LoadBalancer，基本上這樣就可以供應用程式使用。不過Faro SDK蒐集到的telemetry資料並不是直接進入這個LB，前面會再經過一個gateway。
 
-![alt text](/images/posts/grafana-alloy/user-alloy-arch.png)
+{{ pdf(source="//www.slideshare.net/slideshow/embed_code/key/gxSQKJ88aLrpQS", start=23)}}
 
 ## SRE端Alloy Gateway架構
 
@@ -104,7 +103,7 @@ Alloy會開啟`faro.receiver`元件功能，在Alloy Deployment前面會掛一�
 
 我們使用了Contour提供的HTTPProxy，將相同domain但不同path的請求，送到應用團隊cluster的Alloy入口LB。也用了Endpoint及Service將Alloy入口LB的IP作為k8s service的封裝。
 
-![alt text](/images/posts/grafana-alloy/sre-alloy-arch.png)
+{{ pdf(source="//www.slideshare.net/slideshow/embed_code/key/gxSQKJ88aLrpQS", start=23)}}
 
 ## 設計緣由
 
@@ -137,3 +136,8 @@ Faro SDK預設的trace propagation格式是使用W3C Trace Context，但是我�
 如前面提到的，Traefik受限的trace propagation格式造成了開發者的困擾，在Traefik v3之後統一使用OpenTelemetry及W3C Trace Context標準，我們預計將逐步升級上去。
 
 在台灣這邊，應用團隊不管透過手動寫入或是library協助自動產生instrumentation都有累積一段經驗，但是採用的團隊仍不夠廣泛，而且應用團隊仍會需要手動在應用程式注入片段的程式碼才能發揮tracing功能，之後會研究zero-code instrumentation，例如Grafana Beyla這樣的工具，利用eBPF技術在底層追蹤請求及回覆，並轉換成trace。如此一來，團隊能更加專注開發應用，不須費盡心思撰寫instrumentation相關程式，也能享受tracing或其他監控帶來的好處。
+
+# 完整投影片
+
+{{ pdf(source="//www.slideshare.net/slideshow/embed_code/key/gxSQKJ88aLrpQS")}}
+
