@@ -10,10 +10,8 @@ jobs:
     steps:
     - uses: actions/checkout@v4
 
-    - uses: yusancky/setup-typst@v2
+    - uses: yusancky/setup-typst@v3
       id: setup-typst
-      with:
-        version: 'v0.9.0'
 
     - name: Compile resume by typst
       run: |
@@ -45,7 +43,7 @@ jobs:
         ref: "master"
     # Build and deploy
     - name: shalzz/zola-deploy-action
-      uses: shalzz/zola-deploy-action@v0.17.2
+      uses: shalzz/zola-deploy-action@master
       env:
         # Target branch
         PAGES_BRANCH: gh-pages
