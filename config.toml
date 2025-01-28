@@ -1,20 +1,17 @@
 # The URL the site will be built for
 base_url = "https://titaneric.github.io"
-title = "Playground"
+title = "titaneric"
+
 # Whether to automatically compile all Sass files in the sass directory
 compile_sass = true
-
 generate_feeds = false
 feed_filenames = ["rss.xml"]
-
-# Whether to build a search index to be used later on by a JavaScript library
-build_search_index = true
 default_language = "en"
-theme = "DeepThought"
+theme = "apollo"
 
 taxonomies = [
-	{ name = "categories", feed = true, paginate_by = 10 },
-	{ name = "tags", feed = true, paginate_by = 10 },
+    { name = "categories", feed = true, paginate_by = 10 },
+    { name = "tags", feed = true, paginate_by = 10 },
 ]
 
 [markdown]
@@ -23,35 +20,35 @@ taxonomies = [
 highlight_code = true
 
 [extra]
+theme = "toggle"
 # Put all your custom variables here
-navbar_items = [
-    { code = "en", nav_items = [
-        { url = "$BASE_URL/", name = "Home" },
-        { url = "$BASE_URL/tags", name = "Tags" },
-        { url = "$BASE_URL/categories", name = "Categories" },
-        # { url = "$BASE_URL/yew-examples/", name = "Yew Examples" },
-        { url = "$BASE_URL/pdfs/resume.pdf", name = "Resume" },
-        # { url = "https://playground.titaneric.com", name = "Rust Playground" },
-    ] },
+menu = [
+    { url = "/", name = "Home" },
+    { url = "/tags", name = "Tags" },
+    { url = "/categories", name = "Categories" },
+    # { url = "$BASE_URL/yew-examples/", name = "Yew Examples" },
+    { url = "/pdfs/resume.pdf", name = "Resume" },
 ]
-katex.enabled = true
-katex.auto_render = true
+mathjax = true
+mathjax_dollar_inline_enable = true
 
-[extra.author]
-name = "titaneric"
+socials = [
+    { name = "linkedin", url = "https://www.linkedin.com/in/chen-yi-huang/", icon = "linkedin" },
+    { name = "github", url = "https://github.com/titaneric/", icon = "github" },
+]
+toc = true
+build_search_index = true
+favicon = "/icons/favicon-16x16.png"
+fancy_code = true
+dynamic_note = true
+comment = false
 
-[extra.social]
-github = "titaneric"
-email = "chenyihuang001@gmail.com"
-linkedin = "chen-yi-huang"
+[search]
+include_title = true
+include_description = true
+include_path = true
+include_content = true
+index_format = "elasticlunr_json"
 
 [extra.analytics]
-google = "G-HSJPSHBTCN"
-
-[extra.favicon]
-favicon_16x16 = "/icons/favicon-16x16.png"
-favicon_32x32 = "/icons/favicon-32x32.png"
-apple_touch_icon = "/icons/apple-touch-icon.png"
-
-[extra.commenting]
-disqus = "titaneric-github-io"
+enabled = false
