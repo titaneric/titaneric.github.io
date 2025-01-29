@@ -1,0 +1,29 @@
+{% extends "base.html" %}
+
+{% block main_content %}
+
+{% block title %}
+{{ post_macros::page_header(title=section.title) }}
+{% endblock title %}
+
+<main class="list">
+	{% set posts_section = get_section(path="posts/_index.md") %}
+	{% for year, posts in posts_section.pages | group_by(attribute="year") %}
+	<time>{{ year }}</time>
+
+	<ul>
+		{% for post in posts %}
+		<li class="list-item">
+			<section>
+				<div class="post-header">
+					<div>
+						<a href="{{ post.permalink }}">{{ post.title }}</a>
+					</div>
+				</div>
+			</section>
+		</li>
+		{% endfor %}
+	</ul>
+	{% endfor %}
+</main>
+{% endblock main_content %}
