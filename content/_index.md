@@ -1,7 +1,3 @@
 +++
-title = "Home"
-description = "Just my little stuff here"
-sort_by = "date"
-paginate_by = 10
-insert_anchor_links = "heading"
+redirect_to = "posts"
 +++

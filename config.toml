@@ -21,7 +21,7 @@ highlight_theme = "ayu-light"
 [extra]
 theme = "toggle"
 menu = [
-    { url = "/", name = "home" },
+    { url = "/posts", name = "posts" },
     { url = "/tags", name = "tags" },
     { url = "/categories", name = "categories" },
     { url = "/pdfs/resume.pdf", name = "about" },
