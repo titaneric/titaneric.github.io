@@ -103,7 +103,7 @@ Alloy會開啟`faro.receiver`元件功能，在Alloy Deployment前面會掛一�
 
 我們使用了Contour提供的HTTPProxy，將相同domain但不同path的請求，送到應用團隊cluster的Alloy入口LB。也用了Endpoint及Service將Alloy入口LB的IP作為k8s service的封裝。
 
-{{ pdf(source="//www.slideshare.net/slideshow/embed_code/key/gxSQKJ88aLrpQS", start=23)}}
+{{ pdf(source="//www.slideshare.net/slideshow/embed_code/key/gxSQKJ88aLrpQS", start=24)}}
 
 ## 設計緣由
 
@@ -140,4 +140,3 @@ Faro SDK預設的trace propagation格式是使用W3C Trace Context，但是我�
 # 完整投影片
 
 {{ pdf(source="//www.slideshare.net/slideshow/embed_code/key/gxSQKJ88aLrpQS")}}
-
