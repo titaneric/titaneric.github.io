@@ -18,8 +18,6 @@ toc = true
 - Learn how to use QEMU and GDB to debug Linux 0.11 kernel
 - Learn how to commit to GIT system
 
-<!--more-->
-
 ---
 
 ## Lab1.1 Linux 0.11 Development Environment Setup

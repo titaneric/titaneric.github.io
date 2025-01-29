@@ -24,8 +24,6 @@ toc = true
     4. The difference between previous map and intersection mentioned at 3.2 is the delete one.
     5. At last, filter the keys that corresponding value of current map and previous map are not the same. That is the edit one.
 
-<!--more-->
-
 ## What I learn
 
 1. Use the regex lib at C++ for the first time.
