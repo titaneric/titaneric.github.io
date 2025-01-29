@@ -24,6 +24,7 @@ menu = [
     { url = "/posts", name = "posts" },
     { url = "/tags", name = "tags" },
     { url = "/categories", name = "categories" },
+    { url = "/archive", name = "archive" },
     { url = "/pdfs/resume.pdf", name = "about" },
     { url = "/notes/index.html", name = "notes" },
 ]
