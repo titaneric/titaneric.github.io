@@ -39,6 +39,8 @@ favicon = "/icons/favicon-16x16.png"
 fancy_code = true
 dynamic_note = true
 comment = false
+repo_view = true
+repo_url = "https://github.com/titaneric/titaneric.github.io/tree/master/content/"
 
 [search]
 include_title = true
@@ -48,4 +50,7 @@ include_content = true
 index_format = "elasticlunr_json"
 
 [extra.analytics]
-enabled = false
+enabled = true
+
+[extra.analytics.umami]
+website_id = "63f9d7c5-7c47-493b-af29-481374c7531c"
