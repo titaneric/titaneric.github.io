@@ -18,8 +18,6 @@ toc = true
  - Learn how to use BIOS interrupt call to do I/O tasks.
  - Learn how to modify linux-0.11 bootsect.s and the build system to create a multiboot kernel image.
 
-<!--more-->
-
 ---
 
 ## Lab2.1 - Build SEABIOS, add some message before system startup
