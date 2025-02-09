@@ -13,11 +13,11 @@ taxonomies = [
 ]
 
 build_search_index = true
-external_links_no_referrer = true
 
 [markdown]
 highlight_code = true
 highlight_theme = "ayu-light"
+external_links_no_referrer = true
 
 [extra]
 theme = "toggle"
