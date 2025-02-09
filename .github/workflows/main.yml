@@ -9,7 +9,7 @@ jobs:
     steps:
     - uses: actions/checkout@v4
 
-    - uses: yusancky/setup-typst@v3
+    - uses: typst-community/setup-typst@v4
       id: setup-typst
 
     - name: Compile resume by typst
