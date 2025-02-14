@@ -246,7 +246,7 @@
           ).join(", "),
         ),
         subSection(
-          title: "Fixed Golang's map bucket iteration in eBPF",
+          title: "Fixed low-level Golang's map traverse in eBPF",
           subTitleEnd: underline(link("https://github.com/grafana/beyla/pull/804", "grafana/beyla")),
         ),
         // subSection(
