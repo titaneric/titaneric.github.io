@@ -54,14 +54,14 @@
           subTitle: "Dec 2022 – Present",
           subTitleEnd: "Taipei, Taiwan",
           content: list(
-            // [Developed golang-based sdk to wrap new internal infra API, designing for easily maintained and client agnostic.
-            // ],
+            [#underline(link("https://techblog.lycorp.co.jp/zh-hant/grafana-loki-upgrade-1", "Optimized log collecting pipelines at LINE Taiwan and tuned the self-hosted Loki" )), *increasing log ingestion and query performance, completely eliminating object storage overhead and reducing cost by 70%*.
+            ],
             [Co-maintained organization-wide internal Terraform provider #underline(link("https://engineering.linecorp.com/en/blog/terraform-for-verda", "terda")), and promoted Terraform adoption and advocacy at LINE Taiwan.
             ],
-            [Optimized log collecting pipelines at LINE Taiwan, profiled and tuned the self-hosted Loki, *completely eliminating overhead* of object storage and *cutting down required resource by 70%*.
-            ],
             [Introduced Grafana Alloy and Faro SDK at LINE Taiwan, achieving end-to-end tracing, RUM, and presented the work at #underline(link("https://coscup.org/2024/en/session/VESN7N", "COSCUP 2024")) .],
-            [Designed and developed automation tools such as slack-based workflow automation framework and GitHub Action to improve operational quality.],
+            [Developed Golang-based sdk to wrap successor  infrastructure API after merger, designing for easily maintained and client agnostic.
+            ],
+            [Developed automation tools such as slack-based workflow automation framework and GitHub Action to improve operational quality.],
             [Designed and built internal infra cost calculator, metrics snapshotter, and dashboards, providing private cloud spending visibility and optimization.],
             // [Developed internal secret management system integration toolkit, including GitHub Action and ArgoCD plugin, to enhance security and compliance.],
             // [Analyzed the root cause of technical debt, and developed alternative solution to resolve it. Also helped sunsetting highly operational cost internal system.],
@@ -84,13 +84,13 @@
             // ]
           ),
         ),
-        subSection(
-          title: "Engineer",
-          titleEnd: "Computer Integration Manufacturer, tsmc",
-          subTitle: "Oct 2020 – Jan 2021",
-          subTitleEnd: "Hsinchu, Taiwan",
-          content: list(),
-        ),
+        // subSection(
+        //   title: "Engineer",
+        //   titleEnd: "Computer Integration Manufacturer, tsmc",
+        //   subTitle: "Oct 2020 – Jan 2021",
+        //   subTitleEnd: "Hsinchu, Taiwan",
+        //   content: list(),
+        // ),
       ),
     ),
     section(
@@ -206,13 +206,14 @@
                 "The Journey to the Kubernetes metrics",
               ),
             ),
-            underline(
-              link(
-                "https://github.com/titaneric/AutoDiff-from-scratch/blob/master/Final\%20Presentation.ipynb",
-                "Auto Differentiation",
-              ),
-            ),
+            // underline(
+            //   link(
+            //     "https://github.com/titaneric/AutoDiff-from-scratch/blob/master/Final\%20Presentation.ipynb",
+            //     "Auto Differentiation",
+            //   ),
+            // ),
             underline(link("https://www.titaneric.com/buddy-system/", "Buddy System")),
+            underline(link("https://www.titaneric.com/archive/", "More...")),
           ),
         ),
       ),
