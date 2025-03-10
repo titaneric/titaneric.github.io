@@ -184,7 +184,7 @@
           content: list(
             underline(
               link(
-                "https://www.titaneric.com/grafana-alloy-best-practice/",
+                "https://techblog.lycorp.co.jp/zh-hant/grafana-alloy-best-practice",
                 "Grafana Alloy Best Practice",
               ),
             ),
