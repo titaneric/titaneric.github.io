@@ -196,13 +196,13 @@
             ),
             underline(
               link(
-                "https://www.titaneric.com/the-journey-to-the-kubernetes-networking/",
+                "https://www.titaneric.com/posts/the-journey-to-the-kubernetes-networking/",
                 "The Journey to the Kubernetes Networking",
               ),
             ),
             underline(
               link(
-                "https://www.titaneric.com/the-journey-to-the-kubernetes-metrics/",
+                "https://www.titaneric.com/posts/the-journey-to-the-kubernetes-metrics/",
                 "The Journey to the Kubernetes metrics",
               ),
             ),
@@ -212,7 +212,7 @@
             //     "Auto Differentiation",
             //   ),
             // ),
-            underline(link("https://www.titaneric.com/buddy-system/", "Buddy System")),
+            underline(link("https://www.titaneric.com/posts/buddy-system/", "Buddy System")),
             underline(link("https://www.titaneric.com/archive/", "More...")),
           ),
         ),
