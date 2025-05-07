@@ -16,8 +16,9 @@
   name: "Eric",
   title: "Senior Site Reliability Engineer",
   contact: (
+    // Uncomment to include phone number:
     // contact(
-    //   text: "(+886)986366141",
+    //   text: "(+886) 986-366-141",
     //   type: "phone",
     // ),
     contact(
@@ -26,12 +27,12 @@
       type: "linkedin",
     ),
     contact(
-      text: "www.github.com/titaneric",
+      text: "github.com/titaneric",
       link: "https://www.github.com/titaneric",
       type: "github",
     ),
     contact(
-      text: "www.titaneric.com",
+      text: "titaneric.com",
       link: "https://www.titaneric.com",
       type: "website",
     ),
@@ -43,7 +44,7 @@
   ),
   main: (
     section(
-      content: "Certified Kubernetes Administrator, open source enthusiast, and conscientious software engineer with skills in automation, observability, and cloud-native solutions. Possesses strong problem-solving abilities and a keen eye for detail, aiming to improve system reliability, observability, and efficiency.",
+      content: underline(link("https://ti-user-certificates.s3.amazonaws.com/e0df7fbf-a057-42af-8a1f-590912be5460/ca820404-2858-41da-9d18-c3268d010348-huang-chen-yi-80c3b11d-2f72-4183-8271-9743fe40b47d-certificate.pdf", "Certified Kubernetes Administrator")) + ", open-source enthusiast, and detail-oriented software engineer with expertise in automation, observability, and cloud-native solutions. Skilled in problem-solving and system optimization, aiming to enhance reliability, efficiency, and scalability.",
     ),
     section(
       title: "Work Experience",
@@ -54,59 +55,53 @@
           subTitle: "Dec 2022 – Present",
           subTitleEnd: "Taipei, Taiwan",
           content: list(
-            [#underline(link("https://techblog.lycorp.co.jp/zh-hant/grafana-loki-upgrade-1", "Optimized log collecting pipelines at LINE Taiwan and tuned the self-hosted Loki" )), *increasing log ingestion (3x) and query performance (P99 under 10s), completely eliminating object storage overhead and reducing cost by 70%*.
+            [#underline(link("https://techblog.lycorp.co.jp/zh-hant/grafana-loki-upgrade-1", "Optimized log collection pipelines at LINE Taiwan and upgraded the self-hosted Loki")), *achieving a 3x increase in log ingestion and query performance (P99 under 10s), while eliminating object storage overhead and reducing costs by 70%*.
             ],
-            [Co-maintained organization-wide #underline(link("https://engineering.linecorp.com/en/blog/terraform-for-verda", "internal Terraform provider terda")), and promoted Terraform adoption and advocacy at LINE Taiwan.
+            [Co-maintained the organization-wide #underline(link("https://engineering.linecorp.com/en/blog/terraform-for-verda", "internal Terraform provider Terda")), and actively promoted Terraform adoption and advocacy within LINE Taiwan.
             ],
-            [Introduced Grafana Alloy and Faro SDK at LINE Taiwan, achieving end-to-end tracing, RUM, and presented the work at #underline(link("https://coscup.org/2024/en/session/VESN7N", "COSCUP 2024")) .],
-            [Developed Go-based SDK to wrap successor infrastructure API after LY merger, designing for easily maintained and client agnostic.
+            [Introduced Grafana Alloy and Faro SDK at LINE Taiwan, enabling end-to-end tracing and real user monitoring. Presented this work at #underline(link("https://coscup.org/2024/en/session/VESN7N", "COSCUP 2024")).
             ],
-            [Developed automation tools such as slack-based workflow automation framework and GitHub Action to improve operational quality.],
-            [Designed and built internal infra cost calculator, metrics snapshotter, and dashboards, providing private cloud spending visibility and optimization.],
-            // [Developed internal secret management system integration toolkit, including GitHub Action and ArgoCD plugin, to enhance security and compliance.],
-            // [Analyzed the root cause of technical debt, and developed alternative solution to resolve it. Also helped sunsetting highly operational cost internal system.],
+            [Developed a Go-based SDK to wrap the successor infrastructure API post-LY merger, ensuring maintainability and client-agnostic design.
+            ],
+            [Created automation tools, including a Slack workflow automation framework and GitHub Actions, to improve operational efficiency and quality.
+            ],
+            [Designed and implemented an internal infrastructure cost calculator, metrics snapshotter, and dashboards, providing visibility into private cloud spending and enabling cost optimization.
+            ],
           ),
         ),
         subSection(
           title: "Senior Engineer",
-          titleEnd: "Intelligent Banking Division, E.SUN bank",
+          titleEnd: "Intelligent Banking Division, E.SUN Bank",
           subTitle: "May 2021 – Dec 2022",
           subTitleEnd: "Taipei, Taiwan",
           content: list(
-            [Designed & built up a robust monitoring/alerting system that collect *15+* GB metrics per day across *100+* servers.
+            [Designed and built a robust monitoring/alerting system that collected *15+ GB* of metrics daily across *100+ servers*.
             ],
-            [
-              Experienced in Kubernetes administration & cluster and service migration for *8* cluster (*60+* nodes) with *95%* & *99%* SLA.],
-            [Adopted automation tool to construct *production-grade* and *GPU-accelerated* k8s cluster, and contributed to upstream #underline(link("https://github.com/kubernetes-sigs/kubespray", "Kubespray")) & backported to existing playbook. ],
-            [ Developed tools for automating process of daily routine, config management, app deployment, and system validation task, which lead to effectively reduce operational costs.],
-            // [ Documented thorough k8s installation and operation guide that help pre-trained member leveraing automation tool and deploying a cluster within *1 day*.],
-            //  [Assisted colleagues in resolving the issue in Ansible, Linux SysAdmin, and Kubernetes.
-            // ]
+            [Managed Kubernetes administration and migration for *8 clusters* (*60+ nodes*) with *95%* and *99%* SLA.
+            ],
+            [Adopted automation tools to construct *production-grade* and *GPU-accelerated* Kubernetes clusters, contributing to upstream #underline(link("https://github.com/kubernetes-sigs/kubespray", "Kubespray")) and backporting to existing playbooks.
+            ],
+            [Developed tools to automate daily routines, configuration management, application deployment, and system validation tasks, significantly reducing operational costs.
+            ],
           ),
         ),
-        // subSection(
-        //   title: "Engineer",
-        //   titleEnd: "Computer Integration Manufacturer, tsmc",
-        //   subTitle: "Oct 2020 – Jan 2021",
-        //   subTitleEnd: "Hsinchu, Taiwan",
-        //   content: list(),
-        // ),
       ),
     ),
     section(
       title: "Projects",
       content: (
         subSection(
-          title: underline(
-            link("https://www.titaneric.com/videos/rust-playground-wasm.mp4", "Rust Playground with WASM"),
+          title: underline(link("https://www.titaneric.com/videos/rust-playground-wasm.mp4", "Rust Playground with WASM")),
+          content: list(
+            [Forked #underline(link("https://play.rust-lang.org/?version=stable&mode=debug&edition=2021", "Rust Playground")) to render WebAssembly from compiled Rust code in the browser and integrated it into #underline(link("https://www.titaneric.com/videos/mdbook-wasm.mp4", "mdBook")).
+            ],
           ),
-          content: list([Forked #underline(link("https://play.rust-lang.org/?version=stable&mode=debug&edition=2021", "Rust Playground")) to render Web Assembly from compiled Rust code on browser, and managed to implement it on #underline(link("https://www.titaneric.com/videos/mdbook-wasm.mp4", "mdBook")) as well.]),
         ),
         subSection(
           title: underline(link("/images/courts-reserver-tracing.png", "Court Reserver")),
           content: list(
-            [Rust CLI program for Taipei Metropolitan court reservation, which makes reservation concurrently to avoid manual operation on browser or APP.],
-            // [Captured packets from #underline(link("https://httptoolkit.com/","HTTP Toolkit")) on Android devices, TLS traffic decryption by bypassing certificate pinning, HTTP packets dissection and implemented in Rust, ran in concurrency to avoid manual operation on APP.],
+            [Developed a Rust CLI program for Taipei Metropolitan court reservations, enabling concurrent reservations to avoid manual operations on browsers or apps.
+            ],
           ),
         ),
       ),
@@ -122,7 +117,6 @@
             "Python",
             "Go",
             "Rust",
-            // "Typst",
           ).join(" • "),
         ),
         subSection(
@@ -130,7 +124,7 @@
           content: (
             "Kubernetes",
             "Containerization",
-            "Nvidia Cloud-Native tech",
+            "Nvidia Cloud-Native Tech",
             "Linux SysAdmin",
             "TCP/IP",
             "Observability",
@@ -140,18 +134,11 @@
         subSection(
           title: "IaC, CI/CD",
           content: (
-            "Github Actions",
+            "GitHub Actions",
             "Terraform",
             "Ansible",
           ).join(" • "),
         ),
-        // subSection(
-        //   title: "Language",
-        //   content: (
-        //     "Chinese",
-        //     "English",
-        //   ).join(" • "),
-        // ),
       ),
     ),
     section(
@@ -216,67 +203,35 @@
       title: "Contributions",
       content: (
         subSection(
-          title: "Enhanced VRL functions and Vector's components",
+          title: "Enhanced VRL Functions and Vector Components",
           subTitleEnd: (
-            underline(
-              link(
-                "https://github.com/vectordotdev/vrl/pulls?q=is%3Apr+is%3Amerged+author%3Atitaneric",
-                "vectordotdev/vrl",
-              ),
-            ),
-            underline(
-              link(
-                "https://github.com/vectordotdev/vector/pulls?q=is%3Apr+is%3Amerged+author%3Atitaneric",
-                "vectordotdev/vector",
-              ),
-            ),
+            underline(link("https://github.com/vectordotdev/vrl/pulls?q=is%3Apr+is%3Amerged+author%3Atitaneric", "vectordotdev/vrl")),
+            underline(link("https://github.com/vectordotdev/vector/pulls?q=is%3Apr+is%3Amerged+author%3Atitaneric", "vectordotdev/vector")),
           ).join(", "),
         ),
         subSection(
-          title: "Reduced redundant calculation in backpropagation",
+          title: "Reduced Redundant Calculations in Backpropagation",
           subTitleEnd: (
             underline(link("https://github.com/pytorch/pytorch/pull/28651", "pytorch/pytorch")),
             underline(link("https://github.com/jax-ml/jax/issues/1576", "jax-ml/jax")),
           ).join(", "),
         ),
         subSection(
-          title: "Fixed low-level Golang's map traverse in eBPF",
+          title: "Fixed Low-Level Golang Map Traversal in eBPF",
           subTitleEnd: underline(link("https://github.com/grafana/beyla/pull/804", "grafana/beyla")),
         ),
-        // subSection(
-        //   title: "Supported kubeadm patch",
-        //   subTitleEnd: underline(link("https://github.com/kubernetes-sigs/kubespray/pull/9326", "kubernetes-sigs/kubespray")),
-        // ),
-        // subSection(
-        //   title: "Bug reporting",
-        //   subTitleEnd: underline(link("https://github.com/microsoft/vscode-python/issues/202", "vscode-python")),
-        // ),
       ),
     ),
-    section(
-      title: "Awards & Certs",
-      content: (
-        subSection(
-          content: list(
-            "LINE Dev Governance Best Practice",
-            // "LINE 2023 Q2 Spot Bonus",
-            underline(
-              link(
-                "https://ti-user-certificates.s3.amazonaws.com/e0df7fbf-a057-42af-8a1f-590912be5460/ca820404-2858-41da-9d18-c3268d010348-huang-chen-yi-80c3b11d-2f72-4183-8271-9743fe40b47d-certificate.pdf",
-                "Certified Kubernetes Administrator",
-              ),
-            ),
-            // underline(
-            //   link(
-            //     "https://github.com/titaneric?achievement=arctic-code-vault-contributor&tab=achievements",
-            //     "Arctic Code Vault Contributor",
-            //   ),
-            // ),
-          ),
-        ),
-      ),
-    ),
+    // section(
+    //   title: "Awards & Certifications",
+    //   content: (
+    //     subSection(
+    //       content: list(
+    //         "LINE Dev Governance Best Practice",
+    //         underline(link("https://ti-user-certificates.s3.amazonaws.com/e0df7fbf-a057-42af-8a1f-590912be5460/ca820404-2858-41da-9d18-c3268d010348-huang-chen-yi-80c3b11d-2f72-4183-8271-9743fe40b47d-certificate.pdf", "Certified Kubernetes Administrator")),
+    //       ),
+    //     ),
+    //   ),
+    // ),
   ),
 )
-
-
