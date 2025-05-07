@@ -98,7 +98,7 @@
           ),
         ),
         subSection(
-          title: underline(link("/images/courts-reserver-tracing.png", "Court Reserver")),
+          title: underline(link("https://www.titaneric.com/images/courts-reserver-tracing.png", "Court Reserver")),
           content: list(
             [Developed a Rust CLI program for Taipei Metropolitan court reservations, enabling concurrent reservations to avoid manual operations on browsers or apps.
             ],
