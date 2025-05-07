@@ -14,19 +14,19 @@
 #show: project.with(
   theme: rgb(95%, 55%, 15%),
   name: "Eric",
-  title: "Site Reliability Engineer",
+  title: "Senior Site Reliability Engineer",
   contact: (
+    // contact(
+    //   text: "(+886)986366141",
+    //   type: "phone",
+    // ),
     contact(
-      text: "(+886)986366141",
-      type: "phone",
-    ),
-    contact(
-      text: "chen-yi-huang",
+      text: "Chen-Yi Huang",
       link: "https://www.linkedin.com/in/chen-yi-huang/",
       type: "linkedin",
     ),
     contact(
-      text: "titaneric",
+      text: "www.github.com/titaneric",
       link: "https://www.github.com/titaneric",
       type: "github",
     ),
@@ -54,12 +54,12 @@
           subTitle: "Dec 2022 – Present",
           subTitleEnd: "Taipei, Taiwan",
           content: list(
-            [#underline(link("https://techblog.lycorp.co.jp/zh-hant/grafana-loki-upgrade-1", "Optimized log collecting pipelines at LINE Taiwan and tuned the self-hosted Loki" )), *increasing log ingestion and query performance, completely eliminating object storage overhead and reducing cost by 70%*.
+            [#underline(link("https://techblog.lycorp.co.jp/zh-hant/grafana-loki-upgrade-1", "Optimized log collecting pipelines at LINE Taiwan and tuned the self-hosted Loki" )), *increasing log ingestion (3x) and query performance (P99 under 10s), completely eliminating object storage overhead and reducing cost by 70%*.
             ],
-            [Co-maintained organization-wide internal Terraform provider #underline(link("https://engineering.linecorp.com/en/blog/terraform-for-verda", "terda")), and promoted Terraform adoption and advocacy at LINE Taiwan.
+            [Co-maintained organization-wide #underline(link("https://engineering.linecorp.com/en/blog/terraform-for-verda", "internal Terraform provider terda")), and promoted Terraform adoption and advocacy at LINE Taiwan.
             ],
             [Introduced Grafana Alloy and Faro SDK at LINE Taiwan, achieving end-to-end tracing, RUM, and presented the work at #underline(link("https://coscup.org/2024/en/session/VESN7N", "COSCUP 2024")) .],
-            [Developed Golang-based sdk to wrap successor  infrastructure API after merger, designing for easily maintained and client agnostic.
+            [Developed Go-based SDK to wrap successor infrastructure API after LY merger, designing for easily maintained and client agnostic.
             ],
             [Developed automation tools such as slack-based workflow automation framework and GitHub Action to improve operational quality.],
             [Designed and built internal infra cost calculator, metrics snapshotter, and dashboards, providing private cloud spending visibility and optimization.],
@@ -100,21 +100,15 @@
           title: underline(
             link("https://www.titaneric.com/videos/rust-playground-wasm.mp4", "Rust Playground with WASM"),
           ),
-          content: list([Forked #underline(link("https://play.rust-lang.org/?version=stable&mode=debug&edition=2021", "Rust Playground")) to render Web Assembly from compiled Rust, and managed to render them on #underline(link("https://www.titaneric.com/videos/mdbook-wasm.mp4", "mdBook")) as well.]),
+          content: list([Forked #underline(link("https://play.rust-lang.org/?version=stable&mode=debug&edition=2021", "Rust Playground")) to render Web Assembly from compiled Rust code on browser, and managed to implement it on #underline(link("https://www.titaneric.com/videos/mdbook-wasm.mp4", "mdBook")) as well.]),
         ),
         subSection(
           title: underline(link("/images/courts-reserver-tracing.png", "Court Reserver")),
           content: list(
-            [Rust CLI program for Taipei Metropolitan court reservation, runs in the concurrency way to avoid manual operation on APP.],
+            [Rust CLI program for Taipei Metropolitan court reservation, which makes reservation concurrently to avoid manual operation on browser or APP.],
             // [Captured packets from #underline(link("https://httptoolkit.com/","HTTP Toolkit")) on Android devices, TLS traffic decryption by bypassing certificate pinning, HTTP packets dissection and implemented in Rust, ran in concurrency to avoid manual operation on APP.],
           ),
         ),
-        //         subSection(
-        //   title: "OCR Helper",
-        //   content: list(
-        //     [2023 LINE Taiwan Hackthon project, provide RWD web interface for image OCR, summary, and translation.],
-        //   ),
-        // ),
       ),
     ),
   ),
@@ -126,7 +120,7 @@
           title: "Programming",
           content: (
             "Python",
-            "Golang",
+            "Go",
             "Rust",
             // "Typst",
           ).join(" • "),
