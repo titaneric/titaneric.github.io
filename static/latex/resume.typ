@@ -44,7 +44,7 @@
   ),
   main: (
     section(
-      content: underline(link("https://ti-user-certificates.s3.amazonaws.com/e0df7fbf-a057-42af-8a1f-590912be5460/ca820404-2858-41da-9d18-c3268d010348-huang-chen-yi-80c3b11d-2f72-4183-8271-9743fe40b47d-certificate.pdf", "Certified Kubernetes Administrator")) + ", open-source enthusiast, and detail-oriented software engineer with expertise in automation, observability, and cloud-native solutions. Skilled in problem-solving and system optimization, aiming to enhance reliability, efficiency, and scalability.",
+      content: [#underline(link("https://ti-user-certificates.s3.amazonaws.com/e0df7fbf-a057-42af-8a1f-590912be5460/ca820404-2858-41da-9d18-c3268d010348-huang-chen-yi-80c3b11d-2f72-4183-8271-9743fe40b47d-certificate.pdf", "Certified Kubernetes Administrator")), open-source enthusiast, and detail-oriented software engineer with expertise in automation, observability, and cloud-native solutions. Skilled in problem-solving and system optimization, aiming to enhance reliability, efficiency, and scalability.],
     ),
     section(
       title: "Work Experience",
@@ -55,17 +55,17 @@
           subTitle: "Dec 2022 – Present",
           subTitleEnd: "Taipei, Taiwan",
           content: list(
-            [#underline(link("https://techblog.lycorp.co.jp/zh-hant/grafana-loki-upgrade-1", "Optimized log collection pipelines at LINE Taiwan and upgraded the self-hosted Loki")), *achieving a 3x increase in log ingestion and query performance (P99 under 10s), while eliminating object storage overhead and reducing costs by 70%*.
+            [#underline(link("https://techblog.lycorp.co.jp/zh-hant/grafana-loki-upgrade-1", "Optimized log collection pipelines and upgraded the self-hosted Loki")) at LINE Taiwan, *eliminating object storage overhead and reducing costs by 70%, while achieving a 3x increase in log ingestion performance.*
             ],
-            [Co-maintained the organization-wide #underline(link("https://engineering.linecorp.com/en/blog/terraform-for-verda", "internal Terraform provider Terda")), and actively promoted Terraform adoption and advocacy within LINE Taiwan.
+            [Co-maintained the organization-wide #underline(link("https://engineering.linecorp.com/en/blog/terraform-for-verda", "Terraform provider Terda")) and its community as part of a volunteer group. Pioneered Terda adoption at LINE Taiwan and actively advocated for Terraform usage.
             ],
-            [Introduced Grafana Alloy and Faro SDK at LINE Taiwan, enabling end-to-end tracing and real user monitoring. Presented this work at #underline(link("https://coscup.org/2024/en/session/VESN7N", "COSCUP 2024")).
+            [Implemented a #underline(link("https://coscup.org/2024/en/session/VESN7N", "Grafana Alloy")) gateway to distribute high-volume client-side telemetry data sent by Faro SDK, enabling real user monitoring (RUM) and correlating frontend apps with existing observability solutions.
             ],
-            [Developed a Go-based SDK to wrap the successor infrastructure API post-LY merger, ensuring maintainability and client-agnostic design.
+            [Developed a Go SDK to wrap the successor private cloud API post-LY merger, leveraging OpenAPI schema for automatic code generation, ensuring maintainability, unified log formatting, and a client-agnostic design.
             ],
             [Created automation tools, including a Slack workflow automation framework and GitHub Actions, to improve operational efficiency and quality.
             ],
-            [Designed and implemented an internal infrastructure cost calculator, metrics snapshotter, and dashboards, providing visibility into private cloud spending and enabling cost optimization.
+            [Designed and implemented an internal infrastructure cost calculator and dashboards, providing visibility into private cloud spending and enabling cost optimization.
             ],
           ),
         ),
