@@ -65,7 +65,7 @@
             ],
             [Created automation tools, including a Slack workflow automation framework and GitHub Actions, to improve operational efficiency and quality.
             ],
-            [Designed and implemented an internal infrastructure cost calculator and dashboards, providing visibility into private cloud spending and enabling cost optimization.
+            [Designed and implemented an internal infrastructure cost calculator and dashboards, providing spending visibility and enabling cost optimization.
             ],
           ),
         ),
@@ -93,14 +93,14 @@
         subSection(
           title: underline(link("https://www.titaneric.com/videos/rust-playground-wasm.mp4", "Rust Playground with WASM")),
           content: list(
-            [Forked #underline(link("https://play.rust-lang.org/?version=stable&mode=debug&edition=2021", "Rust Playground")) to render WebAssembly from compiled Rust code in the browser and integrated it into #underline(link("https://www.titaneric.com/videos/mdbook-wasm.mp4", "mdBook")).
+            [Delivered a full-stack solution for the #underline(link("https://play.rust-lang.org/?version=stable&mode=debug&edition=2021", "Rust Playground")), enabling interactive WebAssembly rendering in the browser and integrated it into #underline(link("https://www.titaneric.com/videos/mdbook-wasm.mp4", "mdBook")).
             ],
           ),
         ),
         subSection(
           title: underline(link("https://www.titaneric.com/images/courts-reserver-tracing.png", "Court Reserver")),
           content: list(
-            [Developed a Rust CLI program for Taipei Metropolitan court reservations, enabling concurrent reservations to avoid manual operations on browsers or apps.
+            [Developed a Rust CLI program for Taipei Metropolitan court reservations, enabling concurrent reservations to avoid manual operations on apps.
             ],
           ),
         ),
