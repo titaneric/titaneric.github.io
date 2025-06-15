@@ -55,11 +55,13 @@
           subTitle: "Dec 2022 – Present",
           subTitleEnd: "Taipei, Taiwan",
           content: list(
-            [#underline(link("https://techblog.lycorp.co.jp/zh-hant/grafana-loki-upgrade-1", "Optimized log collection pipelines and upgraded the self-hosted Loki cluster")), *eliminating object storage overhead and reducing costs by 70%, while achieving a 3x increase in log ingestion performance.*
+            [#underline(link("https://techblog.lycorp.co.jp/zh-hant/grafana-loki-upgrade-1", "Optimized log collection pipelines")) and upgraded the self-hosted Loki cluster, *eliminating object storage overhead and reducing costs by 70%, while achieving a 3x increase in log ingestion performance.*
             ],
             [Co-maintained the organization-wide #underline(link("https://engineering.linecorp.com/en/blog/terraform-for-verda", "internal Terraform provider Terda")) and its community as part of a volunteer group. Pioneered Terda adoption at LINE Taiwan and actively advocated for Terraform usage. 
             ],
             [#underline(link("https://techblog.lycorp.co.jp/zh-hant/grafana-alloy-best-practice", "Implemented a Grafana Alloy gateway")) to distribute high-volume client-side telemetry data sent by Faro SDK, enabling real user monitoring (RUM) and correlating frontend apps with existing observability solutions.
+            ],
+            [Developed kustomize plugin for managing secrets on internal KMS and secret management systems, enhancing security and compliance.
             ],
             [Developed a Go SDK to wrap the successor private cloud API post-LY merger, leveraging OpenAPI schema for automatic code generation, ensuring maintainability, unified log formatting, and a client-agnostic design.
             ],
