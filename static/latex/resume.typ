@@ -50,7 +50,7 @@
       title: "Work Experience",
       content: (
         subSection(
-          title: "Site Reliability Engineer",
+          title: "Senior Site Reliability Engineer",
           titleEnd: "Engineering Dept., LINE Taiwan Limited",
           subTitle: "Dec 2022 – Present",
           subTitleEnd: "Taipei, Taiwan",
@@ -63,7 +63,7 @@
             ],
             [Developed kustomize plugin for managing secrets on internal KMS and secret management systems, enhancing security and compliance.
             ],
-            [Developed a Go SDK to wrap the successor private cloud API post-LY merger, leveraging OpenAPI schema for automatic code generation, ensuring maintainability, unified log formatting, and a client-agnostic design.
+            [Developed a Go SDK to wrap the successor private cloud API post-LY merger, leveraging OpenAPI schema for automatic code generation./*, ensuring maintainability, unified log formatting, and a client-agnostic design.*/
             ],
             [Created automation tools, including a Slack workflow automation framework and GitHub Actions, to improve operational efficiency and quality.
             ],
