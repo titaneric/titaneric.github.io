@@ -220,9 +220,14 @@
           ).join(", "),
         ),
         subSection(
-          title: "Fixed Low-Level Golang Map Traversal in eBPF",
-          subTitleEnd: underline(link("https://github.com/grafana/beyla/pull/804", "grafana/beyla")),
+          title: "Support JSON-RPC over in Go uprobe",
+          subTitleEnd: 
+            underline(link("https://github.com/open-telemetry/opentelemetry-ebpf-instrumentation/pull/161", "open-telemetry/opentelemetry-ebpf-instrumentation")),
         ),
+        // subSection(
+        //   title: "Fixed Low-Level Golang Map Traversal in eBPF",
+        //   subTitleEnd: underline(link("https://github.com/grafana/beyla/pull/804", "grafana/beyla")),
+        // ),
       ),
     ),
     // section(
