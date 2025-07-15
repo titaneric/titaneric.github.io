@@ -1,4 +1,4 @@
-base_url = "https://titaneric.github.io"
+base_url = "https://www.titaneric.com"
 title = "titaneric"
 
 compile_sass = true
@@ -56,3 +56,8 @@ enabled = true
 
 [extra.analytics.umami]
 website_id = "63f9d7c5-7c47-493b-af29-481374c7531c"
+
+# [languages.zh]
+# generate_feeds = true                                     # there will be a feed for French content
+# build_search_index = true
+# taxonomies = [{ name = "categories" }, { name = "tags" }]
