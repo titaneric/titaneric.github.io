@@ -14,8 +14,11 @@ tags =  ["k8s", "monitoring"]
 
 在[前一篇Loki系列文章](@/posts/grafana-loki-upgrade-1.zh.md)中，提到我們利用金絲雀部署的方式，利用Vector複製真實環境的log送往新版Loki，在此同時調整Loki config進行效能調校，直到結果滿意之後，再開放給團隊使用。
 因為我們的Loki是使用分散式模式部署，涉及多個功能不同的component，使得Loki架構非常複雜，在調整細項config之前，要非常清楚了解各個component間的關係，才能依序並且合理的調整config。
+
 在調教Loki時，可以先針對**寫入**相關的component做調整，例如ingester及distributor，甚至是在前一篇文章中的提及的log collector，目標是**讓寫入的chunk的Flush Reason盡可能是Full，避免碎片化chunk**的問題。不僅能夠在空間上更有效率的存放，也同時能夠間接的影響query速度。
+
 原因是相比於碎片化的chunk，滿載的chunk代表我們僅需更少數量的chunk，就能表示相同的log量，最終導致Loki在建立chunk的index也跟著減少。在查詢這些log時，Loki會依照query內容去查index，因為查到index後得知這些chunk數量是少的，也就花費更少的時間讀取chunk內容，讓querier可以專注在執行面，減少整體query時間開銷。
+
 所以，我們花費大量的時間調校Loki的寫入效能，進而調整讀取效能，以下文章會分別針對寫入以及讀取，詳細說明各項config調整內容。
 
 ## Loki write config調整
@@ -129,6 +132,7 @@ sum_over_time({cluster="$cluster", namespace="$namespace", app="loki", component
 ![](https://vos.line-scdn.net/landpress-content-v2-vcfc68aynwenkh3bno0ixfx8/8df2bccc2f424c3e9be76978042895e2.png?updatedAt=1750326446000)
 
 當時我們舊的Loki是使用Redis當作chunk cache，剛好目前的`grafana/loki` helm chart已經針對Memcached有良好封裝，我們決定直接為新的Loki套用這些設定。然而，我們發現結果不如預期。
+
 利用前述的LogQL語法，我們發現querier花了30%以上的時間在**store** phase，而且我們特別新增的**cache** phase比率不到50%，這代表我們不僅花費時間在等待chunk下載，而且在cache以及object storage都耗費了大量時間。這與我們預期的接近100% **cache** phase比率及極少的**store** phase比率大相徑庭。
 
 在[開啟Loki的Jaeger tracing功能](https://community.grafana.com/t/enabling-loki-jaeger-tracing/51483)以後，我們發現querier光是拿chunk cache花了超過10s，再加上**execution** phase所花費時間，經常會遇到timeout問題。
@@ -144,7 +148,9 @@ memcached -m 6000 -I 2m \
 另外在loki設定中，應設定不大的batch size及parallelism，並且拉高timeout。
 
 `store.chunks-cache.memcached.batchsize`意思是memcached client一次拿多少個memcached keys，可以設定成memcached server的2倍數量。
+
 `store.chunks-cache.memcached.parallelism`目的是同時有多少的go routine是取得memcached keys，盡可能設定愈低的值，但如果網路頻寬允許的話可以拉高。
+
 `store.chunks-cache.memcached.timeout`的時間包含memcached拿cache，以及serialization的時間，如果chunk的item size一大，或是batch size大的話會影響timeout時間。預設是`100ms`但強烈建議調整成較高的值例如`60s`。
 > Loki's memcache client timeout is measuring the amount of time to *fetch and read and process the entire batch of keys from each host*.
 
@@ -176,9 +182,13 @@ chunk_cache_config:
 ### Query performance
 
 下圖是在前面的介紹到修改過後的官方LogQL執行結果，可以看到就算是slow subquery的執行，在**execution** phase執行時間佔比還是高達90%以上，而且在**cache**部分的佔比，更高達95%以上，這印證了chunk主要從cache中拿到，省下來的時間可以執行計算LogQL最後結果。
+
 事實上在**execution** phase還有調整的空間，有機會透過增加querier replicas數量、調升CPU資源或是改善LogQL語法來更近一步加速搜尋時間。
+
 ![](https://vos.line-scdn.net/landpress-content-v2-vcfc68aynwenkh3bno0ixfx8/0bd7beb9a0124ea0bda1d474e06d1577.png?updatedAt=1750326541000)
+
 下方是query花費時間隨時間的關係圖。黃線是第99百分位、橘線是第90百分位。可以看到query時間絕大部分都少於10s。
+
 ![](https://vos.line-scdn.net/landpress-content-v2-vcfc68aynwenkh3bno0ixfx8/2596fdc70a26474ab054f0f1e2713906.png?updatedAt=1750326553000)
 
 ### Cache performance
