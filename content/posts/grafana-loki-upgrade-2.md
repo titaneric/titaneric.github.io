@@ -12,7 +12,7 @@ tags =  ["k8s", "monitoring"]
 
 ## Background
 
-In the [previous Loki article](https://techblog.lycorp.co.jp/zh-hant/grafana-loki-upgrade-1), we discussed using canary deployments with Vector to replicate real-world logs to a new Loki version. During this process, we tuned the Loki configuration for optimal performance. Once satisfied with the results, we rolled it out to the team.
+In the [previous Loki article](@/posts/grafana-loki-upgrade-1.md), we discussed using canary deployments with Vector to replicate real-world logs to a new Loki version. During this process, we tuned the Loki configuration for optimal performance. Once satisfied with the results, we rolled it out to the team.
 
 Our Loki deployment uses a distributed mode, involving multiple components with distinct functions. This makes the Loki architecture complex. Before adjusting specific configurations, it's crucial to understand the relationships between these components to make informed decisions.
 

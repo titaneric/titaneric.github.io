@@ -12,7 +12,7 @@ tags =  ["k8s", "monitoring"]
 
 ## 背景
 
-在[前一篇Loki系列文章](https://techblog.lycorp.co.jp/zh-hant/grafana-loki-upgrade-1)中，提到我們利用金絲雀部署的方式，利用Vector複製真實環境的log送往新版Loki，在此同時調整Loki config進行效能調校，直到結果滿意之後，再開放給團隊使用。
+在[前一篇Loki系列文章](@/posts/grafana-loki-upgrade-1.zh.md)中，提到我們利用金絲雀部署的方式，利用Vector複製真實環境的log送往新版Loki，在此同時調整Loki config進行效能調校，直到結果滿意之後，再開放給團隊使用。
 因為我們的Loki是使用分散式模式部署，涉及多個功能不同的component，使得Loki架構非常複雜，在調整細項config之前，要非常清楚了解各個component間的關係，才能依序並且合理的調整config。
 在調教Loki時，可以先針對**寫入**相關的component做調整，例如ingester及distributor，甚至是在前一篇文章中的提及的log collector，目標是**讓寫入的chunk的Flush Reason盡可能是Full，避免碎片化chunk**的問題。不僅能夠在空間上更有效率的存放，也同時能夠間接的影響query速度。
 原因是相比於碎片化的chunk，滿載的chunk代表我們僅需更少數量的chunk，就能表示相同的log量，最終導致Loki在建立chunk的index也跟著減少。在查詢這些log時，Loki會依照query內容去查index，因為查到index後得知這些chunk數量是少的，也就花費更少的時間讀取chunk內容，讓querier可以專注在執行面，減少整體query時間開銷。
