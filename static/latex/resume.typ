@@ -14,6 +14,7 @@
 #show: project.with(
   theme: rgb(95%, 55%, 15%),
   name: "Eric",
+  surname: "Huang",
   title: "Senior Site Reliability Engineer",
   contact: (
     // Uncomment to include phone number:
@@ -22,7 +23,7 @@
     //   type: "phone",
     // ),
     contact(
-      text: "Chen-Yi Huang",
+      text: "Chen-Yi HUANG",
       link: "https://www.linkedin.com/in/chen-yi-huang/",
       type: "linkedin",
     ),

@@ -13,6 +13,7 @@
 #let project(
   theme: rgb("#4273B0"),
   name: "",
+  surname: "",
   title: none,
   contact: (text: [], link: ""),
   skills: (
@@ -52,7 +53,7 @@
     dir: ltr,
     spacing: 1em,
     text(strong[#name], weight: 100, 4.5em),
-    text(strong[Huang], weight: 100, 4.5em, fill: rgb(95%, 55%, 15%, 80%)),
+    text(strong[#surname], weight: 100, 4.5em, fill: rgb(95%, 55%, 15%, 80%)),
   )
 
   let formattedTitle = text(strong[#title], weight: 100, 1.5em)
