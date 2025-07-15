@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rss xmlns:atom="http://www.w3.org/2005/Atom" version="2.0">
+    <channel>
+      <title>titaneric - networking</title>
+      <link>https://www.titaneric.com</link>
+      <description></description>
+      <generator>Zola</generator>
+      <language>en</language>
+      <atom:link href="https://www.titaneric.com/tags/networking/rss.xml" rel="self" type="application/rss+xml"/>
+      <lastBuildDate>Wed, 08 Feb 2023 00:00:00 +0000</lastBuildDate>
+      <item>
+          <title>The Journey to the Kubernetes Networkiing</title>
+          <pubDate>Wed, 08 Feb 2023 00:00:00 +0000</pubDate>
+          <author>Unknown</author>
+          <link>https://www.titaneric.com/posts/the-journey-to-the-kubernetes-networking/</link>
+          <guid>https://www.titaneric.com/posts/the-journey-to-the-kubernetes-networking/</guid>
+          <description xml:base="https://www.titaneric.com/posts/the-journey-to-the-kubernetes-networking/">&lt;div&gt;
+    &lt;iframe src=&quot;&amp;#x2F;&amp;#x2F;www.slideshare.net&amp;#x2F;slideshow&amp;#x2F;embed_code&amp;#x2F;key&amp;#x2F;r7psH28xitqtMZ&quot; frameborder=&quot;0&quot; width=&quot;900&quot; height=&quot;600&quot;
+        marginwidth=&quot;0&quot; marginheight=&quot;0&quot; scrolling=&quot;no&quot;
+        style=&quot;border:1px solid #CCC; border-width:1px; margin-bottom:5px; max-width: 100%;&quot; allowfullscreen&gt; &lt;&#x2F;iframe&gt;
+&lt;&#x2F;div&gt;
+&lt;p&gt;Still lost the following information.&lt;&#x2F;p&gt;
+&lt;ul&gt;
+&lt;li&gt;BGP&lt;&#x2F;li&gt;
+&lt;li&gt;&lt;a rel=&quot;noreferrer&quot; href=&quot;https:&#x2F;&#x2F;www.rfc-editor.org&#x2F;rfc&#x2F;rfc3927&quot;&gt;linked-local address&lt;&#x2F;a&gt;&lt;&#x2F;li&gt;
+&lt;li&gt;Ingress&lt;&#x2F;li&gt;
+&lt;li&gt;API gateway&lt;&#x2F;li&gt;
+&lt;li&gt;External Load Balancing&lt;&#x2F;li&gt;
+&lt;li&gt;service mesh&lt;&#x2F;li&gt;
+&lt;&#x2F;ul&gt;
+</description>
+      </item>
+    </channel>
+</rss>
