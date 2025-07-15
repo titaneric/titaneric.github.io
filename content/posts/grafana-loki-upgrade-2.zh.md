@@ -102,8 +102,11 @@ zoneAwareReplication:
 他會呈現發生slow query（執行時間大於10秒）時，querier在執行subquery時，在4個不同的phase所花費的時間:
 
 **queued**：在queue中等待的時間
+
 **index**：根據Loki label查index花費時間
+
 **store**：拿到index後，從cache或object storage拿chunk時間
+
 **execution**：取得chunk後，在querier中執行的時間
 
 我們應盡可能讓**execution**比率愈高愈好（超過80%），因為這代表querier真正花費CPU時間計算結果，而不是在等待IO，如果發現query時間花在其他的phase，blog也有提到如何做對應的調整，在此不再贅述。
