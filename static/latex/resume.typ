@@ -51,7 +51,7 @@
       title: "Work Experience",
       content: (
         subSection(
-          title: "Senior Site Reliability Engineer",
+          title: "Site Reliability Engineer",
           titleEnd: "Engineering Dept., LINE Taiwan Limited",
           subTitle: "Dec 2022 – Present",
           subTitleEnd: "Taipei, Taiwan",
@@ -214,16 +214,16 @@
           ).join(", "),
         ),
         subSection(
+          title: "Support JSON-RPC over in Go uprobe eBPF Instrumentation",
+          subTitleEnd: 
+            underline(link("https://github.com/open-telemetry/opentelemetry-ebpf-instrumentation/pulls?q=is%3Apr+is%3Amerged+author%3Atitaneric+", "open-telemetry/opentelemetry-ebpf-instrumentation")),
+        ),
+        subSection(
           title: "Reduced Redundant Calculations in Backpropagation",
           subTitleEnd: (
             underline(link("https://github.com/pytorch/pytorch/pull/28651", "pytorch/pytorch")),
             underline(link("https://github.com/jax-ml/jax/issues/1576", "jax-ml/jax")),
           ).join(", "),
-        ),
-        subSection(
-          title: "Support JSON-RPC over in Go uprobe",
-          subTitleEnd: 
-            underline(link("https://github.com/open-telemetry/opentelemetry-ebpf-instrumentation/pull/161", "open-telemetry/opentelemetry-ebpf-instrumentation")),
         ),
         // subSection(
         //   title: "Fixed Low-Level Golang Map Traversal in eBPF",
