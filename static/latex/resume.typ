@@ -120,6 +120,7 @@
             "Python",
             "Go",
             "Rust",
+            "Terraform Plugin Development",
           ).join(" • "),
         ),
         subSection(
