@@ -1,0 +1,207 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rss xmlns:atom="http://www.w3.org/2005/Atom" version="2.0">
+    <channel>
+      <title>titaneric - deep-learning</title>
+      <link>https://www.titaneric.com</link>
+      <description></description>
+      <generator>Zola</generator>
+      <language>en</language>
+      <atom:link href="https://www.titaneric.com/tags/deep-learning/rss.xml" rel="self" type="application/rss+xml"/>
+      <lastBuildDate>Sun, 04 Apr 2021 00:00:00 +0000</lastBuildDate>
+      <item>
+          <title>Build a DL Library from Scratch (Part2) - Backpropagation</title>
+          <pubDate>Sun, 04 Apr 2021 00:00:00 +0000</pubDate>
+          <author>Unknown</author>
+          <link>https://www.titaneric.com/posts/autodiff-from-scratch-p2/</link>
+          <guid>https://www.titaneric.com/posts/autodiff-from-scratch-p2/</guid>
+          <description xml:base="https://www.titaneric.com/posts/autodiff-from-scratch-p2/">&lt;h2 id=&quot;introduction&quot;&gt;&lt;a class=&quot;zola-anchor&quot; href=&quot;#introduction&quot; aria-label=&quot;Anchor link for: introduction&quot;&gt;Introduction&lt;&#x2F;a&gt;&lt;&#x2F;h2&gt;
+&lt;p&gt;Previously, I talked about my motivation and introduced some background including the computational graph and backpropagation algorithm. Let&#x27;s move on to learn something new!&lt;&#x2F;p&gt;
+&lt;h2 id=&quot;background&quot;&gt;&lt;a class=&quot;zola-anchor&quot; href=&quot;#background&quot; aria-label=&quot;Anchor link for: background&quot;&gt;Background&lt;&#x2F;a&gt;&lt;&#x2F;h2&gt;
+&lt;h3 id=&quot;auto-differentiation&quot;&gt;&lt;a class=&quot;zola-anchor&quot; href=&quot;#auto-differentiation&quot; aria-label=&quot;Anchor link for: auto-differentiation&quot;&gt;Auto-Differentiation&lt;&#x2F;a&gt;&lt;&#x2F;h3&gt;
+&lt;p&gt;Equipped with chain rule and fundamental derivative, we could calculate the gradient of given function w.r.t. any variable by auto-differentiation.&lt;&#x2F;p&gt;
+&lt;p&gt;We may refresh our memory by reviewing the previous example again. Before that, we should introduce some terms used in this post.&lt;&#x2F;p&gt;
+&lt;p&gt;&lt;img src=&quot;&#x2F;images&#x2F;posts&#x2F;autodiff-from-scratch-p2&#x2F;autodiff-series-term.png&quot; alt=&quot; &quot; &#x2F;&gt;&lt;&#x2F;p&gt;
+&lt;p&gt;
+Given a function \(h = f(x,y)\), we know that \(x\) and \(y\) is the input for function \(f\), and the \(h\) is the result. This is the forward pass.
+&lt;&#x2F;p&gt;
+&lt;p&gt;
+When calculating the gradient of this function, we need backpropagation. Suppose that the loss \(L\) is the final result and the \(\frac{\partial{L}}{\partial{h}}\) is already calculated in the last node which is also called &lt;b&gt;upstream&lt;&#x2F;b&gt;.
+&lt;&#x2F;p&gt;
+&lt;p&gt;
+We may derive the gradient of function \(f\) w.r.t. input \(x\). Cause function \(f\) is the fundamental operation like multiplication, add or exponential. We could easily receive the derivative result \(\frac{\partial{h}}{\partial{x}}\) called &lt;b&gt;local gradient&lt;&#x2F;b&gt;.
+&lt;&#x2F;p&gt;
+&lt;p&gt;
+Finally, we have \(\frac{\partial{L}}{\partial{x}}\) called &lt;b&gt;downstream&lt;&#x2F;b&gt; by chain rule \(\frac{\partial{L}}{\partial{x}}=\frac{\partial{L}}{\partial{h}}\cdot\frac{\partial{h}}{\partial{x}}\). Downstream is the upstream to the next node, gradient is similar to water flow passing through each operation nodes to the derivative target.
+&lt;&#x2F;p&gt;
+We may re-visit the last example to illustrate the autodiff. We will step by step (or node by node) to derive the result.
+&lt;p&gt;
+Given a sigmoid function, We want to get the derivative of function \(y\) w.r.t. \(z\).
+\[y = \frac{1}{1 + e^{-z}}\]
+&lt;&#x2F;p&gt;
+&lt;h4 id=&quot;reciprocal-operator&quot;&gt;&lt;a class=&quot;zola-anchor&quot; href=&quot;#reciprocal-operator&quot; aria-label=&quot;Anchor link for: reciprocal-operator&quot;&gt;Reciprocal operator&lt;&#x2F;a&gt;&lt;&#x2F;h4&gt;
+&lt;p&gt;&lt;img src=&quot;&#x2F;images&#x2F;posts&#x2F;autodiff-from-scratch-p2&#x2F;autodiff-series-sigmoid-reciprocal.png&quot; alt=&quot; &quot; &#x2F;&gt;&lt;&#x2F;p&gt;
+&lt;p&gt;⚠ &lt;em&gt;&lt;strong&gt;Notice that upstream here is constant 1 for outermost operation (the closest one to output) in the computational graph. In fact, it is not 1, it is the tensor filled with scalar 1 which shape is equal to the output.&lt;&#x2F;strong&gt;&lt;&#x2F;em&gt;&lt;&#x2F;p&gt;
+&lt;h4 id=&quot;add-operator&quot;&gt;&lt;a class=&quot;zola-anchor&quot; href=&quot;#add-operator&quot; aria-label=&quot;Anchor link for: add-operator&quot;&gt;Add operator&lt;&#x2F;a&gt;&lt;&#x2F;h4&gt;
+&lt;p&gt;&lt;img src=&quot;&#x2F;images&#x2F;posts&#x2F;autodiff-from-scratch-p2&#x2F;autodiff-series-sigmoid-add.png&quot; alt=&quot; &quot; &#x2F;&gt;&lt;&#x2F;p&gt;
+&lt;h4 id=&quot;exponential-operator&quot;&gt;&lt;a class=&quot;zola-anchor&quot; href=&quot;#exponential-operator&quot; aria-label=&quot;Anchor link for: exponential-operator&quot;&gt;Exponential operator&lt;&#x2F;a&gt;&lt;&#x2F;h4&gt;
+&lt;p&gt;&lt;img src=&quot;&#x2F;images&#x2F;posts&#x2F;autodiff-from-scratch-p2&#x2F;autodiff-series-sigmoid-exp.png&quot; alt=&quot; &quot; &#x2F;&gt;&lt;&#x2F;p&gt;
+&lt;h4 id=&quot;negative-operator&quot;&gt;&lt;a class=&quot;zola-anchor&quot; href=&quot;#negative-operator&quot; aria-label=&quot;Anchor link for: negative-operator&quot;&gt;Negative operator&lt;&#x2F;a&gt;&lt;&#x2F;h4&gt;
+&lt;p&gt;&lt;img src=&quot;&#x2F;images&#x2F;posts&#x2F;autodiff-from-scratch-p2&#x2F;autodiff-series-sigmoid-neg.png&quot; alt=&quot; &quot; &#x2F;&gt;&lt;&#x2F;p&gt;
+&lt;h4 id=&quot;validation&quot;&gt;&lt;a class=&quot;zola-anchor&quot; href=&quot;#validation&quot; aria-label=&quot;Anchor link for: validation&quot;&gt;Validation&lt;&#x2F;a&gt;&lt;&#x2F;h4&gt;
+&lt;p&gt;
+Downstream \(\frac{\partial{L}}{\partial{z}}=\frac{\partial{L}}{\partial{d}}=1 \cdot -1(1+e^{-z})^{-2}\cdot 1 \cdot e^{-z} \cdot -1\) is the final result we want. We could validate the result by numerical way that we learned in the Calculas class, which is
+\[f&#x27;(x) = \lim_{\epsilon\to 0} \frac{f(x + \epsilon) - f(x)}{\epsilon}\]
+&lt;&#x2F;p&gt;
+&lt;p&gt;⚠ &lt;em&gt;&lt;strong&gt;Notice that this validation could validate almost any function which could be used in the unit test. This could be found in various deep learning frameworks.&lt;&#x2F;strong&gt;&lt;&#x2F;em&gt;&lt;&#x2F;p&gt;
+&lt;p&gt;
+We could feed \(z=0\) and \(\epsilon=0.01\) to original function \(f(z)=\frac{1}{1+e^{-z}}\).
+\[f(0)=\frac{1}{1+1}=\frac{1}{2}=0.5\]
+\[f(0+0.01)=\frac{1}{1+e^{-0.01}}\approx\frac{1}{1+0.99}\approx 0.5025\]
+\[f&#x27;(0)=\frac{f(0+0.01)-f(0)}{0.01}\approx\frac{0.5025-0.5}{0.01}=0.25\]
+&lt;&#x2F;p&gt;
+&lt;p&gt;
+Next, we feed \(z=0\) to \(\frac{\partial{L}}{\partial{z}}\) that we computed earlier,
+\[\frac{\partial{L}}{\partial{z}}\Bigr|_{\substack{z=0}}=1 \cdot -1(1+e^{0})^{-2}\cdot 1 \cdot e^{0} \cdot -1=1 \cdot -1(2)^{-2} \cdot 1 \cdot -1 = 0.25\]
+We find that both result is identical, which means that our auto-differentiation is correct!
+&lt;p&gt;We almost finish, but what if the operation has multiple upstreams? We need the multivariate chain rule.&lt;&#x2F;p&gt;
+&lt;&#x2F;p&gt;
+&lt;h3 id=&quot;multivariate-chain-rule&quot;&gt;&lt;a class=&quot;zola-anchor&quot; href=&quot;#multivariate-chain-rule&quot; aria-label=&quot;Anchor link for: multivariate-chain-rule&quot;&gt;Multivariate chain rule&lt;&#x2F;a&gt;&lt;&#x2F;h3&gt;
+&lt;p&gt;
+Consider a function \(f\), which is composed by another two function \(g(x)\) and \(h(x)\), corresponding \(f&#x27;(x)\) is
+\[\frac{\partial{f}}{\partial{x}}=\frac{\partial{f}}{\partial{h}}\cdot\frac{\partial{h}}{\partial{x}}+\frac{\partial{f}}{\partial{g}}\cdot\frac{\partial{g}}{\partial{x}}\]
+&lt;&#x2F;p&gt;
+&lt;p&gt;
+Again, give a tiny example which is commonly seen in the neural networks, a subset of linear layer \(f(x)=g(x)+h(x)\) where \(h(x)=w_1x\) and \(g(x)=w_2x\). The computational graph of this function is similar to the following. We could see that x has two upstreams, which could leverage multivariate chain rule to derive the derivative.
+&lt;&#x2F;p&gt;
+&lt;p&gt;&lt;img src=&quot;&#x2F;images&#x2F;posts&#x2F;autodiff-from-scratch-p2&#x2F;autodiff-series-multivariate.png&quot; alt=&quot; &quot; &#x2F;&gt;&lt;&#x2F;p&gt;
+&lt;h4 id=&quot;add-operator-1&quot;&gt;&lt;a class=&quot;zola-anchor&quot; href=&quot;#add-operator-1&quot; aria-label=&quot;Anchor link for: add-operator-1&quot;&gt;Add operator&lt;&#x2F;a&gt;&lt;&#x2F;h4&gt;
+&lt;p&gt;&lt;img src=&quot;&#x2F;images&#x2F;posts&#x2F;autodiff-from-scratch-p2&#x2F;autodiff-series-multivariate-add.png&quot; alt=&quot; &quot; &#x2F;&gt;&lt;&#x2F;p&gt;
+&lt;h4 id=&quot;mul-operator&quot;&gt;&lt;a class=&quot;zola-anchor&quot; href=&quot;#mul-operator&quot; aria-label=&quot;Anchor link for: mul-operator&quot;&gt;Mul operator&lt;&#x2F;a&gt;&lt;&#x2F;h4&gt;
+&lt;p&gt;&lt;img src=&quot;&#x2F;images&#x2F;posts&#x2F;autodiff-from-scratch-p2&#x2F;autodiff-series-multivariate-mul.png&quot; alt=&quot; &quot; &#x2F;&gt;&lt;&#x2F;p&gt;
+&lt;h4 id=&quot;validation-1&quot;&gt;&lt;a class=&quot;zola-anchor&quot; href=&quot;#validation-1&quot; aria-label=&quot;Anchor link for: validation-1&quot;&gt;Validation&lt;&#x2F;a&gt;&lt;&#x2F;h4&gt;
+&lt;p&gt;
+In the Mul operator, we have \(\frac{\partial{f}}{\partial{x}}=w_1+w_2\). Likewise, we could validate it in the numerical manner.
+&lt;&#x2F;p&gt;
+&lt;p&gt;
+Let \(w_1=2, w_2=3, x=0\) and \(\epsilon=0.01\), we have
+\[f(0)=0\]
+\[f(0.01)=0.01\cdot2+0.01\cdot0.01=0.05\]
+\[f&#x27;(0)=\frac{0.05-0}{0.01}=5\]
+&lt;&#x2F;p&gt;
+&lt;p&gt;
+In our result, we have
+\[\frac{\partial{f}}{\partial{x}}\Bigr|_{\substack{x=0}}=2+3=5\]
+&lt;p&gt;Again, they are identical which proves that the gradient is correct!&lt;&#x2F;p&gt;
+&lt;&#x2F;p&gt;
+&lt;h2 id=&quot;conclusion&quot;&gt;&lt;a class=&quot;zola-anchor&quot; href=&quot;#conclusion&quot; aria-label=&quot;Anchor link for: conclusion&quot;&gt;Conclusion&lt;&#x2F;a&gt;&lt;&#x2F;h2&gt;
+&lt;p&gt;In this post, we take lots of time to derive the gradient by auto-differentiation and introduce the concepts called multivariate chain rule, I hope that the reader can see the beauty of autodiff and start to think about how autodiff could be implemented because we will implement it in the following series which may take some posts to illustrate the idea. Please stay tuned and we will get back!&lt;&#x2F;p&gt;
+</description>
+      </item>
+      <item>
+          <title>Build a DL Library from Scratch (Part1) - Background</title>
+          <pubDate>Tue, 05 Jan 2021 00:00:00 +0000</pubDate>
+          <author>Unknown</author>
+          <link>https://www.titaneric.com/posts/autodiff-from-scratch-p1/</link>
+          <guid>https://www.titaneric.com/posts/autodiff-from-scratch-p1/</guid>
+          <description xml:base="https://www.titaneric.com/posts/autodiff-from-scratch-p1/">&lt;h2 id=&quot;introduction&quot;&gt;&lt;a class=&quot;zola-anchor&quot; href=&quot;#introduction&quot; aria-label=&quot;Anchor link for: introduction&quot;&gt;Introduction&lt;&#x2F;a&gt;&lt;&#x2F;h2&gt;
+&lt;p&gt;This is an article to elaborate on the detail of how I build my personal project &lt;a rel=&quot;noreferrer&quot; href=&quot;https:&#x2F;&#x2F;github.com&#x2F;titaneric&#x2F;AutoDiff-from-scratch&quot;&gt;Autodiff from scratch&lt;&#x2F;a&gt;. It may take several parts to finish, including the fundamental backpropagation, computational graph, auto differentiation concept, implementation detail, brief prior frameworks implementation detail, demonstration results, testing, and finally, what I learn during the process. Please be patient and I promised I&#x27;ll finish the series this year (2021).&lt;&#x2F;p&gt;
+&lt;h3 id=&quot;disclaimer&quot;&gt;&lt;a class=&quot;zola-anchor&quot; href=&quot;#disclaimer&quot; aria-label=&quot;Anchor link for: disclaimer&quot;&gt;Disclaimer&lt;&#x2F;a&gt;&lt;&#x2F;h3&gt;
+&lt;p&gt;I am not a native speaker and I do not consider myself a deep learning expert, these series act more like personal notes rather than lessons. However, I&#x27;ll be glad to hear someone point out my grammar issue and give their professional insight. These series are the extension of my &lt;a rel=&quot;noreferrer&quot; href=&quot;https:&#x2F;&#x2F;github.com&#x2F;titaneric&#x2F;AutoDiff-from-scratch&#x2F;blob&#x2F;master&#x2F;Final%20Presentation.ipynb&quot;&gt;Final presentation&lt;&#x2F;a&gt;, please take a look if you don&#x27;t have much time to read the whole series.&lt;&#x2F;p&gt;
+&lt;h2 id=&quot;motivation&quot;&gt;&lt;a class=&quot;zola-anchor&quot; href=&quot;#motivation&quot; aria-label=&quot;Anchor link for: motivation&quot;&gt;Motivation&lt;&#x2F;a&gt;&lt;&#x2F;h2&gt;
+&lt;p&gt;First, let&#x27;s talk about the reason why I wrote this project. In my learning experience of deep learning, I observed that a few online lessons and books just listed the APIs that the framework provided e.g., CNN, RNN, the Transformer, etc. However, the API may be deprecated, the discovery in this domain remain continuously changed. Equipped with something unchanged including the fundamental knowledge is more important than knowing how to call a 3-Linear Layers in PyTorch.&lt;&#x2F;p&gt;
+&lt;p&gt;Of course, some great lessons talk about the math behind network design, its architecture, and application. They are kindly shared freely on the Internet, and lots of audiences are impressed and highly educated (including me).  Be aware of this knowledge help the learner level up their ability. However, I want to get my hand dirty and build my unique library, so that&#x27;s the reason why I start this project.&lt;&#x2F;p&gt;
+&lt;p&gt;Nevertheless, starting everything from scratch is hard for me. I need an existed project to teach me which are the necessary steps so I could digest and simplify them. I was lucky to find one of the &lt;a rel=&quot;noreferrer&quot; href=&quot;http:&#x2F;&#x2F;www.cs.toronto.edu&#x2F;~rgrosse&#x2F;courses&#x2F;csc321_2018&#x2F;slides&#x2F;lec10.pdf&quot;&gt;lessons taught at the University of Toronto&lt;&#x2F;a&gt; which introduced a concept called automatic differentiation and its implementation i.e., &lt;a rel=&quot;noreferrer&quot; href=&quot;https:&#x2F;&#x2F;github.com&#x2F;HIPS&#x2F;autograd&quot;&gt;Autograd&lt;&#x2F;a&gt;. I was fascinated and took lots of time to learn from the various lesson and trace some source code. After that, I create my unique deep learning library which is simple enough to tackle the real-world problem.&lt;&#x2F;p&gt;
+&lt;h2 id=&quot;background&quot;&gt;&lt;a class=&quot;zola-anchor&quot; href=&quot;#background&quot; aria-label=&quot;Anchor link for: background&quot;&gt;Background&lt;&#x2F;a&gt;&lt;&#x2F;h2&gt;
+&lt;p&gt;It&#x27;s too wordy to talk about my motivation. Let&#x27;s begin our journey to introduce some concepts. We&#x27;ll introduce the computational graph and the backpropagation algorithm in this post. In these series, I assume the reader may have basic knowledge of Calculus, some deep learning background, or at least, the eagerness to learn something new.&lt;&#x2F;p&gt;
+&lt;h3 id=&quot;computational-graph&quot;&gt;&lt;a class=&quot;zola-anchor&quot; href=&quot;#computational-graph&quot; aria-label=&quot;Anchor link for: computational-graph&quot;&gt;Computational Graph&lt;&#x2F;a&gt;&lt;&#x2F;h3&gt;
+&lt;p&gt;
+We all know the graph in data structure created by nodes and edges. In Computer Science, we could solve many graph problems explicitly (e.g., Traveling Salesman Problem, single-source shortest path, etc.) or implicitly (by reduction, e.g., SAT problem); In Deep Learning, the computation could also be represented by the graph, i.e., the node indicates the operands (input) and the edge indicates the operator (computation). For example, given a simple formula \((3 - 2) + 1\), the corresponding graph is
+&lt;&#x2F;p&gt;
+&lt;p&gt;&lt;img src=&quot;&#x2F;images&#x2F;posts&#x2F;autodiff-from-scratch-p1&#x2F;autodiff-series-comp-graph.png&quot; alt=&quot; &quot; &#x2F;&gt;&lt;&#x2F;p&gt;
+&lt;p&gt;Note that the order of arguments matters. The correct order induces the right result and could receive the correct response (backpropagation) even in the order-invariant calculation (e.g., add and multiply operation).&lt;&#x2F;p&gt;
+&lt;p&gt;It&#x27;s easy to understand the concept by simply glance the computational graph. Besides, the calculation could be in any number of operands, operators, or even high-level modules. For instance, a linear layer may consist of many nodes, layers, and pairs of connections (may not be a complete bipartite graph and could contain self-loop), or even a monster -- the Transformer formed with different modules and layers of encoder or decoder. There is an old saying, a picture is worth of thousand words. It&#x27;s recommended to sketch the complicated concept, you will gain a lot during the drawing process and explain it to your coworker.&lt;&#x2F;p&gt;
+&lt;h3 id=&quot;backpropagation-algorithm&quot;&gt;&lt;a class=&quot;zola-anchor&quot; href=&quot;#backpropagation-algorithm&quot; aria-label=&quot;Anchor link for: backpropagation-algorithm&quot;&gt;Backpropagation algorithm&lt;&#x2F;a&gt;&lt;&#x2F;h3&gt;
+&lt;p&gt;The core of deep learning is the backpropagation algorithm. In the computational graph session, we build the graph by a forward pass, i.e., evaluating the computation. On the other hand, we could calculate the gradient of the given calculation by backpropagation.&lt;&#x2F;p&gt;
+&lt;p&gt;
+We could use the last example, \((3 - 2) + 1\) to illustrate and transform them into algebraic way \(z = (a - b) + c\). Suppose we want to compute the gradient of \(z\) w.r.t. \(c\). It&#x27;s easy to get it directly.
+\[\frac{\partial z}{\partial c}=\frac{\partial[(a-b) + c]}{\partial c} = 0 + 1 = 1\]
+\((a-b)\) could be seemed as an constant to \(c\), so we get zero;
+On the other hand, the derivative of variable \(c\) w.r.t. \(c\) is \(1\).
+&lt;&#x2F;p&gt;
+&lt;p&gt;Next, we try to take the derivative of z w.r.t. b by the &lt;strong&gt;chain rule&lt;&#x2F;strong&gt;. We could use the following procedure to compute the result.&lt;&#x2F;p&gt;
+&lt;p&gt;
+Let \(d = (a - b)\), so we let \(z = d + c\).
+\[
+\begin{aligned}
+    \frac{\partial[(a-b) + c]}{\partial b}
+    &amp;=\frac{\partial d+c}{\partial d}\cdot \frac{\partial d}{\partial b}\\
+    &amp;=1\cdot \frac{\partial a-b}{\partial b}\\
+    &amp;=1\cdot -1\\
+    &amp;= -1
+\end{aligned}
+\]
+&lt;&#x2F;p&gt;
+&lt;p&gt;We could use the chain rule to easily calculate the complicated derivative w.r.t. any variable. It seems easy to take the derivatives of the above equation without chain rule, but what about a slightly difficult equation called the sigmoid function?&lt;&#x2F;p&gt;
+&lt;p&gt;
+\[y = \frac{1}{1 + e^{-z}}\]
+&lt;&#x2F;p&gt;
+&lt;p&gt;
+If we want to get the derivative of above equation w.r.t. \(z\), the interesting way to compute is
+&lt;&#x2F;p&gt;
+&lt;p&gt;
+Let \(a = 1 + e^{-z}\),
+\[
+\begin{aligned}
+ \frac{\partial y}{\partial z} &amp;= \frac{\partial \frac{1}{a}}{\partial z}\\
+ &amp;= \frac{\partial ({\color{red}{{a}^{-1}}})}{\partial a} \cdot \frac{\partial a}{\partial z}\\
+ &amp;= -1 {a}^{-2} \cdot \frac{\partial a}{\partial z}\\
+ &amp;= -1 {(1 + e^{-z})}^{-2} \cdot \frac{\partial (1 + e^{-z})}{\partial z}\\
+\end{aligned}
+ \]
+ Let \(b = e^{-z}\),
+ \[
+\begin{aligned}
+ \frac{\partial y}{\partial z} &amp;= -1 {(1 + e^{-z})}^{-2} \cdot \frac{\partial (1 + e^{-z})}{\partial z}\\
+ &amp;= -1 {(1 + e^{-z})}^{-2} \cdot \frac{\partial ({\color{red}{1 + b}})}{\partial b}\cdot \frac{\partial (b)}{\partial z}\\
+ &amp;= -1 {(1 + e^{-z})}^{-2} \cdot 1 \cdot \frac{\partial (e^{-z})}{\partial z}\\
+\end{aligned}
+ \]
+ Let \(c = -z\),
+ \[
+\begin{aligned}
+\frac{\partial y}{\partial z} &amp;= -1 {(1 + e^{-z})}^{-2} \cdot 1 \cdot \frac{\partial (e^{-z})}{\partial z}\\
+&amp;= -1 {(1 + e^{-z})}^{-2} \cdot 1 \cdot \frac{\partial ({\color{red}{e^{c}}})}{\partial c} \cdot \frac{\partial (c)}{\partial z}\\
+&amp;= -1 {(1 + e^{-z})}^{-2} \cdot 1 \cdot e^{c} \cdot \frac{\partial (c)}{\partial z}\\
+&amp;= -1 {(1 + e^{-z})}^{-2} \cdot 1 \cdot e^{-z} \cdot \frac{\partial (-z)}{\partial z}\\
+\end{aligned}
+\]
+Let \(d = z\)
+\[
+\begin{aligned}
+ \frac{\partial y}{\partial z} &amp;= -1 {(1 + e^{-z})}^{-2} \cdot 1 \cdot e^{-z} \cdot \frac{\partial (-z)}{\partial z}\\
+ &amp;= -1 {(1 + e^{-z})}^{-2} \cdot 1 \cdot e^{-z} \cdot \frac{\partial ({\color{red}{-d}})}{\partial d} \cdot \frac{\partial (d)}{\partial z}\\
+ &amp;= -1 {(1 + e^{-z})}^{-2} \cdot 1 \cdot e^{-z} \cdot -1 \cdot \frac{\partial (z)}{\partial z}\\
+ &amp;= -1 {(1 + e^{-z})}^{-2} \cdot 1 \cdot e^{-z} \cdot -1 \cdot 1\\
+\end{aligned}
+\]
+&lt;&#x2F;p&gt;
+&lt;p&gt;
+Notice that some operation are replaced by fundamental operation colored with red like reciprocal (\(a^{-1}\)), exponential (\(e^{c}\)), negative (\(-d\)), and add operation (\(1+b\)).
+&lt;&#x2F;p&gt;
+&lt;p&gt;In this way, we could systematically calculate the derivative of the given formula &lt;em&gt;only&lt;&#x2F;em&gt; known for the &lt;strong&gt;corresponding derivative of fundamental operation&lt;&#x2F;strong&gt; and &lt;strong&gt;chain rule&lt;&#x2F;strong&gt;. In other words, we could write a program to compute the derivative in a systematic manner.
+Besides, we &lt;em&gt;don&#x27;t&lt;&#x2F;em&gt; have to make a program to learn extra knowledge like sum, product, and quotient rules, since the program has already been educated for add, multiplication, and division operation, respectively.&lt;&#x2F;p&gt;
+&lt;p&gt;Let&#x27;s combine this with the computational graph below&lt;&#x2F;p&gt;
+&lt;p&gt;&lt;img src=&quot;&#x2F;images&#x2F;posts&#x2F;autodiff-from-scratch-p1&#x2F;autodiff-series-sigmoid-comp-graph.png&quot; alt=&quot; &quot; &#x2F;&gt;&lt;&#x2F;p&gt;
+&lt;p&gt;The figure shows that the forward-pass builds the graph from the variables, to some basic operation and finally to the results, but we compute the gradient backwardly from the result to the last, the second last, and to the first basic operation.&lt;&#x2F;p&gt;
+&lt;h2 id=&quot;conclusion&quot;&gt;&lt;a class=&quot;zola-anchor&quot; href=&quot;#conclusion&quot; aria-label=&quot;Anchor link for: conclusion&quot;&gt;Conclusion&lt;&#x2F;a&gt;&lt;&#x2F;h2&gt;
+&lt;p&gt;We could conclude today&#x27;s content with the following&lt;&#x2F;p&gt;
+&lt;ul&gt;
+&lt;li&gt;The computational graph could be any form, from the basic operation in math to the more complicated one like layers, modules, and models.&lt;&#x2F;li&gt;
+&lt;li&gt;The forward pass builds the computational graph, the backward pass computes the gradient with respect to some variable.&lt;&#x2F;li&gt;
+&lt;&#x2F;ul&gt;
+&lt;p&gt;Hope that the readers could understand today&#x27;s concept because, in the next part, we will introduce the auto differentiation by these two ideas. (Spoiled alert: gradient calculation in Backpropagation session)&lt;&#x2F;p&gt;
+&lt;p&gt;Thank you for reading and please be patient with the next part.&lt;&#x2F;p&gt;
+</description>
+      </item>
+    </channel>
+</rss>
