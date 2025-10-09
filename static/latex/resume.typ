@@ -51,20 +51,28 @@
       title: "Work Experience",
       content: (
         subSection(
-          title: "Site Reliability Engineer",
-          titleEnd: "Engineering Dept., LINE Taiwan Limited",
-          subTitle: "Dec 2022 – Present",
+          title: "Sr. Site Reliability Engineer",
+          titleEnd: "Engineering Dept., LINE Taiwan",
+          subTitle: "Sep 2025 – Present",
           subTitleEnd: "Taipei, Taiwan",
           content: list(
-            [#underline(link("https://techblog.lycorp.co.jp/zh-hant/grafana-loki-upgrade-1", "Optimized log collection pipelines")) and #underline(link("https://techblog.lycorp.co.jp/zh-hant/Loki-io-performance-tunning","tuned the self-hosted Loki cluster")), *eliminating object storage overhead and reducing costs by 70%, while achieving a 3x increase in log ingestion performance.*
+            [Developed Kustomize and ArgoCD plugin for managing secrets in the internal KMS and secret manager systems, enhancing security and compliance.
             ],
-            [Co-maintained the organization-wide #underline(link("https://engineering.linecorp.com/en/blog/terraform-for-verda", "internal Terraform provider Terda")) and its community as part of a volunteer group. Pioneered Terda adoption at LINE Taiwan and actively advocated for Terraform usage. 
+            [Developed a Go SDK to wrap the successor private cloud API post-LY merger, leveraging OpenAPI schema for automatic code generation, ensuring maintainability, unified log formatting, and a client-agnostic design.
+            ],
+          ),
+        ),
+        subSection(
+          title: "Site Reliability Engineer",
+          titleEnd: "Engineering Dept., LINE Taiwan",
+          subTitle: "Dec 2022 – Sep 2025",
+          subTitleEnd: "Taipei, Taiwan",
+          content: list(
+            [#underline(link("https://techblog.lycorp.co.jp/zh-hant/grafana-loki-upgrade-1", "Optimized log collection pipelines")) and #underline(link("https://techblog.lycorp.co.jp/zh-hant/Loki-io-performance-tunning", "tuned the self-hosted Loki cluster")), *eliminating object storage overhead and reducing costs by 70%, while achieving a 3x increase in log ingestion performance.*
+            ],
+            [Co-maintained the organization-wide #underline(link("https://engineering.linecorp.com/en/blog/terraform-for-verda", "internal Terraform provider Terda")) and its community as part of a volunteer group. Pioneered Terda adoption at LINE Taiwan and actively advocated for Terraform usage.
             ],
             [#underline(link("https://techblog.lycorp.co.jp/zh-hant/grafana-alloy-best-practice", "Implemented a Grafana Alloy gateway")) to distribute large volume client-side telemetry data sent by Faro SDK, enabling real user monitoring (RUM) and correlating frontend apps with existing observability solutions.
-            ],
-            [Developed kustomize plugin for managing secrets in the internal KMS and secret management systems, enhancing security and compliance.
-            ],
-            [Developed a Go SDK to wrap the successor private cloud API post-LY merger, leveraging OpenAPI schema for automatic code generation./*, ensuring maintainability, unified log formatting, and a client-agnostic design.*/
             ],
             [Created automation tools, including a Slack workflow automation framework and GitHub Actions, to improve operational efficiency and quality.
             ],
@@ -80,12 +88,12 @@
           content: list(
             [Designed and built a robust monitoring/alerting system that collected *15+ GB* of metrics daily across *100+ servers*.
             ],
-            [Managed Kubernetes administration and migration for *8 clusters* (*60+ nodes*) with *95%* and *99%* SLA.
-            ],
+            // [Managed Kubernetes administration and migration for *8 clusters* (*60+ nodes*) with *95%* and *99%* SLA.
+            // ],
             [Adopted automation tools to construct *production-grade* and *GPU-accelerated* Kubernetes clusters, contributing to upstream #underline(link("https://github.com/kubernetes-sigs/kubespray", "Kubespray")) and backporting to existing playbooks.
             ],
-            [Developed tools to automate daily routines, configuration management, application deployment, and system validation tasks, significantly reducing operational costs.
-            ],
+            // [Developed tools to automate daily routines, configuration management, application deployment, and system validation tasks, significantly reducing operational costs.
+            // ],
           ),
         ),
       ),
@@ -94,7 +102,10 @@
       title: "Projects",
       content: (
         subSection(
-          title: underline(link("https://www.titaneric.com/videos/rust-playground-wasm.mp4", "Rust Playground with WASM")),
+          title: underline(link(
+            "https://www.titaneric.com/videos/rust-playground-wasm.mp4",
+            "Rust Playground with WASM",
+          )),
           content: list(
             [Delivered a full-stack solution for the #underline(link("https://play.rust-lang.org/?version=stable&mode=debug&edition=2021", "Rust Playground")), enabling interactive WebAssembly rendering in the browser and integrated it into #underline(link("https://www.titaneric.com/videos/mdbook-wasm.mp4", "mdBook")).
             ],
@@ -120,7 +131,7 @@
             "Python",
             "Go",
             "Rust",
-            "Terraform Plugin Development",
+            // "Terraform Plugin Development",
           ).join(" • "),
         ),
         subSection(
@@ -128,7 +139,7 @@
           content: (
             "Kubernetes",
             "Containerization",
-            "Nvidia Cloud-Native Tech",
+            // "Nvidia Cloud-Native Tech",
             "Linux SysAdmin",
             "TCP/IP",
             "Observability",
@@ -167,18 +178,14 @@
       content: (
         subSection(
           content: list(
-            [#underline(
-              link(
+            [#underline(link(
                 "https://www.titaneric.com/posts/grafana-alloy-best-practice/",
                 "Grafana Alloy Best Practice",
-              ),
-            ) \u{0040} #underline(link("https://coscup.org/2024/en/session/VESN7N", "COSCUP 2024")),],
-                        [#underline(
-              link(
+              )) \u{0040} #underline(link("https://coscup.org/2024/en/session/VESN7N", "COSCUP 2024")),],
+            [#underline(link(
                 "https://www.titaneric.com/posts/the-journey-to-the-kubernetes-metrics/",
                 "The Journey to the Kubernetes metrics",
-              ), 
-            ) \u{0040} #underline(link("https://kubernetessummit.ithome.com.tw/2021/lab-page/599", "K8s summit 2021")),],
+              )) \u{0040} #underline(link("https://kubernetessummit.ithome.com.tw/2021/lab-page/599", "K8s summit 2021")),],
             underline(
               link(
                 "https://techblog.lycorp.co.jp/zh-hant/terraform-for-verda",
@@ -210,14 +217,22 @@
         subSection(
           title: "Enhanced VRL Functions and Vector Components",
           subTitleEnd: (
-            underline(link("https://github.com/vectordotdev/vrl/pulls?q=is%3Apr+is%3Amerged+author%3Atitaneric", "vectordotdev/vrl")),
-            underline(link("https://github.com/vectordotdev/vector/pulls?q=is%3Apr+is%3Amerged+author%3Atitaneric", "vectordotdev/vector")),
+            underline(link(
+              "https://github.com/vectordotdev/vrl/pulls?q=is%3Apr+is%3Amerged+author%3Atitaneric",
+              "vectordotdev/vrl",
+            )),
+            underline(link(
+              "https://github.com/vectordotdev/vector/pulls?q=is%3Apr+is%3Amerged+author%3Atitaneric",
+              "vectordotdev/vector",
+            )),
           ).join(", "),
         ),
         subSection(
-          title: "Support JSON-RPC over in Go uprobe eBPF Instrumentation",
-          subTitleEnd: 
-            underline(link("https://github.com/open-telemetry/opentelemetry-ebpf-instrumentation/pulls?q=is%3Apr+is%3Amerged+author%3Atitaneric+", "open-telemetry/opentelemetry-ebpf-instrumentation")),
+          title: "Support JSON-RPC in Go uprobe eBPF Instrumentation",
+          subTitleEnd: underline(link(
+            "https://github.com/open-telemetry/opentelemetry-ebpf-instrumentation/pulls?q=is%3Apr+is%3Amerged+author%3Atitaneric+",
+            "open-telemetry/opentelemetry-ebpf-instrumentation",
+          )),
         ),
         subSection(
           title: "Reduced Redundant Calculations in Backpropagation",
