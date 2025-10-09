@@ -179,6 +179,10 @@
         subSection(
           content: list(
             [#underline(link(
+                "https://www.slideshare.net/slideshow/upgrading-loki-with-a-canary-deployment-enhancing-performance-and-reducing-costs-8faf/282330868",
+                "Upgrading Loki with a Canary Deployment",
+              )) \u{0040} #underline(link("https://coscup.org/2025/sessions/ULT9T7", "COSCUP 2025")),],
+            [#underline(link(
                 "https://www.titaneric.com/posts/grafana-alloy-best-practice/",
                 "Grafana Alloy Best Practice",
               )) \u{0040} #underline(link("https://coscup.org/2024/en/session/VESN7N", "COSCUP 2024")),],
