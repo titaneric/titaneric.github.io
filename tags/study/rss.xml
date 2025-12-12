@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rss xmlns:atom="http://www.w3.org/2005/Atom" version="2.0">
+    <channel>
+      <title>titaneric - study</title>
+      <link>https://www.titaneric.com</link>
+      <description></description>
+      <generator>Zola</generator>
+      <language>en</language>
+      <atom:link href="https://www.titaneric.com/tags/study/rss.xml" rel="self" type="application/rss+xml"/>
+      <lastBuildDate>Tue, 09 Jun 2020 00:00:00 +0000</lastBuildDate>
+      <item>
+          <title>Transformer Dissection</title>
+          <pubDate>Tue, 09 Jun 2020 00:00:00 +0000</pubDate>
+          <author>Unknown</author>
+          <link>https://www.titaneric.com/posts/transformer-dissection/</link>
+          <guid>https://www.titaneric.com/posts/transformer-dissection/</guid>
+          <description xml:base="https://www.titaneric.com/posts/transformer-dissection/">&lt;div&gt;
+    &lt;iframe src=&quot;&amp;#x2F;&amp;#x2F;www.slideshare.net&amp;#x2F;slideshow&amp;#x2F;embed_code&amp;#x2F;key&amp;#x2F;hEaoQV0N0u3ow6&quot; frameborder=&quot;0&quot; width=&quot;900&quot; height=&quot;600&quot;
+        marginwidth=&quot;0&quot; marginheight=&quot;0&quot; scrolling=&quot;no&quot;
+        style=&quot;border:1px solid #CCC; border-width:1px; margin-bottom:5px; max-width: 100%;&quot; allowfullscreen&gt; &lt;&#x2F;iframe&gt;
+&lt;&#x2F;div&gt;</description>
+      </item>
+      <item>
+          <title>A Learning based Iterative Method for Solving Vehicle Routing</title>
+          <pubDate>Wed, 22 Apr 2020 00:00:00 +0000</pubDate>
+          <author>Unknown</author>
+          <link>https://www.titaneric.com/posts/a-learning-based-iterative-method-for-solving-vehicle-routing/</link>
+          <guid>https://www.titaneric.com/posts/a-learning-based-iterative-method-for-solving-vehicle-routing/</guid>
+          <description xml:base="https://www.titaneric.com/posts/a-learning-based-iterative-method-for-solving-vehicle-routing/">&lt;div&gt;
+    &lt;iframe src=&quot;&amp;#x2F;&amp;#x2F;www.slideshare.net&amp;#x2F;slideshow&amp;#x2F;embed_code&amp;#x2F;key&amp;#x2F;CcUCh1vkNASGxx&quot; frameborder=&quot;0&quot; width=&quot;900&quot; height=&quot;600&quot;
+        marginwidth=&quot;0&quot; marginheight=&quot;0&quot; scrolling=&quot;no&quot;
+        style=&quot;border:1px solid #CCC; border-width:1px; margin-bottom:5px; max-width: 100%;&quot; allowfullscreen&gt; &lt;&#x2F;iframe&gt;
+&lt;&#x2F;div&gt;</description>
+      </item>
+      <item>
+          <title>attention-learn-routing</title>
+          <pubDate>Mon, 10 Feb 2020 00:00:00 +0000</pubDate>
+          <author>Unknown</author>
+          <link>https://www.titaneric.com/posts/attention-learn-routing/</link>
+          <guid>https://www.titaneric.com/posts/attention-learn-routing/</guid>
+          <description xml:base="https://www.titaneric.com/posts/attention-learn-routing/">&lt;div&gt;
+    &lt;iframe src=&quot;&amp;#x2F;&amp;#x2F;www.slideshare.net&amp;#x2F;slideshow&amp;#x2F;embed_code&amp;#x2F;key&amp;#x2F;dyNbVNuJb6EKLP&quot; frameborder=&quot;0&quot; width=&quot;900&quot; height=&quot;600&quot;
+        marginwidth=&quot;0&quot; marginheight=&quot;0&quot; scrolling=&quot;no&quot;
+        style=&quot;border:1px solid #CCC; border-width:1px; margin-bottom:5px; max-width: 100%;&quot; allowfullscreen&gt; &lt;&#x2F;iframe&gt;
+&lt;&#x2F;div&gt;</description>
+      </item>
+      <item>
+          <title>Optnet</title>
+          <pubDate>Sat, 02 Nov 2019 00:00:00 +0000</pubDate>
+          <author>Unknown</author>
+          <link>https://www.titaneric.com/posts/optnet/</link>
+          <guid>https://www.titaneric.com/posts/optnet/</guid>
+          <description xml:base="https://www.titaneric.com/posts/optnet/">&lt;div&gt;
+    &lt;iframe src=&quot;&amp;#x2F;&amp;#x2F;www.slideshare.net&amp;#x2F;slideshow&amp;#x2F;embed_code&amp;#x2F;key&amp;#x2F;IrObEco1pM2MWf&quot; frameborder=&quot;0&quot; width=&quot;900&quot; height=&quot;600&quot;
+        marginwidth=&quot;0&quot; marginheight=&quot;0&quot; scrolling=&quot;no&quot;
+        style=&quot;border:1px solid #CCC; border-width:1px; margin-bottom:5px; max-width: 100%;&quot; allowfullscreen&gt; &lt;&#x2F;iframe&gt;
+&lt;&#x2F;div&gt;</description>
+      </item>
+      <item>
+          <title>Learning to Solve Circuit SAT</title>
+          <pubDate>Mon, 23 Sep 2019 00:00:00 +0000</pubDate>
+          <author>Unknown</author>
+          <link>https://www.titaneric.com/posts/learning-to-solve-circuit-sat/</link>
+          <guid>https://www.titaneric.com/posts/learning-to-solve-circuit-sat/</guid>
+          <description xml:base="https://www.titaneric.com/posts/learning-to-solve-circuit-sat/">&lt;div&gt;
+    &lt;iframe src=&quot;&amp;#x2F;&amp;#x2F;www.slideshare.net&amp;#x2F;slideshow&amp;#x2F;embed_code&amp;#x2F;key&amp;#x2F;pSQzRLwu5Sd3Vx&quot; frameborder=&quot;0&quot; width=&quot;900&quot; height=&quot;600&quot;
+        marginwidth=&quot;0&quot; marginheight=&quot;0&quot; scrolling=&quot;no&quot;
+        style=&quot;border:1px solid #CCC; border-width:1px; margin-bottom:5px; max-width: 100%;&quot; allowfullscreen&gt; &lt;&#x2F;iframe&gt;
+&lt;&#x2F;div&gt;</description>
+      </item>
+      <item>
+          <title>Melding Data Decision Pipeline</title>
+          <pubDate>Sun, 22 Sep 2019 00:00:00 +0000</pubDate>
+          <author>Unknown</author>
+          <link>https://www.titaneric.com/posts/melding-data-decision-pipeline/</link>
+          <guid>https://www.titaneric.com/posts/melding-data-decision-pipeline/</guid>
+          <description xml:base="https://www.titaneric.com/posts/melding-data-decision-pipeline/">&lt;div&gt;
+    &lt;iframe src=&quot;&amp;#x2F;&amp;#x2F;www.slideshare.net&amp;#x2F;slideshow&amp;#x2F;embed_code&amp;#x2F;key&amp;#x2F;3bSAVwTac8gxnZ&quot; frameborder=&quot;0&quot; width=&quot;900&quot; height=&quot;600&quot;
+        marginwidth=&quot;0&quot; marginheight=&quot;0&quot; scrolling=&quot;no&quot;
+        style=&quot;border:1px solid #CCC; border-width:1px; margin-bottom:5px; max-width: 100%;&quot; allowfullscreen&gt; &lt;&#x2F;iframe&gt;
+&lt;&#x2F;div&gt;</description>
+      </item>
+    </channel>
+</rss>
