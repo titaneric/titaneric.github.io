@@ -1,0 +1,559 @@
+<!DOCTYPE html>
+<html lang="en" class="dark light">
+
+    <head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="base" content="https:&#x2F;&#x2F;www.titaneric.com">
+
+    
+
+    
+    
+    
+        <title>
+            
+                Elliptic Curve Point Addition: Mathematical Foundations for Cryptographic Key Exchange
+            
+        </title>
+
+        
+            <meta property="og:title"
+                  content="Elliptic Curve Point Addition: Mathematical Foundations for Cryptographic Key Exchange" />
+        
+    
+
+    
+        
+    
+
+    
+        
+    
+
+    
+    <link rel="icon" type="image/png" href=https://www.titaneric.com/icons/favicon-16x16.png />
+
+    
+    
+        <link href=https://www.titaneric.com/fonts.css rel="stylesheet" />
+    
+
+    
+    
+
+    
+    
+        
+            
+            
+
+            <script defer
+                    src="/js/imamu.js"
+                    data-website-id="63f9d7c5-7c47-493b-af29-481374c7531c"
+                    data-host-url="https:&#x2F;&#x2F;api-gateway.umami.dev&#x2F;"></script>
+        
+
+        
+    
+
+    
+    <script defer src=https://www.titaneric.com/js/codeblock.js></script>
+
+    
+    <script defer src=https://www.titaneric.com/js/toc.js></script>
+
+    
+    
+        <script src=https://www.titaneric.com/js/note.js></script>
+    
+
+    
+        
+            <script>
+            MathJax = {
+              tex: {
+                inlineMath: [['$', '$'], ['\\(', '\\)']]
+              }
+            };
+            </script>
+        
+        <script type="text/javascript" id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js">
+        </script>
+    
+
+    
+    
+
+
+    
+    
+        <link rel="stylesheet"
+              type="text/css"
+              href="https://www.titaneric.com/theme/light.css" />
+        <link id="darkModeStyle"
+              rel="stylesheet"
+              type="text/css"
+              href="https://www.titaneric.com/theme/dark.css" />
+    
+
+    <!-- Set the correct theme in the script -->
+
+    
+        <script src=https://www.titaneric.com/js/themetoggle.js></script>
+
+        
+            <script>setTheme(getSavedTheme());</script>
+        
+    
+
+
+    <link rel="stylesheet"
+          type="text/css"
+          media="screen"
+          href="https://www.titaneric.com/main.css" />
+
+    
+
+    
+        <script defer
+                src="https://www.titaneric.com/js/searchElasticlunr.min.js?h=3626c0ef99daa745b31e"></script></head>
+
+
+    <body>
+        <div class="left-content">
+            
+            
+        </div>
+
+        <div class="content">
+            <nav>
+    <div class="left-nav">
+        
+            <a href=https:&#x2F;&#x2F;www.titaneric.com>titaneric</a>
+        
+
+
+        <div class="socials">
+            
+                <a rel="me" href="https:&#x2F;&#x2F;www.linkedin.com&#x2F;in&#x2F;chen-yi-huang&#x2F;" class="social">
+                    <img alt="linkedin" src="https://www.titaneric.com/icons/social/linkedin.svg">
+                </a>
+            
+                <a rel="me" href="https:&#x2F;&#x2F;github.com&#x2F;titaneric&#x2F;" class="social">
+                    <img alt="github" src="https://www.titaneric.com/icons/social/github.svg">
+                </a>
+            
+        </div>
+    </div>
+
+    <div class="right-nav">
+        
+            <a href=https://www.titaneric.com/posts style="margin-right: 0.5em">posts</a>
+        
+            <a href=https://www.titaneric.com/tags style="margin-right: 0.5em">tags</a>
+        
+            <a href=https://www.titaneric.com/categories style="margin-right: 0.5em">categories</a>
+        
+            <a href=https://www.titaneric.com/archive style="margin-right: 0.5em">archive</a>
+        
+            <a href=https://www.titaneric.com/pdfs/resume.pdf style="margin-right: 0.5em">about</a>
+        
+            <a href=https://www.titaneric.com/notes/index.html style="margin-right: 0.5em">notes</a>
+        
+
+        
+            <button id="search-button"
+                    class="search-button"
+                    title="$SHORTCUT to open search">
+                <img src="https://www.titaneric.com/icons/search.svg"
+                    alt="Search"
+                    class="search-icon">
+            </button>
+
+            <div id="searchModal"
+                class="search-modal js"
+                role="dialog"
+                aria-labelledby="modalTitle">
+                <div id="modal-content">
+                    <h1 id="modalTitle" class="page-header">Search</h1>
+                    <div id="searchBar">
+                        <input id="searchInput"
+                            role="combobox"
+                            autocomplete="off"
+                            spellcheck="false"
+                            aria-expanded="false"
+                            aria-controls="results-container"
+                            placeholder="Search..." />
+                        <button id="clear-search" class="clear-button" title="Clear search">
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 -960 960 960">
+                                <path d="m256-200-56-56 224-224-224-224 56-56 224 224 224-224 56 56-224 224 224 224-56 56-224-224-224 224Z" />
+                            </svg>
+                        </button>
+                    </div>
+                    <div id="results-container">
+                        <div id="results-info">
+                            <span id="zero_results" style="display: none;">No results</span>
+                            <span id="one_result" style="display: none;">1 result</span>
+                            <span id="many_results" style="display: none;">$NUMBER results</span>
+                        </div>
+                        <div id="results" role="listbox"></div>
+                    </div>
+                </div>
+            </div>
+        
+
+        
+            <a id="dark-mode-toggle"
+            onclick="toggleTheme(); event.preventDefault();"
+            href="#">
+                <img src="https://www.titaneric.com/icons/sun.svg"
+                    id="sun-icon"
+                    style="filter: invert(1)"
+                    alt="Light" />
+                <img src=https://www.titaneric.com/icons/moon.svg id="moon-icon" alt="Dark" />
+            </a>
+
+            <!-- Initialize the theme toggle icons -->
+            <script>updateItemToggleTheme()</script>
+        
+    </div>
+</nav>
+
+
+            
+            
+    
+<div class="visible-element-observer-root" data-selector="main article p">
+    <main>
+        <article>
+            <div class="title">
+                
+                
+    
+    <div class="page-header">
+        Elliptic Curve Point Addition: Mathematical Foundations for Cryptographic Key Exchange
+    </div>
+    
+
+
+                <div class="meta">
+                    
+                        Posted on <time>2025-12-23</time>
+                    
+
+
+                    
+
+                    
+
+                    
+
+                    
+                    
+                        
+                        
+                            
+                        
+
+                        
+                            
+                            :: <a href="https:&#x2F;&#x2F;github.com&#x2F;titaneric&#x2F;titaneric.github.io&#x2F;tree&#x2F;master&#x2F;content&#x2F;posts&#x2F;elliptic-curve-math.md" target="_blank" rel="noopener noreferrer">Source Code</a>
+                        
+                    
+
+                    
+                    
+
+                    
+                    
+                        <span class="tags-label"> :: </span>
+                        <span class="tags">
+                                <a href="https://www.titaneric.com/tags/cryptography/"
+                                   class="post-tag">cryptography</a>
+                            
+                                <a href="https://www.titaneric.com/tags/math/"
+                                   class="post-tag">math</a>
+                            
+                        </span>
+                    
+
+                    
+
+                </div>
+            </div>
+
+            
+
+            <section class="body">
+                <p>I've read the fantastic <a rel="noreferrer" href="https://curves.xargs.org">Animated Elliptic Curve</a> exposition and wanted to write up my own detailed notes on the mathematics of elliptic curve point addition and its application to cryptographic key exchange.</p>
+<p>Elliptic curve point addition is the algebraic operation that gives elliptic curves their group structure. That group law—together with scalar multiplication (repeated addition)—is the mathematical foundation for modern public-key protocols such as Elliptic Curve Diffie–Hellman (ECDH) and the key exchanges used in TLS 1.3.</p>
+<p>This note presents a detailed derivation of the point-addition formulas for curves in short Weierstrass form, explains how the formulas are evaluated in a finite field, and adds practical facts and examples drawn from the <a rel="noreferrer" href="https://curves.xargs.org">Animated Elliptic Curve</a> exposition, including small toy curves (Curve61) and references to real-world curves (Curve25519).</p>
+<h2 id="elliptic-curves-and-point-addition"><a class="zola-anchor" href="#elliptic-curves-and-point-addition" aria-label="Anchor link for: elliptic-curves-and-point-addition">Elliptic curves and point addition</a></h2>
+<p><strong>Conventions.</strong> We work with the short Weierstrass equation for an elliptic curve:
+$$y^2 = x^3 + a x + b$$
+over either the real numbers (for geometric intuition) or the finite field $\mathbb{F}_p$ (for cryptographic use). Points are written as $P=(x_1,y_1)$ and $Q=(x_2,y_2)$; the point at infinity (the group identity) is denoted $\mathcal{O}$.</p>
+<p><strong>Overview.</strong> The geometric rule for addition is:</p>
+<ul>
+<li>Draw the line through $P$ and $Q$ (or the tangent at $P$ when $P=Q$).</li>
+<li>Find the third intersection $R'$ of that line with the curve.</li>
+<li>Reflect $R'$ across the $x$-axis to get the sum $R=P+Q$.</li>
+</ul>
+<h3 id="geometric-derivation-and-algebraic-formulas"><a class="zola-anchor" href="#geometric-derivation-and-algebraic-formulas" aria-label="Anchor link for: geometric-derivation-and-algebraic-formulas">Geometric derivation and algebraic formulas</a></h3>
+<ol>
+<li>Adding distinct points ($P\neq Q$).</li>
+</ol>
+<p>Let the line through $P$ and $Q$ have slope $\lambda$ and equation
+$$y = \lambda x + \nu.$$
+The slope is the usual slope of a secant:
+$$\lambda = \frac{y_2 - y_1}{x_2 - x_1}$$
+when working over the reals, and in $\mathbb{F}_p$ we interpret division via modular inverse:
+$$\lambda = (y_2 - y_1)\cdot (x_2 - x_1)^{-1}\pmod p,$$
+where $(x_2-x_1)^{-1}$ is the <a rel="noreferrer" href="https://curves.xargs.org/#division-multiplicative-inverse">multiplicative inverse in $\mathbb{F}_p$</a>.</p>
+<p>Substitute $y=\lambda x+\nu$ into $y^2=x^3+ax+b$ and expand to obtain a cubic polynomial in $x$:
+$$\begin{aligned}
+(\lambda x + \nu)^2 &amp;= x^3 + a x + b \
+\lambda^2 x^2 + 2\lambda\nu x + \nu^2 &amp;= x^3 + a x + b.
+\end{aligned}
+$$
+Bring all terms to one side:
+$$
+\begin{aligned}
+x^3 - \lambda^2 x^2 + (a - 2\lambda\nu) x + (b - \nu^2) = 0.
+\end{aligned}
+$$</p>
+<p>Remember we have <a rel="noreferrer" href="https://en.wikipedia.org/wiki/Vieta%27s_formulas">Vieta's formulas</a> relating the roots to the coefficients of a polynomial.:</p>
+<blockquote>
+<p>Given a cubic equation $ P(x) = ax^3 + bx^2 + cx + d = 0 $, the roots $ x_1, x_2, x_3 $ satisfy:
+$$ x_1 + x_2 + x_3 = -\frac{b}{a} $$
+$$ x_1 x_2 + x_1 x_3 + x_2 x_3 = \frac{c}{a} $$
+$$ x_1 x_2 x_3 = -\frac{d}{a} $$</p>
+</blockquote>
+<p>Applying Vieta's formulas to our cubic (with $a=1$, $b=-\lambda^2$, $c=a - 2\lambda\nu$, $d=b - \nu^2$) gives the relations among the three $x$-coordinates of the intersection points $P$, $Q$, and $R'$:</p>
+<p>$$x_1+x_2+x_3 = \lambda^2,$$
+$$x_1x_2 + x_1x_3 + x_2x_3 = a - 2\lambda\nu,$$
+$$x_1x_2x_3 = \nu^2 - b.$$
+The first identity yields the commonly used formula
+$$ x_3 = \lambda^2 - x_1 - x_2. $$</p>
+<p>To obtain $y_3$, compute the $y$-value of the third intersection $R'$ using the line: $y_3' = \lambda x_3 + \nu$. Since $\nu = y_1 - \lambda x_1$ we have $y_3' = \lambda(x_3 - x_1) + y_1$, and reflecting across the $x$-axis gives the sum
+$$ y_3 = -y_3' = \lambda(x_1 - x_3) - y_1. $$</p>
+<p>These identities hold over $\mathbb{F}_p$ when every division is interpreted as multiplication by an inverse.</p>
+<ol start="2">
+<li>Doubling ($P=Q$).</li>
+</ol>
+<p>When $P=Q$ the secant becomes the tangent. Implicit differentiation of $y^2=x^3+ax+b$ gives
+$$\frac{dy}{dx} = \frac{3x^2+a}{2y},$$
+so at $(x_1,y_1)$ the tangent slope is
+$$\lambda = \frac{3x_1^2 + a}{2y_1}.$$
+Substituting into the formulas $ x_3 = \lambda^2 - x_1 - x_2 $ (with $x_2=x_1$) and $y_3 = \lambda(x_1 - x_3) - y_1$ yields
+$$ x_3 = \lambda^2 - 2x_1,\qquad y_3 = \lambda(x_1 - x_3) - y_1. $$</p>
+<p>This concludes the derivation of <a rel="noreferrer" href="https://curves.xargs.org/#point-addition">Point Addition</a> formulas.</p>
+<h2 id="finite-field-arithmetic-practical-cryptography"><a class="zola-anchor" href="#finite-field-arithmetic-practical-cryptography" aria-label="Anchor link for: finite-field-arithmetic-practical-cryptography">Finite-field arithmetic (practical cryptography)</a></h2>
+<p>Elliptic curves used in cryptography are defined over prime fields $\mathbb{F}_p$. To adapt the real-number formulas we perform every operation modulo $p$.</p>
+<ul>
+<li>The field $\mathbb{F}_p$ is the set ${0,1,\dots,p-1}$ with addition and multiplication taken modulo $p$.</li>
+<li>Additive inverse: $-n\equiv p-n \pmod p$.</li>
+<li>Multiplicative inverse: for nonzero $b$ there exists $b^{-1}\in\mathbb{F}_p$ with $b\cdot b^{-1}\equiv1\pmod p$.</li>
+<li>Square roots and residues: for $n\in\mathbb{F}_p$ a square root is an element $y\in\mathbb{F}_p$ satisfying $$y^2 \equiv n \pmod p.$$ If such a $y$ exists then $n$ is a <strong>quadratic residue</strong> modulo $p$ and the two square roots are $y$ and $-y$ (unless $y\equiv0$). If no such $y$ exists then $n$ is a <strong>quadratic non-residue</strong> modulo $p$.</li>
+</ul>
+<p>In the elliptic-curve equation $y^2\equiv x^3+ax+b\pmod p$ define$$r(x) \equiv x^3 + ax + b \pmod p.$$ There exists an $\mathbb{F}_p$-rational point with $x$-coordinate $x$ exactly when $r(x)$ is a quadratic residue, i.e. when there exists $y\in\mathbb{F}_p$ with $y^2\equiv r(x)\pmod p$. In that case the two points are $(x,y)$ and $(x,-y)$.</p>
+<p>The point-addition formulas are the same as in the real case, but every arithmetic operation is performed in $\mathbb{F}_p$. Concretely, for $P\neq Q$:
+$$\lambda \equiv (y_2-y_1)\cdot (x_2-x_1)^{-1} \pmod p,$$
+$$x_3 \equiv \lambda^2 - x_1 - x_2 \pmod p,$$
+$$y_3 \equiv \lambda(x_1 - x_3) - y_1 \pmod p,$$
+and for doubling:$$\lambda \equiv (3x_1^2 + a)\cdot (2y_1)^{-1} \pmod p.$$</p>
+<p>All final $x_3,y_3$ values are reduced modulo $p$.</p>
+<h2 id="example-point-addition-on-a-toy-curve-curve61"><a class="zola-anchor" href="#example-point-addition-on-a-toy-curve-curve61" aria-label="Anchor link for: example-point-addition-on-a-toy-curve-curve61">Example: Point addition on a toy curve Curve61</a></h2>
+<p>Let $p = 61$ and consider the elliptic curve E defined over the prime field $\mathbb{F}_p$ by
+$$E : y^2 \equiv x^3 + 9x + 1 \pmod{p}.$$
+We write $E(\mathbb{F}_p)$ for the set of $\mathbb{F}_p$-rational points on $E$, i.e. the pairs $(x,y)$ with $x,y \in \mathbb{F}_p$ satisfying the curve equation together with the point at infinity $O$.</p>
+<p>For each $x \in \mathbb{F}_p$ define the right-hand side value
+$$r(x) \equiv x^3 + 9x + 1 \pmod p.$$
+The set of points in $E(\mathbb{F}_p)$ with $x$-coordinate equal to $x$ is nonempty precisely when there exists $y \in \mathbb{F}_p$ with $$y^2 \equiv r(x) \pmod p.$$ In that case the two solutions are $y$ and $-y$ (negatives taken modulo $p$), which give the two points with the same $x$-coordinate.</p>
+<p>Example computations:</p>
+<ul>
+<li>
+<p>For x = 0:
+$$\begin{aligned}
+r(0) &amp;\equiv 0^3 + 9\cdot0 + 1 \equiv 1 \pmod{61}.
+\end{aligned}$$
+One square root is $y \equiv 1$ since $1 \cdot 1 \equiv 1 \pmod{61}$; the other is $y \equiv -1 \equiv 60 \pmod{61}$. Thus $(0,1),(0,60) \in E(\mathbb{F}_{61})$.</p>
+</li>
+<li>
+<p>For x = 1:
+$$\begin{aligned}
+r(1) &amp;\equiv 1^3 + 9\cdot1 + 1 \equiv 11 \pmod{61}.
+\end{aligned}$$
+Here 11 is a quadratic non-residue in $\mathbb{F_{61}}$, so there is no $y \in \mathbb{F_{61}}$ with $y^2 \equiv 11$; there is no point of $E(\mathbb{F}_{61})$ with $x=1$.</p>
+</li>
+<li>
+<p>For x = 2:
+$$\begin{aligned}
+r(2) &amp;\equiv 2^3 + 9\cdot2 + 1 \equiv 27 \pmod{61}.
+\end{aligned}$$
+One square root is $y \equiv 24$ since $24 \cdot 24 \equiv 576 \equiv 27 \pmod{61}$; the other is $y \equiv -24 \equiv 37 \pmod{61}$. Thus $(2,24),(2,37) \in E(\mathbb{F}_{61})$.</p>
+</li>
+</ul>
+<p>Proceeding similarly for each $x \in \mathbb{F}_p$ produces the full set $E(\mathbb{F}_p)$. The group law on $E(\mathbb{F}_p)$ uses the addition formulas given above, with all arithmetic interpreted modulo $p$.</p>
+<h3 id="worked-numeric-example-adding-two-points-on-curve61"><a class="zola-anchor" href="#worked-numeric-example-adding-two-points-on-curve61" aria-label="Anchor link for: worked-numeric-example-adding-two-points-on-curve61">Worked numeric example: adding two points on Curve61</a></h3>
+<p>We present a step-by-step modular computation of $P+Q$ with
+$$p=61,\qquad E: y^2\equiv x^3 + 9x + 1\pmod{61},$$
+and take the two points
+$$P=(2,24),\qquad Q=(0,1).$$</p>
+<ol>
+<li>Compute the slope $\lambda$ for distinct points $P\neq Q$:
+$$\lambda \equiv (y_Q-y_P)\cdot(x_Q-x_P)^{-1} \pmod{61}.$$</li>
+</ol>
+<p>$$y_Q-y_P = 1-24 \equiv 1-24 \equiv -23 \equiv 38 \pmod{61}.$$</p>
+<p>$$x_Q-x_P = 0-2 \equiv -2 \equiv 59 \pmod{61}.$$
+We need the inverse of $59$ modulo $61$. Since $59\equiv -2$, its inverse is the inverse of $-2$, which is $-31\equiv 30$ because $(-2)\cdot(-31)=62\equiv1\pmod{61}$. Thus $59^{-1}\equiv 30$.
+So
+$$\lambda \equiv 38\cdot 30 \equiv 1140 \equiv 42 \pmod{61}.$$</p>
+<ol start="2">
+<li>
+<p>Compute $x_3$:
+$$x_3 \equiv \lambda^2 - x_P - x_Q \equiv 42^2 - 2 - 0 \equiv 1764 - 2 \equiv 1762\equiv 54 \pmod{61}.$$</p>
+</li>
+<li>
+<p>Compute $y_3$ using $y_3 \equiv \lambda(x_P - x_3) - y_P$:
+$$x_P - x_3 = 2-54 \equiv -52 \equiv 9 \pmod{61}$$
+$$\lambda(x_P-x_3) \equiv 42\cdot 9 =378 \equiv 12 \pmod{61}$$
+$$y_3 \equiv 12 - 24 \equiv -12 \equiv 49 \pmod{61}.$$</p>
+</li>
+</ol>
+<p>Therefore the sum is
+$$P+Q = (54,49) \in E(\mathbb{F}_{61}).$$</p>
+<p>One may verify directly that $(54,49)$ satisfies the curve equation modulo 61, and that adding $P$ and $Q$ by the geometric/tangent method produces this same point.</p>
+<h2 id="efficient-scalar-multiplication"><a class="zola-anchor" href="#efficient-scalar-multiplication" aria-label="Anchor link for: efficient-scalar-multiplication">Efficient scalar multiplication</a></h2>
+<p>Scalar multiplication $nP$ (adding $P$ to itself $n$ times) is the expensive primitive. A naive loop costs O(n) additions; efficient methods use doubling plus addition (binary double-and-add) to achieve O(log n) elliptic-curve additions. For example, if we need to calculate $13P$, we could pre-compute $1P$, $4P$, and $8P$ via doubling, then add the results:
+$$
+\begin{aligned}
+2P &amp;= P + P,\\
+4P &amp;= 2P + 2P,\\
+8P &amp;= 4P + 4P,\\
+13P &amp;= 8P + 4P + P.
+\end{aligned}
+$$</p>
+<h2 id="cryptographic-key-exchange-using-elliptic-curves"><a class="zola-anchor" href="#cryptographic-key-exchange-using-elliptic-curves" aria-label="Anchor link for: cryptographic-key-exchange-using-elliptic-curves">Cryptographic key exchange using elliptic curves</a></h2>
+<p>Elliptic-curve Diffie–Hellman (ECDH) is the standard key-exchange primitive built from the group law on an elliptic curve. The protocol is simple to state and relies on two related hardness assumptions:</p>
+<ul>
+<li>Elliptic Curve Discrete Logarithm Problem (ECDLP): given $P$ and $Q=kP$ for unknown integer $k$, recover $k$.</li>
+<li>Computational Diffie–Hellman (CDH) on the curve: given $P$, $A=k_aP$, and $B=k_bP$, compute $k_a k_b P$.</li>
+</ul>
+<p>ECDH protocol (informal):</p>
+<ul>
+<li>The peers agree on a curve and a base point $P\in E(\mathbb{F}_p)$ (with known order r).</li>
+<li>Alice picks a private scalar $k_a\in{1,\dots,r-1}$ and sends the public point $A=k_aP$ to Bob.</li>
+<li>Bob picks $k_b$ and sends $B=k_bP$ to Alice.</li>
+<li>Alice computes $S_A=k_a B = k_a(k_bP)=k_a k_b P$.</li>
+<li>Bob computes $S_B=k_b A = k_b(k_aP)=k_b k_a P$.
+Both obtain the same shared point $S=k_a k_b P$.</li>
+</ul>
+<p>Please play the toy example and watch the key exchange animation on <a rel="noreferrer" href="https://curves.xargs.org/#key-exchange">curves.xargs.org</a></p>
+<p>Why an eavesdropper cannot recover the shared key (informal):</p>
+<ul>
+<li>If an attacker sees only $A=k_aP$ and $B=k_bP$, then computing $k_a$ or $k_b$ from $A$ or $B$ alone requires solving the ECDLP; computing $k_a k_b P$ directly from $A$ and $B$ without either scalar requires solving the CDH problem. Both problems are believed to be computationally infeasible for well-chosen curves and sufficiently large parameters (e.g., 256-bit prime fields such as Curve25519). Thus knowledge of $A$ and $B$ does not reveal $k_a$ or $k_b$, nor the derived symmetric key, under standard assumptions.</li>
+</ul>
+<p>The toy curve Curve61 used $\mathbb{F_{61}}$. In practice, cryptographic curves use much larger prime fields (e.g., Curve25519 uses a 255-bit prime, i.e., $\mathbb{F}_{2^{255}-19}$) to ensure security against known attacks.</p>
+<h2 id="references-and-further-reading"><a class="zola-anchor" href="#references-and-further-reading" aria-label="Anchor link for: references-and-further-reading">References and further reading</a></h2>
+<ul>
+<li><a rel="noreferrer" href="https://curves.xargs.org">The Animated Elliptic Curve</a></li>
+<li><a rel="noreferrer" href="https://x25519.xargs.org/">Hands-on: X25519 Key Exchange</a></li>
+</ul>
+
+            </section>
+        </article>
+    </main>
+</div>
+
+
+
+            
+                
+            
+
+            
+        </div>
+
+        <div class="right-content">
+            
+    
+    
+        <div class="toc">
+    <div class="heading">Table of Contents</div>
+    <ul class="toc-list">
+        
+            <li class="parent">
+                
+                <a href="https://www.titaneric.com/posts/elliptic-curve-math/#elliptic-curves-and-point-addition">Elliptic curves and point addition</a>
+
+                
+                    <ul>
+                    
+                        
+                        <li>
+                            <a href="https://www.titaneric.com/posts/elliptic-curve-math/#geometric-derivation-and-algebraic-formulas">Geometric derivation and algebraic formulas</a>
+                        </li>
+
+                        
+                    
+                    </ul>
+                
+            </li>
+        
+            <li class="parent">
+                
+                <a href="https://www.titaneric.com/posts/elliptic-curve-math/#finite-field-arithmetic-practical-cryptography">Finite-field arithmetic (practical cryptography)</a>
+
+                
+            </li>
+        
+            <li class="parent">
+                
+                <a href="https://www.titaneric.com/posts/elliptic-curve-math/#example-point-addition-on-a-toy-curve-curve61">Example: Point addition on a toy curve Curve61</a>
+
+                
+                    <ul>
+                    
+                        
+                        <li>
+                            <a href="https://www.titaneric.com/posts/elliptic-curve-math/#worked-numeric-example-adding-two-points-on-curve61">Worked numeric example: adding two points on Curve61</a>
+                        </li>
+
+                        
+                    
+                    </ul>
+                
+            </li>
+        
+            <li class="parent">
+                
+                <a href="https://www.titaneric.com/posts/elliptic-curve-math/#efficient-scalar-multiplication">Efficient scalar multiplication</a>
+
+                
+            </li>
+        
+            <li class="parent">
+                
+                <a href="https://www.titaneric.com/posts/elliptic-curve-math/#cryptographic-key-exchange-using-elliptic-curves">Cryptographic key exchange using elliptic curves</a>
+
+                
+            </li>
+        
+            <li class="parent">
+                
+                <a href="https://www.titaneric.com/posts/elliptic-curve-math/#references-and-further-reading">References and further reading</a>
+
+                
+            </li>
+        
+    </ul>
+</div>
+
+    
+
+        </div>
+    </body>
+
+</html>

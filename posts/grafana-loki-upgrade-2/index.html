@@ -1,0 +1,545 @@
+<!DOCTYPE html>
+<html lang="en" class="dark light">
+
+    <head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="base" content="https:&#x2F;&#x2F;www.titaneric.com">
+
+    
+
+    
+    
+    
+        <title>
+            
+                Grafana Loki Series (II) - Tuning Loki Write and Read Performance
+            
+        </title>
+
+        
+            <meta property="og:title"
+                  content="Grafana Loki Series (II) - Tuning Loki Write and Read Performance" />
+        
+    
+
+    
+        
+    
+
+    
+        
+    
+
+    
+    <link rel="icon" type="image/png" href=https://www.titaneric.com/icons/favicon-16x16.png />
+
+    
+    
+        <link href=https://www.titaneric.com/fonts.css rel="stylesheet" />
+    
+
+    
+    
+
+    
+    
+        
+            
+            
+
+            <script defer
+                    src="/js/imamu.js"
+                    data-website-id="63f9d7c5-7c47-493b-af29-481374c7531c"
+                    data-host-url="https:&#x2F;&#x2F;api-gateway.umami.dev&#x2F;"></script>
+        
+
+        
+    
+
+    
+    <script defer src=https://www.titaneric.com/js/codeblock.js></script>
+
+    
+    <script defer src=https://www.titaneric.com/js/toc.js></script>
+
+    
+    
+        <script src=https://www.titaneric.com/js/note.js></script>
+    
+
+    
+        
+            <script>
+            MathJax = {
+              tex: {
+                inlineMath: [['$', '$'], ['\\(', '\\)']]
+              }
+            };
+            </script>
+        
+        <script type="text/javascript" id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js">
+        </script>
+    
+
+    
+    
+
+
+    
+    
+        <link rel="stylesheet"
+              type="text/css"
+              href="https://www.titaneric.com/theme/light.css" />
+        <link id="darkModeStyle"
+              rel="stylesheet"
+              type="text/css"
+              href="https://www.titaneric.com/theme/dark.css" />
+    
+
+    <!-- Set the correct theme in the script -->
+
+    
+        <script src=https://www.titaneric.com/js/themetoggle.js></script>
+
+        
+            <script>setTheme(getSavedTheme());</script>
+        
+    
+
+
+    <link rel="stylesheet"
+          type="text/css"
+          media="screen"
+          href="https://www.titaneric.com/main.css" />
+
+    
+
+    
+        <script defer
+                src="https://www.titaneric.com/js/searchElasticlunr.min.js?h=3626c0ef99daa745b31e"></script></head>
+
+
+    <body>
+        <div class="left-content">
+            
+            
+        </div>
+
+        <div class="content">
+            <nav>
+    <div class="left-nav">
+        
+            <a href=https:&#x2F;&#x2F;www.titaneric.com>titaneric</a>
+        
+
+
+        <div class="socials">
+            
+                <a rel="me" href="https:&#x2F;&#x2F;www.linkedin.com&#x2F;in&#x2F;chen-yi-huang&#x2F;" class="social">
+                    <img alt="linkedin" src="https://www.titaneric.com/icons/social/linkedin.svg">
+                </a>
+            
+                <a rel="me" href="https:&#x2F;&#x2F;github.com&#x2F;titaneric&#x2F;" class="social">
+                    <img alt="github" src="https://www.titaneric.com/icons/social/github.svg">
+                </a>
+            
+        </div>
+    </div>
+
+    <div class="right-nav">
+        
+            <a href=https://www.titaneric.com/posts style="margin-right: 0.5em">posts</a>
+        
+            <a href=https://www.titaneric.com/tags style="margin-right: 0.5em">tags</a>
+        
+            <a href=https://www.titaneric.com/categories style="margin-right: 0.5em">categories</a>
+        
+            <a href=https://www.titaneric.com/archive style="margin-right: 0.5em">archive</a>
+        
+            <a href=https://www.titaneric.com/pdfs/resume.pdf style="margin-right: 0.5em">about</a>
+        
+            <a href=https://www.titaneric.com/notes/index.html style="margin-right: 0.5em">notes</a>
+        
+
+        
+            <button id="search-button"
+                    class="search-button"
+                    title="$SHORTCUT to open search">
+                <img src="https://www.titaneric.com/icons/search.svg"
+                    alt="Search"
+                    class="search-icon">
+            </button>
+
+            <div id="searchModal"
+                class="search-modal js"
+                role="dialog"
+                aria-labelledby="modalTitle">
+                <div id="modal-content">
+                    <h1 id="modalTitle" class="page-header">Search</h1>
+                    <div id="searchBar">
+                        <input id="searchInput"
+                            role="combobox"
+                            autocomplete="off"
+                            spellcheck="false"
+                            aria-expanded="false"
+                            aria-controls="results-container"
+                            placeholder="Search..." />
+                        <button id="clear-search" class="clear-button" title="Clear search">
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 -960 960 960">
+                                <path d="m256-200-56-56 224-224-224-224 56-56 224 224 224-224 56 56-224 224 224 224-56 56-224-224-224 224Z" />
+                            </svg>
+                        </button>
+                    </div>
+                    <div id="results-container">
+                        <div id="results-info">
+                            <span id="zero_results" style="display: none;">No results</span>
+                            <span id="one_result" style="display: none;">1 result</span>
+                            <span id="many_results" style="display: none;">$NUMBER results</span>
+                        </div>
+                        <div id="results" role="listbox"></div>
+                    </div>
+                </div>
+            </div>
+        
+
+        
+            <a id="dark-mode-toggle"
+            onclick="toggleTheme(); event.preventDefault();"
+            href="#">
+                <img src="https://www.titaneric.com/icons/sun.svg"
+                    id="sun-icon"
+                    style="filter: invert(1)"
+                    alt="Light" />
+                <img src=https://www.titaneric.com/icons/moon.svg id="moon-icon" alt="Dark" />
+            </a>
+
+            <!-- Initialize the theme toggle icons -->
+            <script>updateItemToggleTheme()</script>
+        
+    </div>
+</nav>
+
+
+            
+            
+    
+<div class="visible-element-observer-root" data-selector="main article p">
+    <main>
+        <article>
+            <div class="title">
+                
+                
+    
+    <div class="page-header">
+        Grafana Loki Series (II) - Tuning Loki Write and Read Performance
+    </div>
+    
+
+
+                <div class="meta">
+                    
+                        Posted on <time>2025-06-18</time>
+                    
+
+
+                    
+
+                    
+
+                    
+
+                    
+                    
+                        
+                        
+                            
+                        
+
+                        
+                            
+                            :: <a href="https:&#x2F;&#x2F;github.com&#x2F;titaneric&#x2F;titaneric.github.io&#x2F;tree&#x2F;master&#x2F;content&#x2F;posts&#x2F;grafana-loki-upgrade-2.md" target="_blank" rel="noopener noreferrer">Source Code</a>
+                        
+                    
+
+                    
+                    
+
+                    
+                    
+                        <span class="tags-label"> :: </span>
+                        <span class="tags">
+                                <a href="https://www.titaneric.com/tags/k8s/"
+                                   class="post-tag">k8s</a>
+                            
+                                <a href="https://www.titaneric.com/tags/monitoring/"
+                                   class="post-tag">monitoring</a>
+                            
+                        </span>
+                    
+
+                    
+
+                </div>
+            </div>
+
+            
+
+            <section class="body">
+                <p><img src="https://vos.line-scdn.net/landpress-content-v2-vcfc68aynwenkh3bno0ixfx8/7ebbf0334cc14d71818a451b89847db8.png?updatedAt=1739524743000" alt="" />
+<em><p style="text-align:center">Generated by Microsoft Designer</p></em></p>
+<h2 id="background"><a class="zola-anchor" href="#background" aria-label="Anchor link for: background">Background</a></h2>
+<p>In the <a href="https://www.titaneric.com/posts/grafana-loki-upgrade-1/">previous Loki article</a>, we discussed using canary deployments with Vector to replicate real-world logs to a new Loki version. During this process, we tuned the Loki configuration for optimal performance. Once satisfied with the results, we rolled it out to the team.</p>
+<p>Our Loki deployment uses a distributed mode, involving multiple components with distinct functions. This makes the Loki architecture complex. Before adjusting specific configurations, it's crucial to understand the relationships between these components to make informed decisions.</p>
+<p>When tuning Loki, start with the <strong>write</strong>-related components, such as the ingester and distributor, and even the log collector mentioned in the previous article. The goal is to <strong>maximize "Full" Flush Reasons for written chunks, minimizing chunk fragmentation.</strong> This not only improves storage efficiency but also indirectly enhances query speed.</p>
+<p>Full chunks mean fewer chunks are needed to represent the same volume of logs. This reduces the number of indexes Loki needs to create. When querying, Loki searches the index based on the query content. Fewer chunks associated with an index result in faster chunk retrieval, allowing the querier to focus on execution and reducing overall query time.</p>
+<p>Therefore, we invested significant time in optimizing Loki's write performance, which in turn improved read performance. The following sections detail the configuration adjustments we made for both write and read operations.</p>
+<h2 id="loki-write-config-tuning"><a class="zola-anchor" href="#loki-write-config-tuning" aria-label="Anchor link for: loki-write-config-tuning">Loki Write Config Tuning</a></h2>
+<h3 id="ingester"><a class="zola-anchor" href="#ingester" aria-label="Anchor link for: ingester"><a rel="noreferrer" href="https://grafana.com/docs/loki/latest/configure/#ingester">Ingester</a></a></h3>
+<p><code>ingester.chunk-encoding</code>: Set this directly to <code>snappy</code>. While not the highest compression ratio compared to <code>gzip</code>, it offers a good balance of speed and compression. The <a rel="noreferrer" href="https://grafana.com/docs/loki/latest/configure/bp-configure/#use-snappy-compression-algorithm">official configuration</a> and <a rel="noreferrer" href="https://grafana.com/blog/2023/12/28/the-concise-guide-to-loki-how-to-get-the-most-out-of-your-query-performance/">official blog</a> also recommend using it.</p>
+<p><code>shard-streams.enabled</code>: After adjusting Loki labels, the number of streams may decrease, but the log volume per stream may increase, potentially exceeding the <code>ingester.per-stream-rate-limit</code>. Enabling this parameter splits streams exceeding <code>shard-streams.desired-rate</code> into multiple stream shards. The distributor automatically adds the <code>__stream_shard__</code> label to these shards, effectively creating distinct streams that the ingester can handle.</p>
+<p><code>ingester.per-stream-rate-limit</code>: If rate limiting persists even with <code>shard-streams.enabled</code>, increase this value, provided the ingester has sufficient resources.</p>
+<p><code>distributor.ingestion-rate-limit-mb</code>: Use the PromQL syntax from the <a rel="noreferrer" href="https://github.com/grafana/loki/blob/main/production/loki-mixin-compiled/dashboards/loki-operational.json">Loki Operational Dashboard</a> (MBs Per Tenant Panel) to sum the log volume for each tenant and calculate a reasonable global rate limit. Update <code>distributor.ingestion-burst-size-mb</code> accordingly.</p>
+<p><img src="https://vos.line-scdn.net/landpress-content-v2-vcfc68aynwenkh3bno0ixfx8/9d552b04f6b44e3c87479a629f9cef4d.png?updatedAt=1750326304000" alt="" /></p>
+<p><code>ingester.max-chunk-age</code>: Although the <a rel="noreferrer" href="https://grafana.com/blog/2021/02/16/the-essential-config-settings-you-should-use-so-you-wont-drop-logs-in-loki/">official blog</a> suggests setting this to <code>2h</code>, we increased it to <code>4h</code> after adjusting Loki labels as described in the previous article. We also adjusted <code>ingester.chunks-idle-period</code> to <code>4h</code>. This extra time allows logs from one-off tasks or scheduled jobs to be written to the same chunk, increasing the likelihood of a "full" Chunk Flush Reason instead of "max age". Another benefit, as mentioned in <a rel="noreferrer" href="https://grafana.com/blog/2024/01/04/the-concise-guide-to-loki-how-to-work-with-out-of-order-and-older-logs/">official blog</a>, is that we can tolerate older out-of-order ingestion. This is helpful if there are misconfigurations in Vector, mistakenly sending error-handling logs to Loki. The extra time allows us to troubleshoot and resolve the issue, preventing Loki from rejecting logs due to out-of-order ingestion. While increasing this parameter slightly increases ingester memory usage, it's less than the memory saved by adjusting Loki labels, making it an acceptable trade-off.</p>
+<p><code>ingester.readiness-check-ring-health</code>: With multiple ingester replicas, restarting the ingester statefulset defaults to checking the health of the ingester ring, which can take up to 10 minutes per ingester. Consider setting this to <code>false</code> to only check the health of the ingester itself, reducing the waiting time to <strong>2 minutes</strong>.</p>
+<p><code>distributor.zone-awareness-enabled</code>: This parameter is well-encapsulated in the <code>grafana/loki</code> helm chart's <code>ingester.zoneAwareReplication</code>. As shown below, specifying the number of ingester replicas and affinity allows you to deploy different ingesters <strong>evenly</strong> across different AZs, achieving higher write availability.</p>
+<pre data-lang="yaml" style="background-color:#fafafa;color:#61676c;" class="language-yaml "><code class="language-yaml" data-lang="yaml"><span style="color:#399ee6;">ingester</span><span style="color:#61676ccc;">:
+</span><span style="color:#399ee6;">replicas</span><span style="color:#61676ccc;">: </span><span style="color:#ff8f40;">12
+</span><span style="color:#399ee6;">zoneAwareReplication</span><span style="color:#61676ccc;">:
+</span><span>  </span><span style="color:#399ee6;">zoneA</span><span style="color:#61676ccc;">:
+</span><span>    </span><span style="color:#399ee6;">extraAffinity</span><span style="color:#61676ccc;">:
+</span><span>      </span><span style="color:#399ee6;">nodeAffinity</span><span style="color:#61676ccc;">:
+</span><span>        </span><span style="color:#399ee6;">requiredDuringSchedulingIgnoredDuringExecution</span><span style="color:#61676ccc;">:
+</span><span>          </span><span style="color:#399ee6;">nodeSelectorTerms</span><span style="color:#61676ccc;">:
+</span><span>          - </span><span style="color:#399ee6;">matchExpressions</span><span style="color:#61676ccc;">:
+</span><span>            - </span><span style="color:#399ee6;">key</span><span style="color:#61676ccc;">: </span><span style="color:#86b300;">nodepool
+</span><span>              </span><span style="color:#399ee6;">operator</span><span style="color:#61676ccc;">: </span><span style="color:#86b300;">In
+</span><span>              </span><span style="color:#399ee6;">values</span><span style="color:#61676ccc;">:
+</span><span>              - </span><span style="color:#86b300;">loki
+</span><span>            - </span><span style="color:#399ee6;">key</span><span style="color:#61676ccc;">: </span><span style="color:#86b300;">availability-zone
+</span><span>              </span><span style="color:#399ee6;">operator</span><span style="color:#61676ccc;">: </span><span style="color:#86b300;">In
+</span><span>              </span><span style="color:#399ee6;">values</span><span style="color:#61676ccc;">:
+</span><span>              - </span><span style="color:#86b300;">az-1
+</span><span>  </span><span style="color:#399ee6;">zoneB</span><span style="color:#61676ccc;">:
+</span><span>    </span><span style="color:#61676ccc;">.</span><span style="color:#ff8f40;">..
+</span><span>  </span><span style="color:#399ee6;">zoneC</span><span style="color:#61676ccc;">:
+</span><span>    </span><span style="color:#61676ccc;">.</span><span style="color:#ff8f40;">..
+</span></code></pre>
+<h3 id="distributor"><a class="zola-anchor" href="#distributor" aria-label="Anchor link for: distributor"><a rel="noreferrer" href="https://grafana.com/docs/loki/latest/configure/#distributor">Distributor</a></a></h3>
+<p><code>distributor.client-cleanup-period</code>: In the <a rel="noreferrer" href="https://grafana.com/docs/loki/latest/get-started/components/#rate-limiting">Loki architecture</a>, the distributor periodically requests the log volume of each stream from the ingester as a rate limit reference. Additionally, the distributor updates clients every <code>distributor.client-cleanup-period</code>, removing non-existent ingester connections. During ingester restarts, if the distributor doesn't update connections promptly, it may mistakenly send logs to non-existent ingesters. Consider reducing this period to remove unhealthy connections faster and prevent errors.</p>
+<p><code>distributor.rate-store.ingester-request-timeout</code>: If network instability causes long request times from the distributor to the ingester, resulting in timeouts, slightly increase this value to prevent distributor errors.</p>
+<h2 id="loki-read-config-tuning"><a class="zola-anchor" href="#loki-read-config-tuning" aria-label="Anchor link for: loki-read-config-tuning">Loki Read Config Tuning</a></h2>
+<h3 id="querier"><a class="zola-anchor" href="#querier" aria-label="Anchor link for: querier"><a rel="noreferrer" href="https://grafana.com/docs/loki/latest/configure/#querier">Querier</a></a></h3>
+<p>Refer to the <a rel="noreferrer" href="https://grafana.com/blog/2023/12/28/the-concise-guide-to-loki-how-to-get-the-most-out-of-your-query-performance/">official blog</a> for detailed information on Loki querier tuning. The author uses excellent animations to illustrate how querier-related parameters affect query behavior and provides various metrics to help Loki administrators identify current issues.</p>
+<p>The following LogQL syntax (adjusted for our use case) was particularly helpful for tuning:</p>
+<pre style="background-color:#fafafa;color:#61676c;"><code><span>{component=&quot;querier&quot;, cluster=&quot;$cluster&quot;, namespace=&quot;$namespace&quot;} 
+</span><span>  |= &quot;metrics.go&quot; 
+</span><span>  | logfmt
+</span><span>  | latency=&quot;slow&quot;
+</span><span>  | query_type=&quot;metric&quot; or query_type=&quot;filter&quot; or query_type=&quot;limited&quot;
+</span><span>  | label_format 
+</span><span>      duration_s=`{{.duration | duration}}`,
+</span><span>      queue_time_s=`{{.queue_time | duration}}`,
+</span><span>      chunk_refs_s=`{{.chunk_refs_fetch_time | duration}}`,
+</span><span>      chunk_total_s=`{{.store_chunks_download_time | duration}}`,
+</span><span>      cache_download_chunk_s=`{{.cache_chunk_download_time | duration}}`
+</span><span>  | label_format total_time_s=`{{addf .queue_time_s .duration_s}}`
+</span><span>  | label_format        
+</span><span>      queue_pct=`{{mulf (divf .queue_time_s .total_time_s) 100 }}`,
+</span><span>      index_pct=`{{mulf (divf (.chunk_refs_fetch_time | duration) .total_time_s) 100 }}`,
+</span><span>      chunks_pct=`{{mulf (divf .chunk_total_s .total_time_s) 100}}`,
+</span><span>      execution_pct=`{{mulf (divf (subf .duration_s .chunk_refs_s .chunk_total_s) .total_time_s) 100}}`,
+</span><span>      cache_download_pct=`{{mulf (divf .cache_download_chunk_s .chunk_total_s) 100}}`,
+</span><span>      avg_chunk_size=`{{divf (divf (bytes .total_bytes) .cache_chunk_req 1000)}}`
+</span><span>  | line_format `| total_time {{printf &quot;%3.0f&quot; (.total_time_s | float64)}}s | queued {{printf &quot;%3.0f&quot; (.queue_pct | float64)}}% | execution {{printf &quot;%3.0f&quot; (.execution_pct | float64)}}% | index {{printf &quot;%3.0f&quot; (.index_pct | float64)}}% | store {{printf &quot;%3.0f&quot; (.chunks_pct | float64)}}% (cache {{ printf &quot;%3.0f&quot; (.cache_download_pct | float64) }}%) | avg_chunk {{printf &quot;%3.0f&quot; (.avg_chunk_size | float64)}}kB | {{ .query }}`
+</span></code></pre>
+<p>This displays the time spent in four different phases when the querier executes a slow query (execution time greater than 10 seconds) during subquery execution:</p>
+<p><strong>queued</strong>: Time spent waiting in the queue.</p>
+<p><strong>index</strong>: Time spent searching the index based on Loki labels.</p>
+<p><strong>store</strong>: Time spent retrieving chunks from cache or object storage after obtaining the index.</p>
+<p><strong>execution</strong>: Time spent executing the query in the querier after retrieving the chunks.</p>
+<p>Aim for the highest possible <strong>execution</strong> ratio (over 80%), indicating that the querier is spending CPU time calculating results rather than waiting for I/O. The blog provides guidance on adjusting configurations if query time is spent in other phases.</p>
+<p>We've also customized the <strong>store</strong> presentation by adding a <strong>cache</strong> metric, representing the time the querier spends retrieving chunks from the cache. This ratio should be as close to 100% as possible, indicating that chunk retrieval primarily occurs from the faster cache rather than the much slower object storage. This helped us identify that our previous chunk cache was inefficient and required further tuning, which will be discussed later.</p>
+<h3 id="chunk-cache"><a class="zola-anchor" href="#chunk-cache" aria-label="Anchor link for: chunk-cache"><a rel="noreferrer" href="https://grafana.com/docs/loki/latest/configure/#chunk_store_config">Chunk Cache</a></a></h3>
+<p>If you've read <a rel="noreferrer" href="https://grafana.com/blog/2023/08/23/how-we-scaled-grafana-cloud-logs-memcached-cluster-to-50tb-and-improved-reliability/">this official blog post</a>, you might consider replacing Loki's chunk cache with Memcached and using <code>extstore</code> to mount fast SSDs. This provides more space and cost-effectively improves Loki query performance. We also attempted to calculate the hot query intervals using LogQL, as described in the article. While the article doesn't provide the exact query syntax, we used the following LogQL with a heatmap:</p>
+<pre style="background-color:#fafafa;color:#61676c;"><code><span>sum_over_time({cluster=&quot;$cluster&quot;, namespace=&quot;$namespace&quot;, app=&quot;loki&quot;, component=&quot;query-frontend&quot;} |= &quot;metrics.go&quot; 
+</span><span>  |= &quot;query_type&quot; | logfmt | query_type=&quot;metric&quot; or query_type=&quot;filter&quot; or query_type=&quot;limited&quot; 
+</span><span>  | unwrap duration(start_delta)[5m])
+</span></code></pre>
+<p>The heatmap below shows that most query intervals fall within the past 9 hours. After discussion, we decided that the cache should retain at least one day's worth of chunks and calculated the required cache space accordingly.</p>
+<p><img src="https://vos.line-scdn.net/landpress-content-v2-vcfc68aynwenkh3bno0ixfx8/8df2bccc2f424c3e9be76978042895e2.png?updatedAt=1750326446000" alt="" /></p>
+<p>Our old Loki used Redis as a chunk cache. The current <code>grafana/loki</code> helm chart has excellent support for Memcached, so we decided to apply these settings to the new Loki. However, the results were not as expected.</p>
+<p>Using the LogQL syntax mentioned earlier, we found that the querier spent over 30% of its time in the <strong>store</strong> phase, and the <strong>cache</strong> phase ratio was less than 50%. This meant we were spending time waiting for chunk downloads from both the cache and object storage, which contradicted our expectation of a near 100% <strong>cache</strong> phase ratio and minimal <strong>store</strong> phase ratio.</p>
+<p>After <a rel="noreferrer" href="https://community.grafana.com/t/enabling-loki-jaeger-tracing/51483">enabling Loki's Jaeger tracing feature</a>, we discovered that the querier spent over 10 seconds retrieving chunks from the cache. Combined with the <strong>execution</strong> phase time, we frequently encountered timeout issues.</p>
+<p>Fortunately, we found a solution on the <a rel="noreferrer" href="https://github.com/memcached/memcached/wiki/ConfiguringLokiExtstore">official memcached GitHub</a>. The following are the official recommended Memcached settings:</p>
+<p>Keep <code>ingester.chunk-target-size</code> and the maximum item size in Memcached (<code>-I</code> parameter) relatively small (e.g., <code>2MB</code>). Also, add the special extstore parameters to Memcached.</p>
+<pre data-lang="bash" style="background-color:#fafafa;color:#61676c;" class="language-bash "><code class="language-bash" data-lang="bash"><span style="color:#f29718;">memcached</span><span style="color:#ff8f40;"> -m</span><span> 6000</span><span style="color:#ff8f40;"> -I</span><span> 2m </span><span style="color:#61676ccc;">\
+</span><span style="color:#ff8f40;">	-o</span><span> ext_path=/disk/extstore:500G,ext_wbuf_size=32,ext_threads=10,ext_max_sleep=10000,slab_automove_freeratio=0.10,ext_recache_rate=0
+</span></code></pre>
+<p>In the Loki configuration, set small batch sizes and parallelism, and increase the timeout.</p>
+<p><code>store.chunks-cache.memcached.batchsize</code> determines how many Memcached keys the Memcached client retrieves at once. Set this to twice the number of Memcached servers.</p>
+<p><code>store.chunks-cache.memcached.parallelism</code> determines how many Go routines simultaneously retrieve Memcached keys. Set this to the lowest possible value, but increase it if network bandwidth allows.</p>
+<p><code>store.chunks-cache.memcached.timeout</code> includes the time for Memcached to retrieve the cache and the serialization time. Large chunk item sizes or batch sizes can affect the timeout. The default is <code>100ms</code>, but it's strongly recommended to increase it to a higher value, such as <code>60s</code>.</p>
+<blockquote>
+<p>Loki's memcache client timeout is measuring the amount of time to <em>fetch and read and process the entire batch of keys from each host</em>.</p>
+</blockquote>
+<p><code>store.background.write-back-concurrency</code> represents the number of Go routines writing to Memcached. Set this to 1 to avoid aggressively writing to Memcached, which can cause some items to be evicted.</p>
+<pre data-lang="yml" style="background-color:#fafafa;color:#61676c;" class="language-yml "><code class="language-yml" data-lang="yml"><span style="color:#399ee6;">chunk_store_config</span><span style="color:#61676ccc;">:
+</span><span style="color:#399ee6;">chunk_cache_config</span><span style="color:#61676ccc;">:
+</span><span>  </span><span style="color:#399ee6;">memcached</span><span style="color:#61676ccc;">:
+</span><span>    </span><span style="color:#399ee6;">batch_size</span><span style="color:#61676ccc;">: </span><span style="color:#ff8f40;">3
+</span><span>    </span><span style="color:#399ee6;">parallelism</span><span style="color:#61676ccc;">: </span><span style="color:#ff8f40;">2
+</span><span>  </span><span style="color:#399ee6;">memcached_client</span><span style="color:#61676ccc;">:
+</span><span>    </span><span style="color:#399ee6;">addresses</span><span style="color:#61676ccc;">: </span><span style="color:#86b300;">127.0.0.1:11211
+</span><span>    </span><span style="color:#399ee6;">timeout</span><span style="color:#61676ccc;">: </span><span style="color:#86b300;">60s
+</span><span>  </span><span style="color:#399ee6;">background</span><span style="color:#61676ccc;">:
+</span><span>    </span><span style="color:#399ee6;">writeback_goroutines</span><span style="color:#61676ccc;">: </span><span style="color:#ff8f40;">1
+</span><span>    </span><span style="color:#399ee6;">writeback_buffer</span><span style="color:#61676ccc;">: </span><span style="color:#ff8f40;">1000
+</span><span>    </span><span style="color:#399ee6;">writeback_size_limit</span><span style="color:#61676ccc;">: </span><span style="color:#86b300;">500MB
+</span></code></pre>
+<h2 id="results"><a class="zola-anchor" href="#results" aria-label="Anchor link for: results">Results</a></h2>
+<h3 id="write-performance"><a class="zola-anchor" href="#write-performance" aria-label="Anchor link for: write-performance">Write Performance</a></h3>
+<p>The graph below shows that Loki no longer discards incoming logs due to rate limiting at the distributor end. This is because the ingester has sufficient write performance, combined with appropriate distributor rate limit and shard-streams adjustments.</p>
+<p><img src="https://vos.line-scdn.net/landpress-content-v2-vcfc68aynwenkh3bno0ixfx8/9b3cf57812b44d2dab95e0dc953a2047.png?updatedAt=1750326529000" alt="" /></p>
+<h3 id="query-performance"><a class="zola-anchor" href="#query-performance" aria-label="Anchor link for: query-performance">Query Performance</a></h3>
+<p>The following is the execution result of the modified official LogQL mentioned earlier. Even for slow subqueries, the <strong>execution</strong> phase accounts for over 90% of the execution time, and the <strong>cache</strong> portion accounts for over 95%. This confirms that chunks are primarily retrieved from the cache, saving time for calculating the final LogQL results.</p>
+<p>There's still room for improvement in the <strong>execution</strong> phase, potentially by increasing the number of querier replicas, increasing CPU resources, or improving LogQL syntax to further accelerate search times.
+<img src="https://vos.line-scdn.net/landpress-content-v2-vcfc68aynwenkh3bno0ixfx8/0bd7beb9a0124ea0bda1d474e06d1577.png?updatedAt=1750326541000" alt="" /></p>
+<p>The graph below shows the query time over time. The yellow line represents the 99th percentile, and the orange line represents the 90th percentile. Most query times are less than 10 seconds.
+<img src="https://vos.line-scdn.net/landpress-content-v2-vcfc68aynwenkh3bno0ixfx8/2596fdc70a26474ab054f0f1e2713906.png?updatedAt=1750326553000" alt="" /></p>
+<h3 id="cache-performance"><a class="zola-anchor" href="#cache-performance" aria-label="Anchor link for: cache-performance">Cache Performance</a></h3>
+<p>The chunk cache hit rate remains above 70% most of the time. This prevents Loki from retrieving chunks from the much slower Object Storage and reduces the load on Object Storage.</p>
+<p><img src="https://vos.line-scdn.net/landpress-content-v2-vcfc68aynwenkh3bno0ixfx8/5b6c5c0beb504dceb2a4d8e3de6fe7af.png?updatedAt=1750326563000" alt="" /></p>
+<h2 id="conclusion"><a class="zola-anchor" href="#conclusion" aria-label="Anchor link for: conclusion">Conclusion</a></h2>
+<p>In this article, we focused on Loki configuration tuning. We explained why write performance should be prioritized, as it affects read performance. We then covered the detailed configuration settings for the components responsible for writing and reading in Loki. We especially thank Grafana and Memcached for providing technical articles that guided our adjustments.</p>
+<p>The final result is that we can receive logs from the log collector as much as possible during writing, and we can fully utilize the cache during querying, reducing the load on Object Storage. The results are satisfactory. We will continue to improve the performance of the log collector and Loki to provide Loki users with a better user experience.</p>
+
+            </section>
+        </article>
+    </main>
+</div>
+
+
+
+            
+                
+            
+
+            
+        </div>
+
+        <div class="right-content">
+            
+    
+    
+        <div class="toc">
+    <div class="heading">Table of Contents</div>
+    <ul class="toc-list">
+        
+            <li class="parent">
+                
+                <a href="https://www.titaneric.com/posts/grafana-loki-upgrade-2/#background">Background</a>
+
+                
+            </li>
+        
+            <li class="parent">
+                
+                <a href="https://www.titaneric.com/posts/grafana-loki-upgrade-2/#loki-write-config-tuning">Loki Write Config Tuning</a>
+
+                
+                    <ul>
+                    
+                        
+                        <li>
+                            <a href="https://www.titaneric.com/posts/grafana-loki-upgrade-2/#ingester">Ingester</a>
+                        </li>
+
+                        
+                    
+                        
+                        <li>
+                            <a href="https://www.titaneric.com/posts/grafana-loki-upgrade-2/#distributor">Distributor</a>
+                        </li>
+
+                        
+                    
+                    </ul>
+                
+            </li>
+        
+            <li class="parent">
+                
+                <a href="https://www.titaneric.com/posts/grafana-loki-upgrade-2/#loki-read-config-tuning">Loki Read Config Tuning</a>
+
+                
+                    <ul>
+                    
+                        
+                        <li>
+                            <a href="https://www.titaneric.com/posts/grafana-loki-upgrade-2/#querier">Querier</a>
+                        </li>
+
+                        
+                    
+                        
+                        <li>
+                            <a href="https://www.titaneric.com/posts/grafana-loki-upgrade-2/#chunk-cache">Chunk Cache</a>
+                        </li>
+
+                        
+                    
+                    </ul>
+                
+            </li>
+        
+            <li class="parent">
+                
+                <a href="https://www.titaneric.com/posts/grafana-loki-upgrade-2/#results">Results</a>
+
+                
+                    <ul>
+                    
+                        
+                        <li>
+                            <a href="https://www.titaneric.com/posts/grafana-loki-upgrade-2/#write-performance">Write Performance</a>
+                        </li>
+
+                        
+                    
+                        
+                        <li>
+                            <a href="https://www.titaneric.com/posts/grafana-loki-upgrade-2/#query-performance">Query Performance</a>
+                        </li>
+
+                        
+                    
+                        
+                        <li>
+                            <a href="https://www.titaneric.com/posts/grafana-loki-upgrade-2/#cache-performance">Cache Performance</a>
+                        </li>
+
+                        
+                    
+                    </ul>
+                
+            </li>
+        
+            <li class="parent">
+                
+                <a href="https://www.titaneric.com/posts/grafana-loki-upgrade-2/#conclusion">Conclusion</a>
+
+                
+            </li>
+        
+    </ul>
+</div>
+
+    
+
+        </div>
+    </body>
+
+</html>
