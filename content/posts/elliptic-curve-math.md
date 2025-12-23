@@ -164,12 +164,14 @@ One may verify directly that $(54,49)$ satisfies the curve equation modulo 61, a
 ## Efficient scalar multiplication
 
 Scalar multiplication $nP$ (adding $P$ to itself $n$ times) is the expensive primitive. A naive loop costs O(n) additions; efficient methods use doubling plus addition (binary double-and-add) to achieve O(log n) elliptic-curve additions. For example, if we need to calculate $13P$, we could pre-compute $1P$, $4P$, and $8P$ via doubling, then add the results:
-$$\begin{aligned}
-2P &= P + P, \\
-4P &= 2P + 2P, \\
-8P &= 4P + 4P, \\
+$$
+\begin{aligned}
+2P &= P + P,\\\\
+4P &= 2P + 2P,\\\\
+8P &= 4P + 4P,\\\\
 13P &= 8P + 4P + P.
-\end{aligned}$$
+\end{aligned}
+$$
 
 ## Cryptographic key exchange using elliptic curves
 
