@@ -121,7 +121,7 @@ Example computations:
   $$\begin{aligned}
   r(1) &\equiv 1^3 + 9\cdot1 + 1 \equiv 11 \pmod{61}.
   \end{aligned}$$
-  Here 11 is a quadratic non-residue in $\mathbb{F}_{61}$, so there is no $y \in \mathbb{F}_{61}$ with $y^2 \equiv 11$; there is no point of $E(\mathbb{F}_{61})$ with $x=1$.
+  Here 11 is a quadratic non-residue in $\mathbb{F_{61}}$, so there is no $y \in \mathbb{F_{61}}$ with $y^2 \equiv 11$; there is no point of $E(\mathbb{F}_{61})$ with $x=1$.
 
 - For x = 2:
   $$\begin{aligned}
@@ -191,7 +191,7 @@ Please play the toy example and watch the key exchange animation on [curves.xarg
 Why an eavesdropper cannot recover the shared key (informal):
 - If an attacker sees only $A=k_aP$ and $B=k_bP$, then computing $k_a$ or $k_b$ from $A$ or $B$ alone requires solving the ECDLP; computing $k_a k_b P$ directly from $A$ and $B$ without either scalar requires solving the CDH problem. Both problems are believed to be computationally infeasible for well-chosen curves and sufficiently large parameters (e.g., 256-bit prime fields such as Curve25519). Thus knowledge of $A$ and $B$ does not reveal $k_a$ or $k_b$, nor the derived symmetric key, under standard assumptions.
 
-The toy curve Curve61 used $\mathbb{F}_{61}$. In practice, cryptographic curves use much larger prime fields (e.g., Curve25519 uses a 255-bit prime, i.e., $\mathbb{F}_{2^{255}-19}$) to ensure security against known attacks.
+The toy curve Curve61 used $\mathbb{F_{61}}$. In practice, cryptographic curves use much larger prime fields (e.g., Curve25519 uses a 255-bit prime, i.e., $\mathbb{F}_{2^{255}-19}$) to ensure security against known attacks.
 
 ## References and further reading
 
