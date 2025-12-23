@@ -13,6 +13,8 @@ Elliptic curve point addition is the algebraic operation that gives elliptic cur
 
 This note presents a detailed derivation of the point-addition formulas for curves in short Weierstrass form, explains how the formulas are evaluated in a finite field, and adds practical facts and examples drawn from the [Animated Elliptic Curve](https://curves.xargs.org) exposition, including small toy curves (Curve61) and references to real-world curves (Curve25519).
 
+## Elliptic curves and point addition
+
 **Conventions.** We work with the short Weierstrass equation for an elliptic curve:
 $$y^2 = x^3 + a x + b$$
 over either the real numbers (for geometric intuition) or the finite field $\mathbb{F}_p$ (for cryptographic use). Points are written as $P=(x_1,y_1)$ and $Q=(x_2,y_2)$; the point at infinity (the group identity) is denoted $\mathcal{O}$.
@@ -22,7 +24,7 @@ over either the real numbers (for geometric intuition) or the finite field $\mat
 - Find the third intersection $R'$ of that line with the curve.
 - Reflect $R'$ across the $x$-axis to get the sum $R=P+Q$.
 
-I. Geometric derivation and algebraic formulas
+### Geometric derivation and algebraic formulas
 
 1) Adding distinct points ($P\neq Q$).
 
@@ -78,7 +80,7 @@ $$ x_3 = \lambda^2 - 2x_1,\qquad y_3 = \lambda(x_1 - x_3) - y_1. $$
 
 This concludes the derivation of [Point Addition](https://curves.xargs.org/#point-addition) formulas.
 
-II. Finite-field arithmetic (practical cryptography)
+## Finite-field arithmetic (practical cryptography)
 
 Elliptic curves used in cryptography are defined over prime fields $\mathbb{F}_p$. To adapt the real-number formulas we perform every operation modulo $p$.
 
@@ -97,7 +99,7 @@ and for doubling:$$\lambda \equiv (3x_1^2 + a)\cdot (2y_1)^{-1} \pmod p.$$
 
 All final $x_3,y_3$ values are reduced modulo $p$.
 
-III. Example: Point addition on a toy curve Curve61
+## Example: Point addition on a toy curve Curve61
 
 Let $p = 61$ and consider the elliptic curve E defined over the prime field $\mathbb{F}_p$ by
 $$E : y^2 \equiv x^3 + 9x + 1 \pmod{p}.$$
@@ -129,8 +131,8 @@ Example computations:
 
 Proceeding similarly for each $x \in \mathbb{F}_p$ produces the full set $E(\mathbb{F}_p)$. The group law on $E(\mathbb{F}_p)$ uses the addition formulas given above, with all arithmetic interpreted modulo $p$.
 
-Worked numeric example: adding two points on Curve61
---------------------------------------------------
+### Worked numeric example: adding two points on Curve61
+
 We present a step-by-step modular computation of $P+Q$ with
 $$p=61,\qquad E: y^2\equiv x^3 + 9x + 1\pmod{61},$$
 and take the two points
@@ -159,7 +161,7 @@ $$P+Q = (54,49) \in E(\mathbb{F}_{61}).$$
 
 One may verify directly that $(54,49)$ satisfies the curve equation modulo 61, and that adding $P$ and $Q$ by the geometric/tangent method produces this same point.
 
-IV. Efficient scalar multiplication
+## Efficient scalar multiplication
 
 Scalar multiplication $nP$ (adding $P$ to itself $n$ times) is the expensive primitive. A naive loop costs O(n) additions; efficient methods use doubling plus addition (binary double-and-add) to achieve O(log n) elliptic-curve additions. For example, if we need to calculate $13P$, we could pre-compute $1P$, $4P$, and $8P$ via doubling, then add the results:
 $$\begin{aligned}
@@ -169,7 +171,7 @@ $$\begin{aligned}
 13P &= 8P + 4P + P.
 \end{aligned}$$
 
-V. Cryptographic key exchange using elliptic curves
+## Cryptographic key exchange using elliptic curves
 
 Elliptic-curve Diffie–Hellman (ECDH) is the standard key-exchange primitive built from the group law on an elliptic curve. The protocol is simple to state and relies on two related hardness assumptions:
 
@@ -191,7 +193,7 @@ Why an eavesdropper cannot recover the shared key (informal):
 
 The toy curve Curve61 used $\mathbb{F}_{61}$. In practice, cryptographic curves use much larger prime fields (e.g., Curve25519 uses a 255-bit prime, i.e., $\mathbb{F}_{2^{255}-19}$) to ensure security against known attacks.
 
-VI. References and further reading
+## References and further reading
 
 - [The Animated Elliptic Curve](https://curves.xargs.org)
 - [Hands-on: X25519 Key Exchange](https://x25519.xargs.org/)
