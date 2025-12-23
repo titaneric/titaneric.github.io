@@ -194,4 +194,5 @@ The toy curve Curve61 used $\mathbb{F}_{61}$. In practice, cryptographic curves 
 VI. References and further reading
 
 - [The Animated Elliptic Curve](https://curves.xargs.org)
+- [Hands-on: X25519 Key Exchange](https://x25519.xargs.org/)
 
