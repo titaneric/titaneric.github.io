@@ -56,11 +56,11 @@
           subTitle: "Sep 2025 – Present",
           subTitleEnd: "Taipei, Taiwan",
           content: list(
-            [Developed next-generation Terraform provider for the successor private cloud platform, enabling seamless infrastructure management.
+            [Co-maintained next-generation Terraform provider for the successor private cloud platform #underline(link("https://techblog.lycorp.co.jp/ja/20260126b", "Flava")), enabling seamless infrastructure management.
             ],
             [Developed Kustomize and ArgoCD plugin for managing secrets in the internal KMS and secret manager systems, enhancing security and compliance.
             ],
-            [Developed a Go SDK to encapsulate almost all of the successor private cloud platform API, leveraging OpenAPI schema for automatic code generation, ensuring maintainability, unified log formatting, and a client-agnostic design.
+            [Developed a Go SDK to encapsulate the Flava services API, leveraging OpenAPI schema for automatic code generation, ensuring maintainability, unified log formatting, and a client-agnostic design.
             ],
           ),
         ),
