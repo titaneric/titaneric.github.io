@@ -48,8 +48,11 @@ jobs:
         private-key: ${{ secrets.GH_APP_PVT_KEY }}
         owner: ${{ github.repository_owner }}
     # Build and deploy
+
+    # The action's version tags follow the version of Zola that should be used to build.
     - name: shalzz/zola-deploy-action
-      uses: shalzz/zola-deploy-action@master
+      uses: shalzz/zola-deploy-action@v0.21.0
+      
       env:
         # Target branch
         PAGES_BRANCH: gh-pages
