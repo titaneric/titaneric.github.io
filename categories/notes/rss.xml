@@ -1,0 +1,730 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rss xmlns:atom="http://www.w3.org/2005/Atom" version="2.0">
+    <channel>
+      <title>titaneric - Notes</title>
+      <link>https://www.titaneric.com</link>
+      <description></description>
+      <generator>Zola</generator>
+      <language>en</language>
+      <atom:link href="https://www.titaneric.com/categories/notes/rss.xml" rel="self" type="application/rss+xml"/>
+      <lastBuildDate>Tue, 23 Dec 2025 00:00:00 +0000</lastBuildDate>
+      <item>
+          <title>Elliptic Curve Point Addition: Mathematical Foundations for Cryptographic Key Exchange</title>
+          <pubDate>Tue, 23 Dec 2025 00:00:00 +0000</pubDate>
+          <author>Unknown</author>
+          <link>https://www.titaneric.com/posts/elliptic-curve-math/</link>
+          <guid>https://www.titaneric.com/posts/elliptic-curve-math/</guid>
+          <description xml:base="https://www.titaneric.com/posts/elliptic-curve-math/">&lt;p&gt;I&#x27;ve read the fantastic &lt;a rel=&quot;noreferrer&quot; href=&quot;https:&#x2F;&#x2F;curves.xargs.org&quot;&gt;Animated Elliptic Curve&lt;&#x2F;a&gt; exposition and wanted to write up my own detailed notes on the mathematics of elliptic curve point addition and its application to cryptographic key exchange.&lt;&#x2F;p&gt;
+&lt;p&gt;Elliptic curve point addition is the algebraic operation that gives elliptic curves their group structure. That group law—together with scalar multiplication (repeated addition)—is the mathematical foundation for modern public-key protocols such as Elliptic Curve Diffie–Hellman (ECDH) and the key exchanges used in TLS 1.3.&lt;&#x2F;p&gt;
+&lt;p&gt;This note presents a detailed derivation of the point-addition formulas for curves in short Weierstrass form, explains how the formulas are evaluated in a finite field, and adds practical facts and examples drawn from the &lt;a rel=&quot;noreferrer&quot; href=&quot;https:&#x2F;&#x2F;curves.xargs.org&quot;&gt;Animated Elliptic Curve&lt;&#x2F;a&gt; exposition, including small toy curves (Curve61) and references to real-world curves (Curve25519).&lt;&#x2F;p&gt;
+&lt;h2 id=&quot;elliptic-curves-and-point-addition&quot;&gt;&lt;a class=&quot;zola-anchor&quot; href=&quot;#elliptic-curves-and-point-addition&quot; aria-label=&quot;Anchor link for: elliptic-curves-and-point-addition&quot;&gt;Elliptic curves and point addition&lt;&#x2F;a&gt;&lt;&#x2F;h2&gt;
+&lt;p&gt;&lt;strong&gt;Conventions.&lt;&#x2F;strong&gt; We work with the short Weierstrass equation for an elliptic curve:
+$$y^2 = x^3 + a x + b$$
+over either the real numbers (for geometric intuition) or the finite field $\mathbb{F}_p$ (for cryptographic use). Points are written as $P=(x_1,y_1)$ and $Q=(x_2,y_2)$; the point at infinity (the group identity) is denoted $\mathcal{O}$.&lt;&#x2F;p&gt;
+&lt;p&gt;&lt;strong&gt;Overview.&lt;&#x2F;strong&gt; The geometric rule for addition is:&lt;&#x2F;p&gt;
+&lt;ul&gt;
+&lt;li&gt;Draw the line through $P$ and $Q$ (or the tangent at $P$ when $P=Q$).&lt;&#x2F;li&gt;
+&lt;li&gt;Find the third intersection $R&#x27;$ of that line with the curve.&lt;&#x2F;li&gt;
+&lt;li&gt;Reflect $R&#x27;$ across the $x$-axis to get the sum $R=P+Q$.&lt;&#x2F;li&gt;
+&lt;&#x2F;ul&gt;
+&lt;h3 id=&quot;geometric-derivation-and-algebraic-formulas&quot;&gt;&lt;a class=&quot;zola-anchor&quot; href=&quot;#geometric-derivation-and-algebraic-formulas&quot; aria-label=&quot;Anchor link for: geometric-derivation-and-algebraic-formulas&quot;&gt;Geometric derivation and algebraic formulas&lt;&#x2F;a&gt;&lt;&#x2F;h3&gt;
+&lt;ol&gt;
+&lt;li&gt;Adding distinct points ($P\neq Q$).&lt;&#x2F;li&gt;
+&lt;&#x2F;ol&gt;
+&lt;p&gt;Let the line through $P$ and $Q$ have slope $\lambda$ and equation
+$$y = \lambda x + \nu.$$
+The slope is the usual slope of a secant:
+$$\lambda = \frac{y_2 - y_1}{x_2 - x_1}$$
+when working over the reals, and in $\mathbb{F}_p$ we interpret division via modular inverse:
+$$\lambda = (y_2 - y_1)\cdot (x_2 - x_1)^{-1}\pmod p,$$
+where $(x_2-x_1)^{-1}$ is the &lt;a rel=&quot;noreferrer&quot; href=&quot;https:&#x2F;&#x2F;curves.xargs.org&#x2F;#division-multiplicative-inverse&quot;&gt;multiplicative inverse in $\mathbb{F}_p$&lt;&#x2F;a&gt;.&lt;&#x2F;p&gt;
+&lt;p&gt;Substitute $y=\lambda x+\nu$ into $y^2=x^3+ax+b$ and expand to obtain a cubic polynomial in $x$:
+$$\begin{aligned}
+(\lambda x + \nu)^2 &amp;amp;= x^3 + a x + b \
+\lambda^2 x^2 + 2\lambda\nu x + \nu^2 &amp;amp;= x^3 + a x + b.
+\end{aligned}
+$$
+Bring all terms to one side:
+$$
+\begin{aligned}
+x^3 - \lambda^2 x^2 + (a - 2\lambda\nu) x + (b - \nu^2) = 0.
+\end{aligned}
+$$&lt;&#x2F;p&gt;
+&lt;p&gt;Remember we have &lt;a rel=&quot;noreferrer&quot; href=&quot;https:&#x2F;&#x2F;en.wikipedia.org&#x2F;wiki&#x2F;Vieta%27s_formulas&quot;&gt;Vieta&#x27;s formulas&lt;&#x2F;a&gt; relating the roots to the coefficients of a polynomial.:&lt;&#x2F;p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;Given a cubic equation $ P(x) = ax^3 + bx^2 + cx + d = 0 $, the roots $ x_1, x_2, x_3 $ satisfy:
+$$ x_1 + x_2 + x_3 = -\frac{b}{a} $$
+$$ x_1 x_2 + x_1 x_3 + x_2 x_3 = \frac{c}{a} $$
+$$ x_1 x_2 x_3 = -\frac{d}{a} $$&lt;&#x2F;p&gt;
+&lt;&#x2F;blockquote&gt;
+&lt;p&gt;Applying Vieta&#x27;s formulas to our cubic (with $a=1$, $b=-\lambda^2$, $c=a - 2\lambda\nu$, $d=b - \nu^2$) gives the relations among the three $x$-coordinates of the intersection points $P$, $Q$, and $R&#x27;$:&lt;&#x2F;p&gt;
+&lt;p&gt;$$x_1+x_2+x_3 = \lambda^2,$$
+$$x_1x_2 + x_1x_3 + x_2x_3 = a - 2\lambda\nu,$$
+$$x_1x_2x_3 = \nu^2 - b.$$
+The first identity yields the commonly used formula
+$$ x_3 = \lambda^2 - x_1 - x_2. $$&lt;&#x2F;p&gt;
+&lt;p&gt;To obtain $y_3$, compute the $y$-value of the third intersection $R&#x27;$ using the line: $y_3&#x27; = \lambda x_3 + \nu$. Since $\nu = y_1 - \lambda x_1$ we have $y_3&#x27; = \lambda(x_3 - x_1) + y_1$, and reflecting across the $x$-axis gives the sum
+$$ y_3 = -y_3&#x27; = \lambda(x_1 - x_3) - y_1. $$&lt;&#x2F;p&gt;
+&lt;p&gt;These identities hold over $\mathbb{F}_p$ when every division is interpreted as multiplication by an inverse.&lt;&#x2F;p&gt;
+&lt;ol start=&quot;2&quot;&gt;
+&lt;li&gt;Doubling ($P=Q$).&lt;&#x2F;li&gt;
+&lt;&#x2F;ol&gt;
+&lt;p&gt;When $P=Q$ the secant becomes the tangent. Implicit differentiation of $y^2=x^3+ax+b$ gives
+$$\frac{dy}{dx} = \frac{3x^2+a}{2y},$$
+so at $(x_1,y_1)$ the tangent slope is
+$$\lambda = \frac{3x_1^2 + a}{2y_1}.$$
+Substituting into the formulas $ x_3 = \lambda^2 - x_1 - x_2 $ (with $x_2=x_1$) and $y_3 = \lambda(x_1 - x_3) - y_1$ yields
+$$ x_3 = \lambda^2 - 2x_1,\qquad y_3 = \lambda(x_1 - x_3) - y_1. $$&lt;&#x2F;p&gt;
+&lt;p&gt;This concludes the derivation of &lt;a rel=&quot;noreferrer&quot; href=&quot;https:&#x2F;&#x2F;curves.xargs.org&#x2F;#point-addition&quot;&gt;Point Addition&lt;&#x2F;a&gt; formulas.&lt;&#x2F;p&gt;
+&lt;h2 id=&quot;finite-field-arithmetic-practical-cryptography&quot;&gt;&lt;a class=&quot;zola-anchor&quot; href=&quot;#finite-field-arithmetic-practical-cryptography&quot; aria-label=&quot;Anchor link for: finite-field-arithmetic-practical-cryptography&quot;&gt;Finite-field arithmetic (practical cryptography)&lt;&#x2F;a&gt;&lt;&#x2F;h2&gt;
+&lt;p&gt;Elliptic curves used in cryptography are defined over prime fields $\mathbb{F}_p$. To adapt the real-number formulas we perform every operation modulo $p$.&lt;&#x2F;p&gt;
+&lt;ul&gt;
+&lt;li&gt;The field $\mathbb{F}_p$ is the set ${0,1,\dots,p-1}$ with addition and multiplication taken modulo $p$.&lt;&#x2F;li&gt;
+&lt;li&gt;Additive inverse: $-n\equiv p-n \pmod p$.&lt;&#x2F;li&gt;
+&lt;li&gt;Multiplicative inverse: for nonzero $b$ there exists $b^{-1}\in\mathbb{F}_p$ with $b\cdot b^{-1}\equiv1\pmod p$.&lt;&#x2F;li&gt;
+&lt;li&gt;Square roots and residues: for $n\in\mathbb{F}_p$ a square root is an element $y\in\mathbb{F}_p$ satisfying $$y^2 \equiv n \pmod p.$$ If such a $y$ exists then $n$ is a &lt;strong&gt;quadratic residue&lt;&#x2F;strong&gt; modulo $p$ and the two square roots are $y$ and $-y$ (unless $y\equiv0$). If no such $y$ exists then $n$ is a &lt;strong&gt;quadratic non-residue&lt;&#x2F;strong&gt; modulo $p$.&lt;&#x2F;li&gt;
+&lt;&#x2F;ul&gt;
+&lt;p&gt;In the elliptic-curve equation $y^2\equiv x^3+ax+b\pmod p$ define$$r(x) \equiv x^3 + ax + b \pmod p.$$ There exists an $\mathbb{F}_p$-rational point with $x$-coordinate $x$ exactly when $r(x)$ is a quadratic residue, i.e. when there exists $y\in\mathbb{F}_p$ with $y^2\equiv r(x)\pmod p$. In that case the two points are $(x,y)$ and $(x,-y)$.&lt;&#x2F;p&gt;
+&lt;p&gt;The point-addition formulas are the same as in the real case, but every arithmetic operation is performed in $\mathbb{F}_p$. Concretely, for $P\neq Q$:
+$$\lambda \equiv (y_2-y_1)\cdot (x_2-x_1)^{-1} \pmod p,$$
+$$x_3 \equiv \lambda^2 - x_1 - x_2 \pmod p,$$
+$$y_3 \equiv \lambda(x_1 - x_3) - y_1 \pmod p,$$
+and for doubling:$$\lambda \equiv (3x_1^2 + a)\cdot (2y_1)^{-1} \pmod p.$$&lt;&#x2F;p&gt;
+&lt;p&gt;All final $x_3,y_3$ values are reduced modulo $p$.&lt;&#x2F;p&gt;
+&lt;h2 id=&quot;example-point-addition-on-a-toy-curve-curve61&quot;&gt;&lt;a class=&quot;zola-anchor&quot; href=&quot;#example-point-addition-on-a-toy-curve-curve61&quot; aria-label=&quot;Anchor link for: example-point-addition-on-a-toy-curve-curve61&quot;&gt;Example: Point addition on a toy curve Curve61&lt;&#x2F;a&gt;&lt;&#x2F;h2&gt;
+&lt;p&gt;Let $p = 61$ and consider the elliptic curve E defined over the prime field $\mathbb{F}_p$ by
+$$E : y^2 \equiv x^3 + 9x + 1 \pmod{p}.$$
+We write $E(\mathbb{F}_p)$ for the set of $\mathbb{F}_p$-rational points on $E$, i.e. the pairs $(x,y)$ with $x,y \in \mathbb{F}_p$ satisfying the curve equation together with the point at infinity $O$.&lt;&#x2F;p&gt;
+&lt;p&gt;For each $x \in \mathbb{F}_p$ define the right-hand side value
+$$r(x) \equiv x^3 + 9x + 1 \pmod p.$$
+The set of points in $E(\mathbb{F}_p)$ with $x$-coordinate equal to $x$ is nonempty precisely when there exists $y \in \mathbb{F}_p$ with $$y^2 \equiv r(x) \pmod p.$$ In that case the two solutions are $y$ and $-y$ (negatives taken modulo $p$), which give the two points with the same $x$-coordinate.&lt;&#x2F;p&gt;
+&lt;p&gt;Example computations:&lt;&#x2F;p&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;For x = 0:
+$$\begin{aligned}
+r(0) &amp;amp;\equiv 0^3 + 9\cdot0 + 1 \equiv 1 \pmod{61}.
+\end{aligned}$$
+One square root is $y \equiv 1$ since $1 \cdot 1 \equiv 1 \pmod{61}$; the other is $y \equiv -1 \equiv 60 \pmod{61}$. Thus $(0,1),(0,60) \in E(\mathbb{F}_{61})$.&lt;&#x2F;p&gt;
+&lt;&#x2F;li&gt;
+&lt;li&gt;
+&lt;p&gt;For x = 1:
+$$\begin{aligned}
+r(1) &amp;amp;\equiv 1^3 + 9\cdot1 + 1 \equiv 11 \pmod{61}.
+\end{aligned}$$
+Here 11 is a quadratic non-residue in $\mathbb{F_{61}}$, so there is no $y \in \mathbb{F_{61}}$ with $y^2 \equiv 11$; there is no point of $E(\mathbb{F}_{61})$ with $x=1$.&lt;&#x2F;p&gt;
+&lt;&#x2F;li&gt;
+&lt;li&gt;
+&lt;p&gt;For x = 2:
+$$\begin{aligned}
+r(2) &amp;amp;\equiv 2^3 + 9\cdot2 + 1 \equiv 27 \pmod{61}.
+\end{aligned}$$
+One square root is $y \equiv 24$ since $24 \cdot 24 \equiv 576 \equiv 27 \pmod{61}$; the other is $y \equiv -24 \equiv 37 \pmod{61}$. Thus $(2,24),(2,37) \in E(\mathbb{F}_{61})$.&lt;&#x2F;p&gt;
+&lt;&#x2F;li&gt;
+&lt;&#x2F;ul&gt;
+&lt;p&gt;Proceeding similarly for each $x \in \mathbb{F}_p$ produces the full set $E(\mathbb{F}_p)$. The group law on $E(\mathbb{F}_p)$ uses the addition formulas given above, with all arithmetic interpreted modulo $p$.&lt;&#x2F;p&gt;
+&lt;h3 id=&quot;worked-numeric-example-adding-two-points-on-curve61&quot;&gt;&lt;a class=&quot;zola-anchor&quot; href=&quot;#worked-numeric-example-adding-two-points-on-curve61&quot; aria-label=&quot;Anchor link for: worked-numeric-example-adding-two-points-on-curve61&quot;&gt;Worked numeric example: adding two points on Curve61&lt;&#x2F;a&gt;&lt;&#x2F;h3&gt;
+&lt;p&gt;We present a step-by-step modular computation of $P+Q$ with
+$$p=61,\qquad E: y^2\equiv x^3 + 9x + 1\pmod{61},$$
+and take the two points
+$$P=(2,24),\qquad Q=(0,1).$$&lt;&#x2F;p&gt;
+&lt;ol&gt;
+&lt;li&gt;Compute the slope $\lambda$ for distinct points $P\neq Q$:
+$$\lambda \equiv (y_Q-y_P)\cdot(x_Q-x_P)^{-1} \pmod{61}.$$&lt;&#x2F;li&gt;
+&lt;&#x2F;ol&gt;
+&lt;p&gt;$$y_Q-y_P = 1-24 \equiv 1-24 \equiv -23 \equiv 38 \pmod{61}.$$&lt;&#x2F;p&gt;
+&lt;p&gt;$$x_Q-x_P = 0-2 \equiv -2 \equiv 59 \pmod{61}.$$
+We need the inverse of $59$ modulo $61$. Since $59\equiv -2$, its inverse is the inverse of $-2$, which is $-31\equiv 30$ because $(-2)\cdot(-31)=62\equiv1\pmod{61}$. Thus $59^{-1}\equiv 30$.
+So
+$$\lambda \equiv 38\cdot 30 \equiv 1140 \equiv 42 \pmod{61}.$$&lt;&#x2F;p&gt;
+&lt;ol start=&quot;2&quot;&gt;
+&lt;li&gt;
+&lt;p&gt;Compute $x_3$:
+$$x_3 \equiv \lambda^2 - x_P - x_Q \equiv 42^2 - 2 - 0 \equiv 1764 - 2 \equiv 1762\equiv 54 \pmod{61}.$$&lt;&#x2F;p&gt;
+&lt;&#x2F;li&gt;
+&lt;li&gt;
+&lt;p&gt;Compute $y_3$ using $y_3 \equiv \lambda(x_P - x_3) - y_P$:
+$$x_P - x_3 = 2-54 \equiv -52 \equiv 9 \pmod{61}$$
+$$\lambda(x_P-x_3) \equiv 42\cdot 9 =378 \equiv 12 \pmod{61}$$
+$$y_3 \equiv 12 - 24 \equiv -12 \equiv 49 \pmod{61}.$$&lt;&#x2F;p&gt;
+&lt;&#x2F;li&gt;
+&lt;&#x2F;ol&gt;
+&lt;p&gt;Therefore the sum is
+$$P+Q = (54,49) \in E(\mathbb{F}_{61}).$$&lt;&#x2F;p&gt;
+&lt;p&gt;One may verify directly that $(54,49)$ satisfies the curve equation modulo 61, and that adding $P$ and $Q$ by the geometric&#x2F;tangent method produces this same point.&lt;&#x2F;p&gt;
+&lt;h2 id=&quot;efficient-scalar-multiplication&quot;&gt;&lt;a class=&quot;zola-anchor&quot; href=&quot;#efficient-scalar-multiplication&quot; aria-label=&quot;Anchor link for: efficient-scalar-multiplication&quot;&gt;Efficient scalar multiplication&lt;&#x2F;a&gt;&lt;&#x2F;h2&gt;
+&lt;p&gt;Scalar multiplication $nP$ (adding $P$ to itself $n$ times) is the expensive primitive. A naive loop costs O(n) additions; efficient methods use doubling plus addition (binary double-and-add) to achieve O(log n) elliptic-curve additions. For example, if we need to calculate $13P$, we could pre-compute $1P$, $4P$, and $8P$ via doubling, then add the results:
+$$
+\begin{aligned}
+2P &amp;amp;= P + P,\\
+4P &amp;amp;= 2P + 2P,\\
+8P &amp;amp;= 4P + 4P,\\
+13P &amp;amp;= 8P + 4P + P.
+\end{aligned}
+$$&lt;&#x2F;p&gt;
+&lt;h2 id=&quot;cryptographic-key-exchange-using-elliptic-curves&quot;&gt;&lt;a class=&quot;zola-anchor&quot; href=&quot;#cryptographic-key-exchange-using-elliptic-curves&quot; aria-label=&quot;Anchor link for: cryptographic-key-exchange-using-elliptic-curves&quot;&gt;Cryptographic key exchange using elliptic curves&lt;&#x2F;a&gt;&lt;&#x2F;h2&gt;
+&lt;p&gt;Elliptic-curve Diffie–Hellman (ECDH) is the standard key-exchange primitive built from the group law on an elliptic curve. The protocol is simple to state and relies on two related hardness assumptions:&lt;&#x2F;p&gt;
+&lt;ul&gt;
+&lt;li&gt;Elliptic Curve Discrete Logarithm Problem (ECDLP): given $P$ and $Q=kP$ for unknown integer $k$, recover $k$.&lt;&#x2F;li&gt;
+&lt;li&gt;Computational Diffie–Hellman (CDH) on the curve: given $P$, $A=k_aP$, and $B=k_bP$, compute $k_a k_b P$.&lt;&#x2F;li&gt;
+&lt;&#x2F;ul&gt;
+&lt;p&gt;ECDH protocol (informal):&lt;&#x2F;p&gt;
+&lt;ul&gt;
+&lt;li&gt;The peers agree on a curve and a base point $P\in E(\mathbb{F}_p)$ (with known order r).&lt;&#x2F;li&gt;
+&lt;li&gt;Alice picks a private scalar $k_a\in{1,\dots,r-1}$ and sends the public point $A=k_aP$ to Bob.&lt;&#x2F;li&gt;
+&lt;li&gt;Bob picks $k_b$ and sends $B=k_bP$ to Alice.&lt;&#x2F;li&gt;
+&lt;li&gt;Alice computes $S_A=k_a B = k_a(k_bP)=k_a k_b P$.&lt;&#x2F;li&gt;
+&lt;li&gt;Bob computes $S_B=k_b A = k_b(k_aP)=k_b k_a P$.
+Both obtain the same shared point $S=k_a k_b P$.&lt;&#x2F;li&gt;
+&lt;&#x2F;ul&gt;
+&lt;p&gt;Please play the toy example and watch the key exchange animation on &lt;a rel=&quot;noreferrer&quot; href=&quot;https:&#x2F;&#x2F;curves.xargs.org&#x2F;#key-exchange&quot;&gt;curves.xargs.org&lt;&#x2F;a&gt;&lt;&#x2F;p&gt;
+&lt;p&gt;Why an eavesdropper cannot recover the shared key (informal):&lt;&#x2F;p&gt;
+&lt;ul&gt;
+&lt;li&gt;If an attacker sees only $A=k_aP$ and $B=k_bP$, then computing $k_a$ or $k_b$ from $A$ or $B$ alone requires solving the ECDLP; computing $k_a k_b P$ directly from $A$ and $B$ without either scalar requires solving the CDH problem. Both problems are believed to be computationally infeasible for well-chosen curves and sufficiently large parameters (e.g., 256-bit prime fields such as Curve25519). Thus knowledge of $A$ and $B$ does not reveal $k_a$ or $k_b$, nor the derived symmetric key, under standard assumptions.&lt;&#x2F;li&gt;
+&lt;&#x2F;ul&gt;
+&lt;p&gt;The toy curve Curve61 used $\mathbb{F_{61}}$. In practice, cryptographic curves use much larger prime fields (e.g., Curve25519 uses a 255-bit prime, i.e., $\mathbb{F}_{2^{255}-19}$) to ensure security against known attacks.&lt;&#x2F;p&gt;
+&lt;h2 id=&quot;references-and-further-reading&quot;&gt;&lt;a class=&quot;zola-anchor&quot; href=&quot;#references-and-further-reading&quot; aria-label=&quot;Anchor link for: references-and-further-reading&quot;&gt;References and further reading&lt;&#x2F;a&gt;&lt;&#x2F;h2&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;a rel=&quot;noreferrer&quot; href=&quot;https:&#x2F;&#x2F;curves.xargs.org&quot;&gt;The Animated Elliptic Curve&lt;&#x2F;a&gt;&lt;&#x2F;li&gt;
+&lt;li&gt;&lt;a rel=&quot;noreferrer&quot; href=&quot;https:&#x2F;&#x2F;x25519.xargs.org&#x2F;&quot;&gt;Hands-on: X25519 Key Exchange&lt;&#x2F;a&gt;&lt;&#x2F;li&gt;
+&lt;&#x2F;ul&gt;
+</description>
+      </item>
+      <item>
+          <title>Kubernetes metrics-server</title>
+          <pubDate>Sun, 10 Oct 2021 00:00:00 +0000</pubDate>
+          <author>Unknown</author>
+          <link>https://www.titaneric.com/posts/k8s-metrics-server/</link>
+          <guid>https://www.titaneric.com/posts/k8s-metrics-server/</guid>
+          <description xml:base="https://www.titaneric.com/posts/k8s-metrics-server/">&lt;h1 id=&quot;bei-jing&quot;&gt;&lt;a class=&quot;zola-anchor&quot; href=&quot;#bei-jing&quot; aria-label=&quot;Anchor link for: bei-jing&quot;&gt;背景&lt;&#x2F;a&gt;&lt;&#x2F;h1&gt;
+&lt;p&gt;&lt;strong&gt;metrics-server&lt;&#x2F;strong&gt;是kubernetes用來量測cluster中node以及pod中的CPU以及記憶體使用率的工具，這些被量測到的資訊會被kubectl top以及HPA controller收集，分別做為查看目前k8s系統狀態以及擴充服務的依據。&lt;&#x2F;p&gt;
+&lt;p&gt;metrics-server本身也如同k8s的絕大多數物件一樣，它是以web service的形式存在k8s當中，原始碼在&lt;a rel=&quot;noreferrer&quot; href=&quot;https:&#x2F;&#x2F;github.com&#x2F;kubernetes-sigs&#x2F;metrics-server&quot;&gt;kubernetes-sigs&#x2F;metrics-server&lt;&#x2F;a&gt;，本篇文章要來解析metrics-server中entry point、所使用的metrics基本物件、metrics如何被收集以及何時會被更新。&lt;&#x2F;p&gt;
+&lt;h1 id=&quot;dive-in&quot;&gt;&lt;a class=&quot;zola-anchor&quot; href=&quot;#dive-in&quot; aria-label=&quot;Anchor link for: dive-in&quot;&gt;Dive in&lt;&#x2F;a&gt;&lt;&#x2F;h1&gt;
+&lt;h2 id=&quot;entry-point&quot;&gt;&lt;a class=&quot;zola-anchor&quot; href=&quot;#entry-point&quot; aria-label=&quot;Anchor link for: entry-point&quot;&gt;Entry point&lt;&#x2F;a&gt;&lt;&#x2F;h2&gt;
+&lt;p&gt;metrics-server在build過後，是用Docker image的形式將服務包裝成在k8s中運行的container。在原始碼當中的根目錄中，Dockerfile先是執行&lt;code&gt;make metrics-server&lt;&#x2F;code&gt;將metrics-server build成binary file，最後在entrypoint運行&lt;code&gt;cmd&#x2F;metrics-server&lt;&#x2F;code&gt;。&lt;&#x2F;p&gt;
+&lt;pre data-lang=&quot;Dockerfile&quot; style=&quot;background-color:#fafafa;color:#61676c;&quot; class=&quot;language-Dockerfile &quot;&gt;&lt;code class=&quot;language-Dockerfile&quot; data-lang=&quot;Dockerfile&quot;&gt;&lt;span&gt;...
+&lt;&#x2F;span&gt;&lt;span&gt;WORKDIR &#x2F;go&#x2F;src&#x2F;sigs.k8s.io&#x2F;metrics-server
+&lt;&#x2F;span&gt;&lt;span&gt;COPY go.mod .
+&lt;&#x2F;span&gt;&lt;span&gt;COPY go.sum .
+&lt;&#x2F;span&gt;&lt;span&gt;RUN go mod download
+&lt;&#x2F;span&gt;&lt;span&gt;
+&lt;&#x2F;span&gt;&lt;span&gt;COPY pkg pkg
+&lt;&#x2F;span&gt;&lt;span&gt;COPY cmd cmd
+&lt;&#x2F;span&gt;&lt;span&gt;COPY Makefile Makefile
+&lt;&#x2F;span&gt;&lt;span&gt;...
+&lt;&#x2F;span&gt;&lt;span&gt;RUN make metrics-server
+&lt;&#x2F;span&gt;&lt;span&gt;...
+&lt;&#x2F;span&gt;&lt;span&gt;ENTRYPOINT [&amp;quot;&#x2F;metrics-server&amp;quot;]
+&lt;&#x2F;span&gt;&lt;&#x2F;code&gt;&lt;&#x2F;pre&gt;
+&lt;pre data-lang=&quot;Makefile&quot; style=&quot;background-color:#fafafa;color:#61676c;&quot; class=&quot;language-Makefile &quot;&gt;&lt;code class=&quot;language-Makefile&quot; data-lang=&quot;Makefile&quot;&gt;&lt;span style=&quot;color:#f29718;&quot;&gt;metrics-server&lt;&#x2F;span&gt;&lt;span style=&quot;color:#ed9366;&quot;&gt;: &lt;&#x2F;span&gt;&lt;span style=&quot;color:#fa6e32;&quot;&gt;$(&lt;&#x2F;span&gt;&lt;span style=&quot;color:#ff8f40;&quot;&gt;SRC_DEPS&lt;&#x2F;span&gt;&lt;span style=&quot;color:#fa6e32;&quot;&gt;)
+&lt;&#x2F;span&gt;&lt;span&gt;	GOARCH&lt;&#x2F;span&gt;&lt;span style=&quot;color:#ed9366;&quot;&gt;=&lt;&#x2F;span&gt;&lt;span style=&quot;color:#fa6e32;&quot;&gt;$(&lt;&#x2F;span&gt;&lt;span style=&quot;color:#ff8f40;&quot;&gt;ARCH&lt;&#x2F;span&gt;&lt;span style=&quot;color:#fa6e32;&quot;&gt;) &lt;&#x2F;span&gt;&lt;span&gt;CGO_ENABLED&lt;&#x2F;span&gt;&lt;span style=&quot;color:#ed9366;&quot;&gt;=&lt;&#x2F;span&gt;&lt;span style=&quot;color:#86b300;&quot;&gt;0 &lt;&#x2F;span&gt;&lt;span style=&quot;color:#f29718;&quot;&gt;go&lt;&#x2F;span&gt;&lt;span&gt; build&lt;&#x2F;span&gt;&lt;span style=&quot;color:#ff8f40;&quot;&gt; -ldflags &lt;&#x2F;span&gt;&lt;span style=&quot;color:#86b300;&quot;&gt;&amp;quot;&lt;&#x2F;span&gt;&lt;span style=&quot;color:#fa6e32;&quot;&gt;$(&lt;&#x2F;span&gt;&lt;span style=&quot;color:#ff8f40;&quot;&gt;LDFLAGS&lt;&#x2F;span&gt;&lt;span style=&quot;color:#fa6e32;&quot;&gt;)&lt;&#x2F;span&gt;&lt;span style=&quot;color:#86b300;&quot;&gt;&amp;quot;&lt;&#x2F;span&gt;&lt;span style=&quot;color:#ff8f40;&quot;&gt; -o&lt;&#x2F;span&gt;&lt;span&gt; metrics-server sigs.k8s.io&#x2F;metrics-server&#x2F;cmd&#x2F;metrics-server
+&lt;&#x2F;span&gt;&lt;&#x2F;code&gt;&lt;&#x2F;pre&gt;
+&lt;p&gt;在上面Makefile可以看到，go build的來源是metrics-server下的&lt;code&gt;cmd&#x2F;metrics-server&lt;&#x2F;code&gt;，該目錄下的metrics-server.go執行在&lt;code&gt;cmd&#x2F;metrics-server&#x2F;app&lt;&#x2F;code&gt;中定義的cobra指令。&lt;&#x2F;p&gt;
+&lt;pre data-lang=&quot;go&quot; style=&quot;background-color:#fafafa;color:#61676c;&quot; class=&quot;language-go &quot;&gt;&lt;code class=&quot;language-go&quot; data-lang=&quot;go&quot;&gt;&lt;span style=&quot;color:#fa6e32;&quot;&gt;import &lt;&#x2F;span&gt;&lt;span&gt;(
+&lt;&#x2F;span&gt;&lt;span&gt;	&lt;&#x2F;span&gt;&lt;span style=&quot;color:#ed9366;&quot;&gt;...
+&lt;&#x2F;span&gt;&lt;span&gt;	&lt;&#x2F;span&gt;&lt;span style=&quot;color:#86b300;&quot;&gt;&amp;quot;sigs.k8s.io&#x2F;metrics-server&#x2F;cmd&#x2F;metrics-server&#x2F;app&amp;quot;
+&lt;&#x2F;span&gt;&lt;span&gt;)
+&lt;&#x2F;span&gt;&lt;span style=&quot;color:#fa6e32;&quot;&gt;func &lt;&#x2F;span&gt;&lt;span style=&quot;color:#f29718;&quot;&gt;main&lt;&#x2F;span&gt;&lt;span&gt;() {
+&lt;&#x2F;span&gt;&lt;span&gt;	&lt;&#x2F;span&gt;&lt;span style=&quot;color:#ed9366;&quot;&gt;...
+&lt;&#x2F;span&gt;&lt;span&gt;	cmd &lt;&#x2F;span&gt;&lt;span style=&quot;color:#ed9366;&quot;&gt;:= &lt;&#x2F;span&gt;&lt;span&gt;app&lt;&#x2F;span&gt;&lt;span style=&quot;color:#ed9366;&quot;&gt;.&lt;&#x2F;span&gt;&lt;span style=&quot;color:#f29718;&quot;&gt;NewMetricsServerCommand&lt;&#x2F;span&gt;&lt;span&gt;(genericapiserver&lt;&#x2F;span&gt;&lt;span style=&quot;color:#ed9366;&quot;&gt;.&lt;&#x2F;span&gt;&lt;span style=&quot;color:#f29718;&quot;&gt;SetupSignalHandler&lt;&#x2F;span&gt;&lt;span&gt;())
+&lt;&#x2F;span&gt;&lt;span&gt;	cmd&lt;&#x2F;span&gt;&lt;span style=&quot;color:#ed9366;&quot;&gt;.&lt;&#x2F;span&gt;&lt;span style=&quot;color:#f29718;&quot;&gt;Flags&lt;&#x2F;span&gt;&lt;span&gt;()&lt;&#x2F;span&gt;&lt;span style=&quot;color:#ed9366;&quot;&gt;.&lt;&#x2F;span&gt;&lt;span style=&quot;color:#f29718;&quot;&gt;AddGoFlagSet&lt;&#x2F;span&gt;&lt;span&gt;(flag&lt;&#x2F;span&gt;&lt;span style=&quot;color:#ed9366;&quot;&gt;.&lt;&#x2F;span&gt;&lt;span&gt;CommandLine)
+&lt;&#x2F;span&gt;&lt;span&gt;	&lt;&#x2F;span&gt;&lt;span style=&quot;color:#fa6e32;&quot;&gt;if &lt;&#x2F;span&gt;&lt;span&gt;err &lt;&#x2F;span&gt;&lt;span style=&quot;color:#ed9366;&quot;&gt;:= &lt;&#x2F;span&gt;&lt;span&gt;cmd&lt;&#x2F;span&gt;&lt;span style=&quot;color:#ed9366;&quot;&gt;.&lt;&#x2F;span&gt;&lt;span style=&quot;color:#f29718;&quot;&gt;Execute&lt;&#x2F;span&gt;&lt;span&gt;()&lt;&#x2F;span&gt;&lt;span style=&quot;color:#61676ccc;&quot;&gt;; &lt;&#x2F;span&gt;&lt;span&gt;err &lt;&#x2F;span&gt;&lt;span style=&quot;color:#ed9366;&quot;&gt;!= &lt;&#x2F;span&gt;&lt;span style=&quot;color:#ff8f40;&quot;&gt;nil &lt;&#x2F;span&gt;&lt;span&gt;{
+&lt;&#x2F;span&gt;&lt;span&gt;		&lt;&#x2F;span&gt;&lt;span style=&quot;color:#f07171;&quot;&gt;panic&lt;&#x2F;span&gt;&lt;span&gt;(err)
+&lt;&#x2F;span&gt;&lt;span&gt;	}
+&lt;&#x2F;span&gt;&lt;span&gt;}
+&lt;&#x2F;span&gt;&lt;&#x2F;code&gt;&lt;&#x2F;pre&gt;
+&lt;p&gt;在&lt;code&gt;cmd&#x2F;metrics-server&#x2F;app&#x2F;metrics-server.go&lt;&#x2F;code&gt;中的&lt;code&gt;NewMetricsServerCommand()&lt;&#x2F;code&gt;function用到&lt;code&gt;cmd&#x2F;metrics-server&#x2F;app&#x2F;options&#x2F;options.go&lt;&#x2F;code&gt;中定義的&lt;code&gt;NewOptions()&lt;&#x2F;code&gt; function。定義metrics-server需要用到的設定&lt;code&gt;Options&lt;&#x2F;code&gt; struct，該設定會傳給&lt;code&gt;runCommand()&lt;&#x2F;code&gt; function最後透過cobra的&lt;code&gt;Execute()&lt;&#x2F;code&gt; method執行。&lt;&#x2F;p&gt;
+&lt;pre data-lang=&quot;go&quot; style=&quot;background-color:#fafafa;color:#61676c;&quot; class=&quot;language-go &quot;&gt;&lt;code class=&quot;language-go&quot; data-lang=&quot;go&quot;&gt;&lt;span style=&quot;color:#fa6e32;&quot;&gt;import &lt;&#x2F;span&gt;&lt;span&gt;(
+&lt;&#x2F;span&gt;&lt;span&gt;	&lt;&#x2F;span&gt;&lt;span style=&quot;color:#ed9366;&quot;&gt;...
+&lt;&#x2F;span&gt;&lt;span&gt;	&lt;&#x2F;span&gt;&lt;span style=&quot;color:#86b300;&quot;&gt;&amp;quot;sigs.k8s.io&#x2F;metrics-server&#x2F;cmd&#x2F;metrics-server&#x2F;app&#x2F;options&amp;quot;
+&lt;&#x2F;span&gt;&lt;span&gt;)
+&lt;&#x2F;span&gt;&lt;span style=&quot;font-style:italic;color:#abb0b6;&quot;&gt;&#x2F;&#x2F; NewMetricsServerCommand provides a CLI handler for the metrics server entrypoint
+&lt;&#x2F;span&gt;&lt;span style=&quot;color:#fa6e32;&quot;&gt;func &lt;&#x2F;span&gt;&lt;span style=&quot;color:#f29718;&quot;&gt;NewMetricsServerCommand&lt;&#x2F;span&gt;&lt;span&gt;(&lt;&#x2F;span&gt;&lt;span style=&quot;color:#ff8f40;&quot;&gt;stopCh &lt;&#x2F;span&gt;&lt;span style=&quot;color:#ed9366;&quot;&gt;&amp;lt;-&lt;&#x2F;span&gt;&lt;span style=&quot;color:#fa6e32;&quot;&gt;chan struct&lt;&#x2F;span&gt;&lt;span&gt;{}) &lt;&#x2F;span&gt;&lt;span style=&quot;color:#ed9366;&quot;&gt;*&lt;&#x2F;span&gt;&lt;span&gt;cobra&lt;&#x2F;span&gt;&lt;span style=&quot;color:#ed9366;&quot;&gt;.&lt;&#x2F;span&gt;&lt;span style=&quot;color:#fa6e32;&quot;&gt;Command &lt;&#x2F;span&gt;&lt;span&gt;{
+&lt;&#x2F;span&gt;&lt;span&gt;	opts &lt;&#x2F;span&gt;&lt;span style=&quot;color:#ed9366;&quot;&gt;:= &lt;&#x2F;span&gt;&lt;span&gt;options&lt;&#x2F;span&gt;&lt;span style=&quot;color:#ed9366;&quot;&gt;.&lt;&#x2F;span&gt;&lt;span style=&quot;color:#f29718;&quot;&gt;NewOptions&lt;&#x2F;span&gt;&lt;span&gt;()
+&lt;&#x2F;span&gt;&lt;span&gt;
+&lt;&#x2F;span&gt;&lt;span&gt;	cmd &lt;&#x2F;span&gt;&lt;span style=&quot;color:#ed9366;&quot;&gt;:= &amp;amp;&lt;&#x2F;span&gt;&lt;span&gt;cobra&lt;&#x2F;span&gt;&lt;span style=&quot;color:#ed9366;&quot;&gt;.&lt;&#x2F;span&gt;&lt;span&gt;Command{
+&lt;&#x2F;span&gt;&lt;span&gt;		Short&lt;&#x2F;span&gt;&lt;span style=&quot;color:#61676ccc;&quot;&gt;: &lt;&#x2F;span&gt;&lt;span style=&quot;color:#86b300;&quot;&gt;&amp;quot;Launch metrics-server&amp;quot;&lt;&#x2F;span&gt;&lt;span style=&quot;color:#61676ccc;&quot;&gt;,
+&lt;&#x2F;span&gt;&lt;span&gt;		Long&lt;&#x2F;span&gt;&lt;span style=&quot;color:#61676ccc;&quot;&gt;:  &lt;&#x2F;span&gt;&lt;span style=&quot;color:#86b300;&quot;&gt;&amp;quot;Launch metrics-server&amp;quot;&lt;&#x2F;span&gt;&lt;span style=&quot;color:#61676ccc;&quot;&gt;,
+&lt;&#x2F;span&gt;&lt;span&gt;		RunE&lt;&#x2F;span&gt;&lt;span style=&quot;color:#61676ccc;&quot;&gt;: &lt;&#x2F;span&gt;&lt;span style=&quot;color:#fa6e32;&quot;&gt;func&lt;&#x2F;span&gt;&lt;span&gt;(&lt;&#x2F;span&gt;&lt;span style=&quot;color:#ff8f40;&quot;&gt;c &lt;&#x2F;span&gt;&lt;span style=&quot;color:#ed9366;&quot;&gt;*&lt;&#x2F;span&gt;&lt;span&gt;cobra&lt;&#x2F;span&gt;&lt;span style=&quot;color:#ed9366;&quot;&gt;.&lt;&#x2F;span&gt;&lt;span style=&quot;color:#fa6e32;&quot;&gt;Command&lt;&#x2F;span&gt;&lt;span style=&quot;color:#61676ccc;&quot;&gt;, &lt;&#x2F;span&gt;&lt;span style=&quot;color:#ff8f40;&quot;&gt;args &lt;&#x2F;span&gt;&lt;span&gt;[]&lt;&#x2F;span&gt;&lt;span style=&quot;font-style:italic;color:#55b4d4;&quot;&gt;string&lt;&#x2F;span&gt;&lt;span&gt;) &lt;&#x2F;span&gt;&lt;span style=&quot;font-style:italic;color:#55b4d4;&quot;&gt;error &lt;&#x2F;span&gt;&lt;span&gt;{
+&lt;&#x2F;span&gt;&lt;span&gt;			&lt;&#x2F;span&gt;&lt;span style=&quot;color:#fa6e32;&quot;&gt;if &lt;&#x2F;span&gt;&lt;span&gt;err &lt;&#x2F;span&gt;&lt;span style=&quot;color:#ed9366;&quot;&gt;:= &lt;&#x2F;span&gt;&lt;span style=&quot;color:#f29718;&quot;&gt;runCommand&lt;&#x2F;span&gt;&lt;span&gt;(opts&lt;&#x2F;span&gt;&lt;span style=&quot;color:#61676ccc;&quot;&gt;, &lt;&#x2F;span&gt;&lt;span&gt;stopCh)&lt;&#x2F;span&gt;&lt;span style=&quot;color:#61676ccc;&quot;&gt;; &lt;&#x2F;span&gt;&lt;span&gt;err &lt;&#x2F;span&gt;&lt;span style=&quot;color:#ed9366;&quot;&gt;!= &lt;&#x2F;span&gt;&lt;span style=&quot;color:#ff8f40;&quot;&gt;nil &lt;&#x2F;span&gt;&lt;span&gt;{
+&lt;&#x2F;span&gt;&lt;span&gt;				&lt;&#x2F;span&gt;&lt;span style=&quot;color:#fa6e32;&quot;&gt;return &lt;&#x2F;span&gt;&lt;span&gt;err
+&lt;&#x2F;span&gt;&lt;span&gt;			}
+&lt;&#x2F;span&gt;&lt;span&gt;			&lt;&#x2F;span&gt;&lt;span style=&quot;color:#fa6e32;&quot;&gt;return &lt;&#x2F;span&gt;&lt;span style=&quot;color:#ff8f40;&quot;&gt;nil
+&lt;&#x2F;span&gt;&lt;span&gt;		}&lt;&#x2F;span&gt;&lt;span style=&quot;color:#61676ccc;&quot;&gt;,
+&lt;&#x2F;span&gt;&lt;span&gt;	}
+&lt;&#x2F;span&gt;&lt;span&gt;	&lt;&#x2F;span&gt;&lt;span style=&quot;color:#ed9366;&quot;&gt;...
+&lt;&#x2F;span&gt;&lt;span&gt;	&lt;&#x2F;span&gt;&lt;span style=&quot;color:#fa6e32;&quot;&gt;return &lt;&#x2F;span&gt;&lt;span&gt;cmd
+&lt;&#x2F;span&gt;&lt;span&gt;}
+&lt;&#x2F;span&gt;&lt;&#x2F;code&gt;&lt;&#x2F;pre&gt;
+&lt;p&gt;下面的ServerConfig method回傳定義在&lt;code&gt;pkg&#x2F;server&lt;&#x2F;code&gt;中定義的&lt;code&gt;Config&lt;&#x2F;code&gt; struct，會被當作web service需要的參數最後在&lt;code&gt;Complete()&lt;&#x2F;code&gt; method中回傳&lt;code&gt;Server&lt;&#x2F;code&gt; struct，即是metrics-server自身的web server，一直執行該server直到收到stop signal為止，這樣程式的進入點就結束了，接著細部看各項server設定以及metrics用到的struct。&lt;&#x2F;p&gt;
+&lt;pre data-lang=&quot;go&quot; style=&quot;background-color:#fafafa;color:#61676c;&quot; class=&quot;language-go &quot;&gt;&lt;code class=&quot;language-go&quot; data-lang=&quot;go&quot;&gt;&lt;span style=&quot;color:#fa6e32;&quot;&gt;func &lt;&#x2F;span&gt;&lt;span style=&quot;color:#f29718;&quot;&gt;runCommand&lt;&#x2F;span&gt;&lt;span&gt;(&lt;&#x2F;span&gt;&lt;span style=&quot;color:#ff8f40;&quot;&gt;o &lt;&#x2F;span&gt;&lt;span style=&quot;color:#ed9366;&quot;&gt;*&lt;&#x2F;span&gt;&lt;span&gt;options&lt;&#x2F;span&gt;&lt;span style=&quot;color:#ed9366;&quot;&gt;.&lt;&#x2F;span&gt;&lt;span style=&quot;color:#fa6e32;&quot;&gt;Options&lt;&#x2F;span&gt;&lt;span style=&quot;color:#61676ccc;&quot;&gt;, &lt;&#x2F;span&gt;&lt;span style=&quot;color:#ff8f40;&quot;&gt;stopCh &lt;&#x2F;span&gt;&lt;span style=&quot;color:#ed9366;&quot;&gt;&amp;lt;-&lt;&#x2F;span&gt;&lt;span style=&quot;color:#fa6e32;&quot;&gt;chan struct&lt;&#x2F;span&gt;&lt;span&gt;{}) &lt;&#x2F;span&gt;&lt;span style=&quot;font-style:italic;color:#55b4d4;&quot;&gt;error &lt;&#x2F;span&gt;&lt;span&gt;{
+&lt;&#x2F;span&gt;&lt;span&gt;	&lt;&#x2F;span&gt;&lt;span style=&quot;color:#ed9366;&quot;&gt;...
+&lt;&#x2F;span&gt;&lt;span&gt;	config&lt;&#x2F;span&gt;&lt;span style=&quot;color:#61676ccc;&quot;&gt;, &lt;&#x2F;span&gt;&lt;span&gt;err &lt;&#x2F;span&gt;&lt;span style=&quot;color:#ed9366;&quot;&gt;:= &lt;&#x2F;span&gt;&lt;span&gt;o&lt;&#x2F;span&gt;&lt;span style=&quot;color:#ed9366;&quot;&gt;.&lt;&#x2F;span&gt;&lt;span style=&quot;color:#f29718;&quot;&gt;ServerConfig&lt;&#x2F;span&gt;&lt;span&gt;()
+&lt;&#x2F;span&gt;&lt;span&gt;	&lt;&#x2F;span&gt;&lt;span style=&quot;color:#ed9366;&quot;&gt;...
+&lt;&#x2F;span&gt;&lt;span&gt;	s&lt;&#x2F;span&gt;&lt;span style=&quot;color:#61676ccc;&quot;&gt;, &lt;&#x2F;span&gt;&lt;span&gt;err &lt;&#x2F;span&gt;&lt;span style=&quot;color:#ed9366;&quot;&gt;:= &lt;&#x2F;span&gt;&lt;span&gt;config&lt;&#x2F;span&gt;&lt;span style=&quot;color:#ed9366;&quot;&gt;.&lt;&#x2F;span&gt;&lt;span style=&quot;color:#f29718;&quot;&gt;Complete&lt;&#x2F;span&gt;&lt;span&gt;()
+&lt;&#x2F;span&gt;&lt;span&gt;	&lt;&#x2F;span&gt;&lt;span style=&quot;color:#ed9366;&quot;&gt;...
+&lt;&#x2F;span&gt;&lt;span&gt;	&lt;&#x2F;span&gt;&lt;span style=&quot;color:#fa6e32;&quot;&gt;return &lt;&#x2F;span&gt;&lt;span&gt;s&lt;&#x2F;span&gt;&lt;span style=&quot;color:#ed9366;&quot;&gt;.&lt;&#x2F;span&gt;&lt;span style=&quot;color:#f29718;&quot;&gt;RunUntil&lt;&#x2F;span&gt;&lt;span&gt;(stopCh)
+&lt;&#x2F;span&gt;&lt;span&gt;}
+&lt;&#x2F;span&gt;&lt;&#x2F;code&gt;&lt;&#x2F;pre&gt;
+&lt;h2 id=&quot;metricsji-ben-wu-jian&quot;&gt;&lt;a class=&quot;zola-anchor&quot; href=&quot;#metricsji-ben-wu-jian&quot; aria-label=&quot;Anchor link for: metricsji-ben-wu-jian&quot;&gt;metrics基本物件&lt;&#x2F;a&gt;&lt;&#x2F;h2&gt;
+&lt;h3 id=&quot;servercan-shu&quot;&gt;&lt;a class=&quot;zola-anchor&quot; href=&quot;#servercan-shu&quot; aria-label=&quot;Anchor link for: servercan-shu&quot;&gt;Server參數&lt;&#x2F;a&gt;&lt;&#x2F;h3&gt;
+&lt;p&gt;前面有提過&lt;code&gt;NewOptions()&lt;&#x2F;code&gt; function會回傳&lt;code&gt;Options&lt;&#x2F;code&gt; struct，裡面有&lt;code&gt;MetricResolution&lt;&#x2F;code&gt;，該項目定義了metrics-server多久抓一次在node及pod中的metrics，預設是60秒抓一次。&lt;&#x2F;p&gt;
+&lt;pre data-lang=&quot;go&quot; style=&quot;background-color:#fafafa;color:#61676c;&quot; class=&quot;language-go &quot;&gt;&lt;code class=&quot;language-go&quot; data-lang=&quot;go&quot;&gt;&lt;span style=&quot;color:#fa6e32;&quot;&gt;func &lt;&#x2F;span&gt;&lt;span style=&quot;color:#f29718;&quot;&gt;NewOptions&lt;&#x2F;span&gt;&lt;span&gt;() &lt;&#x2F;span&gt;&lt;span style=&quot;color:#ed9366;&quot;&gt;*&lt;&#x2F;span&gt;&lt;span style=&quot;color:#fa6e32;&quot;&gt;Options &lt;&#x2F;span&gt;&lt;span&gt;{
+&lt;&#x2F;span&gt;&lt;span&gt;	&lt;&#x2F;span&gt;&lt;span style=&quot;color:#fa6e32;&quot;&gt;return &lt;&#x2F;span&gt;&lt;span style=&quot;color:#ed9366;&quot;&gt;&amp;amp;&lt;&#x2F;span&gt;&lt;span&gt;Options{
+&lt;&#x2F;span&gt;&lt;span&gt;		&lt;&#x2F;span&gt;&lt;span style=&quot;color:#ed9366;&quot;&gt;...
+&lt;&#x2F;span&gt;&lt;span&gt;		KubeletClient&lt;&#x2F;span&gt;&lt;span style=&quot;color:#61676ccc;&quot;&gt;:  &lt;&#x2F;span&gt;&lt;span style=&quot;color:#f29718;&quot;&gt;NewKubeletClientOptions&lt;&#x2F;span&gt;&lt;span&gt;()&lt;&#x2F;span&gt;&lt;span style=&quot;color:#61676ccc;&quot;&gt;,
+&lt;&#x2F;span&gt;&lt;span&gt;
+&lt;&#x2F;span&gt;&lt;span&gt;		MetricResolution&lt;&#x2F;span&gt;&lt;span style=&quot;color:#61676ccc;&quot;&gt;: &lt;&#x2F;span&gt;&lt;span style=&quot;color:#ff8f40;&quot;&gt;60 &lt;&#x2F;span&gt;&lt;span style=&quot;color:#ed9366;&quot;&gt;* &lt;&#x2F;span&gt;&lt;span&gt;time&lt;&#x2F;span&gt;&lt;span style=&quot;color:#ed9366;&quot;&gt;.&lt;&#x2F;span&gt;&lt;span&gt;Second&lt;&#x2F;span&gt;&lt;span style=&quot;color:#61676ccc;&quot;&gt;,
+&lt;&#x2F;span&gt;&lt;span&gt;	}
+&lt;&#x2F;span&gt;&lt;span&gt;}
+&lt;&#x2F;span&gt;&lt;&#x2F;code&gt;&lt;&#x2F;pre&gt;
+&lt;pre data-lang=&quot;go&quot; style=&quot;background-color:#fafafa;color:#61676c;&quot; class=&quot;language-go &quot;&gt;&lt;code class=&quot;language-go&quot; data-lang=&quot;go&quot;&gt;&lt;span style=&quot;color:#fa6e32;&quot;&gt;type &lt;&#x2F;span&gt;&lt;span style=&quot;color:#399ee6;&quot;&gt;Options &lt;&#x2F;span&gt;&lt;span style=&quot;color:#fa6e32;&quot;&gt;struct &lt;&#x2F;span&gt;&lt;span&gt;{
+&lt;&#x2F;span&gt;&lt;span&gt;	&lt;&#x2F;span&gt;&lt;span style=&quot;color:#ed9366;&quot;&gt;...
+&lt;&#x2F;span&gt;&lt;span&gt;	KubeletClient  &lt;&#x2F;span&gt;&lt;span style=&quot;color:#ed9366;&quot;&gt;*&lt;&#x2F;span&gt;&lt;span style=&quot;color:#fa6e32;&quot;&gt;KubeletClientOptions
+&lt;&#x2F;span&gt;&lt;span&gt;
+&lt;&#x2F;span&gt;&lt;span&gt;	MetricResolution time&lt;&#x2F;span&gt;&lt;span style=&quot;color:#ed9366;&quot;&gt;.&lt;&#x2F;span&gt;&lt;span style=&quot;color:#fa6e32;&quot;&gt;Duration
+&lt;&#x2F;span&gt;&lt;span&gt;	&lt;&#x2F;span&gt;&lt;span style=&quot;color:#ed9366;&quot;&gt;...
+&lt;&#x2F;span&gt;&lt;span&gt;}
+&lt;&#x2F;span&gt;&lt;&#x2F;code&gt;&lt;&#x2F;pre&gt;
+&lt;p&gt;在&lt;code&gt;runCommand()&lt;&#x2F;code&gt;function中會使用&lt;code&gt;ServerConfig()&lt;&#x2F;code&gt;method建立Config，&lt;code&gt;MetricResolution&lt;&#x2F;code&gt;即是剛才在Options中定義的，&lt;code&gt;ScrapeTimeout&lt;&#x2F;code&gt;是抓取後隔多久會發生timeout的情形，預設是&lt;code&gt;MetricResolution&lt;&#x2F;code&gt;*0.9。&lt;&#x2F;p&gt;
+&lt;pre data-lang=&quot;go&quot; style=&quot;background-color:#fafafa;color:#61676c;&quot; class=&quot;language-go &quot;&gt;&lt;code class=&quot;language-go&quot; data-lang=&quot;go&quot;&gt;&lt;span style=&quot;color:#fa6e32;&quot;&gt;func &lt;&#x2F;span&gt;&lt;span&gt;(&lt;&#x2F;span&gt;&lt;span style=&quot;color:#ff8f40;&quot;&gt;o &lt;&#x2F;span&gt;&lt;span style=&quot;color:#fa6e32;&quot;&gt;Options&lt;&#x2F;span&gt;&lt;span&gt;) &lt;&#x2F;span&gt;&lt;span style=&quot;color:#f29718;&quot;&gt;ServerConfig&lt;&#x2F;span&gt;&lt;span&gt;() (&lt;&#x2F;span&gt;&lt;span style=&quot;color:#ed9366;&quot;&gt;*&lt;&#x2F;span&gt;&lt;span&gt;server&lt;&#x2F;span&gt;&lt;span style=&quot;color:#ed9366;&quot;&gt;.&lt;&#x2F;span&gt;&lt;span style=&quot;color:#fa6e32;&quot;&gt;Config&lt;&#x2F;span&gt;&lt;span style=&quot;color:#61676ccc;&quot;&gt;, &lt;&#x2F;span&gt;&lt;span style=&quot;font-style:italic;color:#55b4d4;&quot;&gt;error&lt;&#x2F;span&gt;&lt;span&gt;) {
+&lt;&#x2F;span&gt;&lt;span&gt;	&lt;&#x2F;span&gt;&lt;span style=&quot;color:#ed9366;&quot;&gt;...
+&lt;&#x2F;span&gt;&lt;span&gt;	&lt;&#x2F;span&gt;&lt;span style=&quot;color:#fa6e32;&quot;&gt;return &lt;&#x2F;span&gt;&lt;span style=&quot;color:#ed9366;&quot;&gt;&amp;amp;&lt;&#x2F;span&gt;&lt;span&gt;server&lt;&#x2F;span&gt;&lt;span style=&quot;color:#ed9366;&quot;&gt;.&lt;&#x2F;span&gt;&lt;span&gt;Config{
+&lt;&#x2F;span&gt;&lt;span&gt;		&lt;&#x2F;span&gt;&lt;span style=&quot;color:#ed9366;&quot;&gt;...
+&lt;&#x2F;span&gt;&lt;span&gt;		MetricResolution&lt;&#x2F;span&gt;&lt;span style=&quot;color:#61676ccc;&quot;&gt;: &lt;&#x2F;span&gt;&lt;span&gt;o&lt;&#x2F;span&gt;&lt;span style=&quot;color:#ed9366;&quot;&gt;.&lt;&#x2F;span&gt;&lt;span&gt;MetricResolution&lt;&#x2F;span&gt;&lt;span style=&quot;color:#61676ccc;&quot;&gt;,
+&lt;&#x2F;span&gt;&lt;span&gt;		ScrapeTimeout&lt;&#x2F;span&gt;&lt;span style=&quot;color:#61676ccc;&quot;&gt;:    &lt;&#x2F;span&gt;&lt;span&gt;time&lt;&#x2F;span&gt;&lt;span style=&quot;color:#ed9366;&quot;&gt;.&lt;&#x2F;span&gt;&lt;span style=&quot;color:#f29718;&quot;&gt;Duration&lt;&#x2F;span&gt;&lt;span&gt;(&lt;&#x2F;span&gt;&lt;span style=&quot;font-style:italic;color:#55b4d4;&quot;&gt;float64&lt;&#x2F;span&gt;&lt;span&gt;(o&lt;&#x2F;span&gt;&lt;span style=&quot;color:#ed9366;&quot;&gt;.&lt;&#x2F;span&gt;&lt;span&gt;MetricResolution) &lt;&#x2F;span&gt;&lt;span style=&quot;color:#ed9366;&quot;&gt;* &lt;&#x2F;span&gt;&lt;span style=&quot;color:#ff8f40;&quot;&gt;0&lt;&#x2F;span&gt;&lt;span style=&quot;color:#61676ccc;&quot;&gt;.&lt;&#x2F;span&gt;&lt;span style=&quot;color:#ff8f40;&quot;&gt;90&lt;&#x2F;span&gt;&lt;span&gt;)&lt;&#x2F;span&gt;&lt;span style=&quot;color:#61676ccc;&quot;&gt;, &lt;&#x2F;span&gt;&lt;span style=&quot;font-style:italic;color:#abb0b6;&quot;&gt;&#x2F;&#x2F; scrape timeout is 90% of the scrape interval
+&lt;&#x2F;span&gt;&lt;span&gt;	}&lt;&#x2F;span&gt;&lt;span style=&quot;color:#61676ccc;&quot;&gt;, &lt;&#x2F;span&gt;&lt;span style=&quot;color:#ff8f40;&quot;&gt;nil
+&lt;&#x2F;span&gt;&lt;span&gt;}
+&lt;&#x2F;span&gt;&lt;&#x2F;code&gt;&lt;&#x2F;pre&gt;
+&lt;pre data-lang=&quot;go&quot; style=&quot;background-color:#fafafa;color:#61676c;&quot; class=&quot;language-go &quot;&gt;&lt;code class=&quot;language-go&quot; data-lang=&quot;go&quot;&gt;&lt;span style=&quot;color:#fa6e32;&quot;&gt;type &lt;&#x2F;span&gt;&lt;span style=&quot;color:#399ee6;&quot;&gt;Config &lt;&#x2F;span&gt;&lt;span style=&quot;color:#fa6e32;&quot;&gt;struct &lt;&#x2F;span&gt;&lt;span&gt;{
+&lt;&#x2F;span&gt;&lt;span&gt;	Apiserver        &lt;&#x2F;span&gt;&lt;span style=&quot;color:#ed9366;&quot;&gt;*&lt;&#x2F;span&gt;&lt;span&gt;genericapiserver&lt;&#x2F;span&gt;&lt;span style=&quot;color:#ed9366;&quot;&gt;.&lt;&#x2F;span&gt;&lt;span style=&quot;color:#fa6e32;&quot;&gt;Config
+&lt;&#x2F;span&gt;&lt;span&gt;	Rest             &lt;&#x2F;span&gt;&lt;span style=&quot;color:#ed9366;&quot;&gt;*&lt;&#x2F;span&gt;&lt;span&gt;rest&lt;&#x2F;span&gt;&lt;span style=&quot;color:#ed9366;&quot;&gt;.&lt;&#x2F;span&gt;&lt;span style=&quot;color:#fa6e32;&quot;&gt;Config
+&lt;&#x2F;span&gt;&lt;span&gt;	Kubelet          &lt;&#x2F;span&gt;&lt;span style=&quot;color:#ed9366;&quot;&gt;*&lt;&#x2F;span&gt;&lt;span&gt;client&lt;&#x2F;span&gt;&lt;span style=&quot;color:#ed9366;&quot;&gt;.&lt;&#x2F;span&gt;&lt;span style=&quot;color:#fa6e32;&quot;&gt;KubeletClientConfig
+&lt;&#x2F;span&gt;&lt;span&gt;	MetricResolution time&lt;&#x2F;span&gt;&lt;span style=&quot;color:#ed9366;&quot;&gt;.&lt;&#x2F;span&gt;&lt;span style=&quot;color:#fa6e32;&quot;&gt;Duration
+&lt;&#x2F;span&gt;&lt;span&gt;	ScrapeTimeout    time&lt;&#x2F;span&gt;&lt;span style=&quot;color:#ed9366;&quot;&gt;.&lt;&#x2F;span&gt;&lt;span style=&quot;color:#fa6e32;&quot;&gt;Duration
+&lt;&#x2F;span&gt;&lt;span&gt;}
+&lt;&#x2F;span&gt;&lt;&#x2F;code&gt;&lt;&#x2F;pre&gt;
+&lt;h3 id=&quot;metricszhua-qu-wu-jian&quot;&gt;&lt;a class=&quot;zola-anchor&quot; href=&quot;#metricszhua-qu-wu-jian&quot; aria-label=&quot;Anchor link for: metricszhua-qu-wu-jian&quot;&gt;metrics抓取物件&lt;&#x2F;a&gt;&lt;&#x2F;h3&gt;
+&lt;p&gt;&lt;code&gt;scraper&lt;&#x2F;code&gt;是真正向node以及pods抓取metrics的必要物件，裡面有一項是實現了&lt;code&gt;KubeletMetricsInterface&lt;&#x2F;code&gt;的&lt;code&gt;kubeletClient&lt;&#x2F;code&gt;，另外的&lt;code&gt;scrapeTimeout&lt;&#x2F;code&gt;即是前面&lt;code&gt;Config&lt;&#x2F;code&gt; struct的&lt;code&gt;ScrapeTimeout&lt;&#x2F;code&gt;，scraper會每隔&lt;code&gt;scrapeTimeout&lt;&#x2F;code&gt;定時透過&lt;code&gt;kubeletClient&lt;&#x2F;code&gt;跟kubelet要資料。&lt;&#x2F;p&gt;
+&lt;pre data-lang=&quot;go&quot; style=&quot;background-color:#fafafa;color:#61676c;&quot; class=&quot;language-go &quot;&gt;&lt;code class=&quot;language-go&quot; data-lang=&quot;go&quot;&gt;&lt;span style=&quot;color:#fa6e32;&quot;&gt;type &lt;&#x2F;span&gt;&lt;span style=&quot;color:#399ee6;&quot;&gt;scraper &lt;&#x2F;span&gt;&lt;span style=&quot;color:#fa6e32;&quot;&gt;struct &lt;&#x2F;span&gt;&lt;span&gt;{
+&lt;&#x2F;span&gt;&lt;span&gt;	nodeLister    v1listers&lt;&#x2F;span&gt;&lt;span style=&quot;color:#ed9366;&quot;&gt;.&lt;&#x2F;span&gt;&lt;span style=&quot;color:#fa6e32;&quot;&gt;NodeLister
+&lt;&#x2F;span&gt;&lt;span&gt;	kubeletClient client&lt;&#x2F;span&gt;&lt;span style=&quot;color:#ed9366;&quot;&gt;.&lt;&#x2F;span&gt;&lt;span style=&quot;color:#fa6e32;&quot;&gt;KubeletMetricsInterface
+&lt;&#x2F;span&gt;&lt;span&gt;	scrapeTimeout time&lt;&#x2F;span&gt;&lt;span style=&quot;color:#ed9366;&quot;&gt;.&lt;&#x2F;span&gt;&lt;span style=&quot;color:#fa6e32;&quot;&gt;Duration
+&lt;&#x2F;span&gt;&lt;span&gt;}
+&lt;&#x2F;span&gt;&lt;&#x2F;code&gt;&lt;&#x2F;pre&gt;
+&lt;p&gt;&lt;code&gt;MetricsBatch&lt;&#x2F;code&gt;是scraper抓到metrics後回傳的物V，包含了針對node以及pod的metrics，&lt;code&gt;Nodes&lt;&#x2F;code&gt;是node名稱映到MetricsPoint的map；&lt;code&gt;Pods&lt;&#x2F;code&gt;是namespace映到container名稱再映到MetricsPoint的map。MetricsPoint包含&lt;code&gt;CumulativeCpuUsed&lt;&#x2F;code&gt;及&lt;code&gt;MemoryUsage&lt;&#x2F;code&gt;兩個CPU以及Memory的使用率。&lt;&#x2F;p&gt;
+&lt;pre data-lang=&quot;go&quot; style=&quot;background-color:#fafafa;color:#61676c;&quot; class=&quot;language-go &quot;&gt;&lt;code class=&quot;language-go&quot; data-lang=&quot;go&quot;&gt;&lt;span style=&quot;font-style:italic;color:#abb0b6;&quot;&gt;&#x2F;&#x2F; MetricsBaVch is a single batch of pod, container, and node metrics from some source.
+&lt;&#x2F;span&gt;&lt;span style=&quot;color:#fa6e32;&quot;&gt;type &lt;&#x2F;span&gt;&lt;span style=&quot;color:#399ee6;&quot;&gt;MetricsBatch &lt;&#x2F;span&gt;&lt;span style=&quot;color:#fa6e32;&quot;&gt;struct &lt;&#x2F;span&gt;&lt;span&gt;{
+&lt;&#x2F;span&gt;&lt;span&gt;	Nodes &lt;&#x2F;span&gt;&lt;span style=&quot;color:#fa6e32;&quot;&gt;map&lt;&#x2F;span&gt;&lt;span&gt;[&lt;&#x2F;span&gt;&lt;span style=&quot;font-style:italic;color:#55b4d4;&quot;&gt;string&lt;&#x2F;span&gt;&lt;span&gt;]&lt;&#x2F;span&gt;&lt;span style=&quot;color:#fa6e32;&quot;&gt;MetricsPoint
+&lt;&#x2F;span&gt;&lt;span&gt;	Pods  &lt;&#x2F;span&gt;&lt;span style=&quot;color:#fa6e32;&quot;&gt;map&lt;&#x2F;span&gt;&lt;span&gt;[apitypes&lt;&#x2F;span&gt;&lt;span style=&quot;color:#ed9366;&quot;&gt;.&lt;&#x2F;span&gt;&lt;span style=&quot;color:#fa6e32;&quot;&gt;NamespacedName&lt;&#x2F;span&gt;&lt;span&gt;]&lt;&#x2F;span&gt;&lt;span style=&quot;color:#fa6e32;&quot;&gt;PodMetricsPoint
+&lt;&#x2F;span&gt;&lt;span&gt;}
+&lt;&#x2F;span&gt;&lt;&#x2F;code&gt;&lt;&#x2F;pre&gt;
+&lt;pre data-lang=&quot;go&quot; style=&quot;background-color:#fafafa;color:#61676c;&quot; class=&quot;language-go &quot;&gt;&lt;code class=&quot;language-go&quot; data-lang=&quot;go&quot;&gt;&lt;span style=&quot;font-style:italic;color:#abb0b6;&quot;&gt;&#x2F;&#x2F; PodMetricsPoint contains the metrics for some pod&amp;#39;s containers.
+&lt;&#x2F;span&gt;&lt;span style=&quot;color:#fa6e32;&quot;&gt;type &lt;&#x2F;span&gt;&lt;span style=&quot;color:#399ee6;&quot;&gt;PodMetricsPoint &lt;&#x2F;span&gt;&lt;span style=&quot;color:#fa6e32;&quot;&gt;struct &lt;&#x2F;span&gt;&lt;span&gt;{
+&lt;&#x2F;span&gt;&lt;span&gt;	Containers &lt;&#x2F;span&gt;&lt;span style=&quot;color:#fa6e32;&quot;&gt;map&lt;&#x2F;span&gt;&lt;span&gt;[&lt;&#x2F;span&gt;&lt;span style=&quot;font-style:italic;color:#55b4d4;&quot;&gt;string&lt;&#x2F;span&gt;&lt;span&gt;]&lt;&#x2F;span&gt;&lt;span style=&quot;color:#fa6e32;&quot;&gt;MetricsPoint
+&lt;&#x2F;span&gt;&lt;span&gt;}
+&lt;&#x2F;span&gt;&lt;span&gt;
+&lt;&#x2F;span&gt;&lt;span style=&quot;font-style:italic;color:#abb0b6;&quot;&gt;&#x2F;&#x2F; MetricsPoint represents the a set of specific metrics at some point in time.
+&lt;&#x2F;span&gt;&lt;span style=&quot;color:#fa6e32;&quot;&gt;type &lt;&#x2F;span&gt;&lt;span style=&quot;color:#399ee6;&quot;&gt;MetricsPoint &lt;&#x2F;span&gt;&lt;span style=&quot;color:#fa6e32;&quot;&gt;struct &lt;&#x2F;span&gt;&lt;span&gt;{
+&lt;&#x2F;span&gt;&lt;span&gt;	&lt;&#x2F;span&gt;&lt;span style=&quot;color:#ed9366;&quot;&gt;...
+&lt;&#x2F;span&gt;&lt;span&gt;	Timestamp time&lt;&#x2F;span&gt;&lt;span style=&quot;color:#ed9366;&quot;&gt;.&lt;&#x2F;span&gt;&lt;span style=&quot;color:#fa6e32;&quot;&gt;Time
+&lt;&#x2F;span&gt;&lt;span&gt;	&lt;&#x2F;span&gt;&lt;span style=&quot;font-style:italic;color:#abb0b6;&quot;&gt;&#x2F;&#x2F; CumulativeCpuUsed is the cumulative cpu used at Timestamp from the StartTime of container&#x2F;node. Unit: nano core * seconds.
+&lt;&#x2F;span&gt;&lt;span&gt;	CumulativeCpuUsed &lt;&#x2F;span&gt;&lt;span style=&quot;font-style:italic;color:#55b4d4;&quot;&gt;uint64
+&lt;&#x2F;span&gt;&lt;span&gt;	&lt;&#x2F;span&gt;&lt;span style=&quot;font-style:italic;color:#abb0b6;&quot;&gt;&#x2F;&#x2F; MemoryUsage is the working set size. Unit: bytes.
+&lt;&#x2F;span&gt;&lt;span&gt;	MemoryUsage &lt;&#x2F;span&gt;&lt;span style=&quot;font-style:italic;color:#55b4d4;&quot;&gt;uint64
+&lt;&#x2F;span&gt;&lt;span&gt;}
+&lt;&#x2F;span&gt;&lt;&#x2F;code&gt;&lt;&#x2F;pre&gt;
+&lt;h3 id=&quot;metricscun-fang-wu-jian&quot;&gt;&lt;a class=&quot;zola-anchor&quot; href=&quot;#metricscun-fang-wu-jian&quot; aria-label=&quot;Anchor link for: metricscun-fang-wu-jian&quot;&gt;metrics存放物件&lt;&#x2F;a&gt;&lt;&#x2F;h3&gt;
+&lt;p&gt;&lt;code&gt;storage&lt;&#x2F;code&gt;存放的是前面&lt;code&gt;scraper&lt;&#x2F;code&gt;收集而來的metrics，並有個別分&lt;code&gt;podStorage&lt;&#x2F;code&gt;以及&lt;code&gt;nodeStorage&lt;&#x2F;code&gt;。&lt;&#x2F;p&gt;
+&lt;pre data-lang=&quot;go&quot; style=&quot;background-color:#fafafa;color:#61676c;&quot; class=&quot;language-go &quot;&gt;&lt;code class=&quot;language-go&quot; data-lang=&quot;go&quot;&gt;&lt;span style=&quot;font-style:italic;color:#abb0b6;&quot;&gt;&#x2F;&#x2F; nodeStorage is a thread save nodeStorage for node and pod metrics.
+&lt;&#x2F;span&gt;&lt;span style=&quot;color:#fa6e32;&quot;&gt;type &lt;&#x2F;span&gt;&lt;span style=&quot;color:#399ee6;&quot;&gt;storage &lt;&#x2F;span&gt;&lt;span style=&quot;color:#fa6e32;&quot;&gt;struct &lt;&#x2F;span&gt;&lt;span&gt;{
+&lt;&#x2F;span&gt;&lt;span&gt;	mu    sync&lt;&#x2F;span&gt;&lt;span style=&quot;color:#ed9366;&quot;&gt;.&lt;&#x2F;span&gt;&lt;span style=&quot;color:#fa6e32;&quot;&gt;RWMutex
+&lt;&#x2F;span&gt;&lt;span&gt;	pods  &lt;&#x2F;span&gt;&lt;span style=&quot;color:#fa6e32;&quot;&gt;podStorage
+&lt;&#x2F;span&gt;&lt;span&gt;	nodes &lt;&#x2F;span&gt;&lt;span style=&quot;color:#fa6e32;&quot;&gt;nodeStorage
+&lt;&#x2F;span&gt;&lt;span&gt;}
+&lt;&#x2F;span&gt;&lt;&#x2F;code&gt;&lt;&#x2F;pre&gt;
+&lt;p&gt;從下面的&lt;code&gt;podStorage&lt;&#x2F;code&gt;以及&lt;code&gt;nodeStorage&lt;&#x2F;code&gt;可以注意到這兩個struct都有存放last以及prev兩個metrics，即是現在的metrics內容以及上次抓到的metrics內容，之後會根據兩者metrics差異計算資源的使用率。&lt;&#x2F;p&gt;
+&lt;pre data-lang=&quot;go&quot; style=&quot;background-color:#fafafa;color:#61676c;&quot; class=&quot;language-go &quot;&gt;&lt;code class=&quot;language-go&quot; data-lang=&quot;go&quot;&gt;&lt;span style=&quot;color:#fa6e32;&quot;&gt;type &lt;&#x2F;span&gt;&lt;span style=&quot;color:#399ee6;&quot;&gt;podStorage &lt;&#x2F;span&gt;&lt;span style=&quot;color:#fa6e32;&quot;&gt;struct &lt;&#x2F;span&gt;&lt;span&gt;{
+&lt;&#x2F;span&gt;&lt;span&gt;	&lt;&#x2F;span&gt;&lt;span style=&quot;font-style:italic;color:#abb0b6;&quot;&gt;&#x2F;&#x2F; last stores pod metric points from last scrape
+&lt;&#x2F;span&gt;&lt;span&gt;	last &lt;&#x2F;span&gt;&lt;span style=&quot;color:#fa6e32;&quot;&gt;map&lt;&#x2F;span&gt;&lt;span&gt;[apitypes&lt;&#x2F;span&gt;&lt;span style=&quot;color:#ed9366;&quot;&gt;.&lt;&#x2F;span&gt;&lt;span style=&quot;color:#fa6e32;&quot;&gt;NamespacedName&lt;&#x2F;span&gt;&lt;span&gt;]&lt;&#x2F;span&gt;&lt;span style=&quot;color:#fa6e32;&quot;&gt;PodMetricsPoint
+&lt;&#x2F;span&gt;&lt;span&gt;	&lt;&#x2F;span&gt;&lt;span style=&quot;font-style:italic;color:#abb0b6;&quot;&gt;&#x2F;&#x2F; prev sVores pod metric points from scrape preceding the last one.
+&lt;&#x2F;span&gt;&lt;span&gt;	&lt;&#x2F;span&gt;&lt;span style=&quot;font-style:italic;color:#abb0b6;&quot;&gt;&#x2F;&#x2F; Points timestamp should proceed the corresponding points from last and have same start time (no restart between them).
+&lt;&#x2F;span&gt;&lt;span&gt;	prev &lt;&#x2F;span&gt;&lt;span style=&quot;color:#fa6e32;&quot;&gt;map&lt;&#x2F;span&gt;&lt;span&gt;[apitypes&lt;&#x2F;span&gt;&lt;span style=&quot;color:#ed9366;&quot;&gt;.&lt;&#x2F;span&gt;&lt;span style=&quot;color:#fa6e32;&quot;&gt;NamespacedName&lt;&#x2F;span&gt;&lt;span&gt;]&lt;&#x2F;span&gt;&lt;span style=&quot;color:#fa6e32;&quot;&gt;PodMetricsPoint
+&lt;&#x2F;span&gt;&lt;span&gt;	&lt;&#x2F;span&gt;&lt;span style=&quot;font-style:italic;color:#abb0b6;&quot;&gt;&#x2F;&#x2F; scrape period of metrics server
+&lt;&#x2F;span&gt;&lt;span&gt;	metricResolution time&lt;&#x2F;span&gt;&lt;span style=&quot;color:#ed9366;&quot;&gt;.&lt;&#x2F;span&gt;&lt;span style=&quot;color:#fa6e32;&quot;&gt;Duration
+&lt;&#x2F;span&gt;&lt;span&gt;}
+&lt;&#x2F;span&gt;&lt;&#x2F;code&gt;&lt;&#x2F;pre&gt;
+&lt;pre data-lang=&quot;go&quot; style=&quot;background-color:#fafafa;color:#61676c;&quot; class=&quot;language-go &quot;&gt;&lt;code class=&quot;language-go&quot; data-lang=&quot;go&quot;&gt;&lt;span style=&quot;color:#fa6e32;&quot;&gt;type &lt;&#x2F;span&gt;&lt;span style=&quot;color:#399ee6;&quot;&gt;nodeStorage &lt;&#x2F;span&gt;&lt;span style=&quot;color:#fa6e32;&quot;&gt;struct &lt;&#x2F;span&gt;&lt;span&gt;{
+&lt;&#x2F;span&gt;&lt;span&gt;	&lt;&#x2F;span&gt;&lt;span style=&quot;font-style:italic;color:#abb0b6;&quot;&gt;&#x2F;&#x2F; last stores node metric points from last scrape
+&lt;&#x2F;span&gt;&lt;span&gt;	last &lt;&#x2F;span&gt;&lt;span style=&quot;color:#fa6e32;&quot;&gt;map&lt;&#x2F;span&gt;&lt;span&gt;[&lt;&#x2F;span&gt;&lt;span style=&quot;font-style:italic;color:#55b4d4;&quot;&gt;string&lt;&#x2F;span&gt;&lt;span&gt;]&lt;&#x2F;span&gt;&lt;span style=&quot;color:#fa6e32;&quot;&gt;MetricsPoint
+&lt;&#x2F;span&gt;&lt;span&gt;	&lt;&#x2F;span&gt;&lt;span style=&quot;font-style:italic;color:#abb0b6;&quot;&gt;&#x2F;&#x2F; prev stores node metric points from scrape preceding the last one.
+&lt;&#x2F;span&gt;&lt;span&gt;	&lt;&#x2F;span&gt;&lt;span style=&quot;font-style:italic;color:#abb0b6;&quot;&gt;&#x2F;&#x2F; Points timestamp should proceed the corresponding points from last.
+&lt;&#x2F;span&gt;&lt;span&gt;	prev &lt;&#x2F;span&gt;&lt;span style=&quot;color:#fa6e32;&quot;&gt;map&lt;&#x2F;span&gt;&lt;span&gt;[&lt;&#x2F;span&gt;&lt;span style=&quot;font-style:italic;color:#55b4d4;&quot;&gt;string&lt;&#x2F;span&gt;&lt;span&gt;]&lt;&#x2F;span&gt;&lt;span style=&quot;color:#fa6e32;&quot;&gt;MetricsPoint
+&lt;&#x2F;span&gt;&lt;span&gt;}
+&lt;&#x2F;span&gt;&lt;&#x2F;code&gt;&lt;&#x2F;pre&gt;
+&lt;h2 id=&quot;metricsshou-ji&quot;&gt;&lt;a class=&quot;zola-anchor&quot; href=&quot;#metricsshou-ji&quot; aria-label=&quot;Anchor link for: metricsshou-ji&quot;&gt;metrics收集&lt;&#x2F;a&gt;&lt;&#x2F;h2&gt;
+&lt;p&gt;同樣在&lt;code&gt;runCommand&lt;&#x2F;code&gt;中的，取得&lt;code&gt;Config&lt;&#x2F;code&gt; instance之後，會呼叫&lt;code&gt;Complete&lt;&#x2F;code&gt; method建立&lt;code&gt;Server&lt;&#x2F;code&gt; instance。其中有兩個很重要的物件，一個是名為&lt;code&gt;scrape&lt;&#x2F;code&gt;的&lt;code&gt;scraper&lt;&#x2F;code&gt; instance，主要負責進行node及pod metrics的抓取，所以要將&lt;code&gt;ScrapeTimeout&lt;&#x2F;code&gt;傳給它；另外一個是&lt;code&gt;storage&lt;&#x2F;code&gt; instance，就跟它的名字一樣主要負責存放抓下來的metrics。&lt;&#x2F;p&gt;
+&lt;p&gt;另外要注意的是，&lt;code&gt;kubeletClient&lt;&#x2F;code&gt;也會被建立出來傳給&lt;code&gt;scrape&lt;&#x2F;code&gt;，真正拿metrics是透過這個client去跟kubelet拿，會在之後做說明。&lt;&#x2F;p&gt;
+&lt;pre data-lang=&quot;go&quot; style=&quot;background-color:#fafafa;color:#61676c;&quot; class=&quot;language-go &quot;&gt;&lt;code class=&quot;language-go&quot; data-lang=&quot;go&quot;&gt;&lt;span style=&quot;color:#fa6e32;&quot;&gt;func &lt;&#x2F;span&gt;&lt;span&gt;(&lt;&#x2F;span&gt;&lt;span style=&quot;color:#ff8f40;&quot;&gt;c &lt;&#x2F;span&gt;&lt;span style=&quot;color:#fa6e32;&quot;&gt;Config&lt;&#x2F;span&gt;&lt;span&gt;) &lt;&#x2F;span&gt;&lt;span style=&quot;color:#f29718;&quot;&gt;Complete&lt;&#x2F;span&gt;&lt;span&gt;() (&lt;&#x2F;span&gt;&lt;span style=&quot;color:#ed9366;&quot;&gt;*&lt;&#x2F;span&gt;&lt;span style=&quot;color:#fa6e32;&quot;&gt;server&lt;&#x2F;span&gt;&lt;span style=&quot;color:#61676ccc;&quot;&gt;, &lt;&#x2F;span&gt;&lt;span style=&quot;font-style:italic;color:#55b4d4;&quot;&gt;error&lt;&#x2F;span&gt;&lt;span&gt;) {
+&lt;&#x2F;span&gt;&lt;span&gt;	kubeletClient&lt;&#x2F;span&gt;&lt;span style=&quot;color:#61676ccc;&quot;&gt;, &lt;&#x2F;span&gt;&lt;span&gt;err &lt;&#x2F;span&gt;&lt;span style=&quot;color:#ed9366;&quot;&gt;:= &lt;&#x2F;span&gt;&lt;span&gt;resource&lt;&#x2F;span&gt;&lt;span style=&quot;color:#ed9366;&quot;&gt;.&lt;&#x2F;span&gt;&lt;span style=&quot;color:#f29718;&quot;&gt;NewClient&lt;&#x2F;span&gt;&lt;span&gt;(&lt;&#x2F;span&gt;&lt;span style=&quot;color:#ed9366;&quot;&gt;*&lt;&#x2F;span&gt;&lt;span&gt;c&lt;&#x2F;span&gt;&lt;span style=&quot;color:#ed9366;&quot;&gt;.&lt;&#x2F;span&gt;&lt;span&gt;Kubelet)
+&lt;&#x2F;span&gt;&lt;span&gt;	&lt;&#x2F;span&gt;&lt;span style=&quot;color:#ed9366;&quot;&gt;...
+&lt;&#x2F;span&gt;&lt;span&gt;	nodes &lt;&#x2F;span&gt;&lt;span style=&quot;color:#ed9366;&quot;&gt;:= &lt;&#x2F;span&gt;&lt;span&gt;informer&lt;&#x2F;span&gt;&lt;span style=&quot;color:#ed9366;&quot;&gt;.&lt;&#x2F;span&gt;&lt;span style=&quot;color:#f29718;&quot;&gt;Core&lt;&#x2F;span&gt;&lt;span&gt;()&lt;&#x2F;span&gt;&lt;span style=&quot;color:#ed9366;&quot;&gt;.&lt;&#x2F;span&gt;&lt;span style=&quot;color:#f29718;&quot;&gt;V1&lt;&#x2F;span&gt;&lt;span&gt;()&lt;&#x2F;span&gt;&lt;span style=&quot;color:#ed9366;&quot;&gt;.&lt;&#x2F;span&gt;&lt;span style=&quot;color:#f29718;&quot;&gt;Nodes&lt;&#x2F;span&gt;&lt;span&gt;()
+&lt;&#x2F;span&gt;&lt;span&gt;	scrape &lt;&#x2F;span&gt;&lt;span style=&quot;color:#ed9366;&quot;&gt;:= &lt;&#x2F;span&gt;&lt;span&gt;scraper&lt;&#x2F;span&gt;&lt;span style=&quot;color:#ed9366;&quot;&gt;.&lt;&#x2F;span&gt;&lt;span style=&quot;color:#f29718;&quot;&gt;NewScraper&lt;&#x2F;span&gt;&lt;span&gt;(nodes&lt;&#x2F;span&gt;&lt;span style=&quot;color:#ed9366;&quot;&gt;.&lt;&#x2F;span&gt;&lt;span style=&quot;color:#f29718;&quot;&gt;Lister&lt;&#x2F;span&gt;&lt;span&gt;()&lt;&#x2F;span&gt;&lt;span style=&quot;color:#61676ccc;&quot;&gt;, &lt;&#x2F;span&gt;&lt;span&gt;kubeletClient&lt;&#x2F;span&gt;&lt;span style=&quot;color:#61676ccc;&quot;&gt;, &lt;&#x2F;span&gt;&lt;span&gt;c&lt;&#x2F;span&gt;&lt;span style=&quot;color:#ed9366;&quot;&gt;.&lt;&#x2F;span&gt;&lt;span&gt;ScrapeTimeout)
+&lt;&#x2F;span&gt;&lt;span&gt;
+&lt;&#x2F;span&gt;&lt;span&gt;	&lt;&#x2F;span&gt;&lt;span style=&quot;color:#ed9366;&quot;&gt;...
+&lt;&#x2F;span&gt;&lt;span&gt;	store &lt;&#x2F;span&gt;&lt;span style=&quot;color:#ed9366;&quot;&gt;:= &lt;&#x2F;span&gt;&lt;span&gt;storage&lt;&#x2F;span&gt;&lt;span style=&quot;color:#ed9366;&quot;&gt;.&lt;&#x2F;span&gt;&lt;span style=&quot;color:#f29718;&quot;&gt;NewStorage&lt;&#x2F;span&gt;&lt;span&gt;(c&lt;&#x2F;span&gt;&lt;span style=&quot;color:#ed9366;&quot;&gt;.&lt;&#x2F;span&gt;&lt;span&gt;MetricResolution)
+&lt;&#x2F;span&gt;&lt;span&gt;
+&lt;&#x2F;span&gt;&lt;span&gt;	s &lt;&#x2F;span&gt;&lt;span style=&quot;color:#ed9366;&quot;&gt;:= &lt;&#x2F;span&gt;&lt;span style=&quot;color:#f29718;&quot;&gt;NewServer&lt;&#x2F;span&gt;&lt;span&gt;(
+&lt;&#x2F;span&gt;&lt;span&gt;		&lt;&#x2F;span&gt;&lt;span style=&quot;color:#ed9366;&quot;&gt;...
+&lt;&#x2F;span&gt;&lt;span&gt;		store&lt;&#x2F;span&gt;&lt;span style=&quot;color:#61676ccc;&quot;&gt;,
+&lt;&#x2F;span&gt;&lt;span&gt;		scrape&lt;&#x2F;span&gt;&lt;span style=&quot;color:#61676ccc;&quot;&gt;,
+&lt;&#x2F;span&gt;&lt;span&gt;		c&lt;&#x2F;span&gt;&lt;span style=&quot;color:#ed9366;&quot;&gt;.&lt;&#x2F;span&gt;&lt;span&gt;MetricResolution&lt;&#x2F;span&gt;&lt;span style=&quot;color:#61676ccc;&quot;&gt;,
+&lt;&#x2F;span&gt;&lt;span&gt;	)
+&lt;&#x2F;span&gt;&lt;span&gt;	&lt;&#x2F;span&gt;&lt;span style=&quot;color:#ed9366;&quot;&gt;...
+&lt;&#x2F;span&gt;&lt;span&gt;	&lt;&#x2F;span&gt;&lt;span style=&quot;color:#fa6e32;&quot;&gt;return &lt;&#x2F;span&gt;&lt;span&gt;s&lt;&#x2F;span&gt;&lt;span style=&quot;color:#61676ccc;&quot;&gt;, &lt;&#x2F;span&gt;&lt;span style=&quot;color:#ff8f40;&quot;&gt;nil
+&lt;&#x2F;span&gt;&lt;span&gt;}
+&lt;&#x2F;span&gt;&lt;&#x2F;code&gt;&lt;&#x2F;pre&gt;
+&lt;p&gt;在建立完&lt;code&gt;Server&lt;&#x2F;code&gt; instance之後，最終會執行&lt;code&gt;RunUntil&lt;&#x2F;code&gt; method，它會起一個go routine執行&lt;code&gt;runScrape&lt;&#x2F;code&gt; method進行metrics的抓取及存放。&lt;&#x2F;p&gt;
+&lt;pre data-lang=&quot;go&quot; style=&quot;background-color:#fafafa;color:#61676c;&quot; class=&quot;language-go &quot;&gt;&lt;code class=&quot;language-go&quot; data-lang=&quot;go&quot;&gt;&lt;span style=&quot;font-style:italic;color:#abb0b6;&quot;&gt;&#x2F;&#x2F; RunUntil starts background scraping goroutine and runs apiserver serving metrics.
+&lt;&#x2F;span&gt;&lt;span style=&quot;color:#fa6e32;&quot;&gt;func &lt;&#x2F;span&gt;&lt;span&gt;(&lt;&#x2F;span&gt;&lt;span style=&quot;color:#ff8f40;&quot;&gt;s &lt;&#x2F;span&gt;&lt;span style=&quot;color:#ed9366;&quot;&gt;*&lt;&#x2F;span&gt;&lt;span style=&quot;color:#fa6e32;&quot;&gt;server&lt;&#x2F;span&gt;&lt;span&gt;) &lt;&#x2F;span&gt;&lt;span style=&quot;color:#f29718;&quot;&gt;RunUntil&lt;&#x2F;span&gt;&lt;span&gt;(&lt;&#x2F;span&gt;&lt;span style=&quot;color:#ff8f40;&quot;&gt;stopCh &lt;&#x2F;span&gt;&lt;span style=&quot;color:#ed9366;&quot;&gt;&amp;lt;-&lt;&#x2F;span&gt;&lt;span style=&quot;color:#fa6e32;&quot;&gt;chan struct&lt;&#x2F;span&gt;&lt;span&gt;{}) &lt;&#x2F;span&gt;&lt;span style=&quot;font-style:italic;color:#55b4d4;&quot;&gt;error &lt;&#x2F;span&gt;&lt;span&gt;{
+&lt;&#x2F;span&gt;&lt;span&gt;	&lt;&#x2F;span&gt;&lt;span style=&quot;color:#ed9366;&quot;&gt;...
+&lt;&#x2F;span&gt;&lt;span&gt;	&lt;&#x2F;span&gt;&lt;span style=&quot;font-style:italic;color:#abb0b6;&quot;&gt;&#x2F;&#x2F; Start serving API and scrape loop
+&lt;&#x2F;span&gt;&lt;span&gt;	&lt;&#x2F;span&gt;&lt;span style=&quot;color:#fa6e32;&quot;&gt;go &lt;&#x2F;span&gt;&lt;span&gt;s&lt;&#x2F;span&gt;&lt;span style=&quot;color:#ed9366;&quot;&gt;.&lt;&#x2F;span&gt;&lt;span style=&quot;color:#f29718;&quot;&gt;runScrape&lt;&#x2F;span&gt;&lt;span&gt;(ctx)
+&lt;&#x2F;span&gt;&lt;span&gt;	&lt;&#x2F;span&gt;&lt;span style=&quot;color:#ed9366;&quot;&gt;...
+&lt;&#x2F;span&gt;&lt;span&gt;}
+&lt;&#x2F;span&gt;&lt;&#x2F;code&gt;&lt;&#x2F;pre&gt;
+&lt;p&gt;&lt;code&gt;runScrape&lt;&#x2F;code&gt; method會利用&lt;code&gt;NewTicker&lt;&#x2F;code&gt;建立一個ticker，當中包含一個channel，每隔&lt;code&gt;resolution&lt;&#x2F;code&gt;時間後，ticker會敲一次並把時間傳給channel。之後會進行無窮迴圈，從channel中取得當前時間，並呼叫&lt;code&gt;tick&lt;&#x2F;code&gt; method執行核心的metrics抓取。&lt;&#x2F;p&gt;
+&lt;pre data-lang=&quot;go&quot; style=&quot;background-color:#fafafa;color:#61676c;&quot; class=&quot;language-go &quot;&gt;&lt;code class=&quot;language-go&quot; data-lang=&quot;go&quot;&gt;&lt;span style=&quot;color:#fa6e32;&quot;&gt;func &lt;&#x2F;span&gt;&lt;span&gt;(&lt;&#x2F;span&gt;&lt;span style=&quot;color:#ff8f40;&quot;&gt;s &lt;&#x2F;span&gt;&lt;span style=&quot;color:#ed9366;&quot;&gt;*&lt;&#x2F;span&gt;&lt;span style=&quot;color:#fa6e32;&quot;&gt;server&lt;&#x2F;span&gt;&lt;span&gt;) &lt;&#x2F;span&gt;&lt;span style=&quot;color:#f29718;&quot;&gt;runScrape&lt;&#x2F;span&gt;&lt;span&gt;(&lt;&#x2F;span&gt;&lt;span style=&quot;color:#ff8f40;&quot;&gt;ctx &lt;&#x2F;span&gt;&lt;span&gt;context&lt;&#x2F;span&gt;&lt;span style=&quot;color:#ed9366;&quot;&gt;.&lt;&#x2F;span&gt;&lt;span style=&quot;color:#fa6e32;&quot;&gt;Context&lt;&#x2F;span&gt;&lt;span&gt;) {
+&lt;&#x2F;span&gt;&lt;span&gt;	ticker &lt;&#x2F;span&gt;&lt;span style=&quot;color:#ed9366;&quot;&gt;:= &lt;&#x2F;span&gt;&lt;span&gt;time&lt;&#x2F;span&gt;&lt;span style=&quot;color:#ed9366;&quot;&gt;.&lt;&#x2F;span&gt;&lt;span style=&quot;color:#f29718;&quot;&gt;NewTicker&lt;&#x2F;span&gt;&lt;span&gt;(s&lt;&#x2F;span&gt;&lt;span style=&quot;color:#ed9366;&quot;&gt;.&lt;&#x2F;span&gt;&lt;span&gt;resolution)
+&lt;&#x2F;span&gt;&lt;span&gt;	&lt;&#x2F;span&gt;&lt;span style=&quot;color:#fa6e32;&quot;&gt;defer &lt;&#x2F;span&gt;&lt;span&gt;ticker&lt;&#x2F;span&gt;&lt;span style=&quot;color:#ed9366;&quot;&gt;.&lt;&#x2F;span&gt;&lt;span style=&quot;color:#f29718;&quot;&gt;Stop&lt;&#x2F;span&gt;&lt;span&gt;()
+&lt;&#x2F;span&gt;&lt;span&gt;	s&lt;&#x2F;span&gt;&lt;span style=&quot;color:#ed9366;&quot;&gt;.&lt;&#x2F;span&gt;&lt;span style=&quot;color:#f29718;&quot;&gt;tick&lt;&#x2F;span&gt;&lt;span&gt;(ctx&lt;&#x2F;span&gt;&lt;span style=&quot;color:#61676ccc;&quot;&gt;, &lt;&#x2F;span&gt;&lt;span&gt;time&lt;&#x2F;span&gt;&lt;span style=&quot;color:#ed9366;&quot;&gt;.&lt;&#x2F;span&gt;&lt;span style=&quot;color:#f29718;&quot;&gt;Now&lt;&#x2F;span&gt;&lt;span&gt;())
+&lt;&#x2F;span&gt;&lt;span&gt;
+&lt;&#x2F;span&gt;&lt;span&gt;	&lt;&#x2F;span&gt;&lt;span style=&quot;color:#fa6e32;&quot;&gt;for &lt;&#x2F;span&gt;&lt;span&gt;{
+&lt;&#x2F;span&gt;&lt;span&gt;		&lt;&#x2F;span&gt;&lt;span style=&quot;color:#fa6e32;&quot;&gt;select &lt;&#x2F;span&gt;&lt;span&gt;{
+&lt;&#x2F;span&gt;&lt;span&gt;		&lt;&#x2F;span&gt;&lt;span style=&quot;color:#fa6e32;&quot;&gt;case &lt;&#x2F;span&gt;&lt;span&gt;startTime &lt;&#x2F;span&gt;&lt;span style=&quot;color:#ed9366;&quot;&gt;:= &amp;lt;-&lt;&#x2F;span&gt;&lt;span&gt;ticker&lt;&#x2F;span&gt;&lt;span style=&quot;color:#ed9366;&quot;&gt;.&lt;&#x2F;span&gt;&lt;span&gt;C&lt;&#x2F;span&gt;&lt;span style=&quot;color:#61676ccc;&quot;&gt;:
+&lt;&#x2F;span&gt;&lt;span&gt;			s&lt;&#x2F;span&gt;&lt;span style=&quot;color:#ed9366;&quot;&gt;.&lt;&#x2F;span&gt;&lt;span style=&quot;color:#f29718;&quot;&gt;tick&lt;&#x2F;span&gt;&lt;span&gt;(ctx&lt;&#x2F;span&gt;&lt;span style=&quot;color:#61676ccc;&quot;&gt;, &lt;&#x2F;span&gt;&lt;span&gt;startTime)
+&lt;&#x2F;span&gt;&lt;span&gt;		&lt;&#x2F;span&gt;&lt;span style=&quot;color:#fa6e32;&quot;&gt;case &lt;&#x2F;span&gt;&lt;span style=&quot;color:#ed9366;&quot;&gt;&amp;lt;-&lt;&#x2F;span&gt;&lt;span&gt;ctx&lt;&#x2F;span&gt;&lt;span style=&quot;color:#ed9366;&quot;&gt;.&lt;&#x2F;span&gt;&lt;span style=&quot;color:#f29718;&quot;&gt;Done&lt;&#x2F;span&gt;&lt;span&gt;()&lt;&#x2F;span&gt;&lt;span style=&quot;color:#61676ccc;&quot;&gt;:
+&lt;&#x2F;span&gt;&lt;span&gt;			&lt;&#x2F;span&gt;&lt;span style=&quot;color:#fa6e32;&quot;&gt;return
+&lt;&#x2F;span&gt;&lt;span&gt;		}
+&lt;&#x2F;span&gt;&lt;span&gt;	}
+&lt;&#x2F;span&gt;&lt;span&gt;}
+&lt;&#x2F;span&gt;&lt;&#x2F;code&gt;&lt;&#x2F;pre&gt;
+&lt;p&gt;剛才在&lt;code&gt;Complete&lt;&#x2F;code&gt; method中定義的scraper以及storage instance就是在這裡會被呼叫到。scraper會呼叫&lt;code&gt;Scrape&lt;&#x2F;code&gt; method抓取metrics，回傳的metrics內容是&lt;code&gt;MetricsBatch&lt;&#x2F;code&gt; instance。&lt;&#x2F;p&gt;
+&lt;pre data-lang=&quot;go&quot; style=&quot;background-color:#fafafa;color:#61676c;&quot; class=&quot;language-go &quot;&gt;&lt;code class=&quot;language-go&quot; data-lang=&quot;go&quot;&gt;&lt;span style=&quot;color:#fa6e32;&quot;&gt;func &lt;&#x2F;span&gt;&lt;span&gt;(&lt;&#x2F;span&gt;&lt;span style=&quot;color:#ff8f40;&quot;&gt;s &lt;&#x2F;span&gt;&lt;span style=&quot;color:#ed9366;&quot;&gt;*&lt;&#x2F;span&gt;&lt;span style=&quot;color:#fa6e32;&quot;&gt;server&lt;&#x2F;span&gt;&lt;span&gt;) &lt;&#x2F;span&gt;&lt;span style=&quot;color:#f29718;&quot;&gt;tick&lt;&#x2F;span&gt;&lt;span&gt;(&lt;&#x2F;span&gt;&lt;span style=&quot;color:#ff8f40;&quot;&gt;ctx &lt;&#x2F;span&gt;&lt;span&gt;context&lt;&#x2F;span&gt;&lt;span style=&quot;color:#ed9366;&quot;&gt;.&lt;&#x2F;span&gt;&lt;span style=&quot;color:#fa6e32;&quot;&gt;Context&lt;&#x2F;span&gt;&lt;span style=&quot;color:#61676ccc;&quot;&gt;, &lt;&#x2F;span&gt;&lt;span style=&quot;color:#ff8f40;&quot;&gt;startTime &lt;&#x2F;span&gt;&lt;span&gt;time&lt;&#x2F;span&gt;&lt;span style=&quot;color:#ed9366;&quot;&gt;.&lt;&#x2F;span&gt;&lt;span style=&quot;color:#fa6e32;&quot;&gt;Time&lt;&#x2F;span&gt;&lt;span&gt;) {
+&lt;&#x2F;span&gt;&lt;span&gt;	&lt;&#x2F;span&gt;&lt;span style=&quot;color:#ed9366;&quot;&gt;...
+&lt;&#x2F;span&gt;&lt;span&gt;	klog&lt;&#x2F;span&gt;&lt;span style=&quot;color:#ed9366;&quot;&gt;.&lt;&#x2F;span&gt;&lt;span style=&quot;color:#f29718;&quot;&gt;V&lt;&#x2F;span&gt;&lt;span&gt;(&lt;&#x2F;span&gt;&lt;span style=&quot;color:#ff8f40;&quot;&gt;6&lt;&#x2F;span&gt;&lt;span&gt;)&lt;&#x2F;span&gt;&lt;span style=&quot;color:#ed9366;&quot;&gt;.&lt;&#x2F;span&gt;&lt;span style=&quot;color:#f29718;&quot;&gt;InfoS&lt;&#x2F;span&gt;&lt;span&gt;(&lt;&#x2F;span&gt;&lt;span style=&quot;color:#86b300;&quot;&gt;&amp;quot;Scraping metrics&amp;quot;&lt;&#x2F;span&gt;&lt;span&gt;)
+&lt;&#x2F;span&gt;&lt;span&gt;	data &lt;&#x2F;span&gt;&lt;span style=&quot;color:#ed9366;&quot;&gt;:= &lt;&#x2F;span&gt;&lt;span&gt;s&lt;&#x2F;span&gt;&lt;span style=&quot;color:#ed9366;&quot;&gt;.&lt;&#x2F;span&gt;&lt;span&gt;scraper&lt;&#x2F;span&gt;&lt;span style=&quot;color:#ed9366;&quot;&gt;.&lt;&#x2F;span&gt;&lt;span style=&quot;color:#f29718;&quot;&gt;Scrape&lt;&#x2F;span&gt;&lt;span&gt;(ctx)
+&lt;&#x2F;span&gt;&lt;span&gt;
+&lt;&#x2F;span&gt;&lt;span&gt;	klog&lt;&#x2F;span&gt;&lt;span style=&quot;color:#ed9366;&quot;&gt;.&lt;&#x2F;span&gt;&lt;span style=&quot;color:#f29718;&quot;&gt;V&lt;&#x2F;span&gt;&lt;span&gt;(&lt;&#x2F;span&gt;&lt;span style=&quot;color:#ff8f40;&quot;&gt;6&lt;&#x2F;span&gt;&lt;span&gt;)&lt;&#x2F;span&gt;&lt;span style=&quot;color:#ed9366;&quot;&gt;.&lt;&#x2F;span&gt;&lt;span style=&quot;color:#f29718;&quot;&gt;InfoS&lt;&#x2F;span&gt;&lt;span&gt;(&lt;&#x2F;span&gt;&lt;span style=&quot;color:#86b300;&quot;&gt;&amp;quot;Storing metrics&amp;quot;&lt;&#x2F;span&gt;&lt;span&gt;)
+&lt;&#x2F;span&gt;&lt;span&gt;	s&lt;&#x2F;span&gt;&lt;span style=&quot;color:#ed9366;&quot;&gt;.&lt;&#x2F;span&gt;&lt;span&gt;storage&lt;&#x2F;span&gt;&lt;span style=&quot;color:#ed9366;&quot;&gt;.&lt;&#x2F;span&gt;&lt;span style=&quot;color:#f29718;&quot;&gt;Store&lt;&#x2F;span&gt;&lt;span&gt;(data)
+&lt;&#x2F;span&gt;&lt;span&gt;	&lt;&#x2F;span&gt;&lt;span style=&quot;color:#ed9366;&quot;&gt;...
+&lt;&#x2F;span&gt;&lt;span&gt;}
+&lt;&#x2F;span&gt;&lt;&#x2F;code&gt;&lt;&#x2F;pre&gt;
+&lt;p&gt;scraper的&lt;code&gt;Scraper&lt;&#x2F;code&gt; method會對node以及pod進行metrics的抓取，首先列出所有的nodes之後，建立一個大小為nodes數量的&lt;code&gt;responseChannel&lt;&#x2F;code&gt;存放收集而來的metrics。之後針對nodes中個別的node起一個go routine，並呼叫&lt;code&gt;collectNode&lt;&#x2F;code&gt; method，針對node拿對應的metrics，非同步地將回傳結果放入剛才建立的&lt;code&gt;responseChannel&lt;&#x2F;code&gt;。&lt;&#x2F;p&gt;
+&lt;pre data-lang=&quot;go&quot; style=&quot;background-color:#fafafa;color:#61676c;&quot; class=&quot;language-go &quot;&gt;&lt;code class=&quot;language-go&quot; data-lang=&quot;go&quot;&gt;&lt;span style=&quot;color:#fa6e32;&quot;&gt;func &lt;&#x2F;span&gt;&lt;span&gt;(&lt;&#x2F;span&gt;&lt;span style=&quot;color:#ff8f40;&quot;&gt;c &lt;&#x2F;span&gt;&lt;span style=&quot;color:#ed9366;&quot;&gt;*&lt;&#x2F;span&gt;&lt;span style=&quot;color:#fa6e32;&quot;&gt;scraper&lt;&#x2F;span&gt;&lt;span&gt;) &lt;&#x2F;span&gt;&lt;span style=&quot;color:#f29718;&quot;&gt;Scrape&lt;&#x2F;span&gt;&lt;span&gt;(&lt;&#x2F;span&gt;&lt;span style=&quot;color:#ff8f40;&quot;&gt;baseCtx &lt;&#x2F;span&gt;&lt;span&gt;context&lt;&#x2F;span&gt;&lt;span style=&quot;color:#ed9366;&quot;&gt;.&lt;&#x2F;span&gt;&lt;span style=&quot;color:#fa6e32;&quot;&gt;C&lt;&#x2F;span&gt;&lt;span&gt;:&lt;&#x2F;span&gt;&lt;span style=&quot;color:#ff8f40;&quot;&gt;ntext&lt;&#x2F;span&gt;&lt;span&gt;) &lt;&#x2F;span&gt;&lt;span style=&quot;color:#ed9366;&quot;&gt;*&lt;&#x2F;span&gt;&lt;span&gt;storage&lt;&#x2F;span&gt;&lt;span style=&quot;color:#ed9366;&quot;&gt;.&lt;&#x2F;span&gt;&lt;span style=&quot;color:#fa6e32;&quot;&gt;MetricsBatch &lt;&#x2F;span&gt;&lt;span&gt;{
+&lt;&#x2F;span&gt;&lt;span&gt;	nodes&lt;&#x2F;span&gt;&lt;span style=&quot;color:#61676ccc;&quot;&gt;, &lt;&#x2F;span&gt;&lt;span&gt;err &lt;&#x2F;span&gt;&lt;span style=&quot;color:#ed9366;&quot;&gt;:= &lt;&#x2F;span&gt;&lt;span&gt;c&lt;&#x2F;span&gt;&lt;span style=&quot;color:#ed9366;&quot;&gt;.&lt;&#x2F;span&gt;&lt;span&gt;nodeLister&lt;&#x2F;span&gt;&lt;span style=&quot;color:#ed9366;&quot;&gt;.&lt;&#x2F;span&gt;&lt;span style=&quot;color:#f29718;&quot;&gt;List&lt;&#x2F;span&gt;&lt;span&gt;(labels&lt;&#x2F;span&gt;&lt;span style=&quot;color:#ed9366;&quot;&gt;.&lt;&#x2F;span&gt;&lt;span style=&quot;color:#f29718;&quot;&gt;Everything&lt;&#x2F;span&gt;&lt;span&gt;())
+&lt;&#x2F;span&gt;&lt;span&gt;	&lt;&#x2F;span&gt;&lt;span style=&quot;color:#ed9366;&quot;&gt;...
+&lt;&#x2F;span&gt;&lt;span&gt;	klog&lt;&#x2F;span&gt;&lt;span style=&quot;color:#ed9366;&quot;&gt;.&lt;&#x2F;span&gt;&lt;span style=&quot;color:#f29718;&quot;&gt;V&lt;&#x2F;span&gt;&lt;span&gt;(&lt;&#x2F;span&gt;&lt;span style=&quot;color:#ff8f40;&quot;&gt;1&lt;&#x2F;span&gt;&lt;span&gt;)&lt;&#x2F;span&gt;&lt;span style=&quot;color:#ed9366;&quot;&gt;.&lt;&#x2F;span&gt;&lt;span style=&quot;color:#f29718;&quot;&gt;InfoS&lt;&#x2F;span&gt;&lt;span&gt;(&lt;&#x2F;span&gt;&lt;span style=&quot;color:#86b300;&quot;&gt;&amp;quot;Scraping metrics from nodes&amp;quot;&lt;&#x2F;span&gt;&lt;span style=&quot;color:#61676ccc;&quot;&gt;, &lt;&#x2F;span&gt;&lt;span style=&quot;color:#86b300;&quot;&gt;&amp;quot;nodeCount&amp;quot;&lt;&#x2F;span&gt;&lt;span style=&quot;color:#61676ccc;&quot;&gt;, &lt;&#x2F;span&gt;&lt;span style=&quot;color:#f07171;&quot;&gt;len&lt;&#x2F;span&gt;&lt;span&gt;(nodes))
+&lt;&#x2F;span&gt;&lt;span&gt;
+&lt;&#x2F;span&gt;&lt;span&gt;	responseChannel &lt;&#x2F;span&gt;&lt;span style=&quot;color:#ed9366;&quot;&gt;:= &lt;&#x2F;span&gt;&lt;span style=&quot;color:#f07171;&quot;&gt;make&lt;&#x2F;span&gt;&lt;span&gt;(&lt;&#x2F;span&gt;&lt;span style=&quot;color:#fa6e32;&quot;&gt;chan &lt;&#x2F;span&gt;&lt;span style=&quot;color:#ed9366;&quot;&gt;*&lt;&#x2F;span&gt;&lt;span&gt;storage&lt;&#x2F;span&gt;&lt;span style=&quot;color:#ed9366;&quot;&gt;.&lt;&#x2F;span&gt;&lt;span style=&quot;color:#fa6e32;&quot;&gt;MetricsBatch&lt;&#x2F;span&gt;&lt;span style=&quot;color:#61676ccc;&quot;&gt;, &lt;&#x2F;span&gt;&lt;span style=&quot;color:#f07171;&quot;&gt;len&lt;&#x2F;span&gt;&lt;span&gt;(nodes))
+&lt;&#x2F;span&gt;&lt;span&gt;	&lt;&#x2F;span&gt;&lt;span style=&quot;color:#fa6e32;&quot;&gt;defer &lt;&#x2F;span&gt;&lt;span style=&quot;color:#f07171;&quot;&gt;close&lt;&#x2F;span&gt;&lt;span&gt;(responseChannel)
+&lt;&#x2F;span&gt;&lt;span&gt;
+&lt;&#x2F;span&gt;&lt;span&gt;
+&lt;&#x2F;span&gt;&lt;span&gt;	&lt;&#x2F;span&gt;&lt;span style=&quot;color:#fa6e32;&quot;&gt;for &lt;&#x2F;span&gt;&lt;span style=&quot;font-style:italic;color:#55b4d4;&quot;&gt;_&lt;&#x2F;span&gt;&lt;span style=&quot;color:#61676ccc;&quot;&gt;, &lt;&#x2F;span&gt;&lt;span&gt;node &lt;&#x2F;span&gt;&lt;span style=&quot;color:#ed9366;&quot;&gt;:= &lt;&#x2F;span&gt;&lt;span style=&quot;color:#fa6e32;&quot;&gt;range &lt;&#x2F;span&gt;&lt;span&gt;nodes {
+&lt;&#x2F;span&gt;&lt;span&gt;		&lt;&#x2F;span&gt;&lt;span style=&quot;color:#fa6e32;&quot;&gt;go func&lt;&#x2F;span&gt;&lt;span&gt;(&lt;&#x2F;span&gt;&lt;span style=&quot;color:#ff8f40;&quot;&gt;node &lt;&#x2F;span&gt;&lt;span style=&quot;color:#ed9366;&quot;&gt;*&lt;&#x2F;span&gt;&lt;span&gt;corev1&lt;&#x2F;span&gt;&lt;span style=&quot;color:#ed9366;&quot;&gt;.&lt;&#x2F;span&gt;&lt;span style=&quot;color:#fa6e32;&quot;&gt;Node&lt;&#x2F;span&gt;&lt;span&gt;) {
+&lt;&#x2F;span&gt;&lt;span&gt;			&lt;&#x2F;span&gt;&lt;span style=&quot;color:#ed9366;&quot;&gt;...
+&lt;&#x2F;span&gt;&lt;span&gt;			klog&lt;&#x2F;span&gt;&lt;span style=&quot;color:#ed9366;&quot;&gt;.&lt;&#x2F;span&gt;&lt;span style=&quot;color:#f29718;&quot;&gt;V&lt;&#x2F;span&gt;&lt;span&gt;(&lt;&#x2F;span&gt;&lt;span style=&quot;color:#ff8f40;&quot;&gt;2&lt;&#x2F;span&gt;&lt;span&gt;)&lt;&#x2F;span&gt;&lt;span style=&quot;color:#ed9366;&quot;&gt;.&lt;&#x2F;span&gt;&lt;span style=&quot;color:#f29718;&quot;&gt;InfoS&lt;&#x2F;span&gt;&lt;span&gt;(&lt;&#x2F;span&gt;&lt;span style=&quot;color:#86b300;&quot;&gt;&amp;quot;Scraping node&amp;quot;&lt;&#x2F;span&gt;&lt;span style=&quot;color:#61676ccc;&quot;&gt;, &lt;&#x2F;span&gt;&lt;span style=&quot;color:#86b300;&quot;&gt;&amp;quot;node&amp;quot;&lt;&#x2F;span&gt;&lt;span style=&quot;color:#61676ccc;&quot;&gt;, &lt;&#x2F;span&gt;&lt;span&gt;klog&lt;&#x2F;span&gt;&lt;span style=&quot;color:#ed9366;&quot;&gt;.&lt;&#x2F;span&gt;&lt;span style=&quot;color:#f29718;&quot;&gt;KObj&lt;&#x2F;span&gt;&lt;span&gt;(node))
+&lt;&#x2F;span&gt;&lt;span&gt;			m&lt;&#x2F;span&gt;&lt;span style=&quot;color:#61676ccc;&quot;&gt;, &lt;&#x2F;span&gt;&lt;span&gt;err &lt;&#x2F;span&gt;&lt;span style=&quot;color:#ed9366;&quot;&gt;:= &lt;&#x2F;span&gt;&lt;span&gt;c&lt;&#x2F;span&gt;&lt;span style=&quot;color:#ed9366;&quot;&gt;.&lt;&#x2F;span&gt;&lt;span style=&quot;color:#f29718;&quot;&gt;collectNode&lt;&#x2F;span&gt;&lt;span&gt;(ctx&lt;&#x2F;span&gt;&lt;span style=&quot;color:#61676ccc;&quot;&gt;, &lt;&#x2F;span&gt;&lt;span&gt;node)
+&lt;&#x2F;span&gt;&lt;span&gt;			&lt;&#x2F;span&gt;&lt;span style=&quot;color:#ed9366;&quot;&gt;...
+&lt;&#x2F;span&gt;&lt;span&gt;			responseChannel &lt;&#x2F;span&gt;&lt;span style=&quot;color:#ed9366;&quot;&gt;&amp;lt;- &lt;&#x2F;span&gt;&lt;span&gt;m
+&lt;&#x2F;span&gt;&lt;span&gt;		}(node)
+&lt;&#x2F;span&gt;&lt;span&gt;	}
+&lt;&#x2F;span&gt;&lt;span&gt;	&lt;&#x2F;span&gt;&lt;span style=&quot;color:#ed9366;&quot;&gt;...
+&lt;&#x2F;span&gt;&lt;span&gt;}
+&lt;&#x2F;span&gt;&lt;&#x2F;code&gt;&lt;&#x2F;pre&gt;
+&lt;p&gt;&lt;code&gt;collectNode&lt;&#x2F;code&gt; method會透過剛在&lt;code&gt;Complete&lt;&#x2F;code&gt; method中建立的&lt;code&gt;kubeletClient&lt;&#x2F;code&gt;跟kubelet拿node的metrics。&lt;code&gt;kubeletClient&lt;&#x2F;code&gt;實現了&lt;code&gt;KubeletMetricsInterface&lt;&#x2F;code&gt;，並透過RESTful API去跟kubelet拿metrics。kubelet如何實現這部分有點超出本文範圍等之後再來trace。&lt;&#x2F;p&gt;
+&lt;pre data-lang=&quot;go&quot; style=&quot;background-color:#fafafa;color:#61676c;&quot; class=&quot;language-go &quot;&gt;&lt;code class=&quot;language-go&quot; data-lang=&quot;go&quot;&gt;&lt;span style=&quot;color:#fa6e32;&quot;&gt;func &lt;&#x2F;span&gt;&lt;span&gt;(&lt;&#x2F;span&gt;&lt;span style=&quot;color:#ff8f40;&quot;&gt;c &lt;&#x2F;span&gt;&lt;span style=&quot;color:#ed9366;&quot;&gt;*&lt;&#x2F;span&gt;&lt;span style=&quot;color:#fa6e32;&quot;&gt;scraper&lt;&#x2F;span&gt;&lt;span&gt;) &lt;&#x2F;span&gt;&lt;span style=&quot;color:#f29718;&quot;&gt;collectNode&lt;&#x2F;span&gt;&lt;span&gt;(&lt;&#x2F;span&gt;&lt;span style=&quot;color:#ff8f40;&quot;&gt;ctx &lt;&#x2F;span&gt;&lt;span&gt;context&lt;&#x2F;span&gt;&lt;span style=&quot;color:#ed9366;&quot;&gt;.&lt;&#x2F;span&gt;&lt;span style=&quot;color:#fa6e32;&quot;&gt;Context&lt;&#x2F;span&gt;&lt;span style=&quot;color:#61676ccc;&quot;&gt;, &lt;&#x2F;span&gt;&lt;span style=&quot;color:#ff8f40;&quot;&gt;node &lt;&#x2F;span&gt;&lt;span style=&quot;color:#ed9366;&quot;&gt;*&lt;&#x2F;span&gt;&lt;span&gt;corev1&lt;&#x2F;span&gt;&lt;span style=&quot;color:#ed9366;&quot;&gt;.&lt;&#x2F;span&gt;&lt;span style=&quot;color:#fa6e32;&quot;&gt;Node&lt;&#x2F;span&gt;&lt;span&gt;) (&lt;&#x2F;span&gt;&lt;span style=&quot;color:#ed9366;&quot;&gt;*&lt;&#x2F;span&gt;&lt;span&gt;storage&lt;&#x2F;span&gt;&lt;span style=&quot;color:#ed9366;&quot;&gt;.&lt;&#x2F;span&gt;&lt;span style=&quot;color:#fa6e32;&quot;&gt;MetricsBatch&lt;&#x2F;span&gt;&lt;span style=&quot;color:#61676ccc;&quot;&gt;, &lt;&#x2F;span&gt;&lt;span style=&quot;font-style:italic;color:#55b4d4;&quot;&gt;error&lt;&#x2F;span&gt;&lt;span&gt;) {
+&lt;&#x2F;span&gt;&lt;span&gt;	&lt;&#x2F;span&gt;&lt;span style=&quot;color:#ed9366;&quot;&gt;...
+&lt;&#x2F;span&gt;&lt;span&gt;	ms&lt;&#x2F;span&gt;&lt;span style=&quot;color:#61676ccc;&quot;&gt;, &lt;&#x2F;span&gt;&lt;span&gt;err &lt;&#x2F;span&gt;&lt;span style=&quot;color:#ed9366;&quot;&gt;:= &lt;&#x2F;span&gt;&lt;span&gt;c&lt;&#x2F;span&gt;&lt;span style=&quot;color:#ed9366;&quot;&gt;.&lt;&#x2F;span&gt;&lt;span&gt;kubeletClient&lt;&#x2F;span&gt;&lt;span style=&quot;color:#ed9366;&quot;&gt;.&lt;&#x2F;span&gt;&lt;span style=&quot;color:#f29718;&quot;&gt;GetMetrics&lt;&#x2F;span&gt;&lt;span&gt;(ctx&lt;&#x2F;span&gt;&lt;span style=&quot;color:#61676ccc;&quot;&gt;, &lt;&#x2F;span&gt;&lt;span&gt;node)
+&lt;&#x2F;span&gt;&lt;span&gt;	&lt;&#x2F;span&gt;&lt;span style=&quot;color:#ed9366;&quot;&gt;...
+&lt;&#x2F;span&gt;&lt;span&gt;	&lt;&#x2F;span&gt;&lt;span style=&quot;color:#fa6e32;&quot;&gt;return &lt;&#x2F;span&gt;&lt;span&gt;ms&lt;&#x2F;span&gt;&lt;span style=&quot;color:#61676ccc;&quot;&gt;, &lt;&#x2F;span&gt;&lt;span style=&quot;color:#ff8f40;&quot;&gt;nil
+&lt;&#x2F;span&gt;&lt;span&gt;}
+&lt;&#x2F;span&gt;&lt;&#x2F;code&gt;&lt;&#x2F;pre&gt;
+&lt;pre data-lang=&quot;go&quot; style=&quot;background-color:#fafafa;color:#61676c;&quot; class=&quot;language-go &quot;&gt;&lt;code class=&quot;language-go&quot; data-lang=&quot;go&quot;&gt;&lt;span style=&quot;font-style:italic;color:#abb0b6;&quot;&gt;&#x2F;&#x2F; KubeletMetricsInterface knows how to fetch metrics from the Kubelet
+&lt;&#x2F;span&gt;&lt;span style=&quot;color:#fa6e32;&quot;&gt;type &lt;&#x2F;span&gt;&lt;span style=&quot;color:#399ee6;&quot;&gt;KubeletMetricsInterface &lt;&#x2F;span&gt;&lt;span style=&quot;color:#fa6e32;&quot;&gt;interface &lt;&#x2F;span&gt;&lt;span&gt;{
+&lt;&#x2F;span&gt;&lt;span&gt;	&lt;&#x2F;span&gt;&lt;span style=&quot;font-style:italic;color:#abb0b6;&quot;&gt;&#x2F;&#x2F; GetMetrics fetches Resource metrics from the given Kubelet
+&lt;&#x2F;span&gt;&lt;span&gt;	&lt;&#x2F;span&gt;&lt;span style=&quot;color:#f29718;&quot;&gt;GetMetrics&lt;&#x2F;span&gt;&lt;span&gt;(&lt;&#x2F;span&gt;&lt;span style=&quot;color:#ff8f40;&quot;&gt;ctx &lt;&#x2F;span&gt;&lt;span&gt;context&lt;&#x2F;span&gt;&lt;span style=&quot;color:#ed9366;&quot;&gt;.&lt;&#x2F;span&gt;&lt;span style=&quot;color:#fa6e32;&quot;&gt;Context&lt;&#x2F;span&gt;&lt;span style=&quot;color:#61676ccc;&quot;&gt;, &lt;&#x2F;span&gt;&lt;span style=&quot;color:#ff8f40;&quot;&gt;node &lt;&#x2F;span&gt;&lt;span style=&quot;color:#ed9366;&quot;&gt;*&lt;&#x2F;span&gt;&lt;span&gt;v1&lt;&#x2F;span&gt;&lt;span style=&quot;color:#ed9366;&quot;&gt;.&lt;&#x2F;span&gt;&lt;span style=&quot;color:#fa6e32;&quot;&gt;Node&lt;&#x2F;span&gt;&lt;span&gt;) (&lt;&#x2F;span&gt;&lt;span style=&quot;color:#ed9366;&quot;&gt;*&lt;&#x2F;span&gt;&lt;span&gt;storage&lt;&#x2F;span&gt;&lt;span style=&quot;color:#ed9366;&quot;&gt;.&lt;&#x2F;span&gt;&lt;span style=&quot;color:#fa6e32;&quot;&gt;MetricsBatch&lt;&#x2F;span&gt;&lt;span style=&quot;color:#61676ccc;&quot;&gt;, &lt;&#x2F;span&gt;&lt;span style=&quot;font-style:italic;color:#55b4d4;&quot;&gt;error&lt;&#x2F;span&gt;&lt;span&gt;)
+&lt;&#x2F;span&gt;&lt;span&gt;}
+&lt;&#x2F;span&gt;&lt;&#x2F;code&gt;&lt;&#x2F;pre&gt;
+&lt;pre data-lang=&quot;go&quot; style=&quot;background-color:#fafafa;color:#61676c;&quot; class=&quot;language-go &quot;&gt;&lt;code class=&quot;language-go&quot; data-lang=&quot;go&quot;&gt;&lt;span style=&quot;font-style:italic;color:#abb0b6;&quot;&gt;&#x2F;&#x2F;GetMetrics get metrics from kubelet &#x2F;metrics&#x2F;resource endpoint
+&lt;&#x2F;span&gt;&lt;span style=&quot;color:#fa6e32;&quot;&gt;func &lt;&#x2F;span&gt;&lt;span&gt;(&lt;&#x2F;span&gt;&lt;span style=&quot;color:#ff8f40;&quot;&gt;kc &lt;&#x2F;span&gt;&lt;span style=&quot;color:#ed9366;&quot;&gt;*&lt;&#x2F;span&gt;&lt;span style=&quot;color:#fa6e32;&quot;&gt;kubeletClient&lt;&#x2F;span&gt;&lt;span&gt;) &lt;&#x2F;span&gt;&lt;span style=&quot;color:#f29718;&quot;&gt;GetMetrics&lt;&#x2F;span&gt;&lt;span&gt;(&lt;&#x2F;span&gt;&lt;span style=&quot;color:#ff8f40;&quot;&gt;ctx &lt;&#x2F;span&gt;&lt;span&gt;context&lt;&#x2F;span&gt;&lt;span style=&quot;color:#ed9366;&quot;&gt;.&lt;&#x2F;span&gt;&lt;span style=&quot;color:#fa6e32;&quot;&gt;Context&lt;&#x2F;span&gt;&lt;span style=&quot;color:#61676ccc;&quot;&gt;, &lt;&#x2F;span&gt;&lt;span style=&quot;color:#ff8f40;&quot;&gt;node &lt;&#x2F;span&gt;&lt;span style=&quot;color:#ed9366;&quot;&gt;*&lt;&#x2F;span&gt;&lt;span&gt;corev1&lt;&#x2F;span&gt;&lt;span style=&quot;color:#ed9366;&quot;&gt;.&lt;&#x2F;span&gt;&lt;span style=&quot;color:#fa6e32;&quot;&gt;Node&lt;&#x2F;span&gt;&lt;span&gt;) (&lt;&#x2F;span&gt;&lt;span style=&quot;color:#ed9366;&quot;&gt;*&lt;&#x2F;span&gt;&lt;span&gt;storage&lt;&#x2F;span&gt;&lt;span style=&quot;color:#ed9366;&quot;&gt;.&lt;&#x2F;span&gt;&lt;span style=&quot;color:#fa6e32;&quot;&gt;MetricsBatch&lt;&#x2F;span&gt;&lt;span style=&quot;color:#61676ccc;&quot;&gt;, &lt;&#x2F;span&gt;&lt;span style=&quot;font-style:italic;color:#55b4d4;&quot;&gt;error&lt;&#x2F;span&gt;&lt;span&gt;) {
+&lt;&#x2F;span&gt;&lt;span&gt;	port &lt;&#x2F;span&gt;&lt;span style=&quot;color:#ed9366;&quot;&gt;:= &lt;&#x2F;span&gt;&lt;span&gt;kc&lt;&#x2F;span&gt;&lt;span style=&quot;color:#ed9366;&quot;&gt;.&lt;&#x2F;span&gt;&lt;span&gt;defaultPort
+&lt;&#x2F;span&gt;&lt;span&gt;	&lt;&#x2F;span&gt;&lt;span style=&quot;color:#ed9366;&quot;&gt;...
+&lt;&#x2F;span&gt;&lt;span&gt;	addr&lt;&#x2F;span&gt;&lt;span style=&quot;color:#61676ccc;&quot;&gt;, &lt;&#x2F;span&gt;&lt;span&gt;err &lt;&#x2F;span&gt;&lt;span style=&quot;color:#ed9366;&quot;&gt;:= &lt;&#x2F;span&gt;&lt;span&gt;kc&lt;&#x2F;span&gt;&lt;span style=&quot;color:#ed9366;&quot;&gt;.&lt;&#x2F;span&gt;&lt;span&gt;addrResolver&lt;&#x2F;span&gt;&lt;span style=&quot;color:#ed9366;&quot;&gt;.&lt;&#x2F;span&gt;&lt;span style=&quot;color:#f29718;&quot;&gt;NodeAddress&lt;&#x2F;span&gt;&lt;span&gt;(node)
+&lt;&#x2F;span&gt;&lt;span&gt;	&lt;&#x2F;span&gt;&lt;span style=&quot;color:#fa6e32;&quot;&gt;if &lt;&#x2F;span&gt;&lt;span&gt;err &lt;&#x2F;span&gt;&lt;span style=&quot;color:#ed9366;&quot;&gt;!= &lt;&#x2F;span&gt;&lt;span style=&quot;color:#ff8f40;&quot;&gt;nil &lt;&#x2F;span&gt;&lt;span&gt;{
+&lt;&#x2F;span&gt;&lt;span&gt;		&lt;&#x2F;span&gt;&lt;span style=&quot;color:#fa6e32;&quot;&gt;return &lt;&#x2F;span&gt;&lt;span style=&quot;color:#ff8f40;&quot;&gt;nil&lt;&#x2F;span&gt;&lt;span style=&quot;color:#61676ccc;&quot;&gt;, &lt;&#x2F;span&gt;&lt;span&gt;err
+&lt;&#x2F;span&gt;&lt;span&gt;	}
+&lt;&#x2F;span&gt;&lt;span&gt;	url &lt;&#x2F;span&gt;&lt;span style=&quot;color:#ed9366;&quot;&gt;:= &lt;&#x2F;span&gt;&lt;span&gt;url&lt;&#x2F;span&gt;&lt;span style=&quot;color:#ed9366;&quot;&gt;.&lt;&#x2F;span&gt;&lt;span&gt;URL{
+&lt;&#x2F;span&gt;&lt;span&gt;		Scheme&lt;&#x2F;span&gt;&lt;span style=&quot;color:#61676ccc;&quot;&gt;: &lt;&#x2F;span&gt;&lt;span&gt;kc&lt;&#x2F;span&gt;&lt;span style=&quot;color:#ed9366;&quot;&gt;.&lt;&#x2F;span&gt;&lt;span&gt;scheme&lt;&#x2F;span&gt;&lt;span style=&quot;color:#61676ccc;&quot;&gt;,
+&lt;&#x2F;span&gt;&lt;span&gt;		Host&lt;&#x2F;span&gt;&lt;span style=&quot;color:#61676ccc;&quot;&gt;:   &lt;&#x2F;span&gt;&lt;span&gt;net&lt;&#x2F;span&gt;&lt;span style=&quot;color:#ed9366;&quot;&gt;.&lt;&#x2F;span&gt;&lt;span style=&quot;color:#f29718;&quot;&gt;JoinHostPort&lt;&#x2F;span&gt;&lt;span&gt;(addr&lt;&#x2F;span&gt;&lt;span style=&quot;color:#61676ccc;&quot;&gt;, &lt;&#x2F;span&gt;&lt;span&gt;strconv&lt;&#x2F;span&gt;&lt;span style=&quot;color:#ed9366;&quot;&gt;.&lt;&#x2F;span&gt;&lt;span style=&quot;color:#f29718;&quot;&gt;Itoa&lt;&#x2F;span&gt;&lt;span&gt;(port))&lt;&#x2F;span&gt;&lt;span style=&quot;color:#61676ccc;&quot;&gt;,
+&lt;&#x2F;span&gt;&lt;span&gt;		Path&lt;&#x2F;span&gt;&lt;span style=&quot;color:#61676ccc;&quot;&gt;:   &lt;&#x2F;span&gt;&lt;span style=&quot;color:#86b300;&quot;&gt;&amp;quot;&#x2F;metrics&#x2F;resource&amp;quot;&lt;&#x2F;span&gt;&lt;span style=&quot;color:#61676ccc;&quot;&gt;,
+&lt;&#x2F;span&gt;&lt;span&gt;	}
+&lt;&#x2F;span&gt;&lt;span&gt;
+&lt;&#x2F;span&gt;&lt;span&gt;	req&lt;&#x2F;span&gt;&lt;span style=&quot;color:#61676ccc;&quot;&gt;, &lt;&#x2F;span&gt;&lt;span&gt;err &lt;&#x2F;span&gt;&lt;span style=&quot;color:#ed9366;&quot;&gt;:= &lt;&#x2F;span&gt;&lt;span&gt;http&lt;&#x2F;span&gt;&lt;span style=&quot;color:#ed9366;&quot;&gt;.&lt;&#x2F;span&gt;&lt;span style=&quot;color:#f29718;&quot;&gt;NewRequest&lt;&#x2F;span&gt;&lt;span&gt;(&lt;&#x2F;span&gt;&lt;span style=&quot;color:#86b300;&quot;&gt;&amp;quot;GET&amp;quot;&lt;&#x2F;span&gt;&lt;span style=&quot;color:#61676ccc;&quot;&gt;, &lt;&#x2F;span&gt;&lt;span&gt;url&lt;&#x2F;span&gt;&lt;span style=&quot;color:#ed9366;&quot;&gt;.&lt;&#x2F;span&gt;&lt;span style=&quot;color:#f29718;&quot;&gt;String&lt;&#x2F;span&gt;&lt;span&gt;()&lt;&#x2F;span&gt;&lt;span style=&quot;color:#61676ccc;&quot;&gt;, &lt;&#x2F;span&gt;&lt;span style=&quot;color:#ff8f40;&quot;&gt;nil&lt;&#x2F;span&gt;&lt;span&gt;)
+&lt;&#x2F;span&gt;&lt;span&gt;	&lt;&#x2F;span&gt;&lt;span style=&quot;color:#ed9366;&quot;&gt;...
+&lt;&#x2F;span&gt;&lt;span&gt;}
+&lt;&#x2F;span&gt;&lt;&#x2F;code&gt;&lt;&#x2F;pre&gt;
+&lt;h2 id=&quot;metricschu-fang&quot;&gt;&lt;a class=&quot;zola-anchor&quot; href=&quot;#metricschu-fang&quot; aria-label=&quot;Anchor link for: metricschu-fang&quot;&gt;metrics儲放&lt;&#x2F;a&gt;&lt;&#x2F;h2&gt;
+&lt;p&gt;接下來要看存放metrics的&lt;code&gt;Store&lt;&#x2F;code&gt; method，這裡會針對nodes以及pods個別呼叫&lt;code&gt;Store&lt;&#x2F;code&gt; method。同時也會更新物件中的last以及prev內容。&lt;&#x2F;p&gt;
+&lt;pre data-lang=&quot;go&quot; style=&quot;background-color:#fafafa;color:#61676c;&quot; class=&quot;language-go &quot;&gt;&lt;code class=&quot;language-go&quot; data-lang=&quot;go&quot;&gt;&lt;span style=&quot;color:#fa6e32;&quot;&gt;func &lt;&#x2F;span&gt;&lt;span&gt;(&lt;&#x2F;span&gt;&lt;span style=&quot;color:#ff8f40;&quot;&gt;s &lt;&#x2F;span&gt;&lt;span style=&quot;color:#ed9366;&quot;&gt;*&lt;&#x2F;span&gt;&lt;span style=&quot;color:#fa6e32;&quot;&gt;storage&lt;&#x2F;span&gt;&lt;span&gt;) &lt;&#x2F;span&gt;&lt;span style=&quot;color:#f29718;&quot;&gt;Store&lt;&#x2F;span&gt;&lt;span&gt;(&lt;&#x2F;span&gt;&lt;span style=&quot;color:#ff8f40;&quot;&gt;batch &lt;&#x2F;span&gt;&lt;span style=&quot;color:#ed9366;&quot;&gt;*&lt;&#x2F;span&gt;&lt;span style=&quot;color:#fa6e32;&quot;&gt;MetricsBatch&lt;&#x2F;span&gt;&lt;span&gt;) {
+&lt;&#x2F;span&gt;&lt;span&gt;	s&lt;&#x2F;span&gt;&lt;span style=&quot;color:#ed9366;&quot;&gt;.&lt;&#x2F;span&gt;&lt;span&gt;mu&lt;&#x2F;span&gt;&lt;span style=&quot;color:#ed9366;&quot;&gt;.&lt;&#x2F;span&gt;&lt;span style=&quot;color:#f29718;&quot;&gt;Lock&lt;&#x2F;span&gt;&lt;span&gt;()
+&lt;&#x2F;span&gt;&lt;span&gt;	&lt;&#x2F;span&gt;&lt;span style=&quot;color:#fa6e32;&quot;&gt;defer &lt;&#x2F;span&gt;&lt;span&gt;s&lt;&#x2F;span&gt;&lt;span style=&quot;color:#ed9366;&quot;&gt;.&lt;&#x2F;span&gt;&lt;span&gt;mu&lt;&#x2F;span&gt;&lt;span style=&quot;color:#ed9366;&quot;&gt;.&lt;&#x2F;span&gt;&lt;span style=&quot;color:#f29718;&quot;&gt;Unlock&lt;&#x2F;span&gt;&lt;span&gt;()
+&lt;&#x2F;span&gt;&lt;span&gt;	s&lt;&#x2F;span&gt;&lt;span style=&quot;color:#ed9366;&quot;&gt;.&lt;&#x2F;span&gt;&lt;span&gt;nodes&lt;&#x2F;span&gt;&lt;span style=&quot;color:#ed9366;&quot;&gt;.&lt;&#x2F;span&gt;&lt;span style=&quot;color:#f29718;&quot;&gt;Store&lt;&#x2F;span&gt;&lt;span&gt;(batch)
+&lt;&#x2F;span&gt;&lt;span&gt;	s&lt;&#x2F;span&gt;&lt;span style=&quot;color:#ed9366;&quot;&gt;.&lt;&#x2F;span&gt;&lt;span&gt;pods&lt;&#x2F;span&gt;&lt;span style=&quot;color:#ed9366;&quot;&gt;.&lt;&#x2F;span&gt;&lt;span style=&quot;color:#f29718;&quot;&gt;Store&lt;&#x2F;span&gt;&lt;span&gt;(batch)
+&lt;&#x2F;span&gt;&lt;span&gt;}
+&lt;&#x2F;span&gt;&lt;&#x2F;code&gt;&lt;&#x2F;pre&gt;
+&lt;pre data-lang=&quot;go&quot; style=&quot;background-color:#fafafa;color:#61676c;&quot; class=&quot;language-go &quot;&gt;&lt;code class=&quot;language-go&quot; data-lang=&quot;go&quot;&gt;&lt;span style=&quot;color:#fa6e32;&quot;&gt;func &lt;&#x2F;span&gt;&lt;span&gt;(&lt;&#x2F;span&gt;&lt;span style=&quot;color:#ff8f40;&quot;&gt;s &lt;&#x2F;span&gt;&lt;span style=&quot;color:#ed9366;&quot;&gt;*&lt;&#x2F;span&gt;&lt;span style=&quot;color:#fa6e32;&quot;&gt;nodeStorage&lt;&#x2F;span&gt;&lt;span&gt;) &lt;&#x2F;span&gt;&lt;span style=&quot;color:#f29718;&quot;&gt;Store&lt;&#x2F;span&gt;&lt;span&gt;(&lt;&#x2F;span&gt;&lt;span style=&quot;color:#ff8f40;&quot;&gt;batch &lt;&#x2F;span&gt;&lt;span style=&quot;color:#ed9366;&quot;&gt;*&lt;&#x2F;span&gt;&lt;span style=&quot;color:#fa6e32;&quot;&gt;MetricsBatch&lt;&#x2F;span&gt;&lt;span&gt;) {
+&lt;&#x2F;span&gt;&lt;span&gt;	lastNodes &lt;&#x2F;span&gt;&lt;span style=&quot;color:#ed9366;&quot;&gt;:= &lt;&#x2F;span&gt;&lt;span style=&quot;color:#f07171;&quot;&gt;make&lt;&#x2F;span&gt;&lt;span&gt;(&lt;&#x2F;span&gt;&lt;span style=&quot;color:#fa6e32;&quot;&gt;map&lt;&#x2F;span&gt;&lt;span&gt;[&lt;&#x2F;span&gt;&lt;span style=&quot;font-style:italic;color:#55b4d4;&quot;&gt;string&lt;&#x2F;span&gt;&lt;span&gt;]&lt;&#x2F;span&gt;&lt;span style=&quot;color:#fa6e32;&quot;&gt;MetricsPoint&lt;&#x2F;span&gt;&lt;span style=&quot;color:#61676ccc;&quot;&gt;, &lt;&#x2F;span&gt;&lt;span style=&quot;color:#f07171;&quot;&gt;len&lt;&#x2F;span&gt;&lt;span&gt;(batch&lt;&#x2F;span&gt;&lt;span style=&quot;color:#ed9366;&quot;&gt;.&lt;&#x2F;span&gt;&lt;span&gt;Nodes))
+&lt;&#x2F;span&gt;&lt;span&gt;	prevNodes &lt;&#x2F;span&gt;&lt;span style=&quot;color:#ed9366;&quot;&gt;:= &lt;&#x2F;span&gt;&lt;span style=&quot;color:#f07171;&quot;&gt;make&lt;&#x2F;span&gt;&lt;span&gt;(&lt;&#x2F;span&gt;&lt;span style=&quot;color:#fa6e32;&quot;&gt;map&lt;&#x2F;span&gt;&lt;span&gt;[&lt;&#x2F;span&gt;&lt;span style=&quot;font-style:italic;color:#55b4d4;&quot;&gt;string&lt;&#x2F;span&gt;&lt;span&gt;]&lt;&#x2F;span&gt;&lt;span style=&quot;color:#fa6e32;&quot;&gt;MetricsPoint&lt;&#x2F;span&gt;&lt;span style=&quot;color:#61676ccc;&quot;&gt;, &lt;&#x2F;span&gt;&lt;span style=&quot;color:#f07171;&quot;&gt;len&lt;&#x2F;span&gt;&lt;span&gt;(batch&lt;&#x2F;span&gt;&lt;span style=&quot;color:#ed9366;&quot;&gt;.&lt;&#x2F;span&gt;&lt;span&gt;Nodes))
+&lt;&#x2F;span&gt;&lt;span&gt;	&lt;&#x2F;span&gt;&lt;span style=&quot;color:#fa6e32;&quot;&gt;for &lt;&#x2F;span&gt;&lt;span&gt;nodeName&lt;&#x2F;span&gt;&lt;span style=&quot;color:#61676ccc;&quot;&gt;, &lt;&#x2F;span&gt;&lt;span&gt;newPoint &lt;&#x2F;span&gt;&lt;span style=&quot;color:#ed9366;&quot;&gt;:= &lt;&#x2F;span&gt;&lt;span style=&quot;color:#fa6e32;&quot;&gt;range &lt;&#x2F;span&gt;&lt;span&gt;batch&lt;&#x2F;span&gt;&lt;span style=&quot;color:#ed9366;&quot;&gt;.&lt;&#x2F;span&gt;&lt;span&gt;Nodes {
+&lt;&#x2F;span&gt;&lt;span&gt;		&lt;&#x2F;span&gt;&lt;span style=&quot;color:#fa6e32;&quot;&gt;if &lt;&#x2F;span&gt;&lt;span style=&quot;font-style:italic;color:#55b4d4;&quot;&gt;_&lt;&#x2F;span&gt;&lt;span style=&quot;color:#61676ccc;&quot;&gt;, &lt;&#x2F;span&gt;&lt;span&gt;exists &lt;&#x2F;span&gt;&lt;span style=&quot;color:#ed9366;&quot;&gt;:= &lt;&#x2F;span&gt;&lt;span&gt;lastNodes[nodeName]&lt;&#x2F;span&gt;&lt;span style=&quot;color:#61676ccc;&quot;&gt;; &lt;&#x2F;span&gt;&lt;span&gt;exists {
+&lt;&#x2F;span&gt;&lt;span&gt;			klog&lt;&#x2F;span&gt;&lt;span style=&quot;color:#ed9366;&quot;&gt;.&lt;&#x2F;span&gt;&lt;span style=&quot;color:#f29718;&quot;&gt;ErrorS&lt;&#x2F;span&gt;&lt;span&gt;(&lt;&#x2F;span&gt;&lt;span style=&quot;color:#ff8f40;&quot;&gt;nil&lt;&#x2F;span&gt;&lt;span style=&quot;color:#61676ccc;&quot;&gt;, &lt;&#x2F;span&gt;&lt;span style=&quot;color:#86b300;&quot;&gt;&amp;quot;Got duplicate node point&amp;quot;&lt;&#x2F;span&gt;&lt;span style=&quot;color:#61676ccc;&quot;&gt;, &lt;&#x2F;span&gt;&lt;span style=&quot;color:#86b300;&quot;&gt;&amp;quot;node&amp;quot;&lt;&#x2F;span&gt;&lt;span style=&quot;color:#61676ccc;&quot;&gt;, &lt;&#x2F;span&gt;&lt;span&gt;klog&lt;&#x2F;span&gt;&lt;span style=&quot;color:#ed9366;&quot;&gt;.&lt;&#x2F;span&gt;&lt;span style=&quot;color:#f29718;&quot;&gt;KRef&lt;&#x2F;span&gt;&lt;span&gt;(&lt;&#x2F;span&gt;&lt;span style=&quot;color:#86b300;&quot;&gt;&amp;quot;&amp;quot;&lt;&#x2F;span&gt;&lt;span style=&quot;color:#61676ccc;&quot;&gt;, &lt;&#x2F;span&gt;&lt;span&gt;nodeName))
+&lt;&#x2F;span&gt;&lt;span&gt;			&lt;&#x2F;span&gt;&lt;span style=&quot;color:#fa6e32;&quot;&gt;continue
+&lt;&#x2F;span&gt;&lt;span&gt;		}
+&lt;&#x2F;span&gt;&lt;span&gt;		lastNodes[nodeName] &lt;&#x2F;span&gt;&lt;span style=&quot;color:#ed9366;&quot;&gt;= &lt;&#x2F;span&gt;&lt;span&gt;newPoint
+&lt;&#x2F;span&gt;&lt;span&gt;		&lt;&#x2F;span&gt;&lt;span style=&quot;color:#ed9366;&quot;&gt;...
+&lt;&#x2F;span&gt;&lt;span&gt;	}
+&lt;&#x2F;span&gt;&lt;span&gt;	s&lt;&#x2F;span&gt;&lt;span style=&quot;color:#ed9366;&quot;&gt;.&lt;&#x2F;span&gt;&lt;span&gt;last &lt;&#x2F;span&gt;&lt;span style=&quot;color:#ed9366;&quot;&gt;= &lt;&#x2F;span&gt;&lt;span&gt;lastNodes
+&lt;&#x2F;span&gt;&lt;span&gt;	s&lt;&#x2F;span&gt;&lt;span style=&quot;color:#ed9366;&quot;&gt;.&lt;&#x2F;span&gt;&lt;span&gt;prev &lt;&#x2F;span&gt;&lt;span style=&quot;color:#ed9366;&quot;&gt;= &lt;&#x2F;span&gt;&lt;span&gt;prevNodes
+&lt;&#x2F;span&gt;&lt;span&gt;
+&lt;&#x2F;span&gt;&lt;span&gt;	&lt;&#x2F;span&gt;&lt;span style=&quot;font-style:italic;color:#abb0b6;&quot;&gt;&#x2F;&#x2F; Only count last for which metrics can be returned.
+&lt;&#x2F;span&gt;&lt;span&gt;	pointsStored&lt;&#x2F;span&gt;&lt;span style=&quot;color:#ed9366;&quot;&gt;.&lt;&#x2F;span&gt;&lt;span style=&quot;color:#f29718;&quot;&gt;WithLabelValues&lt;&#x2F;span&gt;&lt;span&gt;(&lt;&#x2F;span&gt;&lt;span style=&quot;color:#86b300;&quot;&gt;&amp;quot;node&amp;quot;&lt;&#x2F;span&gt;&lt;span&gt;)&lt;&#x2F;span&gt;&lt;span style=&quot;color:#ed9366;&quot;&gt;.&lt;&#x2F;span&gt;&lt;span style=&quot;color:#f29718;&quot;&gt;Set&lt;&#x2F;span&gt;&lt;span&gt;(&lt;&#x2F;span&gt;&lt;span style=&quot;font-style:italic;color:#55b4d4;&quot;&gt;float64&lt;&#x2F;span&gt;&lt;span&gt;(&lt;&#x2F;span&gt;&lt;span style=&quot;color:#f07171;&quot;&gt;len&lt;&#x2F;span&gt;&lt;span&gt;(prevNodes)))
+&lt;&#x2F;span&gt;&lt;span&gt;}
+&lt;&#x2F;span&gt;&lt;&#x2F;code&gt;&lt;&#x2F;pre&gt;
+&lt;pre data-lang=&quot;go&quot; style=&quot;background-color:#fafafa;color:#61676c;&quot; class=&quot;language-go &quot;&gt;&lt;code class=&quot;language-go&quot; data-lang=&quot;go&quot;&gt;&lt;span style=&quot;color:#fa6e32;&quot;&gt;func &lt;&#x2F;span&gt;&lt;span&gt;(&lt;&#x2F;span&gt;&lt;span style=&quot;color:#ff8f40;&quot;&gt;s &lt;&#x2F;span&gt;&lt;span style=&quot;color:#ed9366;&quot;&gt;*&lt;&#x2F;span&gt;&lt;span style=&quot;color:#fa6e32;&quot;&gt;podStorage&lt;&#x2F;span&gt;&lt;span&gt;) &lt;&#x2F;span&gt;&lt;span style=&quot;color:#f29718;&quot;&gt;Store&lt;&#x2F;span&gt;&lt;span&gt;(&lt;&#x2F;span&gt;&lt;span style=&quot;color:#ff8f40;&quot;&gt;newPods &lt;&#x2F;span&gt;&lt;span style=&quot;color:#ed9366;&quot;&gt;*&lt;&#x2F;span&gt;&lt;span style=&quot;color:#fa6e32;&quot;&gt;MetricsBatch&lt;&#x2F;span&gt;&lt;span&gt;) {
+&lt;&#x2F;span&gt;&lt;span&gt;	lastPods &lt;&#x2F;span&gt;&lt;span style=&quot;color:#ed9366;&quot;&gt;:= &lt;&#x2F;span&gt;&lt;span style=&quot;color:#f07171;&quot;&gt;make&lt;&#x2F;span&gt;&lt;span&gt;(&lt;&#x2F;span&gt;&lt;span style=&quot;color:#fa6e32;&quot;&gt;map&lt;&#x2F;span&gt;&lt;span&gt;[apitypes&lt;&#x2F;span&gt;&lt;span style=&quot;color:#ed9366;&quot;&gt;.&lt;&#x2F;span&gt;&lt;span style=&quot;color:#fa6e32;&quot;&gt;NamespacedName&lt;&#x2F;span&gt;&lt;span&gt;]&lt;&#x2F;span&gt;&lt;span style=&quot;color:#fa6e32;&quot;&gt;PodMetricsPoint&lt;&#x2F;span&gt;&lt;span style=&quot;color:#61676ccc;&quot;&gt;, &lt;&#x2F;span&gt;&lt;span style=&quot;color:#f07171;&quot;&gt;len&lt;&#x2F;span&gt;&lt;span&gt;(newPods&lt;&#x2F;span&gt;&lt;span style=&quot;color:#ed9366;&quot;&gt;.&lt;&#x2F;span&gt;&lt;span&gt;Pods))
+&lt;&#x2F;span&gt;&lt;span&gt;	prevPods &lt;&#x2F;span&gt;&lt;span style=&quot;color:#ed9366;&quot;&gt;:= &lt;&#x2F;span&gt;&lt;span style=&quot;color:#f07171;&quot;&gt;make&lt;&#x2F;span&gt;&lt;span&gt;(&lt;&#x2F;span&gt;&lt;span style=&quot;color:#fa6e32;&quot;&gt;map&lt;&#x2F;span&gt;&lt;span&gt;[apitypes&lt;&#x2F;span&gt;&lt;span style=&quot;color:#ed9366;&quot;&gt;.&lt;&#x2F;span&gt;&lt;span style=&quot;color:#fa6e32;&quot;&gt;NamespacedName&lt;&#x2F;span&gt;&lt;span&gt;]&lt;&#x2F;span&gt;&lt;span style=&quot;color:#fa6e32;&quot;&gt;PodMetricsPoint&lt;&#x2F;span&gt;&lt;span style=&quot;color:#61676ccc;&quot;&gt;, &lt;&#x2F;span&gt;&lt;span style=&quot;color:#f07171;&quot;&gt;len&lt;&#x2F;span&gt;&lt;span&gt;(newPods&lt;&#x2F;span&gt;&lt;span style=&quot;color:#ed9366;&quot;&gt;.&lt;&#x2F;span&gt;&lt;span&gt;Pods))
+&lt;&#x2F;span&gt;&lt;span&gt;	&lt;&#x2F;span&gt;&lt;span style=&quot;color:#fa6e32;&quot;&gt;var &lt;&#x2F;span&gt;&lt;span&gt;containerCount &lt;&#x2F;span&gt;&lt;span style=&quot;font-style:italic;color:#55b4d4;&quot;&gt;int
+&lt;&#x2F;span&gt;&lt;span&gt;	&lt;&#x2F;span&gt;&lt;span style=&quot;color:#fa6e32;&quot;&gt;for &lt;&#x2F;span&gt;&lt;span&gt;podRef&lt;&#x2F;span&gt;&lt;span style=&quot;color:#61676ccc;&quot;&gt;, &lt;&#x2F;span&gt;&lt;span&gt;newPod &lt;&#x2F;span&gt;&lt;span style=&quot;color:#ed9366;&quot;&gt;:= &lt;&#x2F;span&gt;&lt;span style=&quot;color:#fa6e32;&quot;&gt;range &lt;&#x2F;span&gt;&lt;span&gt;newPods&lt;&#x2F;span&gt;&lt;span style=&quot;color:#ed9366;&quot;&gt;.&lt;&#x2F;span&gt;&lt;span&gt;Pods {
+&lt;&#x2F;span&gt;&lt;span&gt;		&lt;&#x2F;span&gt;&lt;span style=&quot;color:#ed9366;&quot;&gt;...
+&lt;&#x2F;span&gt;&lt;span&gt;		&lt;&#x2F;span&gt;&lt;span style=&quot;color:#fa6e32;&quot;&gt;for &lt;&#x2F;span&gt;&lt;span&gt;containerName&lt;&#x2F;span&gt;&lt;span style=&quot;color:#61676ccc;&quot;&gt;, &lt;&#x2F;span&gt;&lt;span&gt;newPoint &lt;&#x2F;span&gt;&lt;span style=&quot;color:#ed9366;&quot;&gt;:= &lt;&#x2F;span&gt;&lt;span style=&quot;color:#fa6e32;&quot;&gt;range &lt;&#x2F;span&gt;&lt;span&gt;newPod&lt;&#x2F;span&gt;&lt;span style=&quot;color:#ed9366;&quot;&gt;.&lt;&#x2F;span&gt;&lt;span&gt;Containers {
+&lt;&#x2F;span&gt;&lt;span&gt;			&lt;&#x2F;span&gt;&lt;span style=&quot;color:#ed9366;&quot;&gt;...
+&lt;&#x2F;span&gt;&lt;span&gt;			newLastPod&lt;&#x2F;span&gt;&lt;span style=&quot;color:#ed9366;&quot;&gt;.&lt;&#x2F;span&gt;&lt;span&gt;Containers[containerName] &lt;&#x2F;span&gt;&lt;span style=&quot;color:#ed9366;&quot;&gt;= &lt;&#x2F;span&gt;&lt;span&gt;newPoint
+&lt;&#x2F;span&gt;&lt;span&gt;			&lt;&#x2F;span&gt;&lt;span style=&quot;color:#ed9366;&quot;&gt;...
+&lt;&#x2F;span&gt;&lt;span&gt;		}
+&lt;&#x2F;span&gt;&lt;span&gt;		containerPoints &lt;&#x2F;span&gt;&lt;span style=&quot;color:#ed9366;&quot;&gt;:= &lt;&#x2F;span&gt;&lt;span style=&quot;color:#f07171;&quot;&gt;len&lt;&#x2F;span&gt;&lt;span&gt;(newPrevPod&lt;&#x2F;span&gt;&lt;span style=&quot;color:#ed9366;&quot;&gt;.&lt;&#x2F;span&gt;&lt;span&gt;Containers)
+&lt;&#x2F;span&gt;&lt;span&gt;		&lt;&#x2F;span&gt;&lt;span style=&quot;color:#fa6e32;&quot;&gt;if &lt;&#x2F;span&gt;&lt;span&gt;containerPoints &lt;&#x2F;span&gt;&lt;span style=&quot;color:#ed9366;&quot;&gt;&amp;gt; &lt;&#x2F;span&gt;&lt;span style=&quot;color:#ff8f40;&quot;&gt;0 &lt;&#x2F;span&gt;&lt;span&gt;{
+&lt;&#x2F;span&gt;&lt;span&gt;			prevPods[podRef] &lt;&#x2F;span&gt;&lt;span style=&quot;color:#ed9366;&quot;&gt;= &lt;&#x2F;span&gt;&lt;span&gt;newPrevPod
+&lt;&#x2F;span&gt;&lt;span&gt;		}
+&lt;&#x2F;span&gt;&lt;span&gt;		lastPods[podRef] &lt;&#x2F;span&gt;&lt;span style=&quot;color:#ed9366;&quot;&gt;= &lt;&#x2F;span&gt;&lt;span&gt;newLastPod
+&lt;&#x2F;span&gt;&lt;span&gt;
+&lt;&#x2F;span&gt;&lt;span&gt;		&lt;&#x2F;span&gt;&lt;span style=&quot;font-style:italic;color:#abb0b6;&quot;&gt;&#x2F;&#x2F; Only count containers for which metrics can be returned.
+&lt;&#x2F;span&gt;&lt;span&gt;		containerCount &lt;&#x2F;span&gt;&lt;span style=&quot;color:#ed9366;&quot;&gt;+= &lt;&#x2F;span&gt;&lt;span&gt;containerPoints
+&lt;&#x2F;span&gt;&lt;span&gt;	}
+&lt;&#x2F;span&gt;&lt;span&gt;	s&lt;&#x2F;span&gt;&lt;span style=&quot;color:#ed9366;&quot;&gt;.&lt;&#x2F;span&gt;&lt;span&gt;last &lt;&#x2F;span&gt;&lt;span style=&quot;color:#ed9366;&quot;&gt;= &lt;&#x2F;span&gt;&lt;span&gt;lastPods
+&lt;&#x2F;span&gt;&lt;span&gt;	s&lt;&#x2F;span&gt;&lt;span style=&quot;color:#ed9366;&quot;&gt;.&lt;&#x2F;span&gt;&lt;span&gt;prev &lt;&#x2F;span&gt;&lt;span style=&quot;color:#ed9366;&quot;&gt;= &lt;&#x2F;span&gt;&lt;span&gt;prevPods
+&lt;&#x2F;span&gt;&lt;span&gt;
+&lt;&#x2F;span&gt;&lt;span&gt;	pointsStored&lt;&#x2F;span&gt;&lt;span style=&quot;color:#ed9366;&quot;&gt;.&lt;&#x2F;span&gt;&lt;span style=&quot;color:#f29718;&quot;&gt;WithLabelValues&lt;&#x2F;span&gt;&lt;span&gt;(&lt;&#x2F;span&gt;&lt;span style=&quot;color:#86b300;&quot;&gt;&amp;quot;container&amp;quot;&lt;&#x2F;span&gt;&lt;span&gt;)&lt;&#x2F;span&gt;&lt;span style=&quot;color:#ed9366;&quot;&gt;.&lt;&#x2F;span&gt;&lt;span style=&quot;color:#f29718;&quot;&gt;Set&lt;&#x2F;span&gt;&lt;span&gt;(&lt;&#x2F;span&gt;&lt;span style=&quot;font-style:italic;color:#55b4d4;&quot;&gt;float64&lt;&#x2F;span&gt;&lt;span&gt;(containerCount))
+&lt;&#x2F;span&gt;&lt;span&gt;}
+&lt;&#x2F;span&gt;&lt;&#x2F;code&gt;&lt;&#x2F;pre&gt;
+&lt;h1 id=&quot;jie-yu&quot;&gt;&lt;a class=&quot;zola-anchor&quot; href=&quot;#jie-yu&quot; aria-label=&quot;Anchor link for: jie-yu&quot;&gt;結語&lt;&#x2F;a&gt;&lt;&#x2F;h1&gt;
+&lt;p&gt;本篇文章trace了metrics-server的進入點、如何抓取nodes及pods的metrics以及如何存放剛抓到的metrics。metrics-server每隔一段時間就會抓取metrics，並存放到內部定義的資料結構中。其實&lt;code&gt;podStorage&lt;&#x2F;code&gt;以及&lt;code&gt;nodeStorage&lt;&#x2F;code&gt;還有一個method是&lt;code&gt;GetMetrics&lt;&#x2F;code&gt;，這之後會被kubectl top以及HPA controller呼叫到，該method會從這些資料結構中抓取metrics以及計算metrics差異，這會在之後的文章做說明。&lt;&#x2F;p&gt;
+</description>
+      </item>
+      <item>
+          <title>Build a DL Library from Scratch (Part2) - Backpropagation</title>
+          <pubDate>Sun, 04 Apr 2021 00:00:00 +0000</pubDate>
+          <author>Unknown</author>
+          <link>https://www.titaneric.com/posts/autodiff-from-scratch-p2/</link>
+          <guid>https://www.titaneric.com/posts/autodiff-from-scratch-p2/</guid>
+          <description xml:base="https://www.titaneric.com/posts/autodiff-from-scratch-p2/">&lt;h2 id=&quot;introduction&quot;&gt;&lt;a class=&quot;zola-anchor&quot; href=&quot;#introduction&quot; aria-label=&quot;Anchor link for: introduction&quot;&gt;Introduction&lt;&#x2F;a&gt;&lt;&#x2F;h2&gt;
+&lt;p&gt;Previously, I talked about my motivation and introduced some background including the computational graph and backpropagation algorithm. Let&#x27;s move on to learn something new!&lt;&#x2F;p&gt;
+&lt;h2 id=&quot;background&quot;&gt;&lt;a class=&quot;zola-anchor&quot; href=&quot;#background&quot; aria-label=&quot;Anchor link for: background&quot;&gt;Background&lt;&#x2F;a&gt;&lt;&#x2F;h2&gt;
+&lt;h3 id=&quot;auto-differentiation&quot;&gt;&lt;a class=&quot;zola-anchor&quot; href=&quot;#auto-differentiation&quot; aria-label=&quot;Anchor link for: auto-differentiation&quot;&gt;Auto-Differentiation&lt;&#x2F;a&gt;&lt;&#x2F;h3&gt;
+&lt;p&gt;Equipped with chain rule and fundamental derivative, we could calculate the gradient of given function w.r.t. any variable by auto-differentiation.&lt;&#x2F;p&gt;
+&lt;p&gt;We may refresh our memory by reviewing the previous example again. Before that, we should introduce some terms used in this post.&lt;&#x2F;p&gt;
+&lt;p&gt;&lt;img src=&quot;&#x2F;images&#x2F;posts&#x2F;autodiff-from-scratch-p2&#x2F;autodiff-series-term.png&quot; alt=&quot; &quot; &#x2F;&gt;&lt;&#x2F;p&gt;
+&lt;p&gt;
+Given a function \(h = f(x,y)\), we know that \(x\) and \(y\) is the input for function \(f\), and the \(h\) is the result. This is the forward pass.
+&lt;&#x2F;p&gt;
+&lt;p&gt;
+When calculating the gradient of this function, we need backpropagation. Suppose that the loss \(L\) is the final result and the \(\frac{\partial{L}}{\partial{h}}\) is already calculated in the last node which is also called &lt;b&gt;upstream&lt;&#x2F;b&gt;.
+&lt;&#x2F;p&gt;
+&lt;p&gt;
+We may derive the gradient of function \(f\) w.r.t. input \(x\). Cause function \(f\) is the fundamental operation like multiplication, add or exponential. We could easily receive the derivative result \(\frac{\partial{h}}{\partial{x}}\) called &lt;b&gt;local gradient&lt;&#x2F;b&gt;.
+&lt;&#x2F;p&gt;
+&lt;p&gt;
+Finally, we have \(\frac{\partial{L}}{\partial{x}}\) called &lt;b&gt;downstream&lt;&#x2F;b&gt; by chain rule \(\frac{\partial{L}}{\partial{x}}=\frac{\partial{L}}{\partial{h}}\cdot\frac{\partial{h}}{\partial{x}}\). Downstream is the upstream to the next node, gradient is similar to water flow passing through each operation nodes to the derivative target.
+&lt;&#x2F;p&gt;
+We may re-visit the last example to illustrate the autodiff. We will step by step (or node by node) to derive the result.
+&lt;p&gt;
+Given a sigmoid function, We want to get the derivative of function \(y\) w.r.t. \(z\).
+\[y = \frac{1}{1 + e^{-z}}\]
+&lt;&#x2F;p&gt;
+&lt;h4 id=&quot;reciprocal-operator&quot;&gt;&lt;a class=&quot;zola-anchor&quot; href=&quot;#reciprocal-operator&quot; aria-label=&quot;Anchor link for: reciprocal-operator&quot;&gt;Reciprocal operator&lt;&#x2F;a&gt;&lt;&#x2F;h4&gt;
+&lt;p&gt;&lt;img src=&quot;&#x2F;images&#x2F;posts&#x2F;autodiff-from-scratch-p2&#x2F;autodiff-series-sigmoid-reciprocal.png&quot; alt=&quot; &quot; &#x2F;&gt;&lt;&#x2F;p&gt;
+&lt;p&gt;⚠ &lt;em&gt;&lt;strong&gt;Notice that upstream here is constant 1 for outermost operation (the closest one to output) in the computational graph. In fact, it is not 1, it is the tensor filled with scalar 1 which shape is equal to the output.&lt;&#x2F;strong&gt;&lt;&#x2F;em&gt;&lt;&#x2F;p&gt;
+&lt;h4 id=&quot;add-operator&quot;&gt;&lt;a class=&quot;zola-anchor&quot; href=&quot;#add-operator&quot; aria-label=&quot;Anchor link for: add-operator&quot;&gt;Add operator&lt;&#x2F;a&gt;&lt;&#x2F;h4&gt;
+&lt;p&gt;&lt;img src=&quot;&#x2F;images&#x2F;posts&#x2F;autodiff-from-scratch-p2&#x2F;autodiff-series-sigmoid-add.png&quot; alt=&quot; &quot; &#x2F;&gt;&lt;&#x2F;p&gt;
+&lt;h4 id=&quot;exponential-operator&quot;&gt;&lt;a class=&quot;zola-anchor&quot; href=&quot;#exponential-operator&quot; aria-label=&quot;Anchor link for: exponential-operator&quot;&gt;Exponential operator&lt;&#x2F;a&gt;&lt;&#x2F;h4&gt;
+&lt;p&gt;&lt;img src=&quot;&#x2F;images&#x2F;posts&#x2F;autodiff-from-scratch-p2&#x2F;autodiff-series-sigmoid-exp.png&quot; alt=&quot; &quot; &#x2F;&gt;&lt;&#x2F;p&gt;
+&lt;h4 id=&quot;negative-operator&quot;&gt;&lt;a class=&quot;zola-anchor&quot; href=&quot;#negative-operator&quot; aria-label=&quot;Anchor link for: negative-operator&quot;&gt;Negative operator&lt;&#x2F;a&gt;&lt;&#x2F;h4&gt;
+&lt;p&gt;&lt;img src=&quot;&#x2F;images&#x2F;posts&#x2F;autodiff-from-scratch-p2&#x2F;autodiff-series-sigmoid-neg.png&quot; alt=&quot; &quot; &#x2F;&gt;&lt;&#x2F;p&gt;
+&lt;h4 id=&quot;validation&quot;&gt;&lt;a class=&quot;zola-anchor&quot; href=&quot;#validation&quot; aria-label=&quot;Anchor link for: validation&quot;&gt;Validation&lt;&#x2F;a&gt;&lt;&#x2F;h4&gt;
+&lt;p&gt;
+Downstream \(\frac{\partial{L}}{\partial{z}}=\frac{\partial{L}}{\partial{d}}=1 \cdot -1(1+e^{-z})^{-2}\cdot 1 \cdot e^{-z} \cdot -1\) is the final result we want. We could validate the result by numerical way that we learned in the Calculas class, which is
+\[f&#x27;(x) = \lim_{\epsilon\to 0} \frac{f(x + \epsilon) - f(x)}{\epsilon}\]
+&lt;&#x2F;p&gt;
+&lt;p&gt;⚠ &lt;em&gt;&lt;strong&gt;Notice that this validation could validate almost any function which could be used in the unit test. This could be found in various deep learning frameworks.&lt;&#x2F;strong&gt;&lt;&#x2F;em&gt;&lt;&#x2F;p&gt;
+&lt;p&gt;
+We could feed \(z=0\) and \(\epsilon=0.01\) to original function \(f(z)=\frac{1}{1+e^{-z}}\).
+\[f(0)=\frac{1}{1+1}=\frac{1}{2}=0.5\]
+\[f(0+0.01)=\frac{1}{1+e^{-0.01}}\approx\frac{1}{1+0.99}\approx 0.5025\]
+\[f&#x27;(0)=\frac{f(0+0.01)-f(0)}{0.01}\approx\frac{0.5025-0.5}{0.01}=0.25\]
+&lt;&#x2F;p&gt;
+&lt;p&gt;
+Next, we feed \(z=0\) to \(\frac{\partial{L}}{\partial{z}}\) that we computed earlier,
+\[\frac{\partial{L}}{\partial{z}}\Bigr|_{\substack{z=0}}=1 \cdot -1(1+e^{0})^{-2}\cdot 1 \cdot e^{0} \cdot -1=1 \cdot -1(2)^{-2} \cdot 1 \cdot -1 = 0.25\]
+We find that both result is identical, which means that our auto-differentiation is correct!
+&lt;p&gt;We almost finish, but what if the operation has multiple upstreams? We need the multivariate chain rule.&lt;&#x2F;p&gt;
+&lt;&#x2F;p&gt;
+&lt;h3 id=&quot;multivariate-chain-rule&quot;&gt;&lt;a class=&quot;zola-anchor&quot; href=&quot;#multivariate-chain-rule&quot; aria-label=&quot;Anchor link for: multivariate-chain-rule&quot;&gt;Multivariate chain rule&lt;&#x2F;a&gt;&lt;&#x2F;h3&gt;
+&lt;p&gt;
+Consider a function \(f\), which is composed by another two function \(g(x)\) and \(h(x)\), corresponding \(f&#x27;(x)\) is
+\[\frac{\partial{f}}{\partial{x}}=\frac{\partial{f}}{\partial{h}}\cdot\frac{\partial{h}}{\partial{x}}+\frac{\partial{f}}{\partial{g}}\cdot\frac{\partial{g}}{\partial{x}}\]
+&lt;&#x2F;p&gt;
+&lt;p&gt;
+Again, give a tiny example which is commonly seen in the neural networks, a subset of linear layer \(f(x)=g(x)+h(x)\) where \(h(x)=w_1x\) and \(g(x)=w_2x\). The computational graph of this function is similar to the following. We could see that x has two upstreams, which could leverage multivariate chain rule to derive the derivative.
+&lt;&#x2F;p&gt;
+&lt;p&gt;&lt;img src=&quot;&#x2F;images&#x2F;posts&#x2F;autodiff-from-scratch-p2&#x2F;autodiff-series-multivariate.png&quot; alt=&quot; &quot; &#x2F;&gt;&lt;&#x2F;p&gt;
+&lt;h4 id=&quot;add-operator-1&quot;&gt;&lt;a class=&quot;zola-anchor&quot; href=&quot;#add-operator-1&quot; aria-label=&quot;Anchor link for: add-operator-1&quot;&gt;Add operator&lt;&#x2F;a&gt;&lt;&#x2F;h4&gt;
+&lt;p&gt;&lt;img src=&quot;&#x2F;images&#x2F;posts&#x2F;autodiff-from-scratch-p2&#x2F;autodiff-series-multivariate-add.png&quot; alt=&quot; &quot; &#x2F;&gt;&lt;&#x2F;p&gt;
+&lt;h4 id=&quot;mul-operator&quot;&gt;&lt;a class=&quot;zola-anchor&quot; href=&quot;#mul-operator&quot; aria-label=&quot;Anchor link for: mul-operator&quot;&gt;Mul operator&lt;&#x2F;a&gt;&lt;&#x2F;h4&gt;
+&lt;p&gt;&lt;img src=&quot;&#x2F;images&#x2F;posts&#x2F;autodiff-from-scratch-p2&#x2F;autodiff-series-multivariate-mul.png&quot; alt=&quot; &quot; &#x2F;&gt;&lt;&#x2F;p&gt;
+&lt;h4 id=&quot;validation-1&quot;&gt;&lt;a class=&quot;zola-anchor&quot; href=&quot;#validation-1&quot; aria-label=&quot;Anchor link for: validation-1&quot;&gt;Validation&lt;&#x2F;a&gt;&lt;&#x2F;h4&gt;
+&lt;p&gt;
+In the Mul operator, we have \(\frac{\partial{f}}{\partial{x}}=w_1+w_2\). Likewise, we could validate it in the numerical manner.
+&lt;&#x2F;p&gt;
+&lt;p&gt;
+Let \(w_1=2, w_2=3, x=0\) and \(\epsilon=0.01\), we have
+\[f(0)=0\]
+\[f(0.01)=0.01\cdot2+0.01\cdot0.01=0.05\]
+\[f&#x27;(0)=\frac{0.05-0}{0.01}=5\]
+&lt;&#x2F;p&gt;
+&lt;p&gt;
+In our result, we have
+\[\frac{\partial{f}}{\partial{x}}\Bigr|_{\substack{x=0}}=2+3=5\]
+&lt;p&gt;Again, they are identical which proves that the gradient is correct!&lt;&#x2F;p&gt;
+&lt;&#x2F;p&gt;
+&lt;h2 id=&quot;conclusion&quot;&gt;&lt;a class=&quot;zola-anchor&quot; href=&quot;#conclusion&quot; aria-label=&quot;Anchor link for: conclusion&quot;&gt;Conclusion&lt;&#x2F;a&gt;&lt;&#x2F;h2&gt;
+&lt;p&gt;In this post, we take lots of time to derive the gradient by auto-differentiation and introduce the concepts called multivariate chain rule, I hope that the reader can see the beauty of autodiff and start to think about how autodiff could be implemented because we will implement it in the following series which may take some posts to illustrate the idea. Please stay tuned and we will get back!&lt;&#x2F;p&gt;
+</description>
+      </item>
+      <item>
+          <title>Build a DL Library from Scratch (Part1) - Background</title>
+          <pubDate>Tue, 05 Jan 2021 00:00:00 +0000</pubDate>
+          <author>Unknown</author>
+          <link>https://www.titaneric.com/posts/autodiff-from-scratch-p1/</link>
+          <guid>https://www.titaneric.com/posts/autodiff-from-scratch-p1/</guid>
+          <description xml:base="https://www.titaneric.com/posts/autodiff-from-scratch-p1/">&lt;h2 id=&quot;introduction&quot;&gt;&lt;a class=&quot;zola-anchor&quot; href=&quot;#introduction&quot; aria-label=&quot;Anchor link for: introduction&quot;&gt;Introduction&lt;&#x2F;a&gt;&lt;&#x2F;h2&gt;
+&lt;p&gt;This is an article to elaborate on the detail of how I build my personal project &lt;a rel=&quot;noreferrer&quot; href=&quot;https:&#x2F;&#x2F;github.com&#x2F;titaneric&#x2F;AutoDiff-from-scratch&quot;&gt;Autodiff from scratch&lt;&#x2F;a&gt;. It may take several parts to finish, including the fundamental backpropagation, computational graph, auto differentiation concept, implementation detail, brief prior frameworks implementation detail, demonstration results, testing, and finally, what I learn during the process. Please be patient and I promised I&#x27;ll finish the series this year (2021).&lt;&#x2F;p&gt;
+&lt;h3 id=&quot;disclaimer&quot;&gt;&lt;a class=&quot;zola-anchor&quot; href=&quot;#disclaimer&quot; aria-label=&quot;Anchor link for: disclaimer&quot;&gt;Disclaimer&lt;&#x2F;a&gt;&lt;&#x2F;h3&gt;
+&lt;p&gt;I am not a native speaker and I do not consider myself a deep learning expert, these series act more like personal notes rather than lessons. However, I&#x27;ll be glad to hear someone point out my grammar issue and give their professional insight. These series are the extension of my &lt;a rel=&quot;noreferrer&quot; href=&quot;https:&#x2F;&#x2F;github.com&#x2F;titaneric&#x2F;AutoDiff-from-scratch&#x2F;blob&#x2F;master&#x2F;Final%20Presentation.ipynb&quot;&gt;Final presentation&lt;&#x2F;a&gt;, please take a look if you don&#x27;t have much time to read the whole series.&lt;&#x2F;p&gt;
+&lt;h2 id=&quot;motivation&quot;&gt;&lt;a class=&quot;zola-anchor&quot; href=&quot;#motivation&quot; aria-label=&quot;Anchor link for: motivation&quot;&gt;Motivation&lt;&#x2F;a&gt;&lt;&#x2F;h2&gt;
+&lt;p&gt;First, let&#x27;s talk about the reason why I wrote this project. In my learning experience of deep learning, I observed that a few online lessons and books just listed the APIs that the framework provided e.g., CNN, RNN, the Transformer, etc. However, the API may be deprecated, the discovery in this domain remain continuously changed. Equipped with something unchanged including the fundamental knowledge is more important than knowing how to call a 3-Linear Layers in PyTorch.&lt;&#x2F;p&gt;
+&lt;p&gt;Of course, some great lessons talk about the math behind network design, its architecture, and application. They are kindly shared freely on the Internet, and lots of audiences are impressed and highly educated (including me).  Be aware of this knowledge help the learner level up their ability. However, I want to get my hand dirty and build my unique library, so that&#x27;s the reason why I start this project.&lt;&#x2F;p&gt;
+&lt;p&gt;Nevertheless, starting everything from scratch is hard for me. I need an existed project to teach me which are the necessary steps so I could digest and simplify them. I was lucky to find one of the &lt;a rel=&quot;noreferrer&quot; href=&quot;http:&#x2F;&#x2F;www.cs.toronto.edu&#x2F;~rgrosse&#x2F;courses&#x2F;csc321_2018&#x2F;slides&#x2F;lec10.pdf&quot;&gt;lessons taught at the University of Toronto&lt;&#x2F;a&gt; which introduced a concept called automatic differentiation and its implementation i.e., &lt;a rel=&quot;noreferrer&quot; href=&quot;https:&#x2F;&#x2F;github.com&#x2F;HIPS&#x2F;autograd&quot;&gt;Autograd&lt;&#x2F;a&gt;. I was fascinated and took lots of time to learn from the various lesson and trace some source code. After that, I create my unique deep learning library which is simple enough to tackle the real-world problem.&lt;&#x2F;p&gt;
+&lt;h2 id=&quot;background&quot;&gt;&lt;a class=&quot;zola-anchor&quot; href=&quot;#background&quot; aria-label=&quot;Anchor link for: background&quot;&gt;Background&lt;&#x2F;a&gt;&lt;&#x2F;h2&gt;
+&lt;p&gt;It&#x27;s too wordy to talk about my motivation. Let&#x27;s begin our journey to introduce some concepts. We&#x27;ll introduce the computational graph and the backpropagation algorithm in this post. In these series, I assume the reader may have basic knowledge of Calculus, some deep learning background, or at least, the eagerness to learn something new.&lt;&#x2F;p&gt;
+&lt;h3 id=&quot;computational-graph&quot;&gt;&lt;a class=&quot;zola-anchor&quot; href=&quot;#computational-graph&quot; aria-label=&quot;Anchor link for: computational-graph&quot;&gt;Computational Graph&lt;&#x2F;a&gt;&lt;&#x2F;h3&gt;
+&lt;p&gt;
+We all know the graph in data structure created by nodes and edges. In Computer Science, we could solve many graph problems explicitly (e.g., Traveling Salesman Problem, single-source shortest path, etc.) or implicitly (by reduction, e.g., SAT problem); In Deep Learning, the computation could also be represented by the graph, i.e., the node indicates the operands (input) and the edge indicates the operator (computation). For example, given a simple formula \((3 - 2) + 1\), the corresponding graph is
+&lt;&#x2F;p&gt;
+&lt;p&gt;&lt;img src=&quot;&#x2F;images&#x2F;posts&#x2F;autodiff-from-scratch-p1&#x2F;autodiff-series-comp-graph.png&quot; alt=&quot; &quot; &#x2F;&gt;&lt;&#x2F;p&gt;
+&lt;p&gt;Note that the order of arguments matters. The correct order induces the right result and could receive the correct response (backpropagation) even in the order-invariant calculation (e.g., add and multiply operation).&lt;&#x2F;p&gt;
+&lt;p&gt;It&#x27;s easy to understand the concept by simply glance the computational graph. Besides, the calculation could be in any number of operands, operators, or even high-level modules. For instance, a linear layer may consist of many nodes, layers, and pairs of connections (may not be a complete bipartite graph and could contain self-loop), or even a monster -- the Transformer formed with different modules and layers of encoder or decoder. There is an old saying, a picture is worth of thousand words. It&#x27;s recommended to sketch the complicated concept, you will gain a lot during the drawing process and explain it to your coworker.&lt;&#x2F;p&gt;
+&lt;h3 id=&quot;backpropagation-algorithm&quot;&gt;&lt;a class=&quot;zola-anchor&quot; href=&quot;#backpropagation-algorithm&quot; aria-label=&quot;Anchor link for: backpropagation-algorithm&quot;&gt;Backpropagation algorithm&lt;&#x2F;a&gt;&lt;&#x2F;h3&gt;
+&lt;p&gt;The core of deep learning is the backpropagation algorithm. In the computational graph session, we build the graph by a forward pass, i.e., evaluating the computation. On the other hand, we could calculate the gradient of the given calculation by backpropagation.&lt;&#x2F;p&gt;
+&lt;p&gt;
+We could use the last example, \((3 - 2) + 1\) to illustrate and transform them into algebraic way \(z = (a - b) + c\). Suppose we want to compute the gradient of \(z\) w.r.t. \(c\). It&#x27;s easy to get it directly.
+\[\frac{\partial z}{\partial c}=\frac{\partial[(a-b) + c]}{\partial c} = 0 + 1 = 1\]
+\((a-b)\) could be seemed as an constant to \(c\), so we get zero;
+On the other hand, the derivative of variable \(c\) w.r.t. \(c\) is \(1\).
+&lt;&#x2F;p&gt;
+&lt;p&gt;Next, we try to take the derivative of z w.r.t. b by the &lt;strong&gt;chain rule&lt;&#x2F;strong&gt;. We could use the following procedure to compute the result.&lt;&#x2F;p&gt;
+&lt;p&gt;
+Let \(d = (a - b)\), so we let \(z = d + c\).
+\[
+\begin{aligned}
+    \frac{\partial[(a-b) + c]}{\partial b}
+    &amp;=\frac{\partial d+c}{\partial d}\cdot \frac{\partial d}{\partial b}\\
+    &amp;=1\cdot \frac{\partial a-b}{\partial b}\\
+    &amp;=1\cdot -1\\
+    &amp;= -1
+\end{aligned}
+\]
+&lt;&#x2F;p&gt;
+&lt;p&gt;We could use the chain rule to easily calculate the complicated derivative w.r.t. any variable. It seems easy to take the derivatives of the above equation without chain rule, but what about a slightly difficult equation called the sigmoid function?&lt;&#x2F;p&gt;
+&lt;p&gt;
+\[y = \frac{1}{1 + e^{-z}}\]
+&lt;&#x2F;p&gt;
+&lt;p&gt;
+If we want to get the derivative of above equation w.r.t. \(z\), the interesting way to compute is
+&lt;&#x2F;p&gt;
+&lt;p&gt;
+Let \(a = 1 + e^{-z}\),
+\[
+\begin{aligned}
+ \frac{\partial y}{\partial z} &amp;= \frac{\partial \frac{1}{a}}{\partial z}\\
+ &amp;= \frac{\partial ({\color{red}{{a}^{-1}}})}{\partial a} \cdot \frac{\partial a}{\partial z}\\
+ &amp;= -1 {a}^{-2} \cdot \frac{\partial a}{\partial z}\\
+ &amp;= -1 {(1 + e^{-z})}^{-2} \cdot \frac{\partial (1 + e^{-z})}{\partial z}\\
+\end{aligned}
+ \]
+ Let \(b = e^{-z}\),
+ \[
+\begin{aligned}
+ \frac{\partial y}{\partial z} &amp;= -1 {(1 + e^{-z})}^{-2} \cdot \frac{\partial (1 + e^{-z})}{\partial z}\\
+ &amp;= -1 {(1 + e^{-z})}^{-2} \cdot \frac{\partial ({\color{red}{1 + b}})}{\partial b}\cdot \frac{\partial (b)}{\partial z}\\
+ &amp;= -1 {(1 + e^{-z})}^{-2} \cdot 1 \cdot \frac{\partial (e^{-z})}{\partial z}\\
+\end{aligned}
+ \]
+ Let \(c = -z\),
+ \[
+\begin{aligned}
+\frac{\partial y}{\partial z} &amp;= -1 {(1 + e^{-z})}^{-2} \cdot 1 \cdot \frac{\partial (e^{-z})}{\partial z}\\
+&amp;= -1 {(1 + e^{-z})}^{-2} \cdot 1 \cdot \frac{\partial ({\color{red}{e^{c}}})}{\partial c} \cdot \frac{\partial (c)}{\partial z}\\
+&amp;= -1 {(1 + e^{-z})}^{-2} \cdot 1 \cdot e^{c} \cdot \frac{\partial (c)}{\partial z}\\
+&amp;= -1 {(1 + e^{-z})}^{-2} \cdot 1 \cdot e^{-z} \cdot \frac{\partial (-z)}{\partial z}\\
+\end{aligned}
+\]
+Let \(d = z\)
+\[
+\begin{aligned}
+ \frac{\partial y}{\partial z} &amp;= -1 {(1 + e^{-z})}^{-2} \cdot 1 \cdot e^{-z} \cdot \frac{\partial (-z)}{\partial z}\\
+ &amp;= -1 {(1 + e^{-z})}^{-2} \cdot 1 \cdot e^{-z} \cdot \frac{\partial ({\color{red}{-d}})}{\partial d} \cdot \frac{\partial (d)}{\partial z}\\
+ &amp;= -1 {(1 + e^{-z})}^{-2} \cdot 1 \cdot e^{-z} \cdot -1 \cdot \frac{\partial (z)}{\partial z}\\
+ &amp;= -1 {(1 + e^{-z})}^{-2} \cdot 1 \cdot e^{-z} \cdot -1 \cdot 1\\
+\end{aligned}
+\]
+&lt;&#x2F;p&gt;
+&lt;p&gt;
+Notice that some operation are replaced by fundamental operation colored with red like reciprocal (\(a^{-1}\)), exponential (\(e^{c}\)), negative (\(-d\)), and add operation (\(1+b\)).
+&lt;&#x2F;p&gt;
+&lt;p&gt;In this way, we could systematically calculate the derivative of the given formula &lt;em&gt;only&lt;&#x2F;em&gt; known for the &lt;strong&gt;corresponding derivative of fundamental operation&lt;&#x2F;strong&gt; and &lt;strong&gt;chain rule&lt;&#x2F;strong&gt;. In other words, we could write a program to compute the derivative in a systematic manner.
+Besides, we &lt;em&gt;don&#x27;t&lt;&#x2F;em&gt; have to make a program to learn extra knowledge like sum, product, and quotient rules, since the program has already been educated for add, multiplication, and division operation, respectively.&lt;&#x2F;p&gt;
+&lt;p&gt;Let&#x27;s combine this with the computational graph below&lt;&#x2F;p&gt;
+&lt;p&gt;&lt;img src=&quot;&#x2F;images&#x2F;posts&#x2F;autodiff-from-scratch-p1&#x2F;autodiff-series-sigmoid-comp-graph.png&quot; alt=&quot; &quot; &#x2F;&gt;&lt;&#x2F;p&gt;
+&lt;p&gt;The figure shows that the forward-pass builds the graph from the variables, to some basic operation and finally to the results, but we compute the gradient backwardly from the result to the last, the second last, and to the first basic operation.&lt;&#x2F;p&gt;
+&lt;h2 id=&quot;conclusion&quot;&gt;&lt;a class=&quot;zola-anchor&quot; href=&quot;#conclusion&quot; aria-label=&quot;Anchor link for: conclusion&quot;&gt;Conclusion&lt;&#x2F;a&gt;&lt;&#x2F;h2&gt;
+&lt;p&gt;We could conclude today&#x27;s content with the following&lt;&#x2F;p&gt;
+&lt;ul&gt;
+&lt;li&gt;The computational graph could be any form, from the basic operation in math to the more complicated one like layers, modules, and models.&lt;&#x2F;li&gt;
+&lt;li&gt;The forward pass builds the computational graph, the backward pass computes the gradient with respect to some variable.&lt;&#x2F;li&gt;
+&lt;&#x2F;ul&gt;
+&lt;p&gt;Hope that the readers could understand today&#x27;s concept because, in the next part, we will introduce the auto differentiation by these two ideas. (Spoiled alert: gradient calculation in Backpropagation session)&lt;&#x2F;p&gt;
+&lt;p&gt;Thank you for reading and please be patient with the next part.&lt;&#x2F;p&gt;
+</description>
+      </item>
+    </channel>
+</rss>

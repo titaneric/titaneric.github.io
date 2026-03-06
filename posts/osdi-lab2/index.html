@@ -1,0 +1,1124 @@
+<!DOCTYPE html>
+<html lang="en" class="dark light">
+
+    <head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="base" content="https:&#x2F;&#x2F;www.titaneric.com">
+
+    
+
+    
+    
+    
+        <title>
+            
+                OSDI-lab2
+            
+        </title>
+
+        
+            <meta property="og:title"
+                  content="OSDI-lab2" />
+        
+    
+
+    
+        
+    
+
+    
+        
+    
+
+    
+    <link rel="icon" type="image/png" href=https://www.titaneric.com/icons/favicon-16x16.png />
+
+    
+    
+        <link href=https://www.titaneric.com/fonts.css rel="stylesheet" />
+    
+
+    
+    
+
+    
+    
+        
+            
+            
+
+            <script defer
+                    src="/js/imamu.js"
+                    data-website-id="63f9d7c5-7c47-493b-af29-481374c7531c"
+                    data-host-url="https:&#x2F;&#x2F;api-gateway.umami.dev&#x2F;"></script>
+        
+
+        
+    
+
+    
+    <script defer src=https://www.titaneric.com/js/codeblock.js></script>
+
+    
+    <script defer src=https://www.titaneric.com/js/toc.js></script>
+
+    
+    
+        <script src=https://www.titaneric.com/js/note.js></script>
+    
+
+    
+        
+            <script>
+            MathJax = {
+              tex: {
+                inlineMath: [['$', '$'], ['\\(', '\\)']]
+              }
+            };
+            </script>
+        
+        <script type="text/javascript" id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js">
+        </script>
+    
+
+    
+    
+
+
+    
+    
+        <link rel="stylesheet"
+              type="text/css"
+              href="https://www.titaneric.com/theme/light.css" />
+        <link id="darkModeStyle"
+              rel="stylesheet"
+              type="text/css"
+              href="https://www.titaneric.com/theme/dark.css" />
+    
+
+    <!-- Set the correct theme in the script -->
+
+    
+        <script src=https://www.titaneric.com/js/themetoggle.js></script>
+
+        
+            <script>setTheme(getSavedTheme());</script>
+        
+    
+
+
+    <link rel="stylesheet"
+          type="text/css"
+          media="screen"
+          href="https://www.titaneric.com/main.css" />
+
+    
+
+    
+        <script defer
+                src="https://www.titaneric.com/js/searchElasticlunr.min.js?h=3626c0ef99daa745b31e"></script></head>
+
+
+    <body>
+        <div class="left-content">
+            
+            
+        </div>
+
+        <div class="content">
+            <nav>
+    <div class="left-nav">
+        
+            <a href=https:&#x2F;&#x2F;www.titaneric.com>titaneric</a>
+        
+
+
+        <div class="socials">
+            
+                <a rel="me" href="https:&#x2F;&#x2F;www.linkedin.com&#x2F;in&#x2F;chen-yi-huang&#x2F;" class="social">
+                    <img alt="linkedin" src="https://www.titaneric.com/icons/social/linkedin.svg">
+                </a>
+            
+                <a rel="me" href="https:&#x2F;&#x2F;github.com&#x2F;titaneric&#x2F;" class="social">
+                    <img alt="github" src="https://www.titaneric.com/icons/social/github.svg">
+                </a>
+            
+        </div>
+    </div>
+
+    <div class="right-nav">
+        
+            <a href=https://www.titaneric.com/posts style="margin-right: 0.5em">posts</a>
+        
+            <a href=https://www.titaneric.com/tags style="margin-right: 0.5em">tags</a>
+        
+            <a href=https://www.titaneric.com/categories style="margin-right: 0.5em">categories</a>
+        
+            <a href=https://www.titaneric.com/archive style="margin-right: 0.5em">archive</a>
+        
+            <a href=https://www.titaneric.com/pdfs/resume.pdf style="margin-right: 0.5em">about</a>
+        
+            <a href=https://www.titaneric.com/notes/index.html style="margin-right: 0.5em">notes</a>
+        
+
+        
+            <button id="search-button"
+                    class="search-button"
+                    title="$SHORTCUT to open search">
+                <img src="https://www.titaneric.com/icons/search.svg"
+                    alt="Search"
+                    class="search-icon">
+            </button>
+
+            <div id="searchModal"
+                class="search-modal js"
+                role="dialog"
+                aria-labelledby="modalTitle">
+                <div id="modal-content">
+                    <h1 id="modalTitle" class="page-header">Search</h1>
+                    <div id="searchBar">
+                        <input id="searchInput"
+                            role="combobox"
+                            autocomplete="off"
+                            spellcheck="false"
+                            aria-expanded="false"
+                            aria-controls="results-container"
+                            placeholder="Search..." />
+                        <button id="clear-search" class="clear-button" title="Clear search">
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 -960 960 960">
+                                <path d="m256-200-56-56 224-224-224-224 56-56 224 224 224-224 56 56-224 224 224 224-56 56-224-224-224 224Z" />
+                            </svg>
+                        </button>
+                    </div>
+                    <div id="results-container">
+                        <div id="results-info">
+                            <span id="zero_results" style="display: none;">No results</span>
+                            <span id="one_result" style="display: none;">1 result</span>
+                            <span id="many_results" style="display: none;">$NUMBER results</span>
+                        </div>
+                        <div id="results" role="listbox"></div>
+                    </div>
+                </div>
+            </div>
+        
+
+        
+            <a id="dark-mode-toggle"
+            onclick="toggleTheme(); event.preventDefault();"
+            href="#">
+                <img src="https://www.titaneric.com/icons/sun.svg"
+                    id="sun-icon"
+                    style="filter: invert(1)"
+                    alt="Light" />
+                <img src=https://www.titaneric.com/icons/moon.svg id="moon-icon" alt="Dark" />
+            </a>
+
+            <!-- Initialize the theme toggle icons -->
+            <script>updateItemToggleTheme()</script>
+        
+    </div>
+</nav>
+
+
+            
+            
+    
+<div class="visible-element-observer-root" data-selector="main article p">
+    <main>
+        <article>
+            <div class="title">
+                
+                
+    
+    <div class="page-header">
+        OSDI-lab2
+    </div>
+    
+
+
+                <div class="meta">
+                    
+                        Posted on <time>2019-03-13</time>
+                    
+
+
+                    
+
+                    
+
+                    
+
+                    
+                    
+                        
+                        
+                            
+                        
+
+                        
+                            
+                            :: <a href="https:&#x2F;&#x2F;github.com&#x2F;titaneric&#x2F;titaneric.github.io&#x2F;tree&#x2F;master&#x2F;content&#x2F;posts&#x2F;OSDI-lab2.md" target="_blank" rel="noopener noreferrer">Source Code</a>
+                        
+                    
+
+                    
+                    
+
+                    
+                    
+                        <span class="tags-label"> :: </span>
+                        <span class="tags">
+                                <a href="https://www.titaneric.com/tags/course/"
+                                   class="post-tag">course</a>
+                            
+                                <a href="https://www.titaneric.com/tags/os/"
+                                   class="post-tag">os</a>
+                            
+                        </span>
+                    
+
+                    
+
+                </div>
+            </div>
+
+            
+
+            <section class="body">
+                <h1 id="osdi-lab-ii"><a class="zola-anchor" href="#osdi-lab-ii" aria-label="Anchor link for: osdi-lab-ii">OSDI lab II</a></h1>
+<h2 id="objective"><a class="zola-anchor" href="#objective" aria-label="Anchor link for: objective">Objective</a></h2>
+<ul>
+<li>Learn how to build a customized BIOS and show some message on system startup.</li>
+<li>Understand kernel booting flow and boot a ‘hello world’ program.</li>
+<li>Learn how to use BIOS interrupt call to do I/O tasks.</li>
+<li>Learn how to modify linux-0.11 bootsect.s and the build system to create a multiboot kernel image.</li>
+</ul>
+<hr />
+<h2 id="lab2-1-build-seabios-add-some-message-before-system-startup"><a class="zola-anchor" href="#lab2-1-build-seabios-add-some-message-before-system-startup" aria-label="Anchor link for: lab2-1-build-seabios-add-some-message-before-system-startup">Lab2.1 - Build SEABIOS, add some message before system startup</a></h2>
+<pre data-lang="bash" style="background-color:#fafafa;color:#61676c;" class="language-bash "><code class="language-bash" data-lang="bash"><span style="color:#f29718;">git</span><span> clone https://git.seabios.org/seabios.git seabios
+</span><span style="color:#f07171;">cd</span><span> seabios/
+</span><span style="color:#f29718;">make</span><span> menuconfig
+</span><span style="color:#f29718;">make
+</span></code></pre>
+<p>Print message in <code>enable_vga_console</code> function in <code>src/bootsplash.c</code>.</p>
+<pre data-lang="c" style="background-color:#fafafa;color:#61676c;" class="language-c "><code class="language-c" data-lang="c"><span style="color:#fa6e32;">void
+</span><span style="color:#f29718;">enable_vga_console</span><span>(</span><span style="color:#fa6e32;">void</span><span>)
+</span><span>{
+</span><span>    </span><span style="color:#f29718;">dprintf</span><span>(</span><span style="color:#ff8f40;">1</span><span style="color:#61676ccc;">, </span><span style="color:#86b300;">&quot;Turning on vga text mode console</span><span style="color:#4cbf99;">\n</span><span style="color:#86b300;">&quot;</span><span>)</span><span style="color:#61676ccc;">;
+</span><span>    </span><span style="color:#fa6e32;">struct</span><span> bregs br</span><span style="color:#61676ccc;">; 
+</span><span>
+</span><span>    </span><span style="font-style:italic;color:#abb0b6;">/* Enable VGA text mode */
+</span><span>    </span><span style="color:#f07171;">memset</span><span>(</span><span style="color:#ed9366;">&amp;</span><span>br</span><span style="color:#61676ccc;">, </span><span style="color:#ff8f40;">0</span><span style="color:#61676ccc;">, </span><span style="color:#fa6e32;">sizeof</span><span>(br))</span><span style="color:#61676ccc;">;
+</span><span>    br</span><span style="color:#ed9366;">.</span><span>ax </span><span style="color:#ed9366;">= </span><span style="color:#ff8f40;">0x0003</span><span style="color:#61676ccc;">;
+</span><span>    </span><span style="color:#f29718;">call16_int10</span><span>(</span><span style="color:#ed9366;">&amp;</span><span>br)</span><span style="color:#61676ccc;">;
+</span><span>    
+</span><span>    </span><span style="color:#f07171;">printf</span><span>(</span><span style="color:#86b300;">&quot;This is OSDI lab2.</span><span style="color:#4cbf99;">\n</span><span style="color:#86b300;">&quot;</span><span>)</span><span style="color:#61676ccc;">;
+</span><span>    </span><span style="font-style:italic;color:#abb0b6;">// Write to screen.
+</span><span>    </span><span style="color:#f07171;">printf</span><span>(</span><span style="color:#86b300;">&quot;SeaBIOS (version </span><span style="color:#ff8f40;">%s</span><span style="color:#86b300;">)</span><span style="color:#4cbf99;">\n</span><span style="color:#86b300;">&quot;</span><span style="color:#61676ccc;">,</span><span> VERSION)</span><span style="color:#61676ccc;">;
+</span><span>    </span><span style="color:#f29718;">display_uuid</span><span>()</span><span style="color:#61676ccc;">;
+</span><span>}
+</span></code></pre>
+<p>Use the qemu <code>-bios</code> option to load customized BIOS.</p>
+<pre data-lang="bash" style="background-color:#fafafa;color:#61676c;" class="language-bash "><code class="language-bash" data-lang="bash"><span style="color:#f29718;">qemu-system-i386</span><span style="color:#ff8f40;"> -m</span><span> 16M</span><span style="color:#ff8f40;"> -boot</span><span> a</span><span style="color:#ff8f40;"> -fda</span><span> Image</span><span style="color:#ff8f40;"> -hda</span><span> osdi.img</span><span style="color:#ff8f40;"> -bios</span><span> seabios/out/bios.bin
+</span></code></pre>
+<p>Because the customized BIOS is part of our lab, so I push it to new repo and add the <strong>submodule</strong> to <code>osdi</code>.</p>
+<pre data-lang="bash" style="background-color:#fafafa;color:#61676c;" class="language-bash "><code class="language-bash" data-lang="bash"><span style="color:#f29718;">git</span><span> submodule add bios-url bios-in-osdi-path
+</span></code></pre>
+<p>After that, I can update the customized BIOS even though we develop the BIOS and OSDI at different repo using the following command.</p>
+<pre data-lang="bash" style="background-color:#fafafa;color:#61676c;" class="language-bash "><code class="language-bash" data-lang="bash"><span style="color:#f29718;">git</span><span> submodule update bios-name
+</span></code></pre>
+<hr />
+<h2 id="lab2-2-add-image-before-system-startup"><a class="zola-anchor" href="#lab2-2-add-image-before-system-startup" aria-label="Anchor link for: lab2-2-add-image-before-system-startup">Lab2.2 - Add image before system startup</a></h2>
+<p>We want to load the image when BIOS is loading.</p>
+<p>Firstly, we want to find which function can help us to do that.
+There is a function called <code>enable_bootsplash</code> @ <code>src/bootsplash.c</code>.</p>
+<pre data-lang="c" style="background-color:#fafafa;color:#61676c;" class="language-c "><code class="language-c" data-lang="c"><span style="color:#fa6e32;">void
+</span><span style="color:#f29718;">enable_bootsplash</span><span>(</span><span style="color:#fa6e32;">void</span><span>)
+</span><span>{
+</span><span>    </span><span style="color:#fa6e32;">if </span><span>(</span><span style="color:#ed9366;">!</span><span>CONFIG_BOOTSPLASH)
+</span><span>        </span><span style="color:#fa6e32;">return</span><span style="color:#61676ccc;">;
+</span><span>    </span><span style="font-style:italic;color:#abb0b6;">/* splash picture can be bmp or jpeg file */
+</span><span>    </span><span style="color:#f29718;">dprintf</span><span>(</span><span style="color:#ff8f40;">3</span><span style="color:#61676ccc;">, </span><span style="color:#86b300;">&quot;Checking for bootsplash</span><span style="color:#4cbf99;">\n</span><span style="color:#86b300;">&quot;</span><span>)</span><span style="color:#61676ccc;">;
+</span><span>    u8 type </span><span style="color:#ed9366;">= </span><span style="color:#ff8f40;">0</span><span style="color:#61676ccc;">; </span><span style="font-style:italic;color:#abb0b6;">/* 0 means jpg, 1 means bmp, default is 0=jpg */
+</span><span>    </span><span style="color:#fa6e32;">int</span><span> filesize</span><span style="color:#61676ccc;">;
+</span><span>    u8 </span><span style="color:#ed9366;">*</span><span>filedata </span><span style="color:#ed9366;">= </span><span style="color:#f29718;">romfile_loadfile</span><span>(</span><span style="color:#86b300;">&quot;bootsplash.jpg&quot;</span><span style="color:#61676ccc;">, </span><span style="color:#ed9366;">&amp;</span><span>filesize)</span><span style="color:#61676ccc;">;
+</span><span>    </span><span style="color:#fa6e32;">if </span><span>(</span><span style="color:#ed9366;">!</span><span>filedata) {
+</span><span>        filedata </span><span style="color:#ed9366;">= </span><span style="color:#f29718;">romfile_loadfile</span><span>(</span><span style="color:#86b300;">&quot;bootsplash.bmp&quot;</span><span style="color:#61676ccc;">, </span><span style="color:#ed9366;">&amp;</span><span>filesize)</span><span style="color:#61676ccc;">;
+</span><span>        </span><span style="color:#fa6e32;">if </span><span>(</span><span style="color:#ed9366;">!</span><span>filedata)
+</span><span>            </span><span style="color:#fa6e32;">return</span><span style="color:#61676ccc;">;
+</span><span>        type </span><span style="color:#ed9366;">= </span><span style="color:#ff8f40;">1</span><span style="color:#61676ccc;">;
+</span><span>    }
+</span><span>    
+</span><span>    </span><span style="color:#ed9366;">...
+</span><span>}
+</span></code></pre>
+<p>This function will check the <code>CONFIG_BOOTSPLASH</code> and bootsplash image.</p>
+<p>Secondly, we find that the <code>enable_bootsplash</code> will be called by <code>interactive_bootmenu</code> @ <code>src/boot.c</code>.</p>
+<pre data-lang="c" style="background-color:#fafafa;color:#61676c;" class="language-c "><code class="language-c" data-lang="c"><span style="font-style:italic;color:#abb0b6;">// Show IPL option menu.
+</span><span style="color:#fa6e32;">void
+</span><span style="color:#f29718;">interactive_bootmenu</span><span>(</span><span style="color:#fa6e32;">void</span><span>)
+</span><span>{
+</span><span>    </span><span style="font-style:italic;color:#abb0b6;">// XXX - show available drives?
+</span><span>    </span><span style="color:#f07171;">printf</span><span>(</span><span style="color:#86b300;">&quot;CONFIG_BOOTMENU: </span><span style="color:#ff8f40;">%d</span><span style="color:#4cbf99;">\n</span><span style="color:#86b300;">&quot;</span><span style="color:#61676ccc;">,</span><span> CONFIG_BOOTMENU)</span><span style="color:#61676ccc;">;
+</span><span>    </span><span style="color:#f07171;">printf</span><span>(</span><span style="color:#86b300;">&quot;show-boot-menu: </span><span style="color:#ff8f40;">%d</span><span style="color:#4cbf99;">\n</span><span style="color:#86b300;">&quot;</span><span style="color:#61676ccc;">, </span><span style="color:#f29718;">romfile_loadint</span><span>(</span><span style="color:#86b300;">&quot;etc/show-boot-menu&quot;</span><span style="color:#61676ccc;">, </span><span style="color:#ff8f40;">1</span><span>))</span><span style="color:#61676ccc;">;
+</span><span>    </span><span style="color:#fa6e32;">if </span><span>(</span><span style="color:#ed9366;">!</span><span> CONFIG_BOOTMENU </span><span style="color:#ed9366;">|| !</span><span style="color:#f29718;">romfile_loadint</span><span>(</span><span style="color:#86b300;">&quot;etc/show-boot-menu&quot;</span><span style="color:#61676ccc;">, </span><span style="color:#ff8f40;">1</span><span>))
+</span><span>        </span><span style="color:#fa6e32;">return</span><span style="color:#61676ccc;">;
+</span><span>
+</span><span>    </span><span style="color:#fa6e32;">while </span><span>(</span><span style="color:#f29718;">get_keystroke</span><span>(</span><span style="color:#ff8f40;">0</span><span>) </span><span style="color:#ed9366;">&gt;= </span><span style="color:#ff8f40;">0</span><span>)
+</span><span>        </span><span style="color:#61676ccc;">;
+</span><span>
+</span><span>    </span><span style="color:#fa6e32;">char </span><span style="color:#ed9366;">*</span><span>bootmsg </span><span style="color:#ed9366;">= </span><span style="color:#f29718;">romfile_loadfile</span><span>(</span><span style="color:#86b300;">&quot;etc/boot-menu-message&quot;</span><span style="color:#61676ccc;">, </span><span style="color:#ff8f40;">NULL</span><span>)</span><span style="color:#61676ccc;">;
+</span><span>    </span><span style="color:#fa6e32;">int</span><span> menukey </span><span style="color:#ed9366;">= </span><span style="color:#f29718;">romfile_loadint</span><span>(</span><span style="color:#86b300;">&quot;etc/boot-menu-key&quot;</span><span style="color:#61676ccc;">, </span><span style="color:#ff8f40;">1</span><span>)</span><span style="color:#61676ccc;">;
+</span><span>    </span><span style="color:#f07171;">printf</span><span>(</span><span style="color:#86b300;">&quot;</span><span style="color:#ff8f40;">%s</span><span style="color:#86b300;">&quot;</span><span style="color:#61676ccc;">,</span><span> bootmsg </span><span style="color:#ed9366;">?: </span><span style="color:#86b300;">&quot;</span><span style="color:#4cbf99;">\n</span><span style="color:#86b300;">Press ESC for boot menu.</span><span style="color:#4cbf99;">\n\n</span><span style="color:#86b300;">&quot;</span><span>)</span><span style="color:#61676ccc;">;
+</span><span>    </span><span style="color:#f07171;">free</span><span>(bootmsg)</span><span style="color:#61676ccc;">;
+</span><span>
+</span><span>    u32 menutime </span><span style="color:#ed9366;">= </span><span style="color:#f29718;">romfile_loadint</span><span>(</span><span style="color:#86b300;">&quot;etc/boot-menu-wait&quot;</span><span style="color:#61676ccc;">,</span><span> DEFAULT_BOOTMENU_WAIT)</span><span style="color:#61676ccc;">;
+</span><span>    </span><span style="color:#f07171;">printf</span><span>(</span><span style="color:#86b300;">&quot;menutime: </span><span style="color:#ff8f40;">%d</span><span style="color:#4cbf99;">\n</span><span style="color:#86b300;">&quot;</span><span style="color:#61676ccc;">,</span><span> menutime)</span><span style="color:#61676ccc;">;
+</span><span>    </span><span style="color:#f29718;">enable_bootsplash</span><span>()</span><span style="color:#61676ccc;">;
+</span><span>    </span><span style="color:#ed9366;">...
+</span></code></pre>
+<p>It seems that it is the function to provide the boot menu (i.e, booting from which boot device).
+This function will also check the <code>CONFIG_BOOTMENU</code> and the file <code>etc/show-boot-menu</code>.
+If we print the config before the first if condition, we will find that</p>
+<p><img src="/images/posts/OSDI-lab2/J0M7dAD.png" alt="" /></p>
+<p>Therefore, the <code>CONFIG_BOOTMENU</code> is 1 but <code>etc/show-boot-menu</code> is 0, so the <code>interactive_bootmenu</code> will return early without executing the rest of code including the <code>enable_bootsplash</code> method.</p>
+<p>After did some <a rel="noreferrer" href="https://github.com/qemu/qemu/blob/master/docs/specs/fw_cfg.rst">researches</a>, qemu provide an option <code>-fw_cfg</code> to provide some file as</p>
+<ul>
+<li><code>-fw_cfg [name=]&lt;item_name&gt;,file=&lt;path&gt;</code>. or</li>
+<li><code>-fw_cfg [name=]&lt;item_name&gt;,string=&lt;string&gt;</code></li>
+</ul>
+<p>So I revise the qemu command to</p>
+<pre data-lang="bash" style="background-color:#fafafa;color:#61676c;" class="language-bash "><code class="language-bash" data-lang="bash"><span style="color:#f29718;">qemu-system-i386</span><span style="color:#ff8f40;"> -m</span><span> 16M</span><span style="color:#ff8f40;"> -boot</span><span> a</span><span style="color:#ff8f40;"> -fda</span><span> Image</span><span style="color:#ff8f40;"> -hda</span><span> ../osdi.img</span><span style="color:#ff8f40;"> -bios</span><span> seabios/out/bios.bin</span><span style="color:#ff8f40;"> -fw_cfg</span><span> name=etc/show-boot-menu,string=1
+</span></code></pre>
+<p>After that, the result became</p>
+<p><img src="/images/posts/OSDI-lab2/v1dMZr5.png" alt=" " /></p>
+<p>It did enter the rest of code and ready to execute boot menu, and because the <code>enable_bootsplash</code> will check the image before load it, and we provide the bootsplash image as following.</p>
+<pre data-lang="bash" style="background-color:#fafafa;color:#61676c;" class="language-bash "><code class="language-bash" data-lang="bash"><span style="color:#f29718;">qemu-system-i386</span><span style="color:#ff8f40;"> -m</span><span> 16M</span><span style="color:#ff8f40;"> -boot</span><span> a</span><span style="color:#ff8f40;"> -fda</span><span> Image</span><span style="color:#ff8f40;"> -hda</span><span> ../osdi.img</span><span style="color:#ff8f40;"> -bios</span><span> seabios/out/bios.bin</span><span style="color:#ff8f40;"> -fw_cfg</span><span> name=etc/show-boot-menu,string=1</span><span style="color:#ff8f40;"> -fw_cfg</span><span> name=bootsplash.jpg,file=bootsplash.jpg
+</span></code></pre>
+<p><img src="/images/posts/OSDI-lab2/hwRLd1Z.png" alt=" " /></p>
+<p>It work!</p>
+<p>My friends also found that another qemu option <a rel="noreferrer" href="https://manpages.debian.org/jessie/qemu-system-x86/qemu-system-x86_64.1.en.html"><code>-boot</code></a> provide the same functionality.</p>
+<pre data-lang="bash" style="background-color:#fafafa;color:#61676c;" class="language-bash "><code class="language-bash" data-lang="bash"><span style="color:#f29718;">qemu-system-i386</span><span style="color:#ff8f40;"> -m</span><span> 16M</span><span style="color:#ff8f40;"> -boot</span><span> order=a,menu=on,splash=bootsplash.jpg</span><span style="color:#ff8f40;">  -fda</span><span> Image</span><span style="color:#ff8f40;"> -hda</span><span> ../osdi.img</span><span style="color:#ff8f40;"> -bios</span><span> seabios/out/bios.bin
+</span></code></pre>
+<p>Which will be more clever and elegant!</p>
+<h2 id="lab2-3-boot-the-hello-world-program"><a class="zola-anchor" href="#lab2-3-boot-the-hello-world-program" aria-label="Anchor link for: lab2-3-boot-the-hello-world-program">Lab2.3 - Boot the hello world program</a></h2>
+<p>In this time, we will revise the kernel image structure and boot the given <code>hello</code>.
+We will revise the image from
+<img src="/images/posts/OSDI-lab2/DjL3gC2.png" alt=" " />
+to
+<img src="/images/posts/OSDI-lab2/biwIcIa.png" alt=" " /></p>
+<h3 id="makefile"><a class="zola-anchor" href="#makefile" aria-label="Anchor link for: makefile">Makefile</a></h3>
+<p>Of course we will revise the Makefile and build.sh.</p>
+<p>Firstly, put the <code>hello.s</code> to <code>boot</code>, and revise the <code>boot/Makefile</code></p>
+<pre style="background-color:#fafafa;color:#61676c;"><code><span>...
+</span><span>
+</span><span>all: bootsect hello setup
+</span><span>...
+</span><span>
+</span><span>hello: hello.s
+</span><span>	@$(AS) -o hello.o hello.s
+</span><span>	@$(LD) $(LDFLAGS) -o hello hello.o
+</span><span>	@objcopy -R .pdr -R .comment -R.note -S -O binary hello
+</span><span>...
+</span><span>
+</span><span>clean:
+</span><span>	@rm -f bootsect bootsect.o setup setup.o head.o hello hello.o
+</span></code></pre>
+<p>Just add new rule for hello and remember to clean its object file when executing <code>make clean</code>.</p>
+<p>Secondly, revise the <code>Makefile</code></p>
+<pre style="background-color:#fafafa;color:#61676c;"><code><span>...
+</span><span>Image: boot/bootsect boot/hello boot/setup tools/system
+</span><span>	@cp -f tools/system system.tmp
+</span><span>	@strip system.tmp
+</span><span>	@objcopy -O binary -R .note -R .comment system.tmp tools/kernel
+</span><span>	@chmod +x tools/build.sh
+</span><span>	@tools/build.sh boot/bootsect boot/hello boot/setup tools/kernel Image $(ROOT_DEV)
+</span><span>	@rm system.tmp
+</span><span>	@rm tools/kernel -f
+</span><span>	@sync
+</span><span>...
+</span></code></pre>
+<p>Update the Image <em>prerequisites</em> and add hello to the <code>tools/build.sh </code>parameter.</p>
+<p>Thirdly, revise the <code>tools/build.sh</code>.</p>
+<pre style="background-color:#fafafa;color:#61676c;"><code><span>#!/bin/bash
+</span><span># build.sh -- a shell version of build.c for the new bootsect.s &amp; setup.s
+</span><span># author: falcon &lt;wuzhangjin@gmail.com&gt;
+</span><span># update: 2008-10-10
+</span><span>
+</span><span>bootsect=$1
+</span><span>hello=$2
+</span><span>setup=$3
+</span><span>system=$4
+</span><span>IMAGE=$5
+</span><span>root_dev=$6
+</span><span>
+</span><span># Set the biggest sys_size
+</span><span># Changes from 0x20000 to 0x30000 by tigercn to avoid oversized code.
+</span><span>SYS_SIZE=$((0x3000*16))
+</span><span>
+</span><span># set the default &quot;device&quot; file for root image file
+</span><span>if [ -z &quot;$root_dev&quot; ]; then
+</span><span>	DEFAULT_MAJOR_ROOT=3
+</span><span>	DEFAULT_MINOR_ROOT=1
+</span><span>else
+</span><span>	DEFAULT_MAJOR_ROOT=${root_dev:0:2}
+</span><span>	DEFAULT_MINOR_ROOT=${root_dev:2:3}
+</span><span>fi
+</span><span>
+</span><span># Write bootsect (512 bytes, one sector) to stdout
+</span><span>[ ! -f &quot;$bootsect&quot; ] &amp;&amp; echo &quot;there is no bootsect binary file there&quot; &amp;&amp; exit -1
+</span><span>dd if=$bootsect bs=512 count=1 of=$IMAGE 2&gt;&amp;1 &gt;/dev/null
+</span><span>
+</span><span># Write hello(512bytes, one sector) to stdout
+</span><span>[ ! -f &quot;$hello&quot; ] &amp;&amp; echo &quot;there is no hello binary file there&quot; &amp;&amp; exit -1
+</span><span>dd if=$hello seek=1 bs=512 count=1 of=$IMAGE 2&gt;&amp;1 &gt;/dev/null
+</span><span>
+</span><span># Write setup(4 * 512bytes, four sectors) to stdout
+</span><span>[ ! -f &quot;$setup&quot; ] &amp;&amp; echo &quot;there is no setup binary file there&quot; &amp;&amp; exit -1
+</span><span>dd if=$setup seek=2 bs=512 count=4 of=$IMAGE 2&gt;&amp;1 &gt;/dev/null
+</span><span>
+</span><span># Write system(&lt; SYS_SIZE) to stdout
+</span><span>[ ! -f &quot;$system&quot; ] &amp;&amp; echo &quot;there is no system binary file there&quot; &amp;&amp; exit -1
+</span><span>system_size=`wc -c $system |cut -d&quot; &quot; -f1`
+</span><span>[ $system_size -gt $SYS_SIZE ] &amp;&amp; echo &quot;the system binary is too big&quot; &amp;&amp; exit -1
+</span><span>dd if=$system seek=6 bs=512 count=$((2888-1-1-4)) of=$IMAGE 2&gt;&amp;1 &gt;/dev/null
+</span><span>
+</span><span># Set &quot;device&quot; for the root image file
+</span><span>echo -ne &quot;\x$DEFAULT_MINOR_ROOT\x$DEFAULT_MAJOR_ROOT&quot; | dd ibs=1 obs=1 count=2 seek=508 of=$IMAGE conv=notrunc  2&gt;&amp;1 &gt;/dev/null
+</span></code></pre>
+<p>Remember that at the <code>Makefile</code>, we put the hello as the second parameter, and we also need to update the parameter index of rest.</p>
+<p>Link the <code>hello</code> to <code>Image</code>, <strong>order matter!</strong>
+We want to put the bootsect, hello, setup and system, so we must follow this order.</p>
+<p>The hello contain 512 bytes and occupied 1 sector, that is the <code>bs</code> and <code>count</code> option for.</p>
+<p>So far, we insert the hello to new image, and we are ready to boot it.</p>
+<h3 id="how-os-boot"><a class="zola-anchor" href="#how-os-boot" aria-label="Anchor link for: how-os-boot">How OS boot?</a></h3>
+<p>At <code>boot/bootsect.s</code></p>
+<pre style="background-color:#fafafa;color:#61676c;"><code><span>	ljmp    $BOOTSEG, $_start
+</span><span>_start:
+</span><span>	mov	$BOOTSEG, %ax
+</span><span>	mov	%ax, %ds
+</span><span>	mov	$INITSEG, %ax
+</span><span>	mov	%ax, %es
+</span><span>	mov	$256, %cx
+</span><span>	sub	%si, %si
+</span><span>	sub	%di, %di
+</span><span>	rep
+</span><span>	movsw 
+</span><span>	ljmp	$INITSEG, $go
+</span></code></pre>
+<ol>
+<li>
+<p>Long jump to <code>$BOOTSEG:$_start</code> when OS is loaded by BIOS.</p>
+</li>
+<li>
+<p>Put <code>$BOOTSEG</code> to <code>%ds</code>, <code>$INITSEG</code> to <code>%es</code> and 256 to <code>%cx</code>.</p>
+</li>
+<li>
+<p>Zero the <code>%si</code> and <code>%di</code>.</p>
+</li>
+<li>
+<p>Repeat <code>movsw</code> until <code>%cx</code> is zero (i.e. copy itself to from <code>$BOOTSEG</code> to <code>$INITSEG</code>, total size is 512 bytes).</p>
+<p>Because the counter of <code>rep</code> will decrease by 1 after executed, so the <code>movw</code> will execute 256 times!</p>
+<p><code>movw</code> will move one word (2 bytes in 16-bits CPU) from <code>%ds:%si</code> to <code>%es:%di</code>.</p>
+<p>First step:</p>
+<pre style="background-color:#fafafa;color:#61676c;"><code><span>%ds = $BOOTSEG
+</span><span>%si = 0
+</span><span>%es = $INITSEG
+</span><span>%di = 0
+</span><span>
+</span><span># Copy from $BOOTSEG:0 to $INITSEG:0
+</span><span>movw
+</span></code></pre>
+<p>Second step:
+Because the <code>%si</code> and <code>%di</code> will increase by 2 (bytes, one word in 16-bits CPU) after done it. So</p>
+<pre style="background-color:#fafafa;color:#61676c;"><code><span>%ds = $BOOTSEG
+</span><span>%si = 2
+</span><span>%es = $INITSEG
+</span><span>%di = 2
+</span><span>
+</span><span># Copy from $BOOTSEG:2 to $INITSEG:2
+</span><span>movw
+</span></code></pre>
+<p>After 256 times, the <code>$BOOTSEG:0</code> - <code>$BOOTSEG:256</code> will copy to  <code>$INITSEG:0</code> - <code>$INITSEG:256</code>. That's <code>bootsect</code> itself!</p>
+</li>
+<li>
+<p>Long jump to <code>$INITSEG:$go</code>.</p>
+</li>
+</ol>
+<hr />
+<pre style="background-color:#fafafa;color:#61676c;"><code><span>go:	mov	%cs, %ax 			# after long jump, %cs become $INITSEG
+</span><span>	mov	%ax, %ds
+</span><span>	mov	%ax, %es
+</span><span># put stack at 0x9ff00.
+</span><span>	mov	%ax, %ss
+</span><span>	mov	$0xFF00, %sp		# arbitrary value &gt;&gt;512
+</span></code></pre>
+<ol>
+<li>Move <code>$INITSEG</code> to <code>%ds</code>, <code>%es</code> and <code>%ss</code>.
+After long jump, the <code>%cs</code> will store the last segment it jump, that is <code>$INITSEG</code>.</li>
+<li>Put the top of stack <code>%sp</code> to a huge address.</li>
+</ol>
+<hr />
+<pre style="background-color:#fafafa;color:#61676c;"><code><span># load the setup-sectors directly after the bootblock.
+</span><span># Note that &#39;es&#39; is already set up.
+</span><span>load_setup:
+</span><span>	mov	$0x0000, %dx		# drive 0, head 0
+</span><span>	mov	$0x0002, %cx		# sector 2, track 0
+</span><span>	mov	$0x0200, %bx		# address = 512, in INITSEG
+</span><span>	.equ    AX, 0x0200+SETUPLEN
+</span><span>	mov     $AX, %ax		# service 2, nr of sectors
+</span><span>	int	$0x13			# read it
+</span><span>	jnc	ok_load_setup		# ok - continue
+</span><span>	mov	$0x0000, %dx
+</span><span>	mov	$0x0000, %ax		# reset the diskette
+</span><span>	int	$0x13
+</span><span>	jmp	load_setup
+</span></code></pre>
+<ol>
+<li>In this time, we want to read drive 0 (floppy), from 0 cylinder, 0 track, from <code>2</code>'th sector and read <code>SETUPLEN</code> sectors, 0 head to memory based on address <code>$INITSEG:$0x0200</code>. (i.e. load the setup in memory)</li>
+<li>If successfully read it, <code>%cf</code> will not be set, so that <code>jnc	ok_load_setup</code> will jump to <code>ok_load_setup</code>.</li>
+<li>Otherwise, reset the disk and try again.</li>
+</ol>
+<hr />
+<p><strong>Reference:</strong></p>
+<h4 id="drive-table"><a class="zola-anchor" href="#drive-table" aria-label="Anchor link for: drive-table"><a rel="noreferrer" href="https://en.wikipedia.org/wiki/INT_13H">Drive table</a>:</a></h4>
+<table><thead><tr><th>Register value</th><th>Meaning</th></tr></thead><tbody>
+<tr><td>DL = 00h</td><td>1st floppy disk ( "drive A:" )</td></tr>
+<tr><td>DL = 01h</td><td>2nd floppy disk ( "drive B:" )</td></tr>
+<tr><td>DL = 80h</td><td>1st hard disk</td></tr>
+<tr><td>DL = 81h</td><td>2nd hard disk</td></tr>
+<tr><td>DL = e0h</td><td>CD/DVD</td></tr>
+</tbody></table>
+<hr />
+<h4 id="int-13h-ah-02h-read-sectors-from-drive"><a class="zola-anchor" href="#int-13h-ah-02h-read-sectors-from-drive" aria-label="Anchor link for: int-13h-ah-02h-read-sectors-from-drive">INT 13h, AH = 02h: <a rel="noreferrer" href="https://en.wikipedia.org/wiki/INT_13H">Read Sectors From Drive</a></a></h4>
+<p><strong>Parameter:</strong></p>
+<table><thead><tr><th>Register</th><th>Meaning</th></tr></thead><tbody>
+<tr><td>AH</td><td>02h</td></tr>
+<tr><td>AL</td><td>Sectors To Read Count</td></tr>
+<tr><td>CH</td><td>Cylinder</td></tr>
+<tr><td>CL</td><td>Sector</td></tr>
+<tr><td>DH</td><td>Head</td></tr>
+<tr><td>DL</td><td>Drive</td></tr>
+<tr><td>ES:BX</td><td>Buffer Address Pointer</td></tr>
+</tbody></table>
+<p><strong>Results:</strong></p>
+<table><thead><tr><th>Register</th><th>Meaning</th></tr></thead><tbody>
+<tr><td>CF</td><td>Set On Error, Clear If No Error</td></tr>
+<tr><td>AH</td><td>Return Code</td></tr>
+<tr><td>AL</td><td>Actual Sectors Read Count</td></tr>
+</tbody></table>
+<hr />
+<h4 id="int-13h-ah-00h-reset-disk-system"><a class="zola-anchor" href="#int-13h-ah-00h-reset-disk-system" aria-label="Anchor link for: int-13h-ah-00h-reset-disk-system">INT 13h, AH = 00h: <a rel="noreferrer" href="https://en.wikipedia.org/wiki/INT_13H">Reset Disk System</a></a></h4>
+<p><strong>Parameter:</strong></p>
+<table><thead><tr><th>Register</th><th>Meaning</th></tr></thead><tbody>
+<tr><td>AH</td><td>00h</td></tr>
+<tr><td>DL</td><td>Drive (bit 7 set means reset both hard and floppy disks)</td></tr>
+</tbody></table>
+<p><strong>Results:</strong></p>
+<table><thead><tr><th>Register</th><th>Meaning</th></tr></thead><tbody>
+<tr><td>CF</td><td>Set on error</td></tr>
+<tr><td>AH</td><td>Return Code</td></tr>
+</tbody></table>
+<hr />
+<p>We can imitate the procedure to...</p>
+<pre style="background-color:#fafafa;color:#61676c;"><code><span>	.equ HELLOLEN, 1		# nr of hello-sectors
+</span><span>	.equ HELLOSEG, 0x0100	# hello starts here
+</span><span>...
+</span><span>
+</span><span>go:	mov	%cs, %ax 			# after long jump, %cs become $INITSEG
+</span><span>	mov	%ax, %ds
+</span><span>	mov	%ax, %es
+</span><span># put stack at 0x9ff00.
+</span><span>	mov	%ax, %ss
+</span><span>	mov	$0xFF00, %sp		# arbitrary value &gt;&gt;512
+</span><span>    
+</span><span># Lab 2
+</span><span>load_hello:
+</span><span>   mov	$0x0000, %dx		# drive 0, head 0
+</span><span>   mov	$0x0002, %cx		# sector 2, track 0
+</span><span>   mov $HELLOSEG, %ax		# segment
+</span><span>   mov %ax, %es
+</span><span>   mov	$0x0000, %bx		# offset, address = 0x0100
+</span><span>   .equ    AX, 0x0200+HELLOLEN
+</span><span>   mov     $AX, %ax			# service 2, nr of sectors
+</span><span>   int	$0x13				# read it
+</span><span>   jnc	ok_load_hello		# ok - continue
+</span><span>   mov	$0x0000, %dx
+</span><span>   mov	$0x0000, %ax		# reset the diskette
+</span><span>   int	$0x13
+</span><span>   jmp	load_hello
+</span><span>
+</span><span>ok_load_hello:
+</span><span>   ljmp $HELLOSEG, $0 # Jump to hello
+</span><span>
+</span><span>...
+</span></code></pre>
+<p><img src="/images/posts/OSDI-lab2/ejJFhn5.png" alt=" " /></p>
+<p>It works!</p>
+<hr />
+<h2 id="lab2-4-multiboot-support"><a class="zola-anchor" href="#lab2-4-multiboot-support" aria-label="Anchor link for: lab2-4-multiboot-support">Lab2.4 - Multiboot support</a></h2>
+<p>In this experiment, you need to implement a simple keyboard character reader that when user:</p>
+<ul>
+<li>
+<p>Press ‘1’, it boots the linux-0.11 Image(just like lab1).</p>
+</li>
+<li>
+<p>Press ‘2’, it boots the hello world program.</p>
+</li>
+</ul>
+<pre style="background-color:#fafafa;color:#61676c;"><code><span>go:	mov	%cs, %ax 			# after long jump, %cs become $INITSEG
+</span><span>	mov	%ax, %ds
+</span><span>	mov	%ax, %es
+</span><span># put stack at 0x9ff00.
+</span><span>	mov	%ax, %ss
+</span><span>	mov	$0xFF00, %sp		# arbitrary value &gt;&gt;512
+</span><span>    
+</span><span>boot_menu:
+</span><span>   # Print some inane message
+</span><span>   mov	$0x03, %ah		# read cursor pos
+</span><span>   xor	%bh, %bh		# page number
+</span><span>   int	$0x10
+</span><span>   
+</span><span>   mov	$21, %cx		# string length
+</span><span>   mov	$0x000D, %bx		# page 0, attribute 7 (normal)
+</span><span>   #lea	option, %bp
+</span><span>   mov     $option, %bp		# point to message
+</span><span>   mov	$0x1301, %ax		# write string, move cursor
+</span><span>   int	$0x10
+</span><span>
+</span><span>   mov $0x00, %ah
+</span><span>   int $0x16
+</span><span>
+</span><span>   cmp $49, %al				# 1 ascii
+</span><span>   je load_setup
+</span><span>   cmp $50, %al				# 2 ascii
+</span><span>   je load_hello
+</span><span>   jmp boot_menu
+</span><span>
+</span><span>   ...
+</span><span> 
+</span><span>msg1:
+</span><span>	.byte 13,10
+</span><span>	.ascii &quot;Loading system ...&quot;
+</span><span>	.byte 13,10,13,10
+</span><span>
+</span><span>option:
+</span><span>	.byte 13,10
+</span><span>	.ascii &quot;1) linux, 2) hello&quot;
+</span><span>	.byte 13,10,13,10
+</span></code></pre>
+<ol>
+<li>We locate the cursor.</li>
+<li>Print the string to show the boot option.</li>
+<li>Read the keyboard</li>
+<li>Goto <code>load_setup</code> if pressing 1, goto <code>load_hello</code> if pressing 2.</li>
+<li>Otherwise, go to <code>boot_menu</code> again.</li>
+</ol>
+<hr />
+<p><strong>Reference:</strong></p>
+<h4 id="int-10h-ah-03h-get-cursor-position-and-shape"><a class="zola-anchor" href="#int-10h-ah-03h-get-cursor-position-and-shape" aria-label="Anchor link for: int-10h-ah-03h-get-cursor-position-and-shape">INT 10h, AH = 03h: <a rel="noreferrer" href="https://en.wikipedia.org/wiki/INT_10H">Get cursor position and shape</a></a></h4>
+<p><strong>Parameter:</strong></p>
+<table><thead><tr><th>Register</th><th>Meaning</th></tr></thead><tbody>
+<tr><td>AH</td><td>03h</td></tr>
+<tr><td>BH</td><td>Page Number</td></tr>
+</tbody></table>
+<p><strong>Results:</strong></p>
+<table><thead><tr><th>Register</th><th>Meaning</th></tr></thead><tbody>
+<tr><td>AX = 0</td><td></td></tr>
+<tr><td>CH</td><td>Start scan line</td></tr>
+<tr><td>CL</td><td>End scan line</td></tr>
+<tr><td>DH</td><td>Row</td></tr>
+<tr><td>DL</td><td>Column</td></tr>
+</tbody></table>
+<hr />
+<h4 id="int-10h-ah-13h-write-string"><a class="zola-anchor" href="#int-10h-ah-13h-write-string" aria-label="Anchor link for: int-10h-ah-13h-write-string">INT 10h, AH = 13h: <a rel="noreferrer" href="https://en.wikipedia.org/wiki/INT_10H">Write string</a></a></h4>
+<p><strong>Parameter:</strong></p>
+<table><thead><tr><th>Register</th><th>Meaning</th></tr></thead><tbody>
+<tr><td>AH</td><td>13h</td></tr>
+<tr><td>AL</td><td>Write mode</td></tr>
+<tr><td>BH</td><td>Page Number</td></tr>
+<tr><td>BL</td><td>Color</td></tr>
+<tr><td>CX</td><td>String length</td></tr>
+<tr><td>DH</td><td>Row</td></tr>
+<tr><td>DL</td><td>Column</td></tr>
+<tr><td>ES:EP</td><td>Offset of string</td></tr>
+</tbody></table>
+<hr />
+<h4 id="int-16h-ah-00h-read-keystroke"><a class="zola-anchor" href="#int-16h-ah-00h-read-keystroke" aria-label="Anchor link for: int-16h-ah-00h-read-keystroke">INT 16h, AH = 00h: <a rel="noreferrer" href="https://en.wikipedia.org/wiki/INT_16H">Read keystroke</a></a></h4>
+<p><strong>Parameter:</strong></p>
+<table><thead><tr><th>Register</th><th>Meaning</th></tr></thead><tbody>
+<tr><td>AH</td><td>00h</td></tr>
+</tbody></table>
+<p><strong>Results:</strong></p>
+<table><thead><tr><th>Register</th><th>Meaning</th></tr></thead><tbody>
+<tr><td>AH</td><td>Scan code of the key pressed down</td></tr>
+<tr><td>AL</td><td>ASCII character of the button pressed</td></tr>
+</tbody></table>
+<hr />
+<h4 id="bios-color"><a class="zola-anchor" href="#bios-color" aria-label="Anchor link for: bios-color"><a rel="noreferrer" href="https://en.wikipedia.org/wiki/BIOS_color_attributes">BIOS color</a>:</a></h4>
+<table><thead><tr><th>Hex</th><th>Color</th></tr></thead><tbody>
+<tr><td>0</td><td>Black</td></tr>
+<tr><td>1</td><td>Blue</td></tr>
+<tr><td>2</td><td>Green</td></tr>
+<tr><td>3</td><td>Cyan</td></tr>
+<tr><td>4</td><td>Red</td></tr>
+<tr><td>5</td><td>Magenta</td></tr>
+<tr><td>6</td><td>Brown</td></tr>
+<tr><td>7</td><td>Light Gray</td></tr>
+<tr><td>8</td><td>Dark Gray</td></tr>
+<tr><td>9</td><td>Light Blue</td></tr>
+<tr><td>A</td><td>Light Green</td></tr>
+<tr><td>B</td><td>Light Cyan</td></tr>
+<tr><td>C</td><td>Light Red</td></tr>
+<tr><td>D</td><td>Light Magenta</td></tr>
+<tr><td>E</td><td>Yellow</td></tr>
+<tr><td>F</td><td>White</td></tr>
+</tbody></table>
+<hr />
+<h4 id="ascii"><a class="zola-anchor" href="#ascii" aria-label="Anchor link for: ascii"><a rel="noreferrer" href="https://en.wikipedia.org/wiki/ASCII">ASCII</a>:</a></h4>
+<table><thead><tr><th>Dec</th><th>Meaning</th></tr></thead><tbody>
+<tr><td>10</td><td>Line feed (\n)</td></tr>
+<tr><td>49</td><td>1</td></tr>
+<tr><td>50</td><td>2</td></tr>
+</tbody></table>
+<hr />
+<pre style="background-color:#fafafa;color:#61676c;"><code><span>load_setup:
+</span><span>	mov	$0x0000, %dx		# drive 0, head 0
+</span><span>	mov	$0x0003, %cx		# sector 3, track 0
+</span><span>	mov	$0x0200, %bx		# address = 512, in INITSEG
+</span><span>	.equ    AX, 0x0200+SETUPLEN
+</span><span>	mov     $AX, %ax		# service 2, nr of sectors
+</span><span>	int	$0x13			# read it
+</span><span>	jnc	ok_load_setup		# ok - continue
+</span><span>	mov	$0x0000, %dx
+</span><span>	mov	$0x0000, %ax		# reset the diskette
+</span><span>	int	$0x13
+</span><span>	jmp	load_setup
+</span></code></pre>
+<p><code>load_hello</code> remain the same, but the setup is located at 3rd sector, so we revise the <code>%cl</code> to 0x03.</p>
+<p>It seems that all work are done. However, after making and run it.</p>
+<p><img src="/images/posts/OSDI-lab2/KB682J1.png" alt="" /></p>
+<p>Hello runs pretty well.</p>
+<p>After press 1, I want to load the setup, but the OS begin to reboot continuously.</p>
+<p>It seems that we didn't run the <code>ljmp	$SETUPSEG, $0</code>.
+Thus, we must continue to trace the rest of code.</p>
+<pre style="background-color:#fafafa;color:#61676c;"><code><span>ok_load_setup:
+</span><span>
+</span><span># Get disk drive parameters, specifically nr of sectors/track
+</span><span>
+</span><span>	mov	$0x00, %dl
+</span><span>	mov	$0x0800, %ax		# AH=8 is get drive parameters
+</span><span>	int	$0x13
+</span><span>	mov	$0x00, %ch
+</span><span>	#seg cs
+</span><span>	mov	%cx, %cs:sectors+0	# %cs means sectors is in %cs
+</span><span>    ...
+</span></code></pre>
+<ol>
+<li>Get sectors of track.</li>
+<li>Set <code>%ch</code> (<code>%cx[15:8]</code>) to <code>0x00</code>.</li>
+<li>Because we boot from floppy (<code>%dl</code> = 0), and its maximum sectors per track will not exceed 256 (18 sectors per track normally), so <code>%cx[7:6]</code> will be <code>0</code>.</li>
+<li>Move <code>%cx</code> to <code>sectors</code>.</li>
+</ol>
+<hr />
+<p><strong>Reference:</strong></p>
+<h4 id="int-13h-ah-08h-read-drive-parameters"><a class="zola-anchor" href="#int-13h-ah-08h-read-drive-parameters" aria-label="Anchor link for: int-13h-ah-08h-read-drive-parameters">INT 13h, AH = 08h: <a rel="noreferrer" href="https://en.wikipedia.org/wiki/INT_13H">Read Drive Parameters</a></a></h4>
+<p><strong>Parameter:</strong></p>
+<table><thead><tr><th>Register</th><th>Meaning</th></tr></thead><tbody>
+<tr><td>AH</td><td>08h</td></tr>
+<tr><td>DL</td><td>drive index</td></tr>
+<tr><td>ES:DI</td><td>set to 0000h:0000h to work around some buggy BIOS</td></tr>
+</tbody></table>
+<p><strong>Results:</strong></p>
+<table><thead><tr><th>Register</th><th>Meaning</th></tr></thead><tbody>
+<tr><td>CF</td><td>Set On Error, Clear If No Error</td></tr>
+<tr><td>AH</td><td>Return Code</td></tr>
+<tr><td>DL</td><td>number of hard disk drives</td></tr>
+<tr><td>DH</td><td>logical last index of heads = number_of - 1 (because index starts with 0)</td></tr>
+<tr><td>CX</td><td>[7:6][15:8] logical last index of cylinders = number_of - 1 (because index starts with 0)<br>[5:0] logical last index of sectors per track = number_of (because index starts with 1)</td></tr>
+<tr><td>BL</td><td>drive type (only AT/PS2 floppies)</td></tr>
+<tr><td>ES:DI</td><td>pointer to drive parameter table (only for floppies)</td></tr>
+</tbody></table>
+<hr />
+<pre style="background-color:#fafafa;color:#61676c;"><code><span>ok_load_setup:
+</span><span>   ...
+</span><span>	mov	$SYSSEG, %ax
+</span><span>	mov	%ax, %es		# segment of 0x010000
+</span><span>	call	read_it
+</span><span>	call	kill_motor
+</span><span>   ...
+</span></code></pre>
+<p>Put <code>$SYSSEG</code> in <code>%es</code>, and call read_it.</p>
+<pre style="background-color:#fafafa;color:#61676c;"><code><span>read_it:
+</span><span>	mov	%es, %ax
+</span><span>	test	$0x0fff, %ax
+</span><span>die:	jne 	die			# es must be at 64kB boundary
+</span><span>	xor 	%bx, %bx		# bx is starting address within segment
+</span></code></pre>
+<ol>
+<li><code>TEST</code> <code>0x0fff</code> and <code>0x1000</code>. <code>TEST</code> is bitwise <code>AND</code> and result of <code>TEST</code> is <code>0</code>, <code>ZF</code> is set to <code>1</code>. <a rel="noreferrer" href="https://en.wikipedia.org/wiki/TEST_(x86_instruction)">ref</a></li>
+<li><code>JNE</code> will jump when <code>ZF</code> is <code>0</code>, so it will continue executing the next instruction. <a rel="noreferrer" href="https://en.wikibooks.org/wiki/X86_Assembly/Control_Flow#Jump_Instructions">ref</a></li>
+<li>Zero <code>%bx</code></li>
+</ol>
+<pre style="background-color:#fafafa;color:#61676c;"><code><span>rp_read:
+</span><span>	mov 	%es, %ax
+</span><span> 	cmp 	$ENDSEG, %ax		# have we loaded all yet?
+</span><span>	jb	ok1_read
+</span><span>	ret
+</span></code></pre>
+<ol>
+<li>Put <code>%es</code> to <code>%ax</code> (<code>$SYSSEG</code>).</li>
+<li>Compare <code>$ENGSEG</code>(<code>0x4000</code>) and <code>%ax</code> (<code>0x1000</code>).</li>
+<li>In AT&amp;T syntax, <code>%ax</code> will subtract <code>$ENGSEG</code>. Result is <code>0xD000</code>. <code>SF</code> and <code>CF</code> will be set. <a rel="noreferrer" href="https://en.wikibooks.org/wiki/X86_Assembly/Control_Flow#Comparison_Instructions">ref</a></li>
+<li>Because <code>jb</code> will jump when <code>CF</code> is 1, so jump to <code>ok1_read</code>. <a rel="noreferrer" href="https://en.wikibooks.org/wiki/X86_Assembly/Control_Flow#Jump_Instructions">ref</a></li>
+<li>Otherwise, return to last callee.</li>
+</ol>
+<pre style="background-color:#fafafa;color:#61676c;"><code><span>sread:	.word 1+ SETUPLEN	# sectors read of current track
+</span><span>...
+</span><span>ok1_read:
+</span><span>	#seg cs
+</span><span>	mov	%cs:sectors+0, %ax
+</span><span>	sub	sread, %ax
+</span><span>	mov	%ax, %cx
+</span><span>	shl	$9, %cx
+</span><span>	add	%bx, %cx
+</span><span>	jnc 	ok2_read
+</span><span>	je 	ok2_read
+</span><span>	xor 	%ax, %ax
+</span><span>	sub 	%bx, %ax
+</span><span>	shr 	$9, %ax
+</span></code></pre>
+<ol>
+<li>Move <code>sectors</code> to <code>%ax</code> and subtract <code>sread</code>. That is un-read sectors.</li>
+<li>Calculate the total bytes of un-read sectors (512 bytes per sector)  to <code>%cx</code></li>
+<li>If not greater or eqaul to $2^{16}$ (maximum register capacity), goto <code>ok2_read</code>.</li>
+<li>Otherwise, count the maximum sectors can read (<code>%ax</code>).</li>
+</ol>
+<pre style="background-color:#fafafa;color:#61676c;"><code><span>ok2_read:
+</span><span>	call 	read_track
+</span><span>
+</span><span>...
+</span><span>
+</span><span>read_track:
+</span><span>	push	%ax
+</span><span>	push	%bx
+</span><span>	push	%cx
+</span><span>	push	%dx
+</span><span>	mov	track, %dx
+</span><span>	mov	sread, %cx
+</span><span>	inc	%cx
+</span><span>	mov	%dl, %ch
+</span><span>	mov	head, %dx
+</span><span>	mov	%dl, %dh
+</span><span>	mov	$0, %dl
+</span><span>	and	$0x0100, %dx
+</span><span>	mov	$2, %ah
+</span><span>	int	$0x13
+</span><span>	jc	bad_rt
+</span><span>	pop	%dx
+</span><span>	pop	%cx
+</span><span>	pop	%bx
+</span><span>	pop	%ax
+</span><span>	ret
+</span></code></pre>
+<ol>
+<li>Store all register.</li>
+<li>In this time, we want to read drive 0 (floppy), from 0 cylinder, 0 track, from <code>1+SETUPLEN+1</code>'th sector and read <code>%al</code> un-read sectors, 0 head to memory based on address <code>$SYSSEG:0x0000</code>. (i.e. load the system in memory)</li>
+<li>If failed, <code>%cf</code> will be set, so that <code>jc	bad_rt</code> will jump to <code>bad_rt</code>.</li>
+<li>Load all registers.</li>
+</ol>
+<p>At this very moment, we have already known the error may come from here. Because the system is located at <code>1 + 1 + 1 + SETUPLEN</code>, so we <strong>must</strong> change <code>sread</code> to <code>1 + 1 + SETUPLEN</code>.</p>
+<hr />
+<p><strong>Reference:</strong></p>
+<h4 id="int-13h-ah-02h-read-sectors-from-drive-1"><a class="zola-anchor" href="#int-13h-ah-02h-read-sectors-from-drive-1" aria-label="Anchor link for: int-13h-ah-02h-read-sectors-from-drive-1">INT 13h, AH = 02h: <a rel="noreferrer" href="https://en.wikipedia.org/wiki/INT_13H">Read Sectors From Drive</a></a></h4>
+<p><strong>Parameter:</strong></p>
+<table><thead><tr><th>Register</th><th>Meaning</th></tr></thead><tbody>
+<tr><td>AH</td><td>02h</td></tr>
+<tr><td>AL</td><td>Sectors To Read Count</td></tr>
+<tr><td>CH</td><td>Cylinder</td></tr>
+<tr><td>CL</td><td>Sector</td></tr>
+<tr><td>DH</td><td>Head</td></tr>
+<tr><td>DL</td><td>Drive</td></tr>
+<tr><td>ES:BX</td><td>Buffer Address Pointer</td></tr>
+</tbody></table>
+<p><strong>Results:</strong></p>
+<table><thead><tr><th>Register</th><th>Meaning</th></tr></thead><tbody>
+<tr><td>CF</td><td>Set On Error, Clear If No Error</td></tr>
+<tr><td>AH</td><td>Return Code</td></tr>
+<tr><td>AL</td><td>Actual Sectors Read Count</td></tr>
+</tbody></table>
+<hr />
+<p>After change <code>sread</code> to <code> 1 + 1 + SETUP</code>, it works!</p>
+<p><img src="/images/posts/OSDI-lab2/WGZwVkx.png" alt=" " /></p>
+<hr />
+<h2 id="questions"><a class="zola-anchor" href="#questions" aria-label="Anchor link for: questions">Questions</a></h2>
+<ol>
+<li>
+<p>What’s the meaning of ljmp $BOOTSEG, $_start(boot/bootsect.s)? What is the memory address of the beginning of bootsect.s? What is the value of $_start? From above questions, could you please clearly explain how do you jump to the beginning of hello image?</p>
+<pre style="background-color:#fafafa;color:#61676c;"><code><span>   objdump -D -mi386 -Maddr16,data16 boot/bootsect.o
+</span></code></pre>
+<p><img src="/images/posts/OSDI-lab2/lDWVVAr.png" alt=" " /></p>
+</li>
+<li>
+<p>What’s the purpose of es register when the cpu is performing int $0x13 with AH=0x2h?</p>
+<ul>
+<li>base segment of memory address that put read sectors</li>
+</ul>
+</li>
+<li>
+<p>Please change the Hello program’s font color to another</p>
+<ul>
+<li>Change <code>%bl</code> register.</li>
+</ul>
+</li>
+<li>
+<p>If we would like to swap the position of hello and setup in the Image. Where do we need to modify in tools/build.sh and bootsect.s?</p>
+<ul>
+<li>The order of Image at <code>tools/build.sh</code></li>
+<li>The starting sector want to read when perform int 13h with AH=02h.</li>
+</ul>
+</li>
+<li>
+<p>Please trace the SeaBIOS code. What are the first and the last instruction of the SeaBIOS? Where are they?</p>
+<ul>
+<li>First instruction: <code>reset_vector</code> @ <code>src/romlayout.S</code></li>
+<li>Last instruction:
+<ul>
+<li><code>call_boot_entry</code> @ <code>src/boot.c</code> in C</li>
+<li><code>__farcall16</code> @ <code>src/romlayout.S</code> in asm</li>
+</ul>
+</li>
+</ul>
+</li>
+</ol>
+
+            </section>
+        </article>
+    </main>
+</div>
+
+
+
+            
+                
+            
+
+            
+        </div>
+
+        <div class="right-content">
+            
+    
+    
+        <div class="toc">
+    <div class="heading">Table of Contents</div>
+    <ul class="toc-list">
+        
+            <li class="parent">
+                
+                <a href="https://www.titaneric.com/posts/osdi-lab2/#osdi-lab-ii">OSDI lab II</a>
+
+                
+                    <ul>
+                    
+                        
+                        <li>
+                            <a href="https://www.titaneric.com/posts/osdi-lab2/#objective">Objective</a>
+                        </li>
+
+                        
+                    
+                        
+                        <li>
+                            <a href="https://www.titaneric.com/posts/osdi-lab2/#lab2-1-build-seabios-add-some-message-before-system-startup">Lab2.1 - Build SEABIOS, add some message before system startup</a>
+                        </li>
+
+                        
+                    
+                        
+                        <li>
+                            <a href="https://www.titaneric.com/posts/osdi-lab2/#lab2-2-add-image-before-system-startup">Lab2.2 - Add image before system startup</a>
+                        </li>
+
+                        
+                    
+                        
+                        <li>
+                            <a href="https://www.titaneric.com/posts/osdi-lab2/#lab2-3-boot-the-hello-world-program">Lab2.3 - Boot the hello world program</a>
+                        </li>
+
+                        
+                            <ul>
+                                
+                                    <li>
+                                        <a href="https://www.titaneric.com/posts/osdi-lab2/#makefile">Makefile</a>
+                                    </li>
+                                
+                                    <li>
+                                        <a href="https://www.titaneric.com/posts/osdi-lab2/#how-os-boot">How OS boot?</a>
+                                    </li>
+                                
+                            </ul>
+                        
+                    
+                        
+                        <li>
+                            <a href="https://www.titaneric.com/posts/osdi-lab2/#lab2-4-multiboot-support">Lab2.4 - Multiboot support</a>
+                        </li>
+
+                        
+                            <ul>
+                                
+                                    <li>
+                                        <a href="https://www.titaneric.com/posts/osdi-lab2/#int-10h-ah-03h-get-cursor-position-and-shape">INT 10h, AH = 03h: Get cursor position and shape</a>
+                                    </li>
+                                
+                                    <li>
+                                        <a href="https://www.titaneric.com/posts/osdi-lab2/#int-10h-ah-13h-write-string">INT 10h, AH = 13h: Write string</a>
+                                    </li>
+                                
+                                    <li>
+                                        <a href="https://www.titaneric.com/posts/osdi-lab2/#int-16h-ah-00h-read-keystroke">INT 16h, AH = 00h: Read keystroke</a>
+                                    </li>
+                                
+                                    <li>
+                                        <a href="https://www.titaneric.com/posts/osdi-lab2/#bios-color">BIOS color:</a>
+                                    </li>
+                                
+                                    <li>
+                                        <a href="https://www.titaneric.com/posts/osdi-lab2/#ascii">ASCII:</a>
+                                    </li>
+                                
+                                    <li>
+                                        <a href="https://www.titaneric.com/posts/osdi-lab2/#int-13h-ah-08h-read-drive-parameters">INT 13h, AH = 08h: Read Drive Parameters</a>
+                                    </li>
+                                
+                                    <li>
+                                        <a href="https://www.titaneric.com/posts/osdi-lab2/#int-13h-ah-02h-read-sectors-from-drive-1">INT 13h, AH = 02h: Read Sectors From Drive</a>
+                                    </li>
+                                
+                            </ul>
+                        
+                    
+                        
+                        <li>
+                            <a href="https://www.titaneric.com/posts/osdi-lab2/#questions">Questions</a>
+                        </li>
+
+                        
+                    
+                    </ul>
+                
+            </li>
+        
+    </ul>
+</div>
+
+    
+
+        </div>
+    </body>
+
+</html>

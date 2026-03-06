@@ -1,0 +1,631 @@
+<!DOCTYPE html>
+<html lang="en" class="dark light">
+
+    <head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="base" content="https:&#x2F;&#x2F;www.titaneric.com">
+
+    
+
+    
+    
+    
+        <title>
+            
+                Grafana Loki系列文章(I) - 使用金絲雀部署升級Loki：提升效能同時節省成本的實踐經驗
+            
+        </title>
+
+        
+            <meta property="og:title"
+                  content="Grafana Loki系列文章(I) - 使用金絲雀部署升級Loki：提升效能同時節省成本的實踐經驗" />
+        
+    
+
+    
+        
+    
+
+    
+        
+    
+
+    
+    <link rel="icon" type="image/png" href=https://www.titaneric.com/icons/favicon-16x16.png />
+
+    
+    
+        <link href=https://www.titaneric.com/fonts.css rel="stylesheet" />
+    
+
+    
+    
+
+    
+    
+        
+            
+            
+
+            <script defer
+                    src="/js/imamu.js"
+                    data-website-id="63f9d7c5-7c47-493b-af29-481374c7531c"
+                    data-host-url="https:&#x2F;&#x2F;api-gateway.umami.dev&#x2F;"></script>
+        
+
+        
+    
+
+    
+    <script defer src=https://www.titaneric.com/js/codeblock.js></script>
+
+    
+    <script defer src=https://www.titaneric.com/js/toc.js></script>
+
+    
+    
+        <script src=https://www.titaneric.com/js/note.js></script>
+    
+
+    
+        
+            <script>
+            MathJax = {
+              tex: {
+                inlineMath: [['$', '$'], ['\\(', '\\)']]
+              }
+            };
+            </script>
+        
+        <script type="text/javascript" id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js">
+        </script>
+    
+
+    
+    
+
+
+    
+    
+        <link rel="stylesheet"
+              type="text/css"
+              href="https://www.titaneric.com/theme/light.css" />
+        <link id="darkModeStyle"
+              rel="stylesheet"
+              type="text/css"
+              href="https://www.titaneric.com/theme/dark.css" />
+    
+
+    <!-- Set the correct theme in the script -->
+
+    
+        <script src=https://www.titaneric.com/js/themetoggle.js></script>
+
+        
+            <script>setTheme(getSavedTheme());</script>
+        
+    
+
+
+    <link rel="stylesheet"
+          type="text/css"
+          media="screen"
+          href="https://www.titaneric.com/main.css" />
+
+    
+
+    
+        <script defer
+                src="https://www.titaneric.com/js/searchElasticlunr.min.js?h=3626c0ef99daa745b31e"></script></head>
+
+
+    <body>
+        <div class="left-content">
+            
+            
+        </div>
+
+        <div class="content">
+            <nav>
+    <div class="left-nav">
+        
+            <a href=https:&#x2F;&#x2F;www.titaneric.com>titaneric</a>
+        
+
+
+        <div class="socials">
+            
+                <a rel="me" href="https:&#x2F;&#x2F;www.linkedin.com&#x2F;in&#x2F;chen-yi-huang&#x2F;" class="social">
+                    <img alt="linkedin" src="https://www.titaneric.com/icons/social/linkedin.svg">
+                </a>
+            
+                <a rel="me" href="https:&#x2F;&#x2F;github.com&#x2F;titaneric&#x2F;" class="social">
+                    <img alt="github" src="https://www.titaneric.com/icons/social/github.svg">
+                </a>
+            
+        </div>
+    </div>
+
+    <div class="right-nav">
+        
+            <a href=https://www.titaneric.com/posts style="margin-right: 0.5em">posts</a>
+        
+            <a href=https://www.titaneric.com/tags style="margin-right: 0.5em">tags</a>
+        
+            <a href=https://www.titaneric.com/categories style="margin-right: 0.5em">categories</a>
+        
+            <a href=https://www.titaneric.com/archive style="margin-right: 0.5em">archive</a>
+        
+            <a href=https://www.titaneric.com/pdfs/resume.pdf style="margin-right: 0.5em">about</a>
+        
+            <a href=https://www.titaneric.com/notes/index.html style="margin-right: 0.5em">notes</a>
+        
+
+        
+            <button id="search-button"
+                    class="search-button"
+                    title="$SHORTCUT to open search">
+                <img src="https://www.titaneric.com/icons/search.svg"
+                    alt="Search"
+                    class="search-icon">
+            </button>
+
+            <div id="searchModal"
+                class="search-modal js"
+                role="dialog"
+                aria-labelledby="modalTitle">
+                <div id="modal-content">
+                    <h1 id="modalTitle" class="page-header">Search</h1>
+                    <div id="searchBar">
+                        <input id="searchInput"
+                            role="combobox"
+                            autocomplete="off"
+                            spellcheck="false"
+                            aria-expanded="false"
+                            aria-controls="results-container"
+                            placeholder="Search..." />
+                        <button id="clear-search" class="clear-button" title="Clear search">
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 -960 960 960">
+                                <path d="m256-200-56-56 224-224-224-224 56-56 224 224 224-224 56 56-224 224 224 224-56 56-224-224-224 224Z" />
+                            </svg>
+                        </button>
+                    </div>
+                    <div id="results-container">
+                        <div id="results-info">
+                            <span id="zero_results" style="display: none;">No results</span>
+                            <span id="one_result" style="display: none;">1 result</span>
+                            <span id="many_results" style="display: none;">$NUMBER results</span>
+                        </div>
+                        <div id="results" role="listbox"></div>
+                    </div>
+                </div>
+            </div>
+        
+
+        
+            <a id="dark-mode-toggle"
+            onclick="toggleTheme(); event.preventDefault();"
+            href="#">
+                <img src="https://www.titaneric.com/icons/sun.svg"
+                    id="sun-icon"
+                    style="filter: invert(1)"
+                    alt="Light" />
+                <img src=https://www.titaneric.com/icons/moon.svg id="moon-icon" alt="Dark" />
+            </a>
+
+            <!-- Initialize the theme toggle icons -->
+            <script>updateItemToggleTheme()</script>
+        
+    </div>
+</nav>
+
+
+            
+            
+    
+<div class="visible-element-observer-root" data-selector="main article p">
+    <main>
+        <article>
+            <div class="title">
+                
+                
+    
+    <div class="page-header">
+        Grafana Loki系列文章(I) - 使用金絲雀部署升級Loki：提升效能同時節省成本的實踐經驗
+    </div>
+    
+
+
+                <div class="meta">
+                    
+                        Posted on <time>2025-02-14</time>
+                    
+
+
+                    
+
+                    
+
+                    
+
+                    
+                    
+                        
+                        
+                            
+                        
+
+                        
+                            
+                            :: <a href="https:&#x2F;&#x2F;github.com&#x2F;titaneric&#x2F;titaneric.github.io&#x2F;tree&#x2F;master&#x2F;content&#x2F;posts&#x2F;grafana-loki-upgrade-1.zh.md" target="_blank" rel="noopener noreferrer">Source Code</a>
+                        
+                    
+
+                    
+                    
+
+                    
+                    
+                        <span class="tags-label"> :: </span>
+                        <span class="tags">
+                                <a href="https://www.titaneric.com/tags/k8s/"
+                                   class="post-tag">k8s</a>
+                            
+                                <a href="https://www.titaneric.com/tags/monitoring/"
+                                   class="post-tag">monitoring</a>
+                            
+                        </span>
+                    
+
+                    
+
+                </div>
+            </div>
+
+            
+
+            <section class="body">
+                <p><img src="https://vos.line-scdn.net/landpress-content-v2-vcfc68aynwenkh3bno0ixfx8/7ebbf0334cc14d71818a451b89847db8.png?updatedAt=1739524743000" alt="" />
+<em><p style="text-align:center">Generated by Microsoft Designer</p></em></p>
+<h2 id="tldr"><a class="zola-anchor" href="#tldr" aria-label="Anchor link for: tldr">TLDR</a></h2>
+<ul>
+<li>在LINE Taiwan，我們決定使用金絲雀部署進行Loki升級</li>
+<li>使用Vector取代Promtail協助我們處理log並送往Loki</li>
+<li>使用Vector去複製真實流量到新版Loki，幫助我們調整Loki config</li>
+<li>使用Vector改善Loki labels，大幅度增進Loki效能</li>
+<li>最終省下近70%的機器成本，將後端儲存的負擔降到最低。</li>
+</ul>
+<h2 id="bei-jing"><a class="zola-anchor" href="#bei-jing" aria-label="Anchor link for: bei-jing">背景</a></h2>
+<h3 id="observability-platform"><a class="zola-anchor" href="#observability-platform" aria-label="Anchor link for: observability-platform">Observability Platform</a></h3>
+<p>LINE Taiwan的observability platform主要使用Grafana提供的生態系，利用Grafana當作dashboard以及搜尋log、metrics以及trace的媒介。在metrics部分，我們使用公司提供相容於Prometheus API的系統，Log部分使用自建的Loki cluster，Trace部分則是使用自建的Tempo cluster。</p>
+<p>當時我們的Loki cluster版本是2.8，並使用<code>grafana/loki-distributed</code> helm chart部署，後端儲存使用公司提供的相容於S3 API的Object Storage系統，比較特別的是，我們按照<a rel="noreferrer" href="https://grafana.com/docs/loki/latest/configure/#s3_storage_config">Loki config</a>的說明，設定10個sharding buckets，嘗試分散bucket流量。cache部分則是使用公司提供的Redis Service。因應多的專案及團隊，我們有開啟<a rel="noreferrer" href="https://grafana.com/docs/loki/latest/operations/multi-tenancy/">multi-tenant</a>設定。</p>
+<h3 id="lokisheng-ji"><a class="zola-anchor" href="#lokisheng-ji" aria-label="Anchor link for: lokisheng-ji">Loki升級</a></h3>
+<p>在去年底時，SRE計劃將Loki cluster升級到3.3，那時的Loki已經有官方維護的<code>grafana/loki</code> helm chart，並且在<a rel="noreferrer" href="https://grafana.com/docs/loki/latest/setup/install/helm/install-scalable/#deploying-the-helm-chart-for-development-and-testing">安裝文件</a>直接使用這個helm chart進行安裝，不再仰賴於靠社群維護的<code>grafana/loki-distributed</code> helm chart。<a rel="noreferrer" href="https://grafana.com/docs/loki/latest/setup/migrate/migrate-from-distributed/">Loki官方文件</a>也有提到如何從<code>grafana/loki-distributed</code> migrate到<code>grafana/loki</code> helm chart的方法，因此推斷這個舊的helm chart將會被deprecate，另外在稍微看過官方migration流程後，覺得不太方便實施。在綜合因素下，同時部署Loki的observability cluster資源還算充足，最後決定部建第二套新的Loki cluster，直接採用<code>grafana/loki</code> helm chart部署，希望能透過設計出新的架構、流程及config，去解決當時Loki的各項問題。</p>
+<p>在設計migration流程時，我們希望能讓這個新版Loki cluster直接承擔production流量，方便在過程中能針對Loki的config做一些tuning，等到性能調校差不多後，就能逐步開放beta以及production使用。所以如何設計一個平滑的搬遷流程是我們的首要目標，這也是本文的著重重點，Loki細項的config調整將會在下一篇提及。</p>
+<h2 id="fang-fa"><a class="zola-anchor" href="#fang-fa" aria-label="Anchor link for: fang-fa">方法</a></h2>
+<h3 id="cong-promtail-qian-yi-dao-vector"><a class="zola-anchor" href="#cong-promtail-qian-yi-dao-vector" aria-label="Anchor link for: cong-promtail-qian-yi-dao-vector">從 Promtail 遷移到 Vector</a></h3>
+<p>如前面提到的，我們希望能在migration期間，並存兩套Loki cluster，並且都收同樣的log，這需要在log collector那邊下功夫，我們當時是使用Grafana出的<a rel="noreferrer" href="https://grafana.com/docs/loki/latest/send-data/promtail/">Promtail</a>，雖然說Promtail可以設定第二個Loki endpoint，不過Promtail config不好維護而且官方也說明Promtail已經不再接受更新，他們改專注在<a rel="noreferrer" href="https://grafana.com/docs/loki/latest/send-data/alloy/">Alloy</a>的開發。</p>
+<p>在衡量該替換成哪個log collector時，我們考量目前的幾點需求：</p>
+<ul>
+<li>
+<p>能正常收kubernetes logs，並有基本的k8s metadata資訊</p>
+</li>
+<li>
+<p>允許送log到Loki去</p>
+</li>
+<li>
+<p>能夠將log內容做些基本的處理，例如masking敏感資料或是調整Loki label</p>
+</li>
+</ul>
+<p><a rel="noreferrer" href="https://grafana.com/docs/loki/latest/send-data/alloy/">Alloy</a>雖然皆滿足以上需求，我們也曾在<a rel="noreferrer" href="https://techblog.lycorp.co.jp/zh-hant/grafana-alloy-best-practice">其他場景</a>中使用，不過這時想起主管曾提到<a rel="noreferrer" href="https://vector.dev/">Vector</a>現正流行，在評估它的功能以後，發現都可以滿足目前需求，也有以下優勢：</p>
+<ul>
+<li>
+<p>使用Rust開發，在執行上所需的資源遠小於使用Golang開發的Promtail或是Alloy</p>
+</li>
+<li>
+<p>生態系豐富的<a rel="noreferrer" href="https://vector.dev/components/">Vector Components</a>，能依照環境及情境選擇合適的元件</p>
+</li>
+<li>
+<p>提供了稱作<a rel="noreferrer" href="https://vector.dev/docs/reference/vrl/">Vector Remap Language (VRL)</a>的語法，並支持眾多的<a rel="noreferrer" href="https://vector.dev/docs/reference/vrl/functions/">functions</a>，能根據需求輕易處理log</p>
+</li>
+<li>
+<p>提供了非常方便的<a rel="noreferrer" href="https://vector.dev/docs/reference/configuration/unit-tests/">Unit Tests</a>功能，能夠驗證你寫的VRL沒有問題</p>
+</li>
+</ul>
+<p>我們最後決定將Promtail替換成Vector，流程如下：</p>
+<ol>
+<li>將現有的Promtail config移植成Vector config：這包含<a rel="noreferrer" href="https://vector.dev/docs/reference/configuration/sources/kubernetes_logs/">Kubernetes logs source</a>、<a rel="noreferrer" href="https://vector.dev/docs/reference/configuration/sinks/loki/">Loki sink</a>以及客製化的<a rel="noreferrer" href="https://vector.dev/docs/reference/configuration/transforms/remap/">Remap transform</a>等等元件，也撰寫了多個Unit Tests，這能讓我們有更高的信心，確保Vector config能正常運作。</li>
+</ol>
+<pre data-lang="yaml" style="background-color:#fafafa;color:#61676c;" class="language-yaml "><code class="language-yaml" data-lang="yaml"><span style="color:#399ee6;">sources</span><span style="color:#61676ccc;">:
+</span><span>  </span><span style="color:#399ee6;">kubernetes_logs</span><span style="color:#61676ccc;">:
+</span><span>    </span><span style="color:#399ee6;">type</span><span style="color:#61676ccc;">: </span><span style="color:#86b300;">kubernetes_logs
+</span><span>
+</span><span style="color:#399ee6;">transforms</span><span style="color:#61676ccc;">:
+</span><span>  </span><span style="color:#399ee6;">add_metadata</span><span style="color:#61676ccc;">:
+</span><span>    </span><span style="color:#399ee6;">type</span><span style="color:#61676ccc;">: </span><span style="color:#86b300;">&quot;remap&quot;
+</span><span>    </span><span style="color:#399ee6;">inputs</span><span style="color:#61676ccc;">:
+</span><span>    - </span><span style="color:#86b300;">kubernetes_logs
+</span><span>    </span><span style="color:#399ee6;">source</span><span style="color:#61676ccc;">: </span><span style="color:#fa6e32;">|
+</span><span style="color:#86b300;">      # custom transformation by VRL
+</span><span style="color:#86b300;">    
+</span><span style="color:#399ee6;">sinks</span><span style="color:#61676ccc;">:
+</span><span>  </span><span style="color:#399ee6;">loki</span><span style="color:#61676ccc;">:
+</span><span>    </span><span style="color:#399ee6;">type</span><span style="color:#61676ccc;">: </span><span style="color:#86b300;">loki
+</span><span>    </span><span style="color:#399ee6;">inputs</span><span style="color:#61676ccc;">: </span><span>[ </span><span style="color:#86b300;">add_metadata </span><span>]
+</span><span>    </span><span style="color:#399ee6;">endpoint</span><span style="color:#61676ccc;">: </span><span style="color:#86b300;">&quot;${LOKI_ENDPOINT}&quot;
+</span><span>    </span><span style="color:#399ee6;">tenant_id</span><span style="color:#61676ccc;">: </span><span style="color:#86b300;">&quot;{{ .tenant_id }}&quot;
+</span><span>    </span><span style="color:#399ee6;">encoding</span><span style="color:#61676ccc;">:
+</span><span>      </span><span style="color:#399ee6;">codec</span><span style="color:#61676ccc;">: </span><span style="color:#86b300;">raw_message
+</span><span>    </span><span style="color:#399ee6;">labels</span><span style="color:#61676ccc;">:
+</span><span>      </span><span style="color:#86b300;">&quot;*&quot;</span><span style="color:#61676ccc;">: </span><span style="color:#86b300;">&quot;{{ .loki_labels }}&quot;
+</span></code></pre>
+<ol start="2">
+<li>使用Vector取代Promtail：我們替換的過程如下：
+<ol>
+<li>先同步Vector，這時舊的Loki會短暫地直接承擔兩倍流量(Promtail+Vector)</li>
+<li>下掉Promtail避免Loki的rate limit錯誤影響Vector</li>
+<li>藉由Vector自己的retry機制，正常送log到Loki去</li>
+</ol>
+</li>
+</ol>
+<p>我們觀察到在替換後，不僅Loki運作正常，同時帶來的效益是Vector所需的記憶體使用是原先Promtail的30%以下，驗證了Vector的高效能表現。</p>
+<h3 id="zhu-bu-zeng-jia-sample-logliu-liang"><a class="zola-anchor" href="#zhu-bu-zeng-jia-sample-logliu-liang" aria-label="Anchor link for: zhu-bu-zeng-jia-sample-logliu-liang">逐步增加sample log流量</a></h3>
+<p>Vector提供了<a rel="noreferrer" href="https://vector.dev/docs/reference/configuration/transforms/sample/">Sample transform</a>功能，可以設定sample rate，進而針對收進來的log進行抽樣，一般應該是用在log量超級大的情境，設定少量但足夠進行排障的sample rate，減少log系統以及後端儲存的負擔。不過我們決定活用這個功能，幫助我們順利地進行Loki migration，具體流程如下。</p>
+<ol>
+<li>定義<a rel="noreferrer" href="https://vector.dev/docs/reference/configuration/transforms/sample/">Sample transform</a>，輸入剛使用VRL轉換後的<code>add_metadata</code>元件。以下範例是採用10%(1/10)的sample rate。</li>
+</ol>
+<pre data-lang="yaml" style="background-color:#fafafa;color:#61676c;" class="language-yaml "><code class="language-yaml" data-lang="yaml"><span style="color:#399ee6;">transforms</span><span style="color:#61676ccc;">:
+</span><span>  </span><span style="color:#399ee6;">add_metadata</span><span style="color:#61676ccc;">:
+</span><span>    </span><span style="color:#399ee6;">type</span><span style="color:#61676ccc;">: </span><span style="color:#86b300;">&quot;remap&quot;
+</span><span>    </span><span style="color:#399ee6;">inputs</span><span style="color:#61676ccc;">:
+</span><span>    - </span><span style="color:#86b300;">kubernetes_logs
+</span><span>    </span><span style="color:#399ee6;">source</span><span style="color:#61676ccc;">: </span><span style="color:#fa6e32;">|
+</span><span style="color:#86b300;">      # custom transformation by VRL
+</span><span style="color:#86b300;">    
+</span><span>  </span><span style="color:#399ee6;">sample_log</span><span style="color:#61676ccc;">:
+</span><span>    </span><span style="color:#399ee6;">type</span><span style="color:#61676ccc;">: </span><span style="color:#86b300;">sample
+</span><span>    </span><span style="color:#399ee6;">inputs</span><span style="color:#61676ccc;">:
+</span><span>    - </span><span style="color:#86b300;">add_metadata
+</span><span>    </span><span style="color:#399ee6;">rate</span><span style="color:#61676ccc;">: </span><span style="color:#ff8f40;">10
+</span></code></pre>
+<ol start="2">
+<li>定義新的Loki sink，<code>endpoint</code>改成新的Loki，輸入改成剛才的<a rel="noreferrer" href="https://vector.dev/docs/reference/configuration/transforms/sample/">Sample transform</a>元件名稱。以下範例的<code>loki-v3</code>即為新的Loki sink，注意他的輸入是<code>sample_log</code>而不是<code>add_metadata</code>。</li>
+</ol>
+<pre data-lang="yaml" style="background-color:#fafafa;color:#61676c;" class="language-yaml "><code class="language-yaml" data-lang="yaml"><span style="color:#399ee6;">sinks</span><span style="color:#61676ccc;">:
+</span><span>  </span><span style="color:#399ee6;">loki</span><span style="color:#61676ccc;">:
+</span><span>    </span><span style="color:#399ee6;">type</span><span style="color:#61676ccc;">: </span><span style="color:#86b300;">loki
+</span><span>    </span><span style="color:#399ee6;">inputs</span><span style="color:#61676ccc;">: </span><span>[ </span><span style="color:#86b300;">add_metadata </span><span>]
+</span><span>    </span><span style="color:#399ee6;">endpoint</span><span style="color:#61676ccc;">: </span><span style="color:#86b300;">&quot;${LOKI_ENDPOINT}&quot;
+</span><span>    </span><span style="color:#399ee6;">tenant_id</span><span style="color:#61676ccc;">: </span><span style="color:#86b300;">&quot;{{ .tenant_id }}&quot;
+</span><span>    </span><span style="color:#399ee6;">encoding</span><span style="color:#61676ccc;">:
+</span><span>      </span><span style="color:#399ee6;">codec</span><span style="color:#61676ccc;">: </span><span style="color:#86b300;">raw_message
+</span><span>    </span><span style="color:#399ee6;">labels</span><span style="color:#61676ccc;">:
+</span><span>      </span><span style="color:#86b300;">&quot;*&quot;</span><span style="color:#61676ccc;">: </span><span style="color:#86b300;">&quot;{{ .loki_labels }}&quot;
+</span><span>  </span><span style="color:#399ee6;">loki-v3</span><span style="color:#61676ccc;">:
+</span><span>    </span><span style="color:#399ee6;">type</span><span style="color:#61676ccc;">: </span><span style="color:#86b300;">loki
+</span><span>    </span><span style="color:#399ee6;">inputs</span><span style="color:#61676ccc;">: </span><span>[ </span><span style="color:#86b300;">sample_log </span><span>]
+</span><span>    </span><span style="color:#399ee6;">endpoint</span><span style="color:#61676ccc;">: </span><span style="color:#86b300;">&quot;${LOKI_V3_ENDPOINT}&quot;
+</span><span>    </span><span style="color:#399ee6;">tenant_id</span><span style="color:#61676ccc;">: </span><span style="color:#86b300;">&quot;{{ .tenant_id }}&quot;
+</span><span>    </span><span style="color:#399ee6;">encoding</span><span style="color:#61676ccc;">:
+</span><span>      </span><span style="color:#399ee6;">codec</span><span style="color:#61676ccc;">: </span><span style="color:#86b300;">raw_message
+</span><span>    </span><span style="color:#399ee6;">labels</span><span style="color:#61676ccc;">:
+</span><span>      </span><span style="color:#86b300;">&quot;*&quot;</span><span style="color:#61676ccc;">: </span><span style="color:#86b300;">&quot;{{ .loki_labels }}&quot;
+</span></code></pre>
+<ol start="3">
+<li>
+<p>同步Vector config到cluster上，確認新的Loki已經有接收少量，但來自真實環境的log。這時就可以專注在Loki的tuning。</p>
+</li>
+<li>
+<p>隨著Loki的tuning，可以逐步將sample rate拉高，我們一路從10%、33%、50%調整到最終的100%，證明新版Loki可以強健地承擔production環境上的log流量。</p>
+</li>
+</ol>
+<h3 id="gai-shan-loki-labels"><a class="zola-anchor" href="#gai-shan-loki-labels" aria-label="Anchor link for: gai-shan-loki-labels">改善Loki labels</a></h3>
+<p>我們在log collector還在使用Promtail時，訂了以下的label</p>
+<ul>
+<li>
+<p>cluster：k8s cluster名稱</p>
+</li>
+<li>
+<p>namespace： k8s namespace</p>
+</li>
+<li>
+<p>container：定義在<code>spec.containers.name</code>的pod container名稱</p>
+</li>
+<li>
+<p>app：<code>app.kubernetes.io/name</code>、<code>app</code> pod labels，或是pod名稱</p>
+</li>
+<li>
+<p>component：<code>app.kubernetes.io/component</code>或<code>component</code> pod labels</p>
+</li>
+<li>
+<p>instance：<code>app.kubernetes.io/instance</code>或<code>instance</code> pod labels</p>
+</li>
+<li>
+<p>nodename：當時pod部署的node名稱</p>
+</li>
+<li>
+<p>pod：pod名稱</p>
+</li>
+<li>
+<p>stream：log是<code>stderr</code>或<code>stdout</code></p>
+</li>
+</ul>
+<p>在詳細閱讀<a rel="noreferrer" href="https://grafana.com/blog/2023/12/20/the-concise-guide-to-grafana-loki-everything-you-need-to-know-about-labels/">The concise guide to Grafana Loki: Everything you need to know about labels</a>這篇官方blog後，深深體悟到目前的label設計對Loki儲存以及搜尋上是非常沒有效率的，因此我們決定針對label進行大幅度的改善。</p>
+<p>我們決定移除<code>pod</code>以及<code>nodename</code>這些high cardinality的label，改放在<a rel="noreferrer" href="https://grafana.com/docs/loki/latest/get-started/labels/structured-metadata/?pg=blog&amp;plcmt=body-txt">structured metadata</a>，雖然他的檢索速度不及label，但是這更符合官方建議，而且也能透過引進<a rel="noreferrer" href="https://grafana.com/docs/loki/latest/operations/bloom-filters/">Bloom Filters</a>，帶來潛在的搜尋加速。我們也另外放入對搜尋log有幫助的<code>availability_zone</code>, <code>nodepool</code>以及<code>trace_id</code>。</p>
+<p>我們還針對<code>app</code>這個label做特別處理，除了前述app相關的pod label之外，如果pod有parent resource，例如他是daemonset、statefulset或是deployment，我們會將pod owner的欄位取出，處理後寫入到<code>app</code> label中。</p>
+<p>我們也另外針對k8s client library或是controller生成的pod做處理。因為它們通常會是一次性任務的job，或是沒有parent resource但是suffix複雜的pod名稱，這樣就不能用前面的方式處理，這時必須更積極地看目前還有哪些<code>app</code> label沒有被處理，這時可以使用下方的<a rel="noreferrer" href="https://grafana.com/docs/loki/latest/query/logcli/logcli-tutorial/#checking-series-cardinality">logcli</a>指令協助看不同的Loki tenant的stream有哪些，針對常見而且量大的stream中的label作處理。</p>
+<pre data-lang="bash" style="background-color:#fafafa;color:#61676c;" class="language-bash "><code class="language-bash" data-lang="bash"><span style="color:#fa6e32;">export </span><span>LOKI_ADDR</span><span style="color:#ed9366;">=&lt;</span><span>loki-gateway</span><span style="color:#ed9366;">&gt;
+</span><span style="color:#fa6e32;">export </span><span>LOKI_ORG_ID</span><span style="color:#ed9366;">=&lt;</span><span>tenant-id</span><span style="color:#ed9366;">&gt;
+</span><span style="color:#f29718;">logcli</span><span> series </span><span style="color:#86b300;">&#39;{}&#39;
+</span></code></pre>
+<p>這些操作完成之後，預期在<a rel="noreferrer" href="https://github.com/grafana/loki/blob/main/production/loki-mixin-compiled/dashboards/loki-operational.json">Loki Operational Dashboard</a>將會看到兩個顯著的變化。</p>
+<h4 id="streams"><a class="zola-anchor" href="#streams" aria-label="Anchor link for: streams">Streams</a></h4>
+<p>由以下結果可以看出，stream的寫入數量從最高的20K，大幅減少至3K。stream數量的改變將會改善chunk的使用率，在之後會說明。</p>
+<table><thead><tr><th>Before</th><th>After</th></tr></thead><tbody>
+<tr><td><img src="https://vos.line-scdn.net/landpress-content-v2-vcfc68aynwenkh3bno0ixfx8/993ccf977b9b4e8ca123c7400113cc0f.png?updatedAt=1739524948000" width="700" height="150" /></td><td><img src="https://vos.line-scdn.net/landpress-content-v2-vcfc68aynwenkh3bno0ixfx8/c0aab6613b19447ba19aae6ee8d395c5.png?updatedAt=1739524958000"  width="700" height="150" /></td></tr>
+</tbody></table>
+<h4 id="chunk-flush-reason"><a class="zola-anchor" href="#chunk-flush-reason" aria-label="Anchor link for: chunk-flush-reason">Chunk Flush Reason</a></h4>
+<p>從下圖可以看出，<strong>full</strong> Chunk Flush Reason從原先的70%增加到90%以上。理論上總體log量不會變，但因為stream數量變少，使得每一條stream需要消化的log量將會增大，這將會加速該條stream的chunk寫入，使得chunk更快被填滿，最終導致<strong>full</strong> Chunk Flush Reason比率的增加。</p>
+<table><thead><tr><th>Before</th><th>After</th></tr></thead><tbody>
+<tr><td><img src="https://vos.line-scdn.net/landpress-content-v2-vcfc68aynwenkh3bno0ixfx8/2e73cc7626fd41259a3cc4e6edba98ba.png?updatedAt=1739524974000" width="700" height="150" /></td><td><img src="https://vos.line-scdn.net/landpress-content-v2-vcfc68aynwenkh3bno0ixfx8/61d1990e3bb3496f9b1dcbff3cf59b1e.png?updatedAt=1739524983000"  width="700" height="150" /></td></tr>
+</tbody></table>
+<h2 id="cheng-xiao"><a class="zola-anchor" href="#cheng-xiao" aria-label="Anchor link for: cheng-xiao">成效</a></h2>
+<p>除了前面提到的<strong>full</strong> Chunk Flush Reason比率提高以及Stream數量的減少之外，針對Loki labels的改善還帶來以下好處。</p>
+<h3 id="geng-gao-de-ingesterxie-ru-xiao-neng"><a class="zola-anchor" href="#geng-gao-de-ingesterxie-ru-xiao-neng" aria-label="Anchor link for: geng-gao-de-ingesterxie-ru-xiao-neng">更高的Ingester寫入效能</a></h3>
+<p>在改善Loki labels的前後，所需的Ingester資源差異列在下表，可以看到Ingester需要的replica減少到原先的30%左右，需要的memory更減少到25%以下。在worker node部分因為我們有特別為Ingester設定pod anti-affinity，所以node數量會跟ingester一樣，每個月省下的成本估計為7萬日幣。</p>
+<table><thead><tr><th></th><th>Ingester's #replicas</th><th>CPU core</th><th>memory usage in GB</th><th>dedicated worker node</th></tr></thead><tbody>
+<tr><td>Before</td><td>30</td><td>10</td><td>90</td><td>30</td></tr>
+<tr><td>After</td><td>12</td><td>7.5</td><td>21</td><td>12</td></tr>
+</tbody></table>
+<h3 id="wan-quan-xiao-chu-object-storagefa-sheng-rate-limitji-hui"><a class="zola-anchor" href="#wan-quan-xiao-chu-object-storagefa-sheng-rate-limitji-hui" aria-label="Anchor link for: wan-quan-xiao-chu-object-storagefa-sheng-rate-limitji-hui">完全消除Object Storage發生rate limit機會</a></h3>
+<p>另一個改善Loki labels帶來的效益是，過去在Object Storage頻繁發生的rate limit errors (429)已經不再出現。以下的圖表顯示4xx HTTP status code錯誤的前後差異，能看出在新版Loki所使用的bucket沒有任何錯誤發生。我們判斷是因為新版Loki的<strong>full</strong> Chunk Flush Reason高達九成，再加上Compactor幫忙壓縮剩餘沒有滿的chunk，造成幾乎所有的chunk都是資料密集。比起過去需要使用多個稀疏的chunk，現在可以用更少數量的密集chunk就可以存放相同的log量。這使得Loki在查詢時，需要的Object Storage API請求次數也跟著變少，也就導致rate limit不再發生。另外，我們推斷sharding buckets數量從10增加到20也有幫助。</p>
+<table><thead><tr><th>Before</th><th>After</th></tr></thead><tbody>
+<tr><td><img src="https://vos.line-scdn.net/landpress-content-v2-vcfc68aynwenkh3bno0ixfx8/5ba2e53b5b8d4963944d25be4c7cca9b.png?updatedAt=1739525018000" width="700" height="150" /></td><td><img src="https://vos.line-scdn.net/landpress-content-v2-vcfc68aynwenkh3bno0ixfx8/24f2bcbf7e2c4fc588ad7342dbb39ece.png?updatedAt=1739525034000"  width="700" height="150" /></td></tr>
+</tbody></table>
+<h2 id="jie-lun"><a class="zola-anchor" href="#jie-lun" aria-label="Anchor link for: jie-lun">結論</a></h2>
+<p>在本文中，介紹了我們如何平滑地migrate Loki cluster，特別是使用Vector去取代Promtail，大量地運用Vector提供的功能強大<a rel="noreferrer" href="https://vector.dev/docs/reference/vrl/">Vector Remap Language</a>以及生態系豐富的<a rel="noreferrer" href="https://vector.dev/components/">Vector Components</a>，幫助我們在migrate過程中，除了能不影響現有使用者的操作，更能透過sample技巧，讓新版Loki能接收來自production環境的log。</p>
+<p>在有了實際的log流量之後，我們也才能針對新版Loki的config進行重點調校。我們還按照官方建議，針對Loki labels進行特別處理，大幅提升Loki寫入效能，以及完全消弭查詢log帶來的潛在Object Storage負擔。</p>
+<p>此外，Vector也提供了<a rel="noreferrer" href="https://vector.dev/docs/reference/configuration/transforms/log_to_metric/">Log to Metric Transform</a>功能，能夠將log中紀錄的數值直接轉換成Prometheus metrics，我們使用這功能改進<a rel="noreferrer" href="https://techblog.lycorp.co.jp/zh-hant/grafana-alloy-best-practice">先前Alloy使用經驗</a>，取代掉Loki Ruler進而降低Loki負擔。值得一題的是我在使用Vector上碰到一些可以改進的地方，我也嘗試做些<a rel="noreferrer" href="https://github.com/vectordotdev/vector/pulls?q=is%3Apr+is%3Amerged+author%3Atitaneric">Vector貢獻</a>，希望Vector能發展的更好。</p>
+<p>最後，在前面提及的Loki labels改善，事實上會對Loki的Distributor造成潛在負擔，還有其他的Loki component需要做些特別的tuning，更多的Loki config調整細節，將會在下一篇文章中提到，敬請期待！</p>
+
+            </section>
+        </article>
+    </main>
+</div>
+
+
+
+            
+                
+            
+
+            
+        </div>
+
+        <div class="right-content">
+            
+    
+    
+        <div class="toc">
+    <div class="heading">Table of Contents</div>
+    <ul class="toc-list">
+        
+            <li class="parent">
+                
+                <a href="https://www.titaneric.com/posts/grafana-loki-upgrade-1-zh/#tldr">TLDR</a>
+
+                
+            </li>
+        
+            <li class="parent">
+                
+                <a href="https://www.titaneric.com/posts/grafana-loki-upgrade-1-zh/#bei-jing">背景</a>
+
+                
+                    <ul>
+                    
+                        
+                        <li>
+                            <a href="https://www.titaneric.com/posts/grafana-loki-upgrade-1-zh/#observability-platform">Observability Platform</a>
+                        </li>
+
+                        
+                    
+                        
+                        <li>
+                            <a href="https://www.titaneric.com/posts/grafana-loki-upgrade-1-zh/#lokisheng-ji">Loki升級</a>
+                        </li>
+
+                        
+                    
+                    </ul>
+                
+            </li>
+        
+            <li class="parent">
+                
+                <a href="https://www.titaneric.com/posts/grafana-loki-upgrade-1-zh/#fang-fa">方法</a>
+
+                
+                    <ul>
+                    
+                        
+                        <li>
+                            <a href="https://www.titaneric.com/posts/grafana-loki-upgrade-1-zh/#cong-promtail-qian-yi-dao-vector">從 Promtail 遷移到 Vector</a>
+                        </li>
+
+                        
+                    
+                        
+                        <li>
+                            <a href="https://www.titaneric.com/posts/grafana-loki-upgrade-1-zh/#zhu-bu-zeng-jia-sample-logliu-liang">逐步增加sample log流量</a>
+                        </li>
+
+                        
+                    
+                        
+                        <li>
+                            <a href="https://www.titaneric.com/posts/grafana-loki-upgrade-1-zh/#gai-shan-loki-labels">改善Loki labels</a>
+                        </li>
+
+                        
+                            <ul>
+                                
+                                    <li>
+                                        <a href="https://www.titaneric.com/posts/grafana-loki-upgrade-1-zh/#streams">Streams</a>
+                                    </li>
+                                
+                                    <li>
+                                        <a href="https://www.titaneric.com/posts/grafana-loki-upgrade-1-zh/#chunk-flush-reason">Chunk Flush Reason</a>
+                                    </li>
+                                
+                            </ul>
+                        
+                    
+                    </ul>
+                
+            </li>
+        
+            <li class="parent">
+                
+                <a href="https://www.titaneric.com/posts/grafana-loki-upgrade-1-zh/#cheng-xiao">成效</a>
+
+                
+                    <ul>
+                    
+                        
+                        <li>
+                            <a href="https://www.titaneric.com/posts/grafana-loki-upgrade-1-zh/#geng-gao-de-ingesterxie-ru-xiao-neng">更高的Ingester寫入效能</a>
+                        </li>
+
+                        
+                    
+                        
+                        <li>
+                            <a href="https://www.titaneric.com/posts/grafana-loki-upgrade-1-zh/#wan-quan-xiao-chu-object-storagefa-sheng-rate-limitji-hui">完全消除Object Storage發生rate limit機會</a>
+                        </li>
+
+                        
+                    
+                    </ul>
+                
+            </li>
+        
+            <li class="parent">
+                
+                <a href="https://www.titaneric.com/posts/grafana-loki-upgrade-1-zh/#jie-lun">結論</a>
+
+                
+            </li>
+        
+    </ul>
+</div>
+
+    
+
+        </div>
+    </body>
+
+</html>

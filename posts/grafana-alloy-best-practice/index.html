@@ -1,0 +1,574 @@
+<!DOCTYPE html>
+<html lang="en" class="dark light">
+
+    <head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="base" content="https:&#x2F;&#x2F;www.titaneric.com">
+
+    
+
+    
+    
+    
+        <title>
+            
+                Grafana Alloy Best Practice
+            
+        </title>
+
+        
+            <meta property="og:title"
+                  content="Grafana Alloy Best Practice" />
+        
+    
+
+    
+        
+    
+
+    
+        
+    
+
+    
+    <link rel="icon" type="image/png" href=https://www.titaneric.com/icons/favicon-16x16.png />
+
+    
+    
+        <link href=https://www.titaneric.com/fonts.css rel="stylesheet" />
+    
+
+    
+    
+
+    
+    
+        
+            
+            
+
+            <script defer
+                    src="/js/imamu.js"
+                    data-website-id="63f9d7c5-7c47-493b-af29-481374c7531c"
+                    data-host-url="https:&#x2F;&#x2F;api-gateway.umami.dev&#x2F;"></script>
+        
+
+        
+    
+
+    
+    <script defer src=https://www.titaneric.com/js/codeblock.js></script>
+
+    
+    <script defer src=https://www.titaneric.com/js/toc.js></script>
+
+    
+    
+        <script src=https://www.titaneric.com/js/note.js></script>
+    
+
+    
+        
+            <script>
+            MathJax = {
+              tex: {
+                inlineMath: [['$', '$'], ['\\(', '\\)']]
+              }
+            };
+            </script>
+        
+        <script type="text/javascript" id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js">
+        </script>
+    
+
+    
+    
+
+
+    
+    
+        <link rel="stylesheet"
+              type="text/css"
+              href="https://www.titaneric.com/theme/light.css" />
+        <link id="darkModeStyle"
+              rel="stylesheet"
+              type="text/css"
+              href="https://www.titaneric.com/theme/dark.css" />
+    
+
+    <!-- Set the correct theme in the script -->
+
+    
+        <script src=https://www.titaneric.com/js/themetoggle.js></script>
+
+        
+            <script>setTheme(getSavedTheme());</script>
+        
+    
+
+
+    <link rel="stylesheet"
+          type="text/css"
+          media="screen"
+          href="https://www.titaneric.com/main.css" />
+
+    
+
+    
+        <script defer
+                src="https://www.titaneric.com/js/searchElasticlunr.min.js?h=3626c0ef99daa745b31e"></script></head>
+
+
+    <body>
+        <div class="left-content">
+            
+            
+        </div>
+
+        <div class="content">
+            <nav>
+    <div class="left-nav">
+        
+            <a href=https:&#x2F;&#x2F;www.titaneric.com>titaneric</a>
+        
+
+
+        <div class="socials">
+            
+                <a rel="me" href="https:&#x2F;&#x2F;www.linkedin.com&#x2F;in&#x2F;chen-yi-huang&#x2F;" class="social">
+                    <img alt="linkedin" src="https://www.titaneric.com/icons/social/linkedin.svg">
+                </a>
+            
+                <a rel="me" href="https:&#x2F;&#x2F;github.com&#x2F;titaneric&#x2F;" class="social">
+                    <img alt="github" src="https://www.titaneric.com/icons/social/github.svg">
+                </a>
+            
+        </div>
+    </div>
+
+    <div class="right-nav">
+        
+            <a href=https://www.titaneric.com/posts style="margin-right: 0.5em">posts</a>
+        
+            <a href=https://www.titaneric.com/tags style="margin-right: 0.5em">tags</a>
+        
+            <a href=https://www.titaneric.com/categories style="margin-right: 0.5em">categories</a>
+        
+            <a href=https://www.titaneric.com/archive style="margin-right: 0.5em">archive</a>
+        
+            <a href=https://www.titaneric.com/pdfs/resume.pdf style="margin-right: 0.5em">about</a>
+        
+            <a href=https://www.titaneric.com/notes/index.html style="margin-right: 0.5em">notes</a>
+        
+
+        
+            <button id="search-button"
+                    class="search-button"
+                    title="$SHORTCUT to open search">
+                <img src="https://www.titaneric.com/icons/search.svg"
+                    alt="Search"
+                    class="search-icon">
+            </button>
+
+            <div id="searchModal"
+                class="search-modal js"
+                role="dialog"
+                aria-labelledby="modalTitle">
+                <div id="modal-content">
+                    <h1 id="modalTitle" class="page-header">Search</h1>
+                    <div id="searchBar">
+                        <input id="searchInput"
+                            role="combobox"
+                            autocomplete="off"
+                            spellcheck="false"
+                            aria-expanded="false"
+                            aria-controls="results-container"
+                            placeholder="Search..." />
+                        <button id="clear-search" class="clear-button" title="Clear search">
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 -960 960 960">
+                                <path d="m256-200-56-56 224-224-224-224 56-56 224 224 224-224 56 56-224 224 224 224-56 56-224-224-224 224Z" />
+                            </svg>
+                        </button>
+                    </div>
+                    <div id="results-container">
+                        <div id="results-info">
+                            <span id="zero_results" style="display: none;">No results</span>
+                            <span id="one_result" style="display: none;">1 result</span>
+                            <span id="many_results" style="display: none;">$NUMBER results</span>
+                        </div>
+                        <div id="results" role="listbox"></div>
+                    </div>
+                </div>
+            </div>
+        
+
+        
+            <a id="dark-mode-toggle"
+            onclick="toggleTheme(); event.preventDefault();"
+            href="#">
+                <img src="https://www.titaneric.com/icons/sun.svg"
+                    id="sun-icon"
+                    style="filter: invert(1)"
+                    alt="Light" />
+                <img src=https://www.titaneric.com/icons/moon.svg id="moon-icon" alt="Dark" />
+            </a>
+
+            <!-- Initialize the theme toggle icons -->
+            <script>updateItemToggleTheme()</script>
+        
+    </div>
+</nav>
+
+
+            
+            
+    
+<div class="visible-element-observer-root" data-selector="main article p">
+    <main>
+        <article>
+            <div class="title">
+                
+                
+    
+    <div class="page-header">
+        Grafana Alloy Best Practice
+    </div>
+    
+
+
+                <div class="meta">
+                    
+                        Posted on <time>2024-08-04</time>
+                    
+
+
+                    
+
+                    
+
+                    
+
+                    
+                    
+                        
+                        
+                            
+                        
+
+                        
+                            
+                            :: <a href="https:&#x2F;&#x2F;github.com&#x2F;titaneric&#x2F;titaneric.github.io&#x2F;tree&#x2F;master&#x2F;content&#x2F;posts&#x2F;Grafana Alloy Best Practice.md" target="_blank" rel="noopener noreferrer">Source Code</a>
+                        
+                    
+
+                    
+                    
+
+                    
+                    
+                        <span class="tags-label"> :: </span>
+                        <span class="tags">
+                                <a href="https://www.titaneric.com/tags/k8s/"
+                                   class="post-tag">k8s</a>
+                            
+                                <a href="https://www.titaneric.com/tags/monitoring/"
+                                   class="post-tag">monitoring</a>
+                            
+                        </span>
+                    
+
+                    
+
+                </div>
+            </div>
+
+            
+
+            <section class="body">
+                <h1 id="tldr"><a class="zola-anchor" href="#tldr" aria-label="Anchor link for: tldr">TLDR</a></h1>
+<p>引進Grafana Alloy及Faro Web SDK，增進RUM以及實現真正的前端到後端的完整tracing。</p>
+<h1 id="jie-shao"><a class="zola-anchor" href="#jie-shao" aria-label="Anchor link for: jie-shao">介紹</a></h1>
+<p>本文中會針對我在COSCUP 2024上報告的"Grafana Alloy Best Practice: Achieving frontend RUM and E2E tracing"做完整闡述。會介紹Grafana Alloy是甚麼以及它的功能，也提到我是如何引進並設計架構應付可能的巨大telemetry流量需求，提到了中間遇到的挑戰、對應的解決方式、成果及未來展望。在閱讀過程中可以搭配上面的投影片參考。</p>
+<h1 id="ming-ci-jie-shao"><a class="zola-anchor" href="#ming-ci-jie-shao" aria-label="Anchor link for: ming-ci-jie-shao">名詞介紹</a></h1>
+<h2 id="real-user-monitoring-rum"><a class="zola-anchor" href="#real-user-monitoring-rum" aria-label="Anchor link for: real-user-monitoring-rum">Real User Monitoring (RUM)</a></h2>
+<p>RUM目的是要從前端網頁使用者或是瀏覽器上蒐集metrics，用以監控前端網的表現，發現潛在的錯誤，也可以用來追蹤使用者的行為(session)。Web vitals是由Google提出的指標，用來衡量用戶在網頁上的體驗，後面介紹的Faro SDK會一併蒐集web vitals，與錯誤及session等RUM相關資訊收進Grafana Alloy中。</p>
+<h2 id="distributed-tracing"><a class="zola-anchor" href="#distributed-tracing" aria-label="Anchor link for: distributed-tracing">Distributed Tracing</a></h2>
+<p>用來描述一段請求在複雜且分散式系統中的完整流程，可以用來增進應用的可視性，除了可以知道請求在各個元件的消耗時間之外，也可以用來分析錯誤的發生原因。主流已經採用OpenTelemetry標準，它除了trace之外，也有針對log, metrics, profiling, core dump定義相關標準。</p>
+<h2 id="grafana-alloy"><a class="zola-anchor" href="#grafana-alloy" aria-label="Anchor link for: grafana-alloy">Grafana Alloy</a></h2>
+<p>Grafana Alloy是高效能，且有彈性的一種OpenTelemetry Collector。可以支援metrics, log以及trace等資料，也提供pipeline的方式，使用語法叫做alloy類似於Terraform HCL，用來描述這些資料該如何被處理，並且送進最終的目的端。在這篇文章中主要使用<code>faro.receiver</code>元件接受來自Faro Web SDK的資料。</p>
+<p>註：相較於原始opentelemetry collector使用YAML定義資料流，我覺得alloy使用上比較直覺，也確實如官網所描述的，比較方便debug。</p>
+<h2 id="grafana-faro-web-sdk"><a class="zola-anchor" href="#grafana-faro-web-sdk" aria-label="Anchor link for: grafana-faro-web-sdk">Grafana Faro Web SDK</a></h2>
+<p>Grafana Faro是JS的library，可以引用在前端的應用中，用來蒐集前述的RUM及基本的metadata例如瀏覽器及OS名稱。也與opentelemetry-js整合，針對前端應用<code>fetch</code>及<code>XML</code>請求，會自動量測請求的trace。它也能將console log、error、event及<a rel="noreferrer" href="https://developer.mozilla.org/en-US/docs/Web/API/PerformanceResourceTiming">performance resource timing</a>一起送進Grafana Alloy的Faro receiver中。</p>
+<h1 id="xian-you-jia-gou"><a class="zola-anchor" href="#xian-you-jia-gou" aria-label="Anchor link for: xian-you-jia-gou">現有架構</a></h1>
+<p>目前已經引進Grafana Alloy及Faro SDK進目前任職公司，在引進時需要考慮現有的架構，並思考如何整合。下面針對現有架構作介紹。</p>
+<h2 id="ji-shu-dui-die"><a class="zola-anchor" href="#ji-shu-dui-die" aria-label="Anchor link for: ji-shu-dui-die">技術堆疊</a></h2>
+<p>在基本的infra上，底層是由OpenStack建立的私有雲架構，上層提供了Kubernetes、Load Balancer、Object Storage、Redis及MySQL等服務，這些infra主要由日本及韓國負責維運。</p>
+<p>在這架構上，台灣的SRE在Kubernetes上部署了Traefik或Contour Ingress Controller，再上層的服務包含Tempo, Loki, ArgoCD, Grafana。</p>
+<div>
+    <iframe src="&#x2F;&#x2F;www.slideshare.net&#x2F;slideshow&#x2F;embed_code&#x2F;key&#x2F;gxSQKJ88aLrpQS?startSlide=18" frameborder="0" width="900" height="600"
+        marginwidth="0" marginheight="0" scrolling="no"
+        style="border:1px solid #CCC; border-width:1px; margin-bottom:5px; max-width: 100%;" allowfullscreen> </iframe>
+</div><h2 id="ying-yong-tuan-dui-jian-kong-jia-gou"><a class="zola-anchor" href="#ying-yong-tuan-dui-jian-kong-jia-gou" aria-label="Anchor link for: ying-yong-tuan-dui-jian-kong-jia-gou">應用團隊監控架構</a></h2>
+<p>應用團隊的服務也是部署在k8s上，前面的流量經過Load Balancer進來之後進到Traefik部署的那些節點上，Traefik聆聽Ingress或是IngressRoute設定的規則將流量送進服務內。</p>
+<p>這些應用服務會產生log, metrics及trace。metrics抓取規則主要是由PodMonitor或者ServiceMonitor定義，收進cluster上的Agent mode的Prometheus(Statefulset部署)上，會進一步透過remote write機制送進其他團隊管理的Prometheus存放。</p>
+<p>log主要會將stdout及stderr寫到節點上的log file上存放，我們使用promtail(Daemonset部暑)將這些log做前處理(加入敏感資料mask及k8s attributes等)之後，會直接送進SRE管理的Loki裡。</p>
+<p>trace會先拋到cluster上的otel collector(Deployment部暑)上，一樣會先做些前處理(memory限制，限制每一個span的attributes數量等)，因為數量比較大我們選擇先拋到Kafka topic上，之後會在SRE cluster進行處理。</p>
+<div>
+    <iframe src="&#x2F;&#x2F;www.slideshare.net&#x2F;slideshow&#x2F;embed_code&#x2F;key&#x2F;gxSQKJ88aLrpQS?startSlide=19" frameborder="0" width="900" height="600"
+        marginwidth="0" marginheight="0" scrolling="no"
+        style="border:1px solid #CCC; border-width:1px; margin-bottom:5px; max-width: 100%;" allowfullscreen> </iframe>
+</div><h2 id="srejian-kong-jia-gou"><a class="zola-anchor" href="#srejian-kong-jia-gou" aria-label="Anchor link for: srejian-kong-jia-gou">SRE監控架構</a></h2>
+<p>同樣在SRE cluster會部署Traefik負責接受監控的流量，上面如技術堆疊中提到的部署ArgoCD、Grafana、Tempo、Loki等服務。Grafana的資料來源主要是其他團隊管理的Prometheus，本地的Tempo及Loki，滿足metrics、log及trace的視覺化及告警需求。</p>
+<p>在metrics部分，我們僅是使用Prometheus remote read功能讀取其他團隊的遠端Prometheus；在logs部分，透過Loki push API打進來的logs都會被Loki cluster消化，並存放到兼容S3 API的Object Storage中；SRE cluster上會另外部署一套otel collector，負責consume來自Kafka topic的trace，之後送進Tempo cluster進一步消化，也存在Object Storage中，</p>
+<div>
+    <iframe src="&#x2F;&#x2F;www.slideshare.net&#x2F;slideshow&#x2F;embed_code&#x2F;key&#x2F;gxSQKJ88aLrpQS?startSlide=20" frameborder="0" width="900" height="600"
+        marginwidth="0" marginheight="0" scrolling="no"
+        style="border:1px solid #CCC; border-width:1px; margin-bottom:5px; max-width: 100%;" allowfullscreen> </iframe>
+</div><h1 id="ru-he-she-ji-alloy"><a class="zola-anchor" href="#ru-he-she-ji-alloy" aria-label="Anchor link for: ru-he-she-ji-alloy">如何設計Alloy</a></h1>
+<h2 id="xu-qiu"><a class="zola-anchor" href="#xu-qiu" aria-label="Anchor link for: xu-qiu">需求</a></h2>
+<p>在設計之前有一些基本的條件需要滿足</p>
+<p><em>必要</em></p>
+<ul>
+<li>充分利用並整合現有的監控平台</li>
+<li>自動化且方便地部暑Alloy</li>
+<li>因為Alloy會直接接收來自使用者最真實的流量，所以必須有基本的管控措施。</li>
+</ul>
+<p><em>非必要但有會更好</em></p>
+<ul>
+<li>提供簡單的流程給應用團隊申請使用</li>
+<li>提供範例程式串接Faro SDK，包含server-side rendering及client-side rendering</li>
+</ul>
+<p>在申請流程方面，使用者目前能透過Slack workflow申請Alloy使用，會觸發一系列的自動化，使用者就能直接使用。我們也提供Nextjs的範例程式，也寫了教學文件，供前端應用的開發者能輕鬆地串接Faro SDK。接著會針對<em>必要</em>需求，設計Alloy的自動化以及Gateway架構。</p>
+<h2 id="ying-yong-tuan-dui-duan-de-alloyjia-gou"><a class="zola-anchor" href="#ying-yong-tuan-dui-duan-de-alloyjia-gou" aria-label="Anchor link for: ying-yong-tuan-dui-duan-de-alloyjia-gou">應用團隊端的Alloy架構</a></h2>
+<p>Alloy(Deployment部暑)本身是透過ArgoCD ApplicationSet方式部暑，我們抽離了各種跟應用團隊相關的設定成變數，在動態生成ArgoCD Application時能透過go template方式將各項設定填入Alloy的config，這些變數包含了cluster、團隊及namespace名稱等。</p>
+<p>Alloy收進來的log是直接透過<code>loki.write</code>直接拋到SRE掌管的Loki cluster上；trace則是送到cluster上的otel collector，如前述說明的會將trace拋到Kafka上，之後會進到Tempo存放。</p>
+<p>Alloy會開啟<code>faro.receiver</code>元件功能，在Alloy Deployment前面會掛一個k8s Service，不同於一般的ClusterIP，我們選擇LoadBalancer type，底層的controller聆聽到之後會自動在cluster前面再創建一個LoadBalancer，基本上這樣就可以供應用程式使用。不過Faro SDK蒐集到的telemetry資料並不是直接進入這個LB，前面會再經過一個gateway。</p>
+<div>
+    <iframe src="&#x2F;&#x2F;www.slideshare.net&#x2F;slideshow&#x2F;embed_code&#x2F;key&#x2F;gxSQKJ88aLrpQS?startSlide=23" frameborder="0" width="900" height="600"
+        marginwidth="0" marginheight="0" scrolling="no"
+        style="border:1px solid #CCC; border-width:1px; margin-bottom:5px; max-width: 100%;" allowfullscreen> </iframe>
+</div><h2 id="sreduan-alloy-gatewayjia-gou"><a class="zola-anchor" href="#sreduan-alloy-gatewayjia-gou" aria-label="Anchor link for: sreduan-alloy-gatewayjia-gou">SRE端Alloy Gateway架構</a></h2>
+<p>為了能更方便的掌握各個團隊的telemetry流量，我們選擇在SRE的cluster上部暑Contour當作gateway，Contour的data plane是超高效能的Envoy，也提供了rate limit，如果必要我們可以針對某一些團隊的流量進行限流避免影響到gateway本身，以及對應用團隊cluster的衝擊。</p>
+<p>我們使用了Contour提供的HTTPProxy，將相同domain但不同path的請求，送到應用團隊cluster的Alloy入口LB。也用了Endpoint及Service將Alloy入口LB的IP作為k8s service的封裝。</p>
+<div>
+    <iframe src="&#x2F;&#x2F;www.slideshare.net&#x2F;slideshow&#x2F;embed_code&#x2F;key&#x2F;gxSQKJ88aLrpQS?startSlide=24" frameborder="0" width="900" height="600"
+        marginwidth="0" marginheight="0" scrolling="no"
+        style="border:1px solid #CCC; border-width:1px; margin-bottom:5px; max-width: 100%;" allowfullscreen> </iframe>
+</div><h2 id="she-ji-yuan-you"><a class="zola-anchor" href="#she-ji-yuan-you" aria-label="Anchor link for: she-ji-yuan-you">設計緣由</a></h2>
+<p>Q: 為什麼使用統一的Alloy gateway，而不是每一個cluster有自己的ingress將流量送進Alloy?</p>
+<p>A: 首先我們想要確實的掌握telemetry流量，有了gateway方便我們做監控，如果需要也可以充分利用Contour提供的rate limit功能。再來，我們想要區別一般應用及telemetry的流量，不希望telemetry流量衝擊到一般使用者使用。再者，如果要在每一個應用cluster的ingress進入流量，考量到不同的流量需要分開，就必須創建新的node，部暑新的Traefik，設定LB及DNS record，這需要應用團隊協助進行，這大大的增加佈署上的不便。最後，按照公司的規範，對外的服務需要經過Security Review，如果採用Alloy gateway，只要跑過一次就好，應用團隊也就不用每一個cluster都需要跑這個流程。</p>
+<p>Q：為何選擇Contour當作Ingress Controller，而不用Traefik或者其他？</p>
+<p>A：我們先前已經有使用過Contour的使用經驗，我們觀察到Contour以及Envoy的效能非常好，需要的記憶體與Traefik相比也少非常多。我們曾經考慮過Envoy自己出的Envoy Gateway，但可惜我們的k8s版本不太相符。也為了不要造成引入後帶來的維護及技術堆疊上的分歧。</p>
+<h2 id="tiao-zhan"><a class="zola-anchor" href="#tiao-zhan" aria-label="Anchor link for: tiao-zhan">挑戰</a></h2>
+<p>因為Alloy會直接接收來自真實使用者的流量，不用經過CDN等其他cache機制，所以為了能應付潛在的巨大流量，我們針對Contour以及Alloy做了壓力測試，發現他們的效能以及表現都非常好。在流量控制上，我們有3層保護關卡：第一個是應用程式可以設定sample rate，決定多少比率的流量應該被送到Alloy gateway；第二個是使用Contour的rate limit功能，可以針對特定用戶或者全局的設定流量上限；最後一個是Alloy的<code>faro.receiver</code>也提供了rate limit功能，超過上限會回429。理想上這樣的層層保護設計可以保護SRE以及應用團隊的cluster。</p>
+<p>Faro SDK蒐集到的資料最終會被送進Loki及Tempo中，我們為了因應潛在的巨大流量，也需要特別針對Loki及Tempo做性能調校，現有的監控平台是multi-tenant的設計，如果需要也可以針對不同的tenant設定rate limit。</p>
+<p>Alloy將除了trace之外的資料全部透過log寫入Loki，這也包含了web vitals以及performance resource timing的數值型的資料，這雖然解決了Prometheus可能的high-cardinality問題，但這在資料視覺化上不太方便呈現。官方提供的Faro SDK dashboard是使用logql去拿到Loki的資料，當選取的時段一長，可能就會遇到載入過久的問題，在使用上少了各項metadata，所以呈現的數值都是粗糙的，沒有更為細緻的數據呈現。我們使用Loki ruler將常見的logql語法及metadata，轉化成Prometheus metrics，因為metadata也變成了metrics label之一，這樣就可以解決上述的問題，也能看到比如第118版應用程式在Mac的Arc瀏覽器的web vitals數值，供前端開發者效能優化的參考。</p>
+<p>Faro SDK預設的trace propagation格式是使用W3C Trace Context，但是我們在應用團隊cluster佈署的Traefik僅支援Jaeger格式，如果要達成真正的前端到後端完整的tracing，一致的trace propagation是必要的，因為Traefik相對前端或後端應用不方便升級，所以造成前端或後端的應用需要配合Traefik的propagation格式，才能看到完整的tracing軌跡。應用團隊不僅會呼叫自己的服務，也可能呼叫第三方的API，這時如果第三方的API gateway將trace相關的HTTP Header（<code>TraceParent</code>或<code>Uber-Trace-Id</code>）移除，在那之後的tracing將不會被完整串接起來，我們在導入之後也發生這個狀況，在通知第三方服務不要過濾掉這些HTTP Header之後解決了這個issue。</p>
+<h1 id="cheng-guo-ji-zhan-wang"><a class="zola-anchor" href="#cheng-guo-ji-zhan-wang" aria-label="Anchor link for: cheng-guo-ji-zhan-wang">成果及展望</a></h1>
+<h2 id="cheng-guo"><a class="zola-anchor" href="#cheng-guo" aria-label="Anchor link for: cheng-guo">成果</a></h2>
+<p>目前團隊的telemetry資料會經過Loki ruler轉換成Prometheus metrics。應用團隊可以根據不同的metadata，例如app名稱、版本、環境、瀏覽器及OS版本的，看到不同的web vitals變化。同時也參考了Grafana Cloud，設計了session的dashboard，應用團隊可以看到不同的用戶在不同session的操作，了解用戶的使用行為。</p>
+<h2 id="wei-lai-gong-zuo"><a class="zola-anchor" href="#wei-lai-gong-zuo" aria-label="Anchor link for: wei-lai-gong-zuo">未來工作</a></h2>
+<p>如前面提到的，Traefik受限的trace propagation格式造成了開發者的困擾，在Traefik v3之後統一使用OpenTelemetry及W3C Trace Context標準，我們預計將逐步升級上去。</p>
+<p>在台灣這邊，應用團隊不管透過手動寫入或是library協助自動產生instrumentation都有累積一段經驗，但是採用的團隊仍不夠廣泛，而且應用團隊仍會需要手動在應用程式注入片段的程式碼才能發揮tracing功能，之後會研究zero-code instrumentation，例如Grafana Beyla這樣的工具，利用eBPF技術在底層追蹤請求及回覆，並轉換成trace。如此一來，團隊能更加專注開發應用，不須費盡心思撰寫instrumentation相關程式，也能享受tracing或其他監控帶來的好處。</p>
+<h1 id="wan-zheng-tou-ying-pian"><a class="zola-anchor" href="#wan-zheng-tou-ying-pian" aria-label="Anchor link for: wan-zheng-tou-ying-pian">完整投影片</a></h1>
+<div>
+    <iframe src="&#x2F;&#x2F;www.slideshare.net&#x2F;slideshow&#x2F;embed_code&#x2F;key&#x2F;gxSQKJ88aLrpQS" frameborder="0" width="900" height="600"
+        marginwidth="0" marginheight="0" scrolling="no"
+        style="border:1px solid #CCC; border-width:1px; margin-bottom:5px; max-width: 100%;" allowfullscreen> </iframe>
+</div>
+            </section>
+        </article>
+    </main>
+</div>
+
+
+
+            
+                
+            
+
+            
+        </div>
+
+        <div class="right-content">
+            
+    
+    
+        <div class="toc">
+    <div class="heading">Table of Contents</div>
+    <ul class="toc-list">
+        
+            <li class="parent">
+                
+                <a href="https://www.titaneric.com/posts/grafana-alloy-best-practice/#tldr">TLDR</a>
+
+                
+            </li>
+        
+            <li class="parent">
+                
+                <a href="https://www.titaneric.com/posts/grafana-alloy-best-practice/#jie-shao">介紹</a>
+
+                
+            </li>
+        
+            <li class="parent">
+                
+                <a href="https://www.titaneric.com/posts/grafana-alloy-best-practice/#ming-ci-jie-shao">名詞介紹</a>
+
+                
+                    <ul>
+                    
+                        
+                        <li>
+                            <a href="https://www.titaneric.com/posts/grafana-alloy-best-practice/#real-user-monitoring-rum">Real User Monitoring (RUM)</a>
+                        </li>
+
+                        
+                    
+                        
+                        <li>
+                            <a href="https://www.titaneric.com/posts/grafana-alloy-best-practice/#distributed-tracing">Distributed Tracing</a>
+                        </li>
+
+                        
+                    
+                        
+                        <li>
+                            <a href="https://www.titaneric.com/posts/grafana-alloy-best-practice/#grafana-alloy">Grafana Alloy</a>
+                        </li>
+
+                        
+                    
+                        
+                        <li>
+                            <a href="https://www.titaneric.com/posts/grafana-alloy-best-practice/#grafana-faro-web-sdk">Grafana Faro Web SDK</a>
+                        </li>
+
+                        
+                    
+                    </ul>
+                
+            </li>
+        
+            <li class="parent">
+                
+                <a href="https://www.titaneric.com/posts/grafana-alloy-best-practice/#xian-you-jia-gou">現有架構</a>
+
+                
+                    <ul>
+                    
+                        
+                        <li>
+                            <a href="https://www.titaneric.com/posts/grafana-alloy-best-practice/#ji-shu-dui-die">技術堆疊</a>
+                        </li>
+
+                        
+                    
+                        
+                        <li>
+                            <a href="https://www.titaneric.com/posts/grafana-alloy-best-practice/#ying-yong-tuan-dui-jian-kong-jia-gou">應用團隊監控架構</a>
+                        </li>
+
+                        
+                    
+                        
+                        <li>
+                            <a href="https://www.titaneric.com/posts/grafana-alloy-best-practice/#srejian-kong-jia-gou">SRE監控架構</a>
+                        </li>
+
+                        
+                    
+                    </ul>
+                
+            </li>
+        
+            <li class="parent">
+                
+                <a href="https://www.titaneric.com/posts/grafana-alloy-best-practice/#ru-he-she-ji-alloy">如何設計Alloy</a>
+
+                
+                    <ul>
+                    
+                        
+                        <li>
+                            <a href="https://www.titaneric.com/posts/grafana-alloy-best-practice/#xu-qiu">需求</a>
+                        </li>
+
+                        
+                    
+                        
+                        <li>
+                            <a href="https://www.titaneric.com/posts/grafana-alloy-best-practice/#ying-yong-tuan-dui-duan-de-alloyjia-gou">應用團隊端的Alloy架構</a>
+                        </li>
+
+                        
+                    
+                        
+                        <li>
+                            <a href="https://www.titaneric.com/posts/grafana-alloy-best-practice/#sreduan-alloy-gatewayjia-gou">SRE端Alloy Gateway架構</a>
+                        </li>
+
+                        
+                    
+                        
+                        <li>
+                            <a href="https://www.titaneric.com/posts/grafana-alloy-best-practice/#she-ji-yuan-you">設計緣由</a>
+                        </li>
+
+                        
+                    
+                        
+                        <li>
+                            <a href="https://www.titaneric.com/posts/grafana-alloy-best-practice/#tiao-zhan">挑戰</a>
+                        </li>
+
+                        
+                    
+                    </ul>
+                
+            </li>
+        
+            <li class="parent">
+                
+                <a href="https://www.titaneric.com/posts/grafana-alloy-best-practice/#cheng-guo-ji-zhan-wang">成果及展望</a>
+
+                
+                    <ul>
+                    
+                        
+                        <li>
+                            <a href="https://www.titaneric.com/posts/grafana-alloy-best-practice/#cheng-guo">成果</a>
+                        </li>
+
+                        
+                    
+                        
+                        <li>
+                            <a href="https://www.titaneric.com/posts/grafana-alloy-best-practice/#wei-lai-gong-zuo">未來工作</a>
+                        </li>
+
+                        
+                    
+                    </ul>
+                
+            </li>
+        
+            <li class="parent">
+                
+                <a href="https://www.titaneric.com/posts/grafana-alloy-best-practice/#wan-zheng-tou-ying-pian">完整投影片</a>
+
+                
+            </li>
+        
+    </ul>
+</div>
+
+    
+
+        </div>
+    </body>
+
+</html>

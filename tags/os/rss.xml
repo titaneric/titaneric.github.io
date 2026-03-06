@@ -1,0 +1,986 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rss xmlns:atom="http://www.w3.org/2005/Atom" version="2.0">
+    <channel>
+      <title>titaneric - os</title>
+      <link>https://www.titaneric.com</link>
+      <description></description>
+      <generator>Zola</generator>
+      <language>en</language>
+      <atom:link href="https://www.titaneric.com/tags/os/rss.xml" rel="self" type="application/rss+xml"/>
+      <lastBuildDate>Mon, 23 Sep 2019 00:00:00 +0000</lastBuildDate>
+      <item>
+          <title>Buddy-system</title>
+          <pubDate>Mon, 23 Sep 2019 00:00:00 +0000</pubDate>
+          <author>Unknown</author>
+          <link>https://www.titaneric.com/posts/buddy-system/</link>
+          <guid>https://www.titaneric.com/posts/buddy-system/</guid>
+          <description xml:base="https://www.titaneric.com/posts/buddy-system/">&lt;div&gt;
+    &lt;iframe src=&quot;&amp;#x2F;&amp;#x2F;www.slideshare.net&amp;#x2F;slideshow&amp;#x2F;embed_code&amp;#x2F;key&amp;#x2F;waN15T9pwKey5O&quot; frameborder=&quot;0&quot; width=&quot;900&quot; height=&quot;600&quot;
+        marginwidth=&quot;0&quot; marginheight=&quot;0&quot; scrolling=&quot;no&quot;
+        style=&quot;border:1px solid #CCC; border-width:1px; margin-bottom:5px; max-width: 100%;&quot; allowfullscreen&gt; &lt;&#x2F;iframe&gt;
+&lt;&#x2F;div&gt;</description>
+      </item>
+      <item>
+          <title>OSDI-lab1</title>
+          <pubDate>Mon, 25 Mar 2019 00:00:00 +0000</pubDate>
+          <author>Unknown</author>
+          <link>https://www.titaneric.com/posts/osdi-lab1/</link>
+          <guid>https://www.titaneric.com/posts/osdi-lab1/</guid>
+          <description xml:base="https://www.titaneric.com/posts/osdi-lab1/">&lt;h1 id=&quot;osdi-lab-i&quot;&gt;&lt;a class=&quot;zola-anchor&quot; href=&quot;#osdi-lab-i&quot; aria-label=&quot;Anchor link for: osdi-lab-i&quot;&gt;OSDI lab I&lt;&#x2F;a&gt;&lt;&#x2F;h1&gt;
+&lt;h2 id=&quot;objective&quot;&gt;&lt;a class=&quot;zola-anchor&quot; href=&quot;#objective&quot; aria-label=&quot;Anchor link for: objective&quot;&gt;Objective&lt;&#x2F;a&gt;&lt;&#x2F;h2&gt;
+&lt;ul&gt;
+&lt;li&gt;Understand version control system and makefile project&lt;&#x2F;li&gt;
+&lt;li&gt;Learn how to use QEMU and GDB to debug Linux 0.11 kernel&lt;&#x2F;li&gt;
+&lt;li&gt;Learn how to commit to GIT system&lt;&#x2F;li&gt;
+&lt;&#x2F;ul&gt;
+&lt;hr &#x2F;&gt;
+&lt;h2 id=&quot;lab1-1-linux-0-11-development-environment-setup&quot;&gt;&lt;a class=&quot;zola-anchor&quot; href=&quot;#lab1-1-linux-0-11-development-environment-setup&quot; aria-label=&quot;Anchor link for: lab1-1-linux-0-11-development-environment-setup&quot;&gt;Lab1.1 Linux 0.11 Development Environment Setup&lt;&#x2F;a&gt;&lt;&#x2F;h2&gt;
+&lt;h3 id=&quot;fix-syntax-error-of-makefile&quot;&gt;&lt;a class=&quot;zola-anchor&quot; href=&quot;#fix-syntax-error-of-makefile&quot; aria-label=&quot;Anchor link for: fix-syntax-error-of-makefile&quot;&gt;Fix syntax error of &lt;code&gt;Makefile&lt;&#x2F;code&gt;&lt;&#x2F;a&gt;&lt;&#x2F;h3&gt;
+&lt;p&gt;From &lt;a rel=&quot;noreferrer&quot; href=&quot;https:&#x2F;&#x2F;www.gnu.org&#x2F;software&#x2F;make&#x2F;manual&#x2F;html_node&#x2F;Rule-Syntax.html#Rule-Syntax&quot;&gt;Rule Syntax&lt;&#x2F;a&gt;:&lt;&#x2F;p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;the &lt;em&gt;recipe&lt;&#x2F;em&gt; must start with a tab character&lt;&#x2F;p&gt;
+&lt;&#x2F;blockquote&gt;
+&lt;pre data-lang=&quot;cmake&quot; style=&quot;background-color:#fafafa;color:#61676c;&quot; class=&quot;language-cmake &quot;&gt;&lt;code class=&quot;language-cmake&quot; data-lang=&quot;cmake&quot;&gt;&lt;span&gt;...
+&lt;&#x2F;span&gt;&lt;span&gt;
+&lt;&#x2F;span&gt;&lt;span&gt;.&lt;&#x2F;span&gt;&lt;span style=&quot;color:#f29718;&quot;&gt;c&lt;&#x2F;span&gt;&lt;span&gt;.s:
+&lt;&#x2F;span&gt;&lt;span&gt;	@$(&lt;&#x2F;span&gt;&lt;span style=&quot;color:#ff8f40;&quot;&gt;CC&lt;&#x2F;span&gt;&lt;span&gt;) $(&lt;&#x2F;span&gt;&lt;span style=&quot;color:#f29718;&quot;&gt;CFLAGS&lt;&#x2F;span&gt;&lt;span&gt;) -S -o $*.s $&amp;lt;
+&lt;&#x2F;span&gt;&lt;span&gt;.s.o&lt;&#x2F;span&gt;&lt;span style=&quot;color:#61676ccc;&quot;&gt;:
+&lt;&#x2F;span&gt;&lt;span&gt;	@$(AS)  -o $*.o $&amp;lt;
+&lt;&#x2F;span&gt;&lt;span&gt;.c.o&lt;&#x2F;span&gt;&lt;span style=&quot;color:#61676ccc;&quot;&gt;:
+&lt;&#x2F;span&gt;&lt;span&gt;	@$(CC) $(CFLAGS) -c -o $*.o $&amp;lt;
+&lt;&#x2F;span&gt;&lt;span&gt;
+&lt;&#x2F;span&gt;&lt;span&gt;...
+&lt;&#x2F;span&gt;&lt;&#x2F;code&gt;&lt;&#x2F;pre&gt;
+&lt;h3 id=&quot;give-execute-permission-to-tools-build-sh&quot;&gt;&lt;a class=&quot;zola-anchor&quot; href=&quot;#give-execute-permission-to-tools-build-sh&quot; aria-label=&quot;Anchor link for: give-execute-permission-to-tools-build-sh&quot;&gt;Give execute permission to &lt;code&gt;tools&#x2F;build.sh&lt;&#x2F;code&gt;&lt;&#x2F;a&gt;&lt;&#x2F;h3&gt;
+&lt;pre data-lang=&quot;bash&quot; style=&quot;background-color:#fafafa;color:#61676c;&quot; class=&quot;language-bash &quot;&gt;&lt;code class=&quot;language-bash&quot; data-lang=&quot;bash&quot;&gt;&lt;span style=&quot;color:#f29718;&quot;&gt;chmod&lt;&#x2F;span&gt;&lt;span&gt; +x tools&#x2F;build.sh
+&lt;&#x2F;span&gt;&lt;&#x2F;code&gt;&lt;&#x2F;pre&gt;
+&lt;h3 id=&quot;change-gcc-version-to-4-8&quot;&gt;&lt;a class=&quot;zola-anchor&quot; href=&quot;#change-gcc-version-to-4-8&quot; aria-label=&quot;Anchor link for: change-gcc-version-to-4-8&quot;&gt;Change GCC version to 4.8&lt;&#x2F;a&gt;&lt;&#x2F;h3&gt;
+&lt;pre data-lang=&quot;cmake&quot; style=&quot;background-color:#fafafa;color:#61676c;&quot; class=&quot;language-cmake &quot;&gt;&lt;code class=&quot;language-cmake&quot; data-lang=&quot;cmake&quot;&gt;&lt;span style=&quot;font-style:italic;color:#abb0b6;&quot;&gt;# This file is the Makefile Header for every sub Makefile, which designed to
+&lt;&#x2F;span&gt;&lt;span style=&quot;font-style:italic;color:#abb0b6;&quot;&gt;# simplfy the porting and maintaining operation
+&lt;&#x2F;span&gt;&lt;span style=&quot;font-style:italic;color:#abb0b6;&quot;&gt;# author: falcon &amp;lt;wuzhangjin@gmail.com&amp;gt;
+&lt;&#x2F;span&gt;&lt;span style=&quot;font-style:italic;color:#abb0b6;&quot;&gt;# update: 2008-10-29
+&lt;&#x2F;span&gt;&lt;span&gt;
+&lt;&#x2F;span&gt;&lt;span style=&quot;color:#f29718;&quot;&gt;AS&lt;&#x2F;span&gt;&lt;span&gt;	= as --32
+&lt;&#x2F;span&gt;&lt;span&gt;LD	= ld
+&lt;&#x2F;span&gt;&lt;span style=&quot;font-style:italic;color:#abb0b6;&quot;&gt;#LDFLAGS = -m elf_i386 -x 
+&lt;&#x2F;span&gt;&lt;span&gt;LDFLAGS = -m elf_i386
+&lt;&#x2F;span&gt;&lt;span&gt;CC	= gcc-4.8
+&lt;&#x2F;span&gt;&lt;span&gt;CFLAGS  = -g -m32 -fno-builtin -fno-stack-protector -fomit-frame-pointer -fstrength-reduce &lt;&#x2F;span&gt;&lt;span style=&quot;font-style:italic;color:#abb0b6;&quot;&gt;#-Wall
+&lt;&#x2F;span&gt;&lt;span&gt;
+&lt;&#x2F;span&gt;&lt;span&gt;CPP	= cpp-4.8 -nostdinc
+&lt;&#x2F;span&gt;&lt;span&gt;AR	= ar
+&lt;&#x2F;span&gt;&lt;span&gt;
+&lt;&#x2F;span&gt;&lt;span style=&quot;font-style:italic;color:#abb0b6;&quot;&gt;# we should use -fno-stack-protector with gcc 4.3
+&lt;&#x2F;span&gt;&lt;span&gt;gcc_version=$(shell ls -l `which $(&lt;&#x2F;span&gt;&lt;span style=&quot;color:#ff8f40;&quot;&gt;CC&lt;&#x2F;span&gt;&lt;span&gt;)` | &lt;&#x2F;span&gt;&lt;span style=&quot;color:#f29718;&quot;&gt;tr&lt;&#x2F;span&gt;&lt;span&gt; &amp;#39;-&amp;#39; &amp;#39;\n&amp;#39; | tail -1)
+&lt;&#x2F;span&gt;&lt;&#x2F;code&gt;&lt;&#x2F;pre&gt;
+&lt;h3 id=&quot;compile-and-install-newest-qemu&quot;&gt;&lt;a class=&quot;zola-anchor&quot; href=&quot;#compile-and-install-newest-qemu&quot; aria-label=&quot;Anchor link for: compile-and-install-newest-qemu&quot;&gt;Compile and install newest QEMU&lt;&#x2F;a&gt;&lt;&#x2F;h3&gt;
+&lt;p&gt;On Ubuntu 18.04&lt;&#x2F;p&gt;
+&lt;h4 id=&quot;setup-the-dependencies&quot;&gt;&lt;a class=&quot;zola-anchor&quot; href=&quot;#setup-the-dependencies&quot; aria-label=&quot;Anchor link for: setup-the-dependencies&quot;&gt;Setup the dependencies&lt;&#x2F;a&gt;&lt;&#x2F;h4&gt;
+&lt;pre data-lang=&quot;bash&quot; style=&quot;background-color:#fafafa;color:#61676c;&quot; class=&quot;language-bash &quot;&gt;&lt;code class=&quot;language-bash&quot; data-lang=&quot;bash&quot;&gt;&lt;span style=&quot;color:#f29718;&quot;&gt;sudo&lt;&#x2F;span&gt;&lt;span&gt; apt-get install checkinstall
+&lt;&#x2F;span&gt;&lt;span style=&quot;color:#f29718;&quot;&gt;sudo&lt;&#x2F;span&gt;&lt;span&gt; apt-get install python
+&lt;&#x2F;span&gt;&lt;span style=&quot;color:#f29718;&quot;&gt;sudo&lt;&#x2F;span&gt;&lt;span&gt; apt-get install build-essential zlib1g-dev pkg-config libglib2.0-dev binutils-dev libboost-all-dev autoconf libtool libssl-dev libpixman-1-dev libpython-dev python-pip python-capstone virtualenv
+&lt;&#x2F;span&gt;&lt;span style=&quot;color:#f29718;&quot;&gt;sudo&lt;&#x2F;span&gt;&lt;span&gt; apt-get install flex bison g++-4.8
+&lt;&#x2F;span&gt;&lt;&#x2F;code&gt;&lt;&#x2F;pre&gt;
+&lt;p&gt;&lt;a rel=&quot;noreferrer&quot; href=&quot;https:&#x2F;&#x2F;github.com&#x2F;Cisco-Talos&#x2F;pyrebox&#x2F;issues&#x2F;41&quot;&gt;ref&lt;&#x2F;a&gt;&lt;&#x2F;p&gt;
+&lt;h4 id=&quot;start-to-install-qemu&quot;&gt;&lt;a class=&quot;zola-anchor&quot; href=&quot;#start-to-install-qemu&quot; aria-label=&quot;Anchor link for: start-to-install-qemu&quot;&gt;Start to install qemu&lt;&#x2F;a&gt;&lt;&#x2F;h4&gt;
+&lt;pre data-lang=&quot;bash&quot; style=&quot;background-color:#fafafa;color:#61676c;&quot; class=&quot;language-bash &quot;&gt;&lt;code class=&quot;language-bash&quot; data-lang=&quot;bash&quot;&gt;&lt;span style=&quot;color:#f29718;&quot;&gt;git&lt;&#x2F;span&gt;&lt;span&gt; clone https:&#x2F;&#x2F;git.qemu.org&#x2F;git&#x2F;qemu.git
+&lt;&#x2F;span&gt;&lt;span style=&quot;color:#f07171;&quot;&gt;cd&lt;&#x2F;span&gt;&lt;span&gt; qemu
+&lt;&#x2F;span&gt;&lt;span style=&quot;color:#f29718;&quot;&gt;git&lt;&#x2F;span&gt;&lt;span&gt; submodule init
+&lt;&#x2F;span&gt;&lt;span style=&quot;color:#f29718;&quot;&gt;git&lt;&#x2F;span&gt;&lt;span&gt; submodule update&lt;&#x2F;span&gt;&lt;span style=&quot;color:#ff8f40;&quot;&gt; --recursive
+&lt;&#x2F;span&gt;&lt;span style=&quot;color:#f29718;&quot;&gt;.&#x2F;configure
+&lt;&#x2F;span&gt;&lt;span style=&quot;color:#f29718;&quot;&gt;make
+&lt;&#x2F;span&gt;&lt;span style=&quot;color:#f29718;&quot;&gt;sudo&lt;&#x2F;span&gt;&lt;span&gt; checkinstall make install
+&lt;&#x2F;span&gt;&lt;&#x2F;code&gt;&lt;&#x2F;pre&gt;
+&lt;p&gt;&lt;a rel=&quot;noreferrer&quot; href=&quot;https:&#x2F;&#x2F;www.qemu.org&#x2F;download&#x2F;#source&quot;&gt;ref&lt;&#x2F;a&gt;&lt;&#x2F;p&gt;
+&lt;p&gt;Validate the version must be larger than 2.5.x&lt;&#x2F;p&gt;
+&lt;h3 id=&quot;run-the-linux-0-11&quot;&gt;&lt;a class=&quot;zola-anchor&quot; href=&quot;#run-the-linux-0-11&quot; aria-label=&quot;Anchor link for: run-the-linux-0-11&quot;&gt;Run the Linux 0.11&lt;&#x2F;a&gt;&lt;&#x2F;h3&gt;
+&lt;pre data-lang=&quot;bash&quot; style=&quot;background-color:#fafafa;color:#61676c;&quot; class=&quot;language-bash &quot;&gt;&lt;code class=&quot;language-bash&quot; data-lang=&quot;bash&quot;&gt;&lt;span style=&quot;color:#f29718;&quot;&gt;qemu-system-i386&lt;&#x2F;span&gt;&lt;span style=&quot;color:#ff8f40;&quot;&gt; -m&lt;&#x2F;span&gt;&lt;span&gt; 16M&lt;&#x2F;span&gt;&lt;span style=&quot;color:#ff8f40;&quot;&gt; -boot&lt;&#x2F;span&gt;&lt;span&gt; a&lt;&#x2F;span&gt;&lt;span style=&quot;color:#ff8f40;&quot;&gt; -fda&lt;&#x2F;span&gt;&lt;span&gt; Image&lt;&#x2F;span&gt;&lt;span style=&quot;color:#ff8f40;&quot;&gt; -hda&lt;&#x2F;span&gt;&lt;span&gt; ..&#x2F;osdi.img
+&lt;&#x2F;span&gt;&lt;&#x2F;code&gt;&lt;&#x2F;pre&gt;
+&lt;p&gt;&lt;img src=&quot;https:&#x2F;&#x2F;i.imgur.com&#x2F;xD0vffk.png&quot; alt=&quot;&quot; &#x2F;&gt;&lt;&#x2F;p&gt;
+&lt;h2 id=&quot;lab-1-2-debug-kernel&quot;&gt;&lt;a class=&quot;zola-anchor&quot; href=&quot;#lab-1-2-debug-kernel&quot; aria-label=&quot;Anchor link for: lab-1-2-debug-kernel&quot;&gt;Lab 1-2 Debug kernel&lt;&#x2F;a&gt;&lt;&#x2F;h2&gt;
+&lt;h3 id=&quot;look-the-problem-of-panic&quot;&gt;&lt;a class=&quot;zola-anchor&quot; href=&quot;#look-the-problem-of-panic&quot; aria-label=&quot;Anchor link for: look-the-problem-of-panic&quot;&gt;Look the problem of &lt;code&gt;panic&lt;&#x2F;code&gt;&lt;&#x2F;a&gt;&lt;&#x2F;h3&gt;
+&lt;p&gt;The kernel stuck on the &lt;code&gt;panic(&quot;&quot;)&lt;&#x2F;code&gt; at &lt;code&gt;init&#x2F;maic.c&lt;&#x2F;code&gt;.&lt;&#x2F;p&gt;
+&lt;p&gt;Look at &lt;code&gt;kernel&#x2F;panic.c&lt;&#x2F;code&gt;.&lt;&#x2F;p&gt;
+&lt;pre data-lang=&quot;c&quot; style=&quot;background-color:#fafafa;color:#61676c;&quot; class=&quot;language-c &quot;&gt;&lt;code class=&quot;language-c&quot; data-lang=&quot;c&quot;&gt;&lt;span style=&quot;font-style:italic;color:#abb0b6;&quot;&gt;&#x2F;*
+&lt;&#x2F;span&gt;&lt;span style=&quot;font-style:italic;color:#abb0b6;&quot;&gt; *  linux&#x2F;kernel&#x2F;panic.c
+&lt;&#x2F;span&gt;&lt;span style=&quot;font-style:italic;color:#abb0b6;&quot;&gt; *
+&lt;&#x2F;span&gt;&lt;span style=&quot;font-style:italic;color:#abb0b6;&quot;&gt; *  (C) 1991  Linus Torvalds
+&lt;&#x2F;span&gt;&lt;span style=&quot;font-style:italic;color:#abb0b6;&quot;&gt; *&#x2F;
+&lt;&#x2F;span&gt;&lt;span&gt;
+&lt;&#x2F;span&gt;&lt;span style=&quot;font-style:italic;color:#abb0b6;&quot;&gt;&#x2F;*
+&lt;&#x2F;span&gt;&lt;span style=&quot;font-style:italic;color:#abb0b6;&quot;&gt; * This function is used through-out the kernel (includeinh mm and fs)
+&lt;&#x2F;span&gt;&lt;span style=&quot;font-style:italic;color:#abb0b6;&quot;&gt; * to indicate a major problem.
+&lt;&#x2F;span&gt;&lt;span style=&quot;font-style:italic;color:#abb0b6;&quot;&gt; *&#x2F;
+&lt;&#x2F;span&gt;&lt;span style=&quot;color:#fa6e32;&quot;&gt;#define &lt;&#x2F;span&gt;&lt;span style=&quot;color:#399ee6;&quot;&gt;PANIC
+&lt;&#x2F;span&gt;&lt;span&gt;
+&lt;&#x2F;span&gt;&lt;span style=&quot;color:#fa6e32;&quot;&gt;#include &lt;&#x2F;span&gt;&lt;span style=&quot;color:#86b300;&quot;&gt;&amp;lt;linux&#x2F;kernel.h&amp;gt;
+&lt;&#x2F;span&gt;&lt;span style=&quot;color:#fa6e32;&quot;&gt;#include &lt;&#x2F;span&gt;&lt;span style=&quot;color:#86b300;&quot;&gt;&amp;lt;linux&#x2F;sched.h&amp;gt;
+&lt;&#x2F;span&gt;&lt;span&gt;
+&lt;&#x2F;span&gt;&lt;span style=&quot;color:#fa6e32;&quot;&gt;void &lt;&#x2F;span&gt;&lt;span style=&quot;color:#f29718;&quot;&gt;sys_sync&lt;&#x2F;span&gt;&lt;span&gt;(&lt;&#x2F;span&gt;&lt;span style=&quot;color:#fa6e32;&quot;&gt;void&lt;&#x2F;span&gt;&lt;span&gt;)&lt;&#x2F;span&gt;&lt;span style=&quot;color:#61676ccc;&quot;&gt;;	&lt;&#x2F;span&gt;&lt;span style=&quot;font-style:italic;color:#abb0b6;&quot;&gt;&#x2F;* it&amp;#39;s really int *&#x2F;
+&lt;&#x2F;span&gt;&lt;span&gt;
+&lt;&#x2F;span&gt;&lt;span style=&quot;color:#fa6e32;&quot;&gt;void &lt;&#x2F;span&gt;&lt;span style=&quot;color:#f29718;&quot;&gt;panic&lt;&#x2F;span&gt;&lt;span&gt;(&lt;&#x2F;span&gt;&lt;span style=&quot;color:#fa6e32;&quot;&gt;const char &lt;&#x2F;span&gt;&lt;span style=&quot;color:#ed9366;&quot;&gt;* &lt;&#x2F;span&gt;&lt;span style=&quot;color:#ff8f40;&quot;&gt;s&lt;&#x2F;span&gt;&lt;span&gt;)
+&lt;&#x2F;span&gt;&lt;span&gt;{
+&lt;&#x2F;span&gt;&lt;span&gt;	&lt;&#x2F;span&gt;&lt;span style=&quot;color:#f29718;&quot;&gt;printk&lt;&#x2F;span&gt;&lt;span&gt;(&lt;&#x2F;span&gt;&lt;span style=&quot;color:#86b300;&quot;&gt;&amp;quot;Kernel panic: &lt;&#x2F;span&gt;&lt;span style=&quot;color:#ff8f40;&quot;&gt;%s&lt;&#x2F;span&gt;&lt;span style=&quot;color:#4cbf99;&quot;&gt;\n\r&lt;&#x2F;span&gt;&lt;span style=&quot;color:#86b300;&quot;&gt;&amp;quot;&lt;&#x2F;span&gt;&lt;span style=&quot;color:#61676ccc;&quot;&gt;,&lt;&#x2F;span&gt;&lt;span&gt;s)&lt;&#x2F;span&gt;&lt;span style=&quot;color:#61676ccc;&quot;&gt;;
+&lt;&#x2F;span&gt;&lt;span&gt;	&lt;&#x2F;span&gt;&lt;span style=&quot;color:#fa6e32;&quot;&gt;if &lt;&#x2F;span&gt;&lt;span&gt;(current &lt;&#x2F;span&gt;&lt;span style=&quot;color:#ed9366;&quot;&gt;==&lt;&#x2F;span&gt;&lt;span&gt; task[&lt;&#x2F;span&gt;&lt;span style=&quot;color:#ff8f40;&quot;&gt;0&lt;&#x2F;span&gt;&lt;span&gt;])
+&lt;&#x2F;span&gt;&lt;span&gt;		&lt;&#x2F;span&gt;&lt;span style=&quot;color:#f29718;&quot;&gt;printk&lt;&#x2F;span&gt;&lt;span&gt;(&lt;&#x2F;span&gt;&lt;span style=&quot;color:#86b300;&quot;&gt;&amp;quot;In swapper task - not syncing&lt;&#x2F;span&gt;&lt;span style=&quot;color:#4cbf99;&quot;&gt;\n\r&lt;&#x2F;span&gt;&lt;span style=&quot;color:#86b300;&quot;&gt;&amp;quot;&lt;&#x2F;span&gt;&lt;span&gt;)&lt;&#x2F;span&gt;&lt;span style=&quot;color:#61676ccc;&quot;&gt;;
+&lt;&#x2F;span&gt;&lt;span&gt;	&lt;&#x2F;span&gt;&lt;span style=&quot;color:#fa6e32;&quot;&gt;else
+&lt;&#x2F;span&gt;&lt;span&gt;		&lt;&#x2F;span&gt;&lt;span style=&quot;color:#f29718;&quot;&gt;sys_sync&lt;&#x2F;span&gt;&lt;span&gt;()&lt;&#x2F;span&gt;&lt;span style=&quot;color:#61676ccc;&quot;&gt;;
+&lt;&#x2F;span&gt;&lt;span&gt;	&lt;&#x2F;span&gt;&lt;span style=&quot;color:#fa6e32;&quot;&gt;for&lt;&#x2F;span&gt;&lt;span&gt;(&lt;&#x2F;span&gt;&lt;span style=&quot;color:#61676ccc;&quot;&gt;;;&lt;&#x2F;span&gt;&lt;span&gt;)&lt;&#x2F;span&gt;&lt;span style=&quot;color:#61676ccc;&quot;&gt;;
+&lt;&#x2F;span&gt;&lt;span&gt;}
+&lt;&#x2F;span&gt;&lt;span&gt;
+&lt;&#x2F;span&gt;&lt;&#x2F;code&gt;&lt;&#x2F;pre&gt;
+&lt;p&gt;Due to the description of &lt;code&gt;panic&lt;&#x2F;code&gt;, it may not suitable to put &lt;code&gt;panic&lt;&#x2F;code&gt; at &lt;code&gt;init&#x2F;main.c&lt;&#x2F;code&gt;.&lt;&#x2F;p&gt;
+&lt;pre data-lang=&quot;c&quot; style=&quot;background-color:#fafafa;color:#61676c;&quot; class=&quot;language-c &quot;&gt;&lt;code class=&quot;language-c&quot; data-lang=&quot;c&quot;&gt;&lt;span style=&quot;color:#fa6e32;&quot;&gt;void &lt;&#x2F;span&gt;&lt;span style=&quot;color:#f29718;&quot;&gt;main&lt;&#x2F;span&gt;&lt;span&gt;(&lt;&#x2F;span&gt;&lt;span style=&quot;color:#fa6e32;&quot;&gt;void&lt;&#x2F;span&gt;&lt;span&gt;){
+&lt;&#x2F;span&gt;&lt;span style=&quot;color:#ed9366;&quot;&gt;...
+&lt;&#x2F;span&gt;&lt;span&gt;	&lt;&#x2F;span&gt;&lt;span style=&quot;color:#f29718;&quot;&gt;mem_init&lt;&#x2F;span&gt;&lt;span&gt;(main_memory_start&lt;&#x2F;span&gt;&lt;span style=&quot;color:#61676ccc;&quot;&gt;,&lt;&#x2F;span&gt;&lt;span&gt;memory_end)&lt;&#x2F;span&gt;&lt;span style=&quot;color:#61676ccc;&quot;&gt;;
+&lt;&#x2F;span&gt;&lt;span&gt;	&lt;&#x2F;span&gt;&lt;span style=&quot;color:#f29718;&quot;&gt;trap_init&lt;&#x2F;span&gt;&lt;span&gt;()&lt;&#x2F;span&gt;&lt;span style=&quot;color:#61676ccc;&quot;&gt;;
+&lt;&#x2F;span&gt;&lt;span&gt;	&lt;&#x2F;span&gt;&lt;span style=&quot;color:#f29718;&quot;&gt;blk_dev_init&lt;&#x2F;span&gt;&lt;span&gt;()&lt;&#x2F;span&gt;&lt;span style=&quot;color:#61676ccc;&quot;&gt;;
+&lt;&#x2F;span&gt;&lt;span&gt;	&lt;&#x2F;span&gt;&lt;span style=&quot;color:#f29718;&quot;&gt;chr_dev_init&lt;&#x2F;span&gt;&lt;span&gt;()&lt;&#x2F;span&gt;&lt;span style=&quot;color:#61676ccc;&quot;&gt;;
+&lt;&#x2F;span&gt;&lt;span&gt;	&lt;&#x2F;span&gt;&lt;span style=&quot;color:#f29718;&quot;&gt;tty_init&lt;&#x2F;span&gt;&lt;span&gt;()&lt;&#x2F;span&gt;&lt;span style=&quot;color:#61676ccc;&quot;&gt;;
+&lt;&#x2F;span&gt;&lt;span&gt;	&lt;&#x2F;span&gt;&lt;span style=&quot;color:#f29718;&quot;&gt;time_init&lt;&#x2F;span&gt;&lt;span&gt;()&lt;&#x2F;span&gt;&lt;span style=&quot;color:#61676ccc;&quot;&gt;;
+&lt;&#x2F;span&gt;&lt;span&gt;	&lt;&#x2F;span&gt;&lt;span style=&quot;color:#f29718;&quot;&gt;sched_init&lt;&#x2F;span&gt;&lt;span&gt;()&lt;&#x2F;span&gt;&lt;span style=&quot;color:#61676ccc;&quot;&gt;;
+&lt;&#x2F;span&gt;&lt;span&gt;	&lt;&#x2F;span&gt;&lt;span style=&quot;color:#f29718;&quot;&gt;buffer_init&lt;&#x2F;span&gt;&lt;span&gt;(buffer_memory_end)&lt;&#x2F;span&gt;&lt;span style=&quot;color:#61676ccc;&quot;&gt;;
+&lt;&#x2F;span&gt;&lt;span&gt;	&lt;&#x2F;span&gt;&lt;span style=&quot;color:#f29718;&quot;&gt;hd_init&lt;&#x2F;span&gt;&lt;span&gt;()&lt;&#x2F;span&gt;&lt;span style=&quot;color:#61676ccc;&quot;&gt;;
+&lt;&#x2F;span&gt;&lt;span&gt;	&lt;&#x2F;span&gt;&lt;span style=&quot;color:#f29718;&quot;&gt;floppy_init&lt;&#x2F;span&gt;&lt;span&gt;()&lt;&#x2F;span&gt;&lt;span style=&quot;color:#61676ccc;&quot;&gt;;
+&lt;&#x2F;span&gt;&lt;span&gt;	&lt;&#x2F;span&gt;&lt;span style=&quot;color:#f29718;&quot;&gt;sti&lt;&#x2F;span&gt;&lt;span&gt;()&lt;&#x2F;span&gt;&lt;span style=&quot;color:#61676ccc;&quot;&gt;;
+&lt;&#x2F;span&gt;&lt;span&gt;	&lt;&#x2F;span&gt;&lt;span style=&quot;font-style:italic;color:#abb0b6;&quot;&gt;&#x2F;&#x2F; panic(&amp;quot;&amp;quot;); 
+&lt;&#x2F;span&gt;&lt;span&gt;	&lt;&#x2F;span&gt;&lt;span style=&quot;color:#f29718;&quot;&gt;move_to_user_mode&lt;&#x2F;span&gt;&lt;span&gt;()&lt;&#x2F;span&gt;&lt;span style=&quot;color:#61676ccc;&quot;&gt;;
+&lt;&#x2F;span&gt;&lt;span&gt;	&lt;&#x2F;span&gt;&lt;span style=&quot;color:#fa6e32;&quot;&gt;if &lt;&#x2F;span&gt;&lt;span&gt;(&lt;&#x2F;span&gt;&lt;span style=&quot;color:#ed9366;&quot;&gt;!&lt;&#x2F;span&gt;&lt;span style=&quot;color:#f29718;&quot;&gt;fork&lt;&#x2F;span&gt;&lt;span&gt;()) {		&lt;&#x2F;span&gt;&lt;span style=&quot;font-style:italic;color:#abb0b6;&quot;&gt;&#x2F;* we count on this going ok *&#x2F;
+&lt;&#x2F;span&gt;&lt;span&gt;		&lt;&#x2F;span&gt;&lt;span style=&quot;color:#f29718;&quot;&gt;init&lt;&#x2F;span&gt;&lt;span&gt;()&lt;&#x2F;span&gt;&lt;span style=&quot;color:#61676ccc;&quot;&gt;;
+&lt;&#x2F;span&gt;&lt;span&gt;	}
+&lt;&#x2F;span&gt;&lt;span style=&quot;color:#ed9366;&quot;&gt;...
+&lt;&#x2F;span&gt;&lt;span&gt;}
+&lt;&#x2F;span&gt;&lt;&#x2F;code&gt;&lt;&#x2F;pre&gt;
+&lt;p&gt;Uncomment it and try it.&lt;&#x2F;p&gt;
+&lt;p&gt;&lt;img src=&quot;https:&#x2F;&#x2F;i.imgur.com&#x2F;T1mKZna.png&quot; alt=&quot;&quot; &#x2F;&gt;&lt;&#x2F;p&gt;
+&lt;p&gt;Here it is, fix next bug.&lt;&#x2F;p&gt;
+&lt;h3 id=&quot;look-the-problem-of-out-of-memory&quot;&gt;&lt;a class=&quot;zola-anchor&quot; href=&quot;#look-the-problem-of-out-of-memory&quot; aria-label=&quot;Anchor link for: look-the-problem-of-out-of-memory&quot;&gt;Look the problem of &lt;code&gt;out of memory&lt;&#x2F;code&gt;&lt;&#x2F;a&gt;&lt;&#x2F;h3&gt;
+&lt;p&gt;&lt;img src=&quot;https:&#x2F;&#x2F;i.imgur.com&#x2F;JIRQ5YR.png&quot; alt=&quot;&quot; &#x2F;&gt;&lt;&#x2F;p&gt;
+&lt;p&gt;Actually, there are several warnings relating to &lt;code&gt;task&lt;&#x2F;code&gt; at &lt;code&gt;sched.c&lt;&#x2F;code&gt;.&lt;&#x2F;p&gt;
+&lt;pre data-lang=&quot;c&quot; style=&quot;background-color:#fafafa;color:#61676c;&quot; class=&quot;language-c &quot;&gt;&lt;code class=&quot;language-c&quot; data-lang=&quot;c&quot;&gt;&lt;span style=&quot;color:#fa6e32;&quot;&gt;struct&lt;&#x2F;span&gt;&lt;span&gt; task_struct &lt;&#x2F;span&gt;&lt;span style=&quot;color:#ed9366;&quot;&gt;*&lt;&#x2F;span&gt;&lt;span&gt; task[NR_TASKS] &lt;&#x2F;span&gt;&lt;span style=&quot;color:#ed9366;&quot;&gt;= &lt;&#x2F;span&gt;&lt;span&gt;{&lt;&#x2F;span&gt;&lt;span style=&quot;color:#ed9366;&quot;&gt;&amp;amp;&lt;&#x2F;span&gt;&lt;span&gt;(init_task&lt;&#x2F;span&gt;&lt;span style=&quot;color:#ed9366;&quot;&gt;.&lt;&#x2F;span&gt;&lt;span&gt;task)&lt;&#x2F;span&gt;&lt;span style=&quot;color:#61676ccc;&quot;&gt;, &lt;&#x2F;span&gt;&lt;span&gt;}&lt;&#x2F;span&gt;&lt;span style=&quot;color:#61676ccc;&quot;&gt;;
+&lt;&#x2F;span&gt;&lt;&#x2F;code&gt;&lt;&#x2F;pre&gt;
+&lt;p&gt;&lt;code&gt;task&lt;&#x2F;code&gt; has at leat one &lt;code&gt;task_struct&lt;&#x2F;code&gt;, checkout the &lt;code&gt;NR_TASKS&lt;&#x2F;code&gt;.&lt;&#x2F;p&gt;
+&lt;pre data-lang=&quot;c&quot; style=&quot;background-color:#fafafa;color:#61676c;&quot; class=&quot;language-c &quot;&gt;&lt;code class=&quot;language-c&quot; data-lang=&quot;c&quot;&gt;&lt;span style=&quot;color:#fa6e32;&quot;&gt;#define &lt;&#x2F;span&gt;&lt;span style=&quot;color:#399ee6;&quot;&gt;NR_TASKS &lt;&#x2F;span&gt;&lt;span style=&quot;color:#ff8f40;&quot;&gt;0
+&lt;&#x2F;span&gt;&lt;&#x2F;code&gt;&lt;&#x2F;pre&gt;
+&lt;p&gt;The value of &lt;code&gt;NR_TASKS&lt;&#x2F;code&gt; is zero, which is unreasonable.&lt;&#x2F;p&gt;
+&lt;p&gt;Check out &lt;a rel=&quot;noreferrer&quot; href=&quot;https:&#x2F;&#x2F;download.oldlinux.org&#x2F;ECLK-5.0-WithCover.pdf&quot;&gt;document&lt;&#x2F;a&gt; at P994.&lt;&#x2F;p&gt;
+&lt;p&gt;&lt;img src=&quot;https:&#x2F;&#x2F;i.imgur.com&#x2F;4mAhfLo.png&quot; alt=&quot;&quot; &#x2F;&gt;&lt;&#x2F;p&gt;
+&lt;p&gt;Therefore, change 0 to 64, and try it.&lt;&#x2F;p&gt;
+&lt;p&gt;&lt;img src=&quot;https:&#x2F;&#x2F;i.imgur.com&#x2F;fbap7SK.png&quot; alt=&quot;&quot; &#x2F;&gt;&lt;&#x2F;p&gt;
+&lt;p&gt;Fortunately, no error happened!&lt;&#x2F;p&gt;
+&lt;p&gt;&lt;img src=&quot;https:&#x2F;&#x2F;i.imgur.com&#x2F;cmQyHsq.png&quot; alt=&quot;&quot; &#x2F;&gt;&lt;&#x2F;p&gt;
+&lt;p&gt;Work perfectly!&lt;&#x2F;p&gt;
+&lt;h3 id=&quot;print-your-student-id&quot;&gt;&lt;a class=&quot;zola-anchor&quot; href=&quot;#print-your-student-id&quot; aria-label=&quot;Anchor link for: print-your-student-id&quot;&gt;Print your student id&lt;&#x2F;a&gt;&lt;&#x2F;h3&gt;
+&lt;p&gt;We need to print out the student ID before shell startup, so look at &lt;code&gt;main.c&lt;&#x2F;code&gt;.&lt;&#x2F;p&gt;
+&lt;pre data-lang=&quot;c&quot; style=&quot;background-color:#fafafa;color:#61676c;&quot; class=&quot;language-c &quot;&gt;&lt;code class=&quot;language-c&quot; data-lang=&quot;c&quot;&gt;&lt;span style=&quot;color:#ed9366;&quot;&gt;...
+&lt;&#x2F;span&gt;&lt;span&gt;	&lt;&#x2F;span&gt;&lt;span style=&quot;color:#f07171;&quot;&gt;printf&lt;&#x2F;span&gt;&lt;span&gt;(&lt;&#x2F;span&gt;&lt;span style=&quot;color:#86b300;&quot;&gt;&amp;quot;&lt;&#x2F;span&gt;&lt;span style=&quot;color:#ff8f40;&quot;&gt;%d&lt;&#x2F;span&gt;&lt;span style=&quot;color:#86b300;&quot;&gt; buffers = &lt;&#x2F;span&gt;&lt;span style=&quot;color:#ff8f40;&quot;&gt;%d&lt;&#x2F;span&gt;&lt;span style=&quot;color:#86b300;&quot;&gt; bytes buffer space&lt;&#x2F;span&gt;&lt;span style=&quot;color:#4cbf99;&quot;&gt;\n\r&lt;&#x2F;span&gt;&lt;span style=&quot;color:#86b300;&quot;&gt;&amp;quot;&lt;&#x2F;span&gt;&lt;span style=&quot;color:#61676ccc;&quot;&gt;,&lt;&#x2F;span&gt;&lt;span&gt;NR_BUFFERS&lt;&#x2F;span&gt;&lt;span style=&quot;color:#61676ccc;&quot;&gt;,
+&lt;&#x2F;span&gt;&lt;span&gt;		NR_BUFFERS&lt;&#x2F;span&gt;&lt;span style=&quot;color:#ed9366;&quot;&gt;*&lt;&#x2F;span&gt;&lt;span&gt;BLOCK_SIZE)&lt;&#x2F;span&gt;&lt;span style=&quot;color:#61676ccc;&quot;&gt;;
+&lt;&#x2F;span&gt;&lt;span&gt;	&lt;&#x2F;span&gt;&lt;span style=&quot;color:#f29718;&quot;&gt;printf&lt;&#x2F;span&gt;&lt;span&gt;(&lt;&#x2F;span&gt;&lt;span style=&quot;color:#86b300;&quot;&gt;&amp;quot;Free mem: &lt;&#x2F;span&gt;&lt;span style=&quot;color:#ff8f40;&quot;&gt;%d&lt;&#x2F;span&gt;&lt;span style=&quot;color:#86b300;&quot;&gt; bytes&lt;&#x2F;span&gt;&lt;span style=&quot;color:#4cbf99;&quot;&gt;\n\r&lt;&#x2F;span&gt;&lt;span style=&quot;color:#86b300;&quot;&gt;&amp;quot;&lt;&#x2F;span&gt;&lt;span style=&quot;color:#61676ccc;&quot;&gt;,&lt;&#x2F;span&gt;&lt;span&gt;memory_end&lt;&#x2F;span&gt;&lt;span style=&quot;color:#ed9366;&quot;&gt;-&lt;&#x2F;span&gt;&lt;span&gt;main_memory_start)&lt;&#x2F;span&gt;&lt;span style=&quot;color:#61676ccc;&quot;&gt;;
+&lt;&#x2F;span&gt;&lt;span&gt;	&lt;&#x2F;span&gt;&lt;span style=&quot;color:#fa6e32;&quot;&gt;if &lt;&#x2F;span&gt;&lt;span&gt;(&lt;&#x2F;span&gt;&lt;span style=&quot;color:#ed9366;&quot;&gt;!&lt;&#x2F;span&gt;&lt;span&gt;(pid&lt;&#x2F;span&gt;&lt;span style=&quot;color:#ed9366;&quot;&gt;=&lt;&#x2F;span&gt;&lt;span style=&quot;color:#f29718;&quot;&gt;fork&lt;&#x2F;span&gt;&lt;span&gt;())) {
+&lt;&#x2F;span&gt;&lt;span&gt;		&lt;&#x2F;span&gt;&lt;span style=&quot;color:#f29718;&quot;&gt;close&lt;&#x2F;span&gt;&lt;span&gt;(&lt;&#x2F;span&gt;&lt;span style=&quot;color:#ff8f40;&quot;&gt;0&lt;&#x2F;span&gt;&lt;span&gt;)&lt;&#x2F;span&gt;&lt;span style=&quot;color:#61676ccc;&quot;&gt;;
+&lt;&#x2F;span&gt;&lt;span&gt;		&lt;&#x2F;span&gt;&lt;span style=&quot;color:#fa6e32;&quot;&gt;if &lt;&#x2F;span&gt;&lt;span&gt;(&lt;&#x2F;span&gt;&lt;span style=&quot;color:#f29718;&quot;&gt;open&lt;&#x2F;span&gt;&lt;span&gt;(&lt;&#x2F;span&gt;&lt;span style=&quot;color:#86b300;&quot;&gt;&amp;quot;&#x2F;etc&#x2F;rc&amp;quot;&lt;&#x2F;span&gt;&lt;span style=&quot;color:#61676ccc;&quot;&gt;,&lt;&#x2F;span&gt;&lt;span&gt;O_RDONLY&lt;&#x2F;span&gt;&lt;span style=&quot;color:#61676ccc;&quot;&gt;,&lt;&#x2F;span&gt;&lt;span style=&quot;color:#ff8f40;&quot;&gt;0&lt;&#x2F;span&gt;&lt;span&gt;))
+&lt;&#x2F;span&gt;&lt;span&gt;			&lt;&#x2F;span&gt;&lt;span style=&quot;color:#f29718;&quot;&gt;_exit&lt;&#x2F;span&gt;&lt;span&gt;(&lt;&#x2F;span&gt;&lt;span style=&quot;color:#ff8f40;&quot;&gt;1&lt;&#x2F;span&gt;&lt;span&gt;)&lt;&#x2F;span&gt;&lt;span style=&quot;color:#61676ccc;&quot;&gt;;
+&lt;&#x2F;span&gt;&lt;span&gt;		&lt;&#x2F;span&gt;&lt;span style=&quot;color:#f29718;&quot;&gt;execve&lt;&#x2F;span&gt;&lt;span&gt;(&lt;&#x2F;span&gt;&lt;span style=&quot;color:#86b300;&quot;&gt;&amp;quot;&#x2F;bin&#x2F;sh&amp;quot;&lt;&#x2F;span&gt;&lt;span style=&quot;color:#61676ccc;&quot;&gt;,&lt;&#x2F;span&gt;&lt;span&gt;argv_rc&lt;&#x2F;span&gt;&lt;span style=&quot;color:#61676ccc;&quot;&gt;,&lt;&#x2F;span&gt;&lt;span&gt;envp_rc)&lt;&#x2F;span&gt;&lt;span style=&quot;color:#61676ccc;&quot;&gt;;
+&lt;&#x2F;span&gt;&lt;span&gt;		&lt;&#x2F;span&gt;&lt;span style=&quot;color:#f29718;&quot;&gt;_exit&lt;&#x2F;span&gt;&lt;span&gt;(&lt;&#x2F;span&gt;&lt;span style=&quot;color:#ff8f40;&quot;&gt;2&lt;&#x2F;span&gt;&lt;span&gt;)&lt;&#x2F;span&gt;&lt;span style=&quot;color:#61676ccc;&quot;&gt;;
+&lt;&#x2F;span&gt;&lt;span&gt;	}
+&lt;&#x2F;span&gt;&lt;span&gt;	&lt;&#x2F;span&gt;&lt;span style=&quot;color:#fa6e32;&quot;&gt;if &lt;&#x2F;span&gt;&lt;span&gt;(pid&lt;&#x2F;span&gt;&lt;span style=&quot;color:#ed9366;&quot;&gt;&amp;gt;&lt;&#x2F;span&gt;&lt;span style=&quot;color:#ff8f40;&quot;&gt;0&lt;&#x2F;span&gt;&lt;span&gt;)
+&lt;&#x2F;span&gt;&lt;span&gt;		&lt;&#x2F;span&gt;&lt;span style=&quot;color:#fa6e32;&quot;&gt;while &lt;&#x2F;span&gt;&lt;span&gt;(pid &lt;&#x2F;span&gt;&lt;span style=&quot;color:#ed9366;&quot;&gt;!= &lt;&#x2F;span&gt;&lt;span style=&quot;color:#f29718;&quot;&gt;wait&lt;&#x2F;span&gt;&lt;span&gt;(&lt;&#x2F;span&gt;&lt;span style=&quot;color:#ed9366;&quot;&gt;&amp;amp;&lt;&#x2F;span&gt;&lt;span&gt;i))
+&lt;&#x2F;span&gt;&lt;span&gt;			&lt;&#x2F;span&gt;&lt;span style=&quot;font-style:italic;color:#abb0b6;&quot;&gt;&#x2F;* nothing *&#x2F;&lt;&#x2F;span&gt;&lt;span style=&quot;color:#61676ccc;&quot;&gt;;
+&lt;&#x2F;span&gt;&lt;span&gt;	&lt;&#x2F;span&gt;&lt;span style=&quot;color:#fa6e32;&quot;&gt;while &lt;&#x2F;span&gt;&lt;span&gt;(&lt;&#x2F;span&gt;&lt;span style=&quot;color:#ff8f40;&quot;&gt;1&lt;&#x2F;span&gt;&lt;span&gt;) {
+&lt;&#x2F;span&gt;&lt;span&gt;		&lt;&#x2F;span&gt;&lt;span style=&quot;color:#fa6e32;&quot;&gt;if &lt;&#x2F;span&gt;&lt;span&gt;((pid&lt;&#x2F;span&gt;&lt;span style=&quot;color:#ed9366;&quot;&gt;=&lt;&#x2F;span&gt;&lt;span style=&quot;color:#f29718;&quot;&gt;fork&lt;&#x2F;span&gt;&lt;span&gt;())&lt;&#x2F;span&gt;&lt;span style=&quot;color:#ed9366;&quot;&gt;&amp;lt;&lt;&#x2F;span&gt;&lt;span style=&quot;color:#ff8f40;&quot;&gt;0&lt;&#x2F;span&gt;&lt;span&gt;) {
+&lt;&#x2F;span&gt;&lt;span&gt;			&lt;&#x2F;span&gt;&lt;span style=&quot;color:#f07171;&quot;&gt;printf&lt;&#x2F;span&gt;&lt;span&gt;(&lt;&#x2F;span&gt;&lt;span style=&quot;color:#86b300;&quot;&gt;&amp;quot;Fork failed in init&lt;&#x2F;span&gt;&lt;span style=&quot;color:#4cbf99;&quot;&gt;\r\n&lt;&#x2F;span&gt;&lt;span style=&quot;color:#86b300;&quot;&gt;&amp;quot;&lt;&#x2F;span&gt;&lt;span&gt;)&lt;&#x2F;span&gt;&lt;span style=&quot;color:#61676ccc;&quot;&gt;;
+&lt;&#x2F;span&gt;&lt;span&gt;			&lt;&#x2F;span&gt;&lt;span style=&quot;color:#fa6e32;&quot;&gt;continue&lt;&#x2F;span&gt;&lt;span style=&quot;color:#61676ccc;&quot;&gt;;
+&lt;&#x2F;span&gt;&lt;span&gt;		}
+&lt;&#x2F;span&gt;&lt;span&gt;		&lt;&#x2F;span&gt;&lt;span style=&quot;color:#fa6e32;&quot;&gt;if &lt;&#x2F;span&gt;&lt;span&gt;(&lt;&#x2F;span&gt;&lt;span style=&quot;color:#ed9366;&quot;&gt;!&lt;&#x2F;span&gt;&lt;span&gt;pid) {
+&lt;&#x2F;span&gt;&lt;span&gt;			&lt;&#x2F;span&gt;&lt;span style=&quot;color:#f29718;&quot;&gt;close&lt;&#x2F;span&gt;&lt;span&gt;(&lt;&#x2F;span&gt;&lt;span style=&quot;color:#ff8f40;&quot;&gt;0&lt;&#x2F;span&gt;&lt;span&gt;)&lt;&#x2F;span&gt;&lt;span style=&quot;color:#61676ccc;&quot;&gt;;&lt;&#x2F;span&gt;&lt;span style=&quot;color:#f29718;&quot;&gt;close&lt;&#x2F;span&gt;&lt;span&gt;(&lt;&#x2F;span&gt;&lt;span style=&quot;color:#ff8f40;&quot;&gt;1&lt;&#x2F;span&gt;&lt;span&gt;)&lt;&#x2F;span&gt;&lt;span style=&quot;color:#61676ccc;&quot;&gt;;&lt;&#x2F;span&gt;&lt;span style=&quot;color:#f29718;&quot;&gt;close&lt;&#x2F;span&gt;&lt;span&gt;(&lt;&#x2F;span&gt;&lt;span style=&quot;color:#ff8f40;&quot;&gt;2&lt;&#x2F;span&gt;&lt;span&gt;)&lt;&#x2F;span&gt;&lt;span style=&quot;color:#61676ccc;&quot;&gt;;
+&lt;&#x2F;span&gt;&lt;span&gt;			&lt;&#x2F;span&gt;&lt;span style=&quot;color:#f29718;&quot;&gt;setsid&lt;&#x2F;span&gt;&lt;span&gt;()&lt;&#x2F;span&gt;&lt;span style=&quot;color:#61676ccc;&quot;&gt;;
+&lt;&#x2F;span&gt;&lt;span&gt;			(&lt;&#x2F;span&gt;&lt;span style=&quot;color:#fa6e32;&quot;&gt;void&lt;&#x2F;span&gt;&lt;span&gt;) &lt;&#x2F;span&gt;&lt;span style=&quot;color:#f29718;&quot;&gt;open&lt;&#x2F;span&gt;&lt;span&gt;(&lt;&#x2F;span&gt;&lt;span style=&quot;color:#86b300;&quot;&gt;&amp;quot;&#x2F;dev&#x2F;tty0&amp;quot;&lt;&#x2F;span&gt;&lt;span style=&quot;color:#61676ccc;&quot;&gt;,&lt;&#x2F;span&gt;&lt;span&gt;O_RDWR&lt;&#x2F;span&gt;&lt;span style=&quot;color:#61676ccc;&quot;&gt;,&lt;&#x2F;span&gt;&lt;span style=&quot;color:#ff8f40;&quot;&gt;0&lt;&#x2F;span&gt;&lt;span&gt;)&lt;&#x2F;span&gt;&lt;span style=&quot;color:#61676ccc;&quot;&gt;;
+&lt;&#x2F;span&gt;&lt;span&gt;			(&lt;&#x2F;span&gt;&lt;span style=&quot;color:#fa6e32;&quot;&gt;void&lt;&#x2F;span&gt;&lt;span&gt;) &lt;&#x2F;span&gt;&lt;span style=&quot;color:#f29718;&quot;&gt;dup&lt;&#x2F;span&gt;&lt;span&gt;(&lt;&#x2F;span&gt;&lt;span style=&quot;color:#ff8f40;&quot;&gt;0&lt;&#x2F;span&gt;&lt;span&gt;)&lt;&#x2F;span&gt;&lt;span style=&quot;color:#61676ccc;&quot;&gt;;
+&lt;&#x2F;span&gt;&lt;span&gt;			(&lt;&#x2F;span&gt;&lt;span style=&quot;color:#fa6e32;&quot;&gt;void&lt;&#x2F;span&gt;&lt;span&gt;) &lt;&#x2F;span&gt;&lt;span style=&quot;color:#f29718;&quot;&gt;dup&lt;&#x2F;span&gt;&lt;span&gt;(&lt;&#x2F;span&gt;&lt;span style=&quot;color:#ff8f40;&quot;&gt;0&lt;&#x2F;span&gt;&lt;span&gt;)&lt;&#x2F;span&gt;&lt;span style=&quot;color:#61676ccc;&quot;&gt;;
+&lt;&#x2F;span&gt;&lt;span&gt;			&lt;&#x2F;span&gt;&lt;span style=&quot;color:#f29718;&quot;&gt;_exit&lt;&#x2F;span&gt;&lt;span&gt;(&lt;&#x2F;span&gt;&lt;span style=&quot;color:#f29718;&quot;&gt;execve&lt;&#x2F;span&gt;&lt;span&gt;(&lt;&#x2F;span&gt;&lt;span style=&quot;color:#86b300;&quot;&gt;&amp;quot;&#x2F;bin&#x2F;sh&amp;quot;&lt;&#x2F;span&gt;&lt;span style=&quot;color:#61676ccc;&quot;&gt;,&lt;&#x2F;span&gt;&lt;span&gt;argv&lt;&#x2F;span&gt;&lt;span style=&quot;color:#61676ccc;&quot;&gt;,&lt;&#x2F;span&gt;&lt;span&gt;envp))&lt;&#x2F;span&gt;&lt;span style=&quot;color:#61676ccc;&quot;&gt;;
+&lt;&#x2F;span&gt;&lt;span&gt;		}
+&lt;&#x2F;span&gt;&lt;span&gt;        &lt;&#x2F;span&gt;&lt;span style=&quot;color:#ed9366;&quot;&gt;...
+&lt;&#x2F;span&gt;&lt;span style=&quot;color:#ed9366;&quot;&gt;...
+&lt;&#x2F;span&gt;&lt;&#x2F;code&gt;&lt;&#x2F;pre&gt;
+&lt;p&gt;There are two shell startup, if we print out the student ID before first shell.&lt;&#x2F;p&gt;
+&lt;p&gt;&lt;img src=&quot;https:&#x2F;&#x2F;i.imgur.com&#x2F;HK9suMP.png&quot; alt=&quot;&quot; &#x2F;&gt;&lt;&#x2F;p&gt;
+&lt;p&gt;The OK message will print before student ID.&lt;&#x2F;p&gt;
+&lt;p&gt;So print student ID before second shell.&lt;&#x2F;p&gt;
+&lt;p&gt;&lt;img src=&quot;https:&#x2F;&#x2F;i.imgur.com&#x2F;OM2s8Ca.png&quot; alt=&quot;&quot; &#x2F;&gt;&lt;&#x2F;p&gt;
+&lt;p&gt;Work great! All done!!!&lt;&#x2F;p&gt;
+&lt;h2 id=&quot;questions&quot;&gt;&lt;a class=&quot;zola-anchor&quot; href=&quot;#questions&quot; aria-label=&quot;Anchor link for: questions&quot;&gt;Questions&lt;&#x2F;a&gt;&lt;&#x2F;h2&gt;
+&lt;p&gt;Q1: QEMU&lt;&#x2F;p&gt;
+&lt;pre style=&quot;background-color:#fafafa;color:#61676c;&quot;&gt;&lt;code&gt;&lt;span&gt;qemu-system-i386 -m 16M -boot a -fda Image -hda ..&#x2F;osdi.img -s -S -serial stdio
+&lt;&#x2F;span&gt;&lt;&#x2F;code&gt;&lt;&#x2F;pre&gt;
+&lt;p&gt;According to the above command:
+Q1.1: What’s the difference between -S and -s in the command?&lt;&#x2F;p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;According to &lt;a rel=&quot;noreferrer&quot; href=&quot;https:&#x2F;&#x2F;manned.org&#x2F;qemu-system-i386&#x2F;eeff8ce3&quot;&gt;man&lt;&#x2F;a&gt; page of &lt;code&gt;qemu-system-i386&lt;&#x2F;code&gt;:
+&lt;code&gt;-s&lt;&#x2F;code&gt;: Wait gdb connection to port 1234.
+&lt;code&gt;-S&lt;&#x2F;code&gt;: Do not start CPU at startup (you must type &#x27;c&#x27; in the monitor).&lt;&#x2F;p&gt;
+&lt;&#x2F;blockquote&gt;
+&lt;p&gt;Q1.2: What are -boot, -fda and -hda used for? If I want to boot with ..&#x2F;osdi.img(supposed it’s a bootable image) what should I do?&lt;&#x2F;p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;&lt;code&gt;-boot a&lt;&#x2F;code&gt;: Boot from floppy.
+&lt;code&gt;-fda Image&lt;&#x2F;code&gt;: Use &lt;code&gt;Image&lt;&#x2F;code&gt; as floppy.
+&lt;code&gt;-hda ..&#x2F;osdi.img&lt;&#x2F;code&gt;: Use &lt;code&gt;..&#x2F;osdi.img&lt;&#x2F;code&gt; as hard disk.
+&lt;code&gt;-boot c -hda ..&#x2F;osdi.img&lt;&#x2F;code&gt;.&lt;&#x2F;p&gt;
+&lt;&#x2F;blockquote&gt;
+&lt;p&gt;Q2: Git&lt;&#x2F;p&gt;
+&lt;p&gt;Q2.1: Please explain all the flags and options used in below command:&lt;&#x2F;p&gt;
+&lt;pre style=&quot;background-color:#fafafa;color:#61676c;&quot;&gt;&lt;code&gt;&lt;span&gt;git checkout -b lab1 origin&#x2F;lab1
+&lt;&#x2F;span&gt;&lt;&#x2F;code&gt;&lt;&#x2F;pre&gt;
+&lt;blockquote&gt;
+&lt;p&gt;There is a remote repo called &lt;code&gt;origin&lt;&#x2F;code&gt; and has a branch named &lt;code&gt;lab1&lt;&#x2F;code&gt;, we want to create a local branch called &lt;code&gt;lab1&lt;&#x2F;code&gt; attach on it and move the &lt;code&gt;HEAD&lt;&#x2F;code&gt; on it.&lt;&#x2F;p&gt;
+&lt;&#x2F;blockquote&gt;
+&lt;p&gt;Q2.2 What are the differences among git add, git commit, and git push? What’s the timing you will use them?&lt;&#x2F;p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;There are three &lt;code&gt;working directory&lt;&#x2F;code&gt;, &lt;code&gt;stagin area&lt;&#x2F;code&gt; and &lt;code&gt;repository&lt;&#x2F;code&gt;. When you &lt;code&gt;add&lt;&#x2F;code&gt; something, you move these into from &lt;code&gt;working direcotory&lt;&#x2F;code&gt; to &lt;code&gt;staging area&lt;&#x2F;code&gt;, and when you &lt;code&gt;commit&lt;&#x2F;code&gt; it, you move to &lt;code&gt;repository&lt;&#x2F;code&gt;. At last, when you &lt;code&gt;push&lt;&#x2F;code&gt; it, you push your code from &lt;code&gt;local repo&lt;&#x2F;code&gt; to &lt;code&gt;remote repo&lt;&#x2F;code&gt;.&lt;&#x2F;p&gt;
+&lt;&#x2F;blockquote&gt;
+&lt;p&gt;Q3: Makefile&lt;&#x2F;p&gt;
+&lt;p&gt;Q3.1: What happened when you run the below command? Please explain it according to the Makefile.&lt;&#x2F;p&gt;
+&lt;pre style=&quot;background-color:#fafafa;color:#61676c;&quot;&gt;&lt;code&gt;&lt;span&gt;make clean &amp;amp;&amp;amp; make
+&lt;&#x2F;span&gt;&lt;&#x2F;code&gt;&lt;&#x2F;pre&gt;
+&lt;blockquote&gt;
+&lt;p&gt;According to &lt;code&gt;Makefile&lt;&#x2F;code&gt;, &lt;code&gt;make clean&lt;&#x2F;code&gt; will remove all object file, image etc. &lt;code&gt;make&lt;&#x2F;code&gt; will follow the instruction on &lt;code&gt;Makefile&lt;&#x2F;code&gt; and build it.&lt;&#x2F;p&gt;
+&lt;&#x2F;blockquote&gt;
+&lt;p&gt;Q3.2: I did edit the include&#x2F;linux&#x2F;sched.h file and run make command successfully but the Image file remains the same. However, if I edit the init&#x2F;main.c file and run make command. My Image will be recompile. What’s the difference between these two operations?&lt;&#x2F;p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;The &lt;code&gt;Makefile&lt;&#x2F;code&gt; didn&#x27;t write carefully, you should execute &lt;code&gt;make clean &amp;amp;&amp;amp; make&lt;&#x2F;code&gt; to rebuild.&lt;&#x2F;p&gt;
+&lt;&#x2F;blockquote&gt;
+&lt;p&gt;Q4: After making, what does the kernel Image ‘Image’ look like?&lt;&#x2F;p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;According to &lt;code&gt;build.sh&lt;&#x2F;code&gt;, &lt;code&gt;bootsect&lt;&#x2F;code&gt; will put first and &lt;code&gt;setup&lt;&#x2F;code&gt; will be the second. Finally, the &lt;code&gt;system&lt;&#x2F;code&gt; will be at last.&lt;&#x2F;p&gt;
+&lt;&#x2F;blockquote&gt;
+&lt;pre data-lang=&quot;bash&quot; style=&quot;background-color:#fafafa;color:#61676c;&quot; class=&quot;language-bash &quot;&gt;&lt;code class=&quot;language-bash&quot; data-lang=&quot;bash&quot;&gt;&lt;span style=&quot;font-style:italic;color:#abb0b6;&quot;&gt;# Write bootsect (512 bytes, one sector) to stdout
+&lt;&#x2F;span&gt;&lt;span style=&quot;color:#f07171;&quot;&gt;[ &lt;&#x2F;span&gt;&lt;span style=&quot;color:#ed9366;&quot;&gt;! &lt;&#x2F;span&gt;&lt;span style=&quot;color:#ff8f40;&quot;&gt;-f &lt;&#x2F;span&gt;&lt;span style=&quot;color:#86b300;&quot;&gt;&amp;quot;$&lt;&#x2F;span&gt;&lt;span&gt;bootsect&lt;&#x2F;span&gt;&lt;span style=&quot;color:#86b300;&quot;&gt;&amp;quot; &lt;&#x2F;span&gt;&lt;span style=&quot;color:#f07171;&quot;&gt;] &lt;&#x2F;span&gt;&lt;span style=&quot;color:#ed9366;&quot;&gt;&amp;amp;&amp;amp; &lt;&#x2F;span&gt;&lt;span style=&quot;color:#f07171;&quot;&gt;echo &lt;&#x2F;span&gt;&lt;span style=&quot;color:#86b300;&quot;&gt;&amp;quot;there is no bootsect binary file there&amp;quot; &lt;&#x2F;span&gt;&lt;span style=&quot;color:#ed9366;&quot;&gt;&amp;amp;&amp;amp; &lt;&#x2F;span&gt;&lt;span style=&quot;color:#f07171;&quot;&gt;exit&lt;&#x2F;span&gt;&lt;span&gt; -1
+&lt;&#x2F;span&gt;&lt;span style=&quot;color:#f29718;&quot;&gt;dd&lt;&#x2F;span&gt;&lt;span&gt; if=$bootsect bs=512 count=1 of=$IMAGE &lt;&#x2F;span&gt;&lt;span style=&quot;color:#ff8f40;&quot;&gt;2&lt;&#x2F;span&gt;&lt;span style=&quot;color:#ed9366;&quot;&gt;&amp;gt;&amp;amp;&lt;&#x2F;span&gt;&lt;span style=&quot;color:#ff8f40;&quot;&gt;1 &lt;&#x2F;span&gt;&lt;span style=&quot;color:#ed9366;&quot;&gt;&amp;gt;&lt;&#x2F;span&gt;&lt;span&gt;&#x2F;dev&#x2F;null
+&lt;&#x2F;span&gt;&lt;span&gt;
+&lt;&#x2F;span&gt;&lt;span style=&quot;font-style:italic;color:#abb0b6;&quot;&gt;# Write setup(4 * 512bytes, four sectors) to stdout
+&lt;&#x2F;span&gt;&lt;span style=&quot;color:#f07171;&quot;&gt;[ &lt;&#x2F;span&gt;&lt;span style=&quot;color:#ed9366;&quot;&gt;! &lt;&#x2F;span&gt;&lt;span style=&quot;color:#ff8f40;&quot;&gt;-f &lt;&#x2F;span&gt;&lt;span style=&quot;color:#86b300;&quot;&gt;&amp;quot;$&lt;&#x2F;span&gt;&lt;span&gt;setup&lt;&#x2F;span&gt;&lt;span style=&quot;color:#86b300;&quot;&gt;&amp;quot; &lt;&#x2F;span&gt;&lt;span style=&quot;color:#f07171;&quot;&gt;] &lt;&#x2F;span&gt;&lt;span style=&quot;color:#ed9366;&quot;&gt;&amp;amp;&amp;amp; &lt;&#x2F;span&gt;&lt;span style=&quot;color:#f07171;&quot;&gt;echo &lt;&#x2F;span&gt;&lt;span style=&quot;color:#86b300;&quot;&gt;&amp;quot;there is no setup binary file there&amp;quot; &lt;&#x2F;span&gt;&lt;span style=&quot;color:#ed9366;&quot;&gt;&amp;amp;&amp;amp; &lt;&#x2F;span&gt;&lt;span style=&quot;color:#f07171;&quot;&gt;exit&lt;&#x2F;span&gt;&lt;span&gt; -1
+&lt;&#x2F;span&gt;&lt;span style=&quot;color:#f29718;&quot;&gt;dd&lt;&#x2F;span&gt;&lt;span&gt; if=$setup seek=1 bs=512 count=4 of=$IMAGE &lt;&#x2F;span&gt;&lt;span style=&quot;color:#ff8f40;&quot;&gt;2&lt;&#x2F;span&gt;&lt;span style=&quot;color:#ed9366;&quot;&gt;&amp;gt;&amp;amp;&lt;&#x2F;span&gt;&lt;span style=&quot;color:#ff8f40;&quot;&gt;1 &lt;&#x2F;span&gt;&lt;span style=&quot;color:#ed9366;&quot;&gt;&amp;gt;&lt;&#x2F;span&gt;&lt;span&gt;&#x2F;dev&#x2F;null
+&lt;&#x2F;span&gt;&lt;span&gt;
+&lt;&#x2F;span&gt;&lt;span style=&quot;font-style:italic;color:#abb0b6;&quot;&gt;# Write system(&amp;lt; SYS_SIZE) to stdout
+&lt;&#x2F;span&gt;&lt;span style=&quot;color:#f07171;&quot;&gt;[ &lt;&#x2F;span&gt;&lt;span style=&quot;color:#ed9366;&quot;&gt;! &lt;&#x2F;span&gt;&lt;span style=&quot;color:#ff8f40;&quot;&gt;-f &lt;&#x2F;span&gt;&lt;span style=&quot;color:#86b300;&quot;&gt;&amp;quot;$&lt;&#x2F;span&gt;&lt;span&gt;system&lt;&#x2F;span&gt;&lt;span style=&quot;color:#86b300;&quot;&gt;&amp;quot; &lt;&#x2F;span&gt;&lt;span style=&quot;color:#f07171;&quot;&gt;] &lt;&#x2F;span&gt;&lt;span style=&quot;color:#ed9366;&quot;&gt;&amp;amp;&amp;amp; &lt;&#x2F;span&gt;&lt;span style=&quot;color:#f07171;&quot;&gt;echo &lt;&#x2F;span&gt;&lt;span style=&quot;color:#86b300;&quot;&gt;&amp;quot;there is no system binary file there&amp;quot; &lt;&#x2F;span&gt;&lt;span style=&quot;color:#ed9366;&quot;&gt;&amp;amp;&amp;amp; &lt;&#x2F;span&gt;&lt;span style=&quot;color:#f07171;&quot;&gt;exit&lt;&#x2F;span&gt;&lt;span&gt; -1
+&lt;&#x2F;span&gt;&lt;span&gt;system_size&lt;&#x2F;span&gt;&lt;span style=&quot;color:#ed9366;&quot;&gt;=&lt;&#x2F;span&gt;&lt;span&gt;`&lt;&#x2F;span&gt;&lt;span style=&quot;color:#f29718;&quot;&gt;wc&lt;&#x2F;span&gt;&lt;span style=&quot;color:#ff8f40;&quot;&gt; -c &lt;&#x2F;span&gt;&lt;span&gt;$system &lt;&#x2F;span&gt;&lt;span style=&quot;color:#ed9366;&quot;&gt;|&lt;&#x2F;span&gt;&lt;span style=&quot;color:#f29718;&quot;&gt;cut&lt;&#x2F;span&gt;&lt;span style=&quot;color:#ff8f40;&quot;&gt; -d&lt;&#x2F;span&gt;&lt;span style=&quot;color:#86b300;&quot;&gt;&amp;quot; &amp;quot;&lt;&#x2F;span&gt;&lt;span style=&quot;color:#ff8f40;&quot;&gt; -f1&lt;&#x2F;span&gt;&lt;span&gt;`
+&lt;&#x2F;span&gt;&lt;span style=&quot;color:#f07171;&quot;&gt;[ &lt;&#x2F;span&gt;&lt;span&gt;$system_size &lt;&#x2F;span&gt;&lt;span style=&quot;color:#ff8f40;&quot;&gt;-gt &lt;&#x2F;span&gt;&lt;span&gt;$SYS_SIZE &lt;&#x2F;span&gt;&lt;span style=&quot;color:#f07171;&quot;&gt;] &lt;&#x2F;span&gt;&lt;span style=&quot;color:#ed9366;&quot;&gt;&amp;amp;&amp;amp; &lt;&#x2F;span&gt;&lt;span style=&quot;color:#f07171;&quot;&gt;echo &lt;&#x2F;span&gt;&lt;span style=&quot;color:#86b300;&quot;&gt;&amp;quot;the system binary is too big&amp;quot; &lt;&#x2F;span&gt;&lt;span style=&quot;color:#ed9366;&quot;&gt;&amp;amp;&amp;amp; &lt;&#x2F;span&gt;&lt;span style=&quot;color:#f07171;&quot;&gt;exit&lt;&#x2F;span&gt;&lt;span&gt; -1
+&lt;&#x2F;span&gt;&lt;span style=&quot;color:#f29718;&quot;&gt;dd&lt;&#x2F;span&gt;&lt;span&gt; if=$system seek=5 bs=512 count=$((&lt;&#x2F;span&gt;&lt;span style=&quot;color:#ff8f40;&quot;&gt;2888&lt;&#x2F;span&gt;&lt;span style=&quot;color:#ed9366;&quot;&gt;-&lt;&#x2F;span&gt;&lt;span style=&quot;color:#ff8f40;&quot;&gt;1&lt;&#x2F;span&gt;&lt;span style=&quot;color:#ed9366;&quot;&gt;-&lt;&#x2F;span&gt;&lt;span style=&quot;color:#ff8f40;&quot;&gt;4&lt;&#x2F;span&gt;&lt;span&gt;)) of=$IMAGE &lt;&#x2F;span&gt;&lt;span style=&quot;color:#ff8f40;&quot;&gt;2&lt;&#x2F;span&gt;&lt;span style=&quot;color:#ed9366;&quot;&gt;&amp;gt;&amp;amp;&lt;&#x2F;span&gt;&lt;span style=&quot;color:#ff8f40;&quot;&gt;1 &lt;&#x2F;span&gt;&lt;span style=&quot;color:#ed9366;&quot;&gt;&amp;gt;&lt;&#x2F;span&gt;&lt;span&gt;&#x2F;dev&#x2F;null
+&lt;&#x2F;span&gt;&lt;&#x2F;code&gt;&lt;&#x2F;pre&gt;
+</description>
+      </item>
+      <item>
+          <title>OSDI-lab2</title>
+          <pubDate>Wed, 13 Mar 2019 00:00:00 +0000</pubDate>
+          <author>Unknown</author>
+          <link>https://www.titaneric.com/posts/osdi-lab2/</link>
+          <guid>https://www.titaneric.com/posts/osdi-lab2/</guid>
+          <description xml:base="https://www.titaneric.com/posts/osdi-lab2/">&lt;h1 id=&quot;osdi-lab-ii&quot;&gt;&lt;a class=&quot;zola-anchor&quot; href=&quot;#osdi-lab-ii&quot; aria-label=&quot;Anchor link for: osdi-lab-ii&quot;&gt;OSDI lab II&lt;&#x2F;a&gt;&lt;&#x2F;h1&gt;
+&lt;h2 id=&quot;objective&quot;&gt;&lt;a class=&quot;zola-anchor&quot; href=&quot;#objective&quot; aria-label=&quot;Anchor link for: objective&quot;&gt;Objective&lt;&#x2F;a&gt;&lt;&#x2F;h2&gt;
+&lt;ul&gt;
+&lt;li&gt;Learn how to build a customized BIOS and show some message on system startup.&lt;&#x2F;li&gt;
+&lt;li&gt;Understand kernel booting flow and boot a ‘hello world’ program.&lt;&#x2F;li&gt;
+&lt;li&gt;Learn how to use BIOS interrupt call to do I&#x2F;O tasks.&lt;&#x2F;li&gt;
+&lt;li&gt;Learn how to modify linux-0.11 bootsect.s and the build system to create a multiboot kernel image.&lt;&#x2F;li&gt;
+&lt;&#x2F;ul&gt;
+&lt;hr &#x2F;&gt;
+&lt;h2 id=&quot;lab2-1-build-seabios-add-some-message-before-system-startup&quot;&gt;&lt;a class=&quot;zola-anchor&quot; href=&quot;#lab2-1-build-seabios-add-some-message-before-system-startup&quot; aria-label=&quot;Anchor link for: lab2-1-build-seabios-add-some-message-before-system-startup&quot;&gt;Lab2.1 - Build SEABIOS, add some message before system startup&lt;&#x2F;a&gt;&lt;&#x2F;h2&gt;
+&lt;pre data-lang=&quot;bash&quot; style=&quot;background-color:#fafafa;color:#61676c;&quot; class=&quot;language-bash &quot;&gt;&lt;code class=&quot;language-bash&quot; data-lang=&quot;bash&quot;&gt;&lt;span style=&quot;color:#f29718;&quot;&gt;git&lt;&#x2F;span&gt;&lt;span&gt; clone https:&#x2F;&#x2F;git.seabios.org&#x2F;seabios.git seabios
+&lt;&#x2F;span&gt;&lt;span style=&quot;color:#f07171;&quot;&gt;cd&lt;&#x2F;span&gt;&lt;span&gt; seabios&#x2F;
+&lt;&#x2F;span&gt;&lt;span style=&quot;color:#f29718;&quot;&gt;make&lt;&#x2F;span&gt;&lt;span&gt; menuconfig
+&lt;&#x2F;span&gt;&lt;span style=&quot;color:#f29718;&quot;&gt;make
+&lt;&#x2F;span&gt;&lt;&#x2F;code&gt;&lt;&#x2F;pre&gt;
+&lt;p&gt;Print message in &lt;code&gt;enable_vga_console&lt;&#x2F;code&gt; function in &lt;code&gt;src&#x2F;bootsplash.c&lt;&#x2F;code&gt;.&lt;&#x2F;p&gt;
+&lt;pre data-lang=&quot;c&quot; style=&quot;background-color:#fafafa;color:#61676c;&quot; class=&quot;language-c &quot;&gt;&lt;code class=&quot;language-c&quot; data-lang=&quot;c&quot;&gt;&lt;span style=&quot;color:#fa6e32;&quot;&gt;void
+&lt;&#x2F;span&gt;&lt;span style=&quot;color:#f29718;&quot;&gt;enable_vga_console&lt;&#x2F;span&gt;&lt;span&gt;(&lt;&#x2F;span&gt;&lt;span style=&quot;color:#fa6e32;&quot;&gt;void&lt;&#x2F;span&gt;&lt;span&gt;)
+&lt;&#x2F;span&gt;&lt;span&gt;{
+&lt;&#x2F;span&gt;&lt;span&gt;    &lt;&#x2F;span&gt;&lt;span style=&quot;color:#f29718;&quot;&gt;dprintf&lt;&#x2F;span&gt;&lt;span&gt;(&lt;&#x2F;span&gt;&lt;span style=&quot;color:#ff8f40;&quot;&gt;1&lt;&#x2F;span&gt;&lt;span style=&quot;color:#61676ccc;&quot;&gt;, &lt;&#x2F;span&gt;&lt;span style=&quot;color:#86b300;&quot;&gt;&amp;quot;Turning on vga text mode console&lt;&#x2F;span&gt;&lt;span style=&quot;color:#4cbf99;&quot;&gt;\n&lt;&#x2F;span&gt;&lt;span style=&quot;color:#86b300;&quot;&gt;&amp;quot;&lt;&#x2F;span&gt;&lt;span&gt;)&lt;&#x2F;span&gt;&lt;span style=&quot;color:#61676ccc;&quot;&gt;;
+&lt;&#x2F;span&gt;&lt;span&gt;    &lt;&#x2F;span&gt;&lt;span style=&quot;color:#fa6e32;&quot;&gt;struct&lt;&#x2F;span&gt;&lt;span&gt; bregs br&lt;&#x2F;span&gt;&lt;span style=&quot;color:#61676ccc;&quot;&gt;; 
+&lt;&#x2F;span&gt;&lt;span&gt;
+&lt;&#x2F;span&gt;&lt;span&gt;    &lt;&#x2F;span&gt;&lt;span style=&quot;font-style:italic;color:#abb0b6;&quot;&gt;&#x2F;* Enable VGA text mode *&#x2F;
+&lt;&#x2F;span&gt;&lt;span&gt;    &lt;&#x2F;span&gt;&lt;span style=&quot;color:#f07171;&quot;&gt;memset&lt;&#x2F;span&gt;&lt;span&gt;(&lt;&#x2F;span&gt;&lt;span style=&quot;color:#ed9366;&quot;&gt;&amp;amp;&lt;&#x2F;span&gt;&lt;span&gt;br&lt;&#x2F;span&gt;&lt;span style=&quot;color:#61676ccc;&quot;&gt;, &lt;&#x2F;span&gt;&lt;span style=&quot;color:#ff8f40;&quot;&gt;0&lt;&#x2F;span&gt;&lt;span style=&quot;color:#61676ccc;&quot;&gt;, &lt;&#x2F;span&gt;&lt;span style=&quot;color:#fa6e32;&quot;&gt;sizeof&lt;&#x2F;span&gt;&lt;span&gt;(br))&lt;&#x2F;span&gt;&lt;span style=&quot;color:#61676ccc;&quot;&gt;;
+&lt;&#x2F;span&gt;&lt;span&gt;    br&lt;&#x2F;span&gt;&lt;span style=&quot;color:#ed9366;&quot;&gt;.&lt;&#x2F;span&gt;&lt;span&gt;ax &lt;&#x2F;span&gt;&lt;span style=&quot;color:#ed9366;&quot;&gt;= &lt;&#x2F;span&gt;&lt;span style=&quot;color:#ff8f40;&quot;&gt;0x0003&lt;&#x2F;span&gt;&lt;span style=&quot;color:#61676ccc;&quot;&gt;;
+&lt;&#x2F;span&gt;&lt;span&gt;    &lt;&#x2F;span&gt;&lt;span style=&quot;color:#f29718;&quot;&gt;call16_int10&lt;&#x2F;span&gt;&lt;span&gt;(&lt;&#x2F;span&gt;&lt;span style=&quot;color:#ed9366;&quot;&gt;&amp;amp;&lt;&#x2F;span&gt;&lt;span&gt;br)&lt;&#x2F;span&gt;&lt;span style=&quot;color:#61676ccc;&quot;&gt;;
+&lt;&#x2F;span&gt;&lt;span&gt;    
+&lt;&#x2F;span&gt;&lt;span&gt;    &lt;&#x2F;span&gt;&lt;span style=&quot;color:#f07171;&quot;&gt;printf&lt;&#x2F;span&gt;&lt;span&gt;(&lt;&#x2F;span&gt;&lt;span style=&quot;color:#86b300;&quot;&gt;&amp;quot;This is OSDI lab2.&lt;&#x2F;span&gt;&lt;span style=&quot;color:#4cbf99;&quot;&gt;\n&lt;&#x2F;span&gt;&lt;span style=&quot;color:#86b300;&quot;&gt;&amp;quot;&lt;&#x2F;span&gt;&lt;span&gt;)&lt;&#x2F;span&gt;&lt;span style=&quot;color:#61676ccc;&quot;&gt;;
+&lt;&#x2F;span&gt;&lt;span&gt;    &lt;&#x2F;span&gt;&lt;span style=&quot;font-style:italic;color:#abb0b6;&quot;&gt;&#x2F;&#x2F; Write to screen.
+&lt;&#x2F;span&gt;&lt;span&gt;    &lt;&#x2F;span&gt;&lt;span style=&quot;color:#f07171;&quot;&gt;printf&lt;&#x2F;span&gt;&lt;span&gt;(&lt;&#x2F;span&gt;&lt;span style=&quot;color:#86b300;&quot;&gt;&amp;quot;SeaBIOS (version &lt;&#x2F;span&gt;&lt;span style=&quot;color:#ff8f40;&quot;&gt;%s&lt;&#x2F;span&gt;&lt;span style=&quot;color:#86b300;&quot;&gt;)&lt;&#x2F;span&gt;&lt;span style=&quot;color:#4cbf99;&quot;&gt;\n&lt;&#x2F;span&gt;&lt;span style=&quot;color:#86b300;&quot;&gt;&amp;quot;&lt;&#x2F;span&gt;&lt;span style=&quot;color:#61676ccc;&quot;&gt;,&lt;&#x2F;span&gt;&lt;span&gt; VERSION)&lt;&#x2F;span&gt;&lt;span style=&quot;color:#61676ccc;&quot;&gt;;
+&lt;&#x2F;span&gt;&lt;span&gt;    &lt;&#x2F;span&gt;&lt;span style=&quot;color:#f29718;&quot;&gt;display_uuid&lt;&#x2F;span&gt;&lt;span&gt;()&lt;&#x2F;span&gt;&lt;span style=&quot;color:#61676ccc;&quot;&gt;;
+&lt;&#x2F;span&gt;&lt;span&gt;}
+&lt;&#x2F;span&gt;&lt;&#x2F;code&gt;&lt;&#x2F;pre&gt;
+&lt;p&gt;Use the qemu &lt;code&gt;-bios&lt;&#x2F;code&gt; option to load customized BIOS.&lt;&#x2F;p&gt;
+&lt;pre data-lang=&quot;bash&quot; style=&quot;background-color:#fafafa;color:#61676c;&quot; class=&quot;language-bash &quot;&gt;&lt;code class=&quot;language-bash&quot; data-lang=&quot;bash&quot;&gt;&lt;span style=&quot;color:#f29718;&quot;&gt;qemu-system-i386&lt;&#x2F;span&gt;&lt;span style=&quot;color:#ff8f40;&quot;&gt; -m&lt;&#x2F;span&gt;&lt;span&gt; 16M&lt;&#x2F;span&gt;&lt;span style=&quot;color:#ff8f40;&quot;&gt; -boot&lt;&#x2F;span&gt;&lt;span&gt; a&lt;&#x2F;span&gt;&lt;span style=&quot;color:#ff8f40;&quot;&gt; -fda&lt;&#x2F;span&gt;&lt;span&gt; Image&lt;&#x2F;span&gt;&lt;span style=&quot;color:#ff8f40;&quot;&gt; -hda&lt;&#x2F;span&gt;&lt;span&gt; osdi.img&lt;&#x2F;span&gt;&lt;span style=&quot;color:#ff8f40;&quot;&gt; -bios&lt;&#x2F;span&gt;&lt;span&gt; seabios&#x2F;out&#x2F;bios.bin
+&lt;&#x2F;span&gt;&lt;&#x2F;code&gt;&lt;&#x2F;pre&gt;
+&lt;p&gt;Because the customized BIOS is part of our lab, so I push it to new repo and add the &lt;strong&gt;submodule&lt;&#x2F;strong&gt; to &lt;code&gt;osdi&lt;&#x2F;code&gt;.&lt;&#x2F;p&gt;
+&lt;pre data-lang=&quot;bash&quot; style=&quot;background-color:#fafafa;color:#61676c;&quot; class=&quot;language-bash &quot;&gt;&lt;code class=&quot;language-bash&quot; data-lang=&quot;bash&quot;&gt;&lt;span style=&quot;color:#f29718;&quot;&gt;git&lt;&#x2F;span&gt;&lt;span&gt; submodule add bios-url bios-in-osdi-path
+&lt;&#x2F;span&gt;&lt;&#x2F;code&gt;&lt;&#x2F;pre&gt;
+&lt;p&gt;After that, I can update the customized BIOS even though we develop the BIOS and OSDI at different repo using the following command.&lt;&#x2F;p&gt;
+&lt;pre data-lang=&quot;bash&quot; style=&quot;background-color:#fafafa;color:#61676c;&quot; class=&quot;language-bash &quot;&gt;&lt;code class=&quot;language-bash&quot; data-lang=&quot;bash&quot;&gt;&lt;span style=&quot;color:#f29718;&quot;&gt;git&lt;&#x2F;span&gt;&lt;span&gt; submodule update bios-name
+&lt;&#x2F;span&gt;&lt;&#x2F;code&gt;&lt;&#x2F;pre&gt;
+&lt;hr &#x2F;&gt;
+&lt;h2 id=&quot;lab2-2-add-image-before-system-startup&quot;&gt;&lt;a class=&quot;zola-anchor&quot; href=&quot;#lab2-2-add-image-before-system-startup&quot; aria-label=&quot;Anchor link for: lab2-2-add-image-before-system-startup&quot;&gt;Lab2.2 - Add image before system startup&lt;&#x2F;a&gt;&lt;&#x2F;h2&gt;
+&lt;p&gt;We want to load the image when BIOS is loading.&lt;&#x2F;p&gt;
+&lt;p&gt;Firstly, we want to find which function can help us to do that.
+There is a function called &lt;code&gt;enable_bootsplash&lt;&#x2F;code&gt; @ &lt;code&gt;src&#x2F;bootsplash.c&lt;&#x2F;code&gt;.&lt;&#x2F;p&gt;
+&lt;pre data-lang=&quot;c&quot; style=&quot;background-color:#fafafa;color:#61676c;&quot; class=&quot;language-c &quot;&gt;&lt;code class=&quot;language-c&quot; data-lang=&quot;c&quot;&gt;&lt;span style=&quot;color:#fa6e32;&quot;&gt;void
+&lt;&#x2F;span&gt;&lt;span style=&quot;color:#f29718;&quot;&gt;enable_bootsplash&lt;&#x2F;span&gt;&lt;span&gt;(&lt;&#x2F;span&gt;&lt;span style=&quot;color:#fa6e32;&quot;&gt;void&lt;&#x2F;span&gt;&lt;span&gt;)
+&lt;&#x2F;span&gt;&lt;span&gt;{
+&lt;&#x2F;span&gt;&lt;span&gt;    &lt;&#x2F;span&gt;&lt;span style=&quot;color:#fa6e32;&quot;&gt;if &lt;&#x2F;span&gt;&lt;span&gt;(&lt;&#x2F;span&gt;&lt;span style=&quot;color:#ed9366;&quot;&gt;!&lt;&#x2F;span&gt;&lt;span&gt;CONFIG_BOOTSPLASH)
+&lt;&#x2F;span&gt;&lt;span&gt;        &lt;&#x2F;span&gt;&lt;span style=&quot;color:#fa6e32;&quot;&gt;return&lt;&#x2F;span&gt;&lt;span style=&quot;color:#61676ccc;&quot;&gt;;
+&lt;&#x2F;span&gt;&lt;span&gt;    &lt;&#x2F;span&gt;&lt;span style=&quot;font-style:italic;color:#abb0b6;&quot;&gt;&#x2F;* splash picture can be bmp or jpeg file *&#x2F;
+&lt;&#x2F;span&gt;&lt;span&gt;    &lt;&#x2F;span&gt;&lt;span style=&quot;color:#f29718;&quot;&gt;dprintf&lt;&#x2F;span&gt;&lt;span&gt;(&lt;&#x2F;span&gt;&lt;span style=&quot;color:#ff8f40;&quot;&gt;3&lt;&#x2F;span&gt;&lt;span style=&quot;color:#61676ccc;&quot;&gt;, &lt;&#x2F;span&gt;&lt;span style=&quot;color:#86b300;&quot;&gt;&amp;quot;Checking for bootsplash&lt;&#x2F;span&gt;&lt;span style=&quot;color:#4cbf99;&quot;&gt;\n&lt;&#x2F;span&gt;&lt;span style=&quot;color:#86b300;&quot;&gt;&amp;quot;&lt;&#x2F;span&gt;&lt;span&gt;)&lt;&#x2F;span&gt;&lt;span style=&quot;color:#61676ccc;&quot;&gt;;
+&lt;&#x2F;span&gt;&lt;span&gt;    u8 type &lt;&#x2F;span&gt;&lt;span style=&quot;color:#ed9366;&quot;&gt;= &lt;&#x2F;span&gt;&lt;span style=&quot;color:#ff8f40;&quot;&gt;0&lt;&#x2F;span&gt;&lt;span style=&quot;color:#61676ccc;&quot;&gt;; &lt;&#x2F;span&gt;&lt;span style=&quot;font-style:italic;color:#abb0b6;&quot;&gt;&#x2F;* 0 means jpg, 1 means bmp, default is 0=jpg *&#x2F;
+&lt;&#x2F;span&gt;&lt;span&gt;    &lt;&#x2F;span&gt;&lt;span style=&quot;color:#fa6e32;&quot;&gt;int&lt;&#x2F;span&gt;&lt;span&gt; filesize&lt;&#x2F;span&gt;&lt;span style=&quot;color:#61676ccc;&quot;&gt;;
+&lt;&#x2F;span&gt;&lt;span&gt;    u8 &lt;&#x2F;span&gt;&lt;span style=&quot;color:#ed9366;&quot;&gt;*&lt;&#x2F;span&gt;&lt;span&gt;filedata &lt;&#x2F;span&gt;&lt;span style=&quot;color:#ed9366;&quot;&gt;= &lt;&#x2F;span&gt;&lt;span style=&quot;color:#f29718;&quot;&gt;romfile_loadfile&lt;&#x2F;span&gt;&lt;span&gt;(&lt;&#x2F;span&gt;&lt;span style=&quot;color:#86b300;&quot;&gt;&amp;quot;bootsplash.jpg&amp;quot;&lt;&#x2F;span&gt;&lt;span style=&quot;color:#61676ccc;&quot;&gt;, &lt;&#x2F;span&gt;&lt;span style=&quot;color:#ed9366;&quot;&gt;&amp;amp;&lt;&#x2F;span&gt;&lt;span&gt;filesize)&lt;&#x2F;span&gt;&lt;span style=&quot;color:#61676ccc;&quot;&gt;;
+&lt;&#x2F;span&gt;&lt;span&gt;    &lt;&#x2F;span&gt;&lt;span style=&quot;color:#fa6e32;&quot;&gt;if &lt;&#x2F;span&gt;&lt;span&gt;(&lt;&#x2F;span&gt;&lt;span style=&quot;color:#ed9366;&quot;&gt;!&lt;&#x2F;span&gt;&lt;span&gt;filedata) {
+&lt;&#x2F;span&gt;&lt;span&gt;        filedata &lt;&#x2F;span&gt;&lt;span style=&quot;color:#ed9366;&quot;&gt;= &lt;&#x2F;span&gt;&lt;span style=&quot;color:#f29718;&quot;&gt;romfile_loadfile&lt;&#x2F;span&gt;&lt;span&gt;(&lt;&#x2F;span&gt;&lt;span style=&quot;color:#86b300;&quot;&gt;&amp;quot;bootsplash.bmp&amp;quot;&lt;&#x2F;span&gt;&lt;span style=&quot;color:#61676ccc;&quot;&gt;, &lt;&#x2F;span&gt;&lt;span style=&quot;color:#ed9366;&quot;&gt;&amp;amp;&lt;&#x2F;span&gt;&lt;span&gt;filesize)&lt;&#x2F;span&gt;&lt;span style=&quot;color:#61676ccc;&quot;&gt;;
+&lt;&#x2F;span&gt;&lt;span&gt;        &lt;&#x2F;span&gt;&lt;span style=&quot;color:#fa6e32;&quot;&gt;if &lt;&#x2F;span&gt;&lt;span&gt;(&lt;&#x2F;span&gt;&lt;span style=&quot;color:#ed9366;&quot;&gt;!&lt;&#x2F;span&gt;&lt;span&gt;filedata)
+&lt;&#x2F;span&gt;&lt;span&gt;            &lt;&#x2F;span&gt;&lt;span style=&quot;color:#fa6e32;&quot;&gt;return&lt;&#x2F;span&gt;&lt;span style=&quot;color:#61676ccc;&quot;&gt;;
+&lt;&#x2F;span&gt;&lt;span&gt;        type &lt;&#x2F;span&gt;&lt;span style=&quot;color:#ed9366;&quot;&gt;= &lt;&#x2F;span&gt;&lt;span style=&quot;color:#ff8f40;&quot;&gt;1&lt;&#x2F;span&gt;&lt;span style=&quot;color:#61676ccc;&quot;&gt;;
+&lt;&#x2F;span&gt;&lt;span&gt;    }
+&lt;&#x2F;span&gt;&lt;span&gt;    
+&lt;&#x2F;span&gt;&lt;span&gt;    &lt;&#x2F;span&gt;&lt;span style=&quot;color:#ed9366;&quot;&gt;...
+&lt;&#x2F;span&gt;&lt;span&gt;}
+&lt;&#x2F;span&gt;&lt;&#x2F;code&gt;&lt;&#x2F;pre&gt;
+&lt;p&gt;This function will check the &lt;code&gt;CONFIG_BOOTSPLASH&lt;&#x2F;code&gt; and bootsplash image.&lt;&#x2F;p&gt;
+&lt;p&gt;Secondly, we find that the &lt;code&gt;enable_bootsplash&lt;&#x2F;code&gt; will be called by &lt;code&gt;interactive_bootmenu&lt;&#x2F;code&gt; @ &lt;code&gt;src&#x2F;boot.c&lt;&#x2F;code&gt;.&lt;&#x2F;p&gt;
+&lt;pre data-lang=&quot;c&quot; style=&quot;background-color:#fafafa;color:#61676c;&quot; class=&quot;language-c &quot;&gt;&lt;code class=&quot;language-c&quot; data-lang=&quot;c&quot;&gt;&lt;span style=&quot;font-style:italic;color:#abb0b6;&quot;&gt;&#x2F;&#x2F; Show IPL option menu.
+&lt;&#x2F;span&gt;&lt;span style=&quot;color:#fa6e32;&quot;&gt;void
+&lt;&#x2F;span&gt;&lt;span style=&quot;color:#f29718;&quot;&gt;interactive_bootmenu&lt;&#x2F;span&gt;&lt;span&gt;(&lt;&#x2F;span&gt;&lt;span style=&quot;color:#fa6e32;&quot;&gt;void&lt;&#x2F;span&gt;&lt;span&gt;)
+&lt;&#x2F;span&gt;&lt;span&gt;{
+&lt;&#x2F;span&gt;&lt;span&gt;    &lt;&#x2F;span&gt;&lt;span style=&quot;font-style:italic;color:#abb0b6;&quot;&gt;&#x2F;&#x2F; XXX - show available drives?
+&lt;&#x2F;span&gt;&lt;span&gt;    &lt;&#x2F;span&gt;&lt;span style=&quot;color:#f07171;&quot;&gt;printf&lt;&#x2F;span&gt;&lt;span&gt;(&lt;&#x2F;span&gt;&lt;span style=&quot;color:#86b300;&quot;&gt;&amp;quot;CONFIG_BOOTMENU: &lt;&#x2F;span&gt;&lt;span style=&quot;color:#ff8f40;&quot;&gt;%d&lt;&#x2F;span&gt;&lt;span style=&quot;color:#4cbf99;&quot;&gt;\n&lt;&#x2F;span&gt;&lt;span style=&quot;color:#86b300;&quot;&gt;&amp;quot;&lt;&#x2F;span&gt;&lt;span style=&quot;color:#61676ccc;&quot;&gt;,&lt;&#x2F;span&gt;&lt;span&gt; CONFIG_BOOTMENU)&lt;&#x2F;span&gt;&lt;span style=&quot;color:#61676ccc;&quot;&gt;;
+&lt;&#x2F;span&gt;&lt;span&gt;    &lt;&#x2F;span&gt;&lt;span style=&quot;color:#f07171;&quot;&gt;printf&lt;&#x2F;span&gt;&lt;span&gt;(&lt;&#x2F;span&gt;&lt;span style=&quot;color:#86b300;&quot;&gt;&amp;quot;show-boot-menu: &lt;&#x2F;span&gt;&lt;span style=&quot;color:#ff8f40;&quot;&gt;%d&lt;&#x2F;span&gt;&lt;span style=&quot;color:#4cbf99;&quot;&gt;\n&lt;&#x2F;span&gt;&lt;span style=&quot;color:#86b300;&quot;&gt;&amp;quot;&lt;&#x2F;span&gt;&lt;span style=&quot;color:#61676ccc;&quot;&gt;, &lt;&#x2F;span&gt;&lt;span style=&quot;color:#f29718;&quot;&gt;romfile_loadint&lt;&#x2F;span&gt;&lt;span&gt;(&lt;&#x2F;span&gt;&lt;span style=&quot;color:#86b300;&quot;&gt;&amp;quot;etc&#x2F;show-boot-menu&amp;quot;&lt;&#x2F;span&gt;&lt;span style=&quot;color:#61676ccc;&quot;&gt;, &lt;&#x2F;span&gt;&lt;span style=&quot;color:#ff8f40;&quot;&gt;1&lt;&#x2F;span&gt;&lt;span&gt;))&lt;&#x2F;span&gt;&lt;span style=&quot;color:#61676ccc;&quot;&gt;;
+&lt;&#x2F;span&gt;&lt;span&gt;    &lt;&#x2F;span&gt;&lt;span style=&quot;color:#fa6e32;&quot;&gt;if &lt;&#x2F;span&gt;&lt;span&gt;(&lt;&#x2F;span&gt;&lt;span style=&quot;color:#ed9366;&quot;&gt;!&lt;&#x2F;span&gt;&lt;span&gt; CONFIG_BOOTMENU &lt;&#x2F;span&gt;&lt;span style=&quot;color:#ed9366;&quot;&gt;|| !&lt;&#x2F;span&gt;&lt;span style=&quot;color:#f29718;&quot;&gt;romfile_loadint&lt;&#x2F;span&gt;&lt;span&gt;(&lt;&#x2F;span&gt;&lt;span style=&quot;color:#86b300;&quot;&gt;&amp;quot;etc&#x2F;show-boot-menu&amp;quot;&lt;&#x2F;span&gt;&lt;span style=&quot;color:#61676ccc;&quot;&gt;, &lt;&#x2F;span&gt;&lt;span style=&quot;color:#ff8f40;&quot;&gt;1&lt;&#x2F;span&gt;&lt;span&gt;))
+&lt;&#x2F;span&gt;&lt;span&gt;        &lt;&#x2F;span&gt;&lt;span style=&quot;color:#fa6e32;&quot;&gt;return&lt;&#x2F;span&gt;&lt;span style=&quot;color:#61676ccc;&quot;&gt;;
+&lt;&#x2F;span&gt;&lt;span&gt;
+&lt;&#x2F;span&gt;&lt;span&gt;    &lt;&#x2F;span&gt;&lt;span style=&quot;color:#fa6e32;&quot;&gt;while &lt;&#x2F;span&gt;&lt;span&gt;(&lt;&#x2F;span&gt;&lt;span style=&quot;color:#f29718;&quot;&gt;get_keystroke&lt;&#x2F;span&gt;&lt;span&gt;(&lt;&#x2F;span&gt;&lt;span style=&quot;color:#ff8f40;&quot;&gt;0&lt;&#x2F;span&gt;&lt;span&gt;) &lt;&#x2F;span&gt;&lt;span style=&quot;color:#ed9366;&quot;&gt;&amp;gt;= &lt;&#x2F;span&gt;&lt;span style=&quot;color:#ff8f40;&quot;&gt;0&lt;&#x2F;span&gt;&lt;span&gt;)
+&lt;&#x2F;span&gt;&lt;span&gt;        &lt;&#x2F;span&gt;&lt;span style=&quot;color:#61676ccc;&quot;&gt;;
+&lt;&#x2F;span&gt;&lt;span&gt;
+&lt;&#x2F;span&gt;&lt;span&gt;    &lt;&#x2F;span&gt;&lt;span style=&quot;color:#fa6e32;&quot;&gt;char &lt;&#x2F;span&gt;&lt;span style=&quot;color:#ed9366;&quot;&gt;*&lt;&#x2F;span&gt;&lt;span&gt;bootmsg &lt;&#x2F;span&gt;&lt;span style=&quot;color:#ed9366;&quot;&gt;= &lt;&#x2F;span&gt;&lt;span style=&quot;color:#f29718;&quot;&gt;romfile_loadfile&lt;&#x2F;span&gt;&lt;span&gt;(&lt;&#x2F;span&gt;&lt;span style=&quot;color:#86b300;&quot;&gt;&amp;quot;etc&#x2F;boot-menu-message&amp;quot;&lt;&#x2F;span&gt;&lt;span style=&quot;color:#61676ccc;&quot;&gt;, &lt;&#x2F;span&gt;&lt;span style=&quot;color:#ff8f40;&quot;&gt;NULL&lt;&#x2F;span&gt;&lt;span&gt;)&lt;&#x2F;span&gt;&lt;span style=&quot;color:#61676ccc;&quot;&gt;;
+&lt;&#x2F;span&gt;&lt;span&gt;    &lt;&#x2F;span&gt;&lt;span style=&quot;color:#fa6e32;&quot;&gt;int&lt;&#x2F;span&gt;&lt;span&gt; menukey &lt;&#x2F;span&gt;&lt;span style=&quot;color:#ed9366;&quot;&gt;= &lt;&#x2F;span&gt;&lt;span style=&quot;color:#f29718;&quot;&gt;romfile_loadint&lt;&#x2F;span&gt;&lt;span&gt;(&lt;&#x2F;span&gt;&lt;span style=&quot;color:#86b300;&quot;&gt;&amp;quot;etc&#x2F;boot-menu-key&amp;quot;&lt;&#x2F;span&gt;&lt;span style=&quot;color:#61676ccc;&quot;&gt;, &lt;&#x2F;span&gt;&lt;span style=&quot;color:#ff8f40;&quot;&gt;1&lt;&#x2F;span&gt;&lt;span&gt;)&lt;&#x2F;span&gt;&lt;span style=&quot;color:#61676ccc;&quot;&gt;;
+&lt;&#x2F;span&gt;&lt;span&gt;    &lt;&#x2F;span&gt;&lt;span style=&quot;color:#f07171;&quot;&gt;printf&lt;&#x2F;span&gt;&lt;span&gt;(&lt;&#x2F;span&gt;&lt;span style=&quot;color:#86b300;&quot;&gt;&amp;quot;&lt;&#x2F;span&gt;&lt;span style=&quot;color:#ff8f40;&quot;&gt;%s&lt;&#x2F;span&gt;&lt;span style=&quot;color:#86b300;&quot;&gt;&amp;quot;&lt;&#x2F;span&gt;&lt;span style=&quot;color:#61676ccc;&quot;&gt;,&lt;&#x2F;span&gt;&lt;span&gt; bootmsg &lt;&#x2F;span&gt;&lt;span style=&quot;color:#ed9366;&quot;&gt;?: &lt;&#x2F;span&gt;&lt;span style=&quot;color:#86b300;&quot;&gt;&amp;quot;&lt;&#x2F;span&gt;&lt;span style=&quot;color:#4cbf99;&quot;&gt;\n&lt;&#x2F;span&gt;&lt;span style=&quot;color:#86b300;&quot;&gt;Press ESC for boot menu.&lt;&#x2F;span&gt;&lt;span style=&quot;color:#4cbf99;&quot;&gt;\n\n&lt;&#x2F;span&gt;&lt;span style=&quot;color:#86b300;&quot;&gt;&amp;quot;&lt;&#x2F;span&gt;&lt;span&gt;)&lt;&#x2F;span&gt;&lt;span style=&quot;color:#61676ccc;&quot;&gt;;
+&lt;&#x2F;span&gt;&lt;span&gt;    &lt;&#x2F;span&gt;&lt;span style=&quot;color:#f07171;&quot;&gt;free&lt;&#x2F;span&gt;&lt;span&gt;(bootmsg)&lt;&#x2F;span&gt;&lt;span style=&quot;color:#61676ccc;&quot;&gt;;
+&lt;&#x2F;span&gt;&lt;span&gt;
+&lt;&#x2F;span&gt;&lt;span&gt;    u32 menutime &lt;&#x2F;span&gt;&lt;span style=&quot;color:#ed9366;&quot;&gt;= &lt;&#x2F;span&gt;&lt;span style=&quot;color:#f29718;&quot;&gt;romfile_loadint&lt;&#x2F;span&gt;&lt;span&gt;(&lt;&#x2F;span&gt;&lt;span style=&quot;color:#86b300;&quot;&gt;&amp;quot;etc&#x2F;boot-menu-wait&amp;quot;&lt;&#x2F;span&gt;&lt;span style=&quot;color:#61676ccc;&quot;&gt;,&lt;&#x2F;span&gt;&lt;span&gt; DEFAULT_BOOTMENU_WAIT)&lt;&#x2F;span&gt;&lt;span style=&quot;color:#61676ccc;&quot;&gt;;
+&lt;&#x2F;span&gt;&lt;span&gt;    &lt;&#x2F;span&gt;&lt;span style=&quot;color:#f07171;&quot;&gt;printf&lt;&#x2F;span&gt;&lt;span&gt;(&lt;&#x2F;span&gt;&lt;span style=&quot;color:#86b300;&quot;&gt;&amp;quot;menutime: &lt;&#x2F;span&gt;&lt;span style=&quot;color:#ff8f40;&quot;&gt;%d&lt;&#x2F;span&gt;&lt;span style=&quot;color:#4cbf99;&quot;&gt;\n&lt;&#x2F;span&gt;&lt;span style=&quot;color:#86b300;&quot;&gt;&amp;quot;&lt;&#x2F;span&gt;&lt;span style=&quot;color:#61676ccc;&quot;&gt;,&lt;&#x2F;span&gt;&lt;span&gt; menutime)&lt;&#x2F;span&gt;&lt;span style=&quot;color:#61676ccc;&quot;&gt;;
+&lt;&#x2F;span&gt;&lt;span&gt;    &lt;&#x2F;span&gt;&lt;span style=&quot;color:#f29718;&quot;&gt;enable_bootsplash&lt;&#x2F;span&gt;&lt;span&gt;()&lt;&#x2F;span&gt;&lt;span style=&quot;color:#61676ccc;&quot;&gt;;
+&lt;&#x2F;span&gt;&lt;span&gt;    &lt;&#x2F;span&gt;&lt;span style=&quot;color:#ed9366;&quot;&gt;...
+&lt;&#x2F;span&gt;&lt;&#x2F;code&gt;&lt;&#x2F;pre&gt;
+&lt;p&gt;It seems that it is the function to provide the boot menu (i.e, booting from which boot device).
+This function will also check the &lt;code&gt;CONFIG_BOOTMENU&lt;&#x2F;code&gt; and the file &lt;code&gt;etc&#x2F;show-boot-menu&lt;&#x2F;code&gt;.
+If we print the config before the first if condition, we will find that&lt;&#x2F;p&gt;
+&lt;p&gt;&lt;img src=&quot;&#x2F;images&#x2F;posts&#x2F;OSDI-lab2&#x2F;J0M7dAD.png&quot; alt=&quot;&quot; &#x2F;&gt;&lt;&#x2F;p&gt;
+&lt;p&gt;Therefore, the &lt;code&gt;CONFIG_BOOTMENU&lt;&#x2F;code&gt; is 1 but &lt;code&gt;etc&#x2F;show-boot-menu&lt;&#x2F;code&gt; is 0, so the &lt;code&gt;interactive_bootmenu&lt;&#x2F;code&gt; will return early without executing the rest of code including the &lt;code&gt;enable_bootsplash&lt;&#x2F;code&gt; method.&lt;&#x2F;p&gt;
+&lt;p&gt;After did some &lt;a rel=&quot;noreferrer&quot; href=&quot;https:&#x2F;&#x2F;github.com&#x2F;qemu&#x2F;qemu&#x2F;blob&#x2F;master&#x2F;docs&#x2F;specs&#x2F;fw_cfg.rst&quot;&gt;researches&lt;&#x2F;a&gt;, qemu provide an option &lt;code&gt;-fw_cfg&lt;&#x2F;code&gt; to provide some file as&lt;&#x2F;p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;code&gt;-fw_cfg [name=]&amp;lt;item_name&amp;gt;,file=&amp;lt;path&amp;gt;&lt;&#x2F;code&gt;. or&lt;&#x2F;li&gt;
+&lt;li&gt;&lt;code&gt;-fw_cfg [name=]&amp;lt;item_name&amp;gt;,string=&amp;lt;string&amp;gt;&lt;&#x2F;code&gt;&lt;&#x2F;li&gt;
+&lt;&#x2F;ul&gt;
+&lt;p&gt;So I revise the qemu command to&lt;&#x2F;p&gt;
+&lt;pre data-lang=&quot;bash&quot; style=&quot;background-color:#fafafa;color:#61676c;&quot; class=&quot;language-bash &quot;&gt;&lt;code class=&quot;language-bash&quot; data-lang=&quot;bash&quot;&gt;&lt;span style=&quot;color:#f29718;&quot;&gt;qemu-system-i386&lt;&#x2F;span&gt;&lt;span style=&quot;color:#ff8f40;&quot;&gt; -m&lt;&#x2F;span&gt;&lt;span&gt; 16M&lt;&#x2F;span&gt;&lt;span style=&quot;color:#ff8f40;&quot;&gt; -boot&lt;&#x2F;span&gt;&lt;span&gt; a&lt;&#x2F;span&gt;&lt;span style=&quot;color:#ff8f40;&quot;&gt; -fda&lt;&#x2F;span&gt;&lt;span&gt; Image&lt;&#x2F;span&gt;&lt;span style=&quot;color:#ff8f40;&quot;&gt; -hda&lt;&#x2F;span&gt;&lt;span&gt; ..&#x2F;osdi.img&lt;&#x2F;span&gt;&lt;span style=&quot;color:#ff8f40;&quot;&gt; -bios&lt;&#x2F;span&gt;&lt;span&gt; seabios&#x2F;out&#x2F;bios.bin&lt;&#x2F;span&gt;&lt;span style=&quot;color:#ff8f40;&quot;&gt; -fw_cfg&lt;&#x2F;span&gt;&lt;span&gt; name=etc&#x2F;show-boot-menu,string=1
+&lt;&#x2F;span&gt;&lt;&#x2F;code&gt;&lt;&#x2F;pre&gt;
+&lt;p&gt;After that, the result became&lt;&#x2F;p&gt;
+&lt;p&gt;&lt;img src=&quot;&#x2F;images&#x2F;posts&#x2F;OSDI-lab2&#x2F;v1dMZr5.png&quot; alt=&quot; &quot; &#x2F;&gt;&lt;&#x2F;p&gt;
+&lt;p&gt;It did enter the rest of code and ready to execute boot menu, and because the &lt;code&gt;enable_bootsplash&lt;&#x2F;code&gt; will check the image before load it, and we provide the bootsplash image as following.&lt;&#x2F;p&gt;
+&lt;pre data-lang=&quot;bash&quot; style=&quot;background-color:#fafafa;color:#61676c;&quot; class=&quot;language-bash &quot;&gt;&lt;code class=&quot;language-bash&quot; data-lang=&quot;bash&quot;&gt;&lt;span style=&quot;color:#f29718;&quot;&gt;qemu-system-i386&lt;&#x2F;span&gt;&lt;span style=&quot;color:#ff8f40;&quot;&gt; -m&lt;&#x2F;span&gt;&lt;span&gt; 16M&lt;&#x2F;span&gt;&lt;span style=&quot;color:#ff8f40;&quot;&gt; -boot&lt;&#x2F;span&gt;&lt;span&gt; a&lt;&#x2F;span&gt;&lt;span style=&quot;color:#ff8f40;&quot;&gt; -fda&lt;&#x2F;span&gt;&lt;span&gt; Image&lt;&#x2F;span&gt;&lt;span style=&quot;color:#ff8f40;&quot;&gt; -hda&lt;&#x2F;span&gt;&lt;span&gt; ..&#x2F;osdi.img&lt;&#x2F;span&gt;&lt;span style=&quot;color:#ff8f40;&quot;&gt; -bios&lt;&#x2F;span&gt;&lt;span&gt; seabios&#x2F;out&#x2F;bios.bin&lt;&#x2F;span&gt;&lt;span style=&quot;color:#ff8f40;&quot;&gt; -fw_cfg&lt;&#x2F;span&gt;&lt;span&gt; name=etc&#x2F;show-boot-menu,string=1&lt;&#x2F;span&gt;&lt;span style=&quot;color:#ff8f40;&quot;&gt; -fw_cfg&lt;&#x2F;span&gt;&lt;span&gt; name=bootsplash.jpg,file=bootsplash.jpg
+&lt;&#x2F;span&gt;&lt;&#x2F;code&gt;&lt;&#x2F;pre&gt;
+&lt;p&gt;&lt;img src=&quot;&#x2F;images&#x2F;posts&#x2F;OSDI-lab2&#x2F;hwRLd1Z.png&quot; alt=&quot; &quot; &#x2F;&gt;&lt;&#x2F;p&gt;
+&lt;p&gt;It work!&lt;&#x2F;p&gt;
+&lt;p&gt;My friends also found that another qemu option &lt;a rel=&quot;noreferrer&quot; href=&quot;https:&#x2F;&#x2F;manpages.debian.org&#x2F;jessie&#x2F;qemu-system-x86&#x2F;qemu-system-x86_64.1.en.html&quot;&gt;&lt;code&gt;-boot&lt;&#x2F;code&gt;&lt;&#x2F;a&gt; provide the same functionality.&lt;&#x2F;p&gt;
+&lt;pre data-lang=&quot;bash&quot; style=&quot;background-color:#fafafa;color:#61676c;&quot; class=&quot;language-bash &quot;&gt;&lt;code class=&quot;language-bash&quot; data-lang=&quot;bash&quot;&gt;&lt;span style=&quot;color:#f29718;&quot;&gt;qemu-system-i386&lt;&#x2F;span&gt;&lt;span style=&quot;color:#ff8f40;&quot;&gt; -m&lt;&#x2F;span&gt;&lt;span&gt; 16M&lt;&#x2F;span&gt;&lt;span style=&quot;color:#ff8f40;&quot;&gt; -boot&lt;&#x2F;span&gt;&lt;span&gt; order=a,menu=on,splash=bootsplash.jpg&lt;&#x2F;span&gt;&lt;span style=&quot;color:#ff8f40;&quot;&gt;  -fda&lt;&#x2F;span&gt;&lt;span&gt; Image&lt;&#x2F;span&gt;&lt;span style=&quot;color:#ff8f40;&quot;&gt; -hda&lt;&#x2F;span&gt;&lt;span&gt; ..&#x2F;osdi.img&lt;&#x2F;span&gt;&lt;span style=&quot;color:#ff8f40;&quot;&gt; -bios&lt;&#x2F;span&gt;&lt;span&gt; seabios&#x2F;out&#x2F;bios.bin
+&lt;&#x2F;span&gt;&lt;&#x2F;code&gt;&lt;&#x2F;pre&gt;
+&lt;p&gt;Which will be more clever and elegant!&lt;&#x2F;p&gt;
+&lt;h2 id=&quot;lab2-3-boot-the-hello-world-program&quot;&gt;&lt;a class=&quot;zola-anchor&quot; href=&quot;#lab2-3-boot-the-hello-world-program&quot; aria-label=&quot;Anchor link for: lab2-3-boot-the-hello-world-program&quot;&gt;Lab2.3 - Boot the hello world program&lt;&#x2F;a&gt;&lt;&#x2F;h2&gt;
+&lt;p&gt;In this time, we will revise the kernel image structure and boot the given &lt;code&gt;hello&lt;&#x2F;code&gt;.
+We will revise the image from
+&lt;img src=&quot;&#x2F;images&#x2F;posts&#x2F;OSDI-lab2&#x2F;DjL3gC2.png&quot; alt=&quot; &quot; &#x2F;&gt;
+to
+&lt;img src=&quot;&#x2F;images&#x2F;posts&#x2F;OSDI-lab2&#x2F;biwIcIa.png&quot; alt=&quot; &quot; &#x2F;&gt;&lt;&#x2F;p&gt;
+&lt;h3 id=&quot;makefile&quot;&gt;&lt;a class=&quot;zola-anchor&quot; href=&quot;#makefile&quot; aria-label=&quot;Anchor link for: makefile&quot;&gt;Makefile&lt;&#x2F;a&gt;&lt;&#x2F;h3&gt;
+&lt;p&gt;Of course we will revise the Makefile and build.sh.&lt;&#x2F;p&gt;
+&lt;p&gt;Firstly, put the &lt;code&gt;hello.s&lt;&#x2F;code&gt; to &lt;code&gt;boot&lt;&#x2F;code&gt;, and revise the &lt;code&gt;boot&#x2F;Makefile&lt;&#x2F;code&gt;&lt;&#x2F;p&gt;
+&lt;pre style=&quot;background-color:#fafafa;color:#61676c;&quot;&gt;&lt;code&gt;&lt;span&gt;...
+&lt;&#x2F;span&gt;&lt;span&gt;
+&lt;&#x2F;span&gt;&lt;span&gt;all: bootsect hello setup
+&lt;&#x2F;span&gt;&lt;span&gt;...
+&lt;&#x2F;span&gt;&lt;span&gt;
+&lt;&#x2F;span&gt;&lt;span&gt;hello: hello.s
+&lt;&#x2F;span&gt;&lt;span&gt;	@$(AS) -o hello.o hello.s
+&lt;&#x2F;span&gt;&lt;span&gt;	@$(LD) $(LDFLAGS) -o hello hello.o
+&lt;&#x2F;span&gt;&lt;span&gt;	@objcopy -R .pdr -R .comment -R.note -S -O binary hello
+&lt;&#x2F;span&gt;&lt;span&gt;...
+&lt;&#x2F;span&gt;&lt;span&gt;
+&lt;&#x2F;span&gt;&lt;span&gt;clean:
+&lt;&#x2F;span&gt;&lt;span&gt;	@rm -f bootsect bootsect.o setup setup.o head.o hello hello.o
+&lt;&#x2F;span&gt;&lt;&#x2F;code&gt;&lt;&#x2F;pre&gt;
+&lt;p&gt;Just add new rule for hello and remember to clean its object file when executing &lt;code&gt;make clean&lt;&#x2F;code&gt;.&lt;&#x2F;p&gt;
+&lt;p&gt;Secondly, revise the &lt;code&gt;Makefile&lt;&#x2F;code&gt;&lt;&#x2F;p&gt;
+&lt;pre style=&quot;background-color:#fafafa;color:#61676c;&quot;&gt;&lt;code&gt;&lt;span&gt;...
+&lt;&#x2F;span&gt;&lt;span&gt;Image: boot&#x2F;bootsect boot&#x2F;hello boot&#x2F;setup tools&#x2F;system
+&lt;&#x2F;span&gt;&lt;span&gt;	@cp -f tools&#x2F;system system.tmp
+&lt;&#x2F;span&gt;&lt;span&gt;	@strip system.tmp
+&lt;&#x2F;span&gt;&lt;span&gt;	@objcopy -O binary -R .note -R .comment system.tmp tools&#x2F;kernel
+&lt;&#x2F;span&gt;&lt;span&gt;	@chmod +x tools&#x2F;build.sh
+&lt;&#x2F;span&gt;&lt;span&gt;	@tools&#x2F;build.sh boot&#x2F;bootsect boot&#x2F;hello boot&#x2F;setup tools&#x2F;kernel Image $(ROOT_DEV)
+&lt;&#x2F;span&gt;&lt;span&gt;	@rm system.tmp
+&lt;&#x2F;span&gt;&lt;span&gt;	@rm tools&#x2F;kernel -f
+&lt;&#x2F;span&gt;&lt;span&gt;	@sync
+&lt;&#x2F;span&gt;&lt;span&gt;...
+&lt;&#x2F;span&gt;&lt;&#x2F;code&gt;&lt;&#x2F;pre&gt;
+&lt;p&gt;Update the Image &lt;em&gt;prerequisites&lt;&#x2F;em&gt; and add hello to the &lt;code&gt;tools&#x2F;build.sh &lt;&#x2F;code&gt;parameter.&lt;&#x2F;p&gt;
+&lt;p&gt;Thirdly, revise the &lt;code&gt;tools&#x2F;build.sh&lt;&#x2F;code&gt;.&lt;&#x2F;p&gt;
+&lt;pre style=&quot;background-color:#fafafa;color:#61676c;&quot;&gt;&lt;code&gt;&lt;span&gt;#!&#x2F;bin&#x2F;bash
+&lt;&#x2F;span&gt;&lt;span&gt;# build.sh -- a shell version of build.c for the new bootsect.s &amp;amp; setup.s
+&lt;&#x2F;span&gt;&lt;span&gt;# author: falcon &amp;lt;wuzhangjin@gmail.com&amp;gt;
+&lt;&#x2F;span&gt;&lt;span&gt;# update: 2008-10-10
+&lt;&#x2F;span&gt;&lt;span&gt;
+&lt;&#x2F;span&gt;&lt;span&gt;bootsect=$1
+&lt;&#x2F;span&gt;&lt;span&gt;hello=$2
+&lt;&#x2F;span&gt;&lt;span&gt;setup=$3
+&lt;&#x2F;span&gt;&lt;span&gt;system=$4
+&lt;&#x2F;span&gt;&lt;span&gt;IMAGE=$5
+&lt;&#x2F;span&gt;&lt;span&gt;root_dev=$6
+&lt;&#x2F;span&gt;&lt;span&gt;
+&lt;&#x2F;span&gt;&lt;span&gt;# Set the biggest sys_size
+&lt;&#x2F;span&gt;&lt;span&gt;# Changes from 0x20000 to 0x30000 by tigercn to avoid oversized code.
+&lt;&#x2F;span&gt;&lt;span&gt;SYS_SIZE=$((0x3000*16))
+&lt;&#x2F;span&gt;&lt;span&gt;
+&lt;&#x2F;span&gt;&lt;span&gt;# set the default &amp;quot;device&amp;quot; file for root image file
+&lt;&#x2F;span&gt;&lt;span&gt;if [ -z &amp;quot;$root_dev&amp;quot; ]; then
+&lt;&#x2F;span&gt;&lt;span&gt;	DEFAULT_MAJOR_ROOT=3
+&lt;&#x2F;span&gt;&lt;span&gt;	DEFAULT_MINOR_ROOT=1
+&lt;&#x2F;span&gt;&lt;span&gt;else
+&lt;&#x2F;span&gt;&lt;span&gt;	DEFAULT_MAJOR_ROOT=${root_dev:0:2}
+&lt;&#x2F;span&gt;&lt;span&gt;	DEFAULT_MINOR_ROOT=${root_dev:2:3}
+&lt;&#x2F;span&gt;&lt;span&gt;fi
+&lt;&#x2F;span&gt;&lt;span&gt;
+&lt;&#x2F;span&gt;&lt;span&gt;# Write bootsect (512 bytes, one sector) to stdout
+&lt;&#x2F;span&gt;&lt;span&gt;[ ! -f &amp;quot;$bootsect&amp;quot; ] &amp;amp;&amp;amp; echo &amp;quot;there is no bootsect binary file there&amp;quot; &amp;amp;&amp;amp; exit -1
+&lt;&#x2F;span&gt;&lt;span&gt;dd if=$bootsect bs=512 count=1 of=$IMAGE 2&amp;gt;&amp;amp;1 &amp;gt;&#x2F;dev&#x2F;null
+&lt;&#x2F;span&gt;&lt;span&gt;
+&lt;&#x2F;span&gt;&lt;span&gt;# Write hello(512bytes, one sector) to stdout
+&lt;&#x2F;span&gt;&lt;span&gt;[ ! -f &amp;quot;$hello&amp;quot; ] &amp;amp;&amp;amp; echo &amp;quot;there is no hello binary file there&amp;quot; &amp;amp;&amp;amp; exit -1
+&lt;&#x2F;span&gt;&lt;span&gt;dd if=$hello seek=1 bs=512 count=1 of=$IMAGE 2&amp;gt;&amp;amp;1 &amp;gt;&#x2F;dev&#x2F;null
+&lt;&#x2F;span&gt;&lt;span&gt;
+&lt;&#x2F;span&gt;&lt;span&gt;# Write setup(4 * 512bytes, four sectors) to stdout
+&lt;&#x2F;span&gt;&lt;span&gt;[ ! -f &amp;quot;$setup&amp;quot; ] &amp;amp;&amp;amp; echo &amp;quot;there is no setup binary file there&amp;quot; &amp;amp;&amp;amp; exit -1
+&lt;&#x2F;span&gt;&lt;span&gt;dd if=$setup seek=2 bs=512 count=4 of=$IMAGE 2&amp;gt;&amp;amp;1 &amp;gt;&#x2F;dev&#x2F;null
+&lt;&#x2F;span&gt;&lt;span&gt;
+&lt;&#x2F;span&gt;&lt;span&gt;# Write system(&amp;lt; SYS_SIZE) to stdout
+&lt;&#x2F;span&gt;&lt;span&gt;[ ! -f &amp;quot;$system&amp;quot; ] &amp;amp;&amp;amp; echo &amp;quot;there is no system binary file there&amp;quot; &amp;amp;&amp;amp; exit -1
+&lt;&#x2F;span&gt;&lt;span&gt;system_size=`wc -c $system |cut -d&amp;quot; &amp;quot; -f1`
+&lt;&#x2F;span&gt;&lt;span&gt;[ $system_size -gt $SYS_SIZE ] &amp;amp;&amp;amp; echo &amp;quot;the system binary is too big&amp;quot; &amp;amp;&amp;amp; exit -1
+&lt;&#x2F;span&gt;&lt;span&gt;dd if=$system seek=6 bs=512 count=$((2888-1-1-4)) of=$IMAGE 2&amp;gt;&amp;amp;1 &amp;gt;&#x2F;dev&#x2F;null
+&lt;&#x2F;span&gt;&lt;span&gt;
+&lt;&#x2F;span&gt;&lt;span&gt;# Set &amp;quot;device&amp;quot; for the root image file
+&lt;&#x2F;span&gt;&lt;span&gt;echo -ne &amp;quot;\x$DEFAULT_MINOR_ROOT\x$DEFAULT_MAJOR_ROOT&amp;quot; | dd ibs=1 obs=1 count=2 seek=508 of=$IMAGE conv=notrunc  2&amp;gt;&amp;amp;1 &amp;gt;&#x2F;dev&#x2F;null
+&lt;&#x2F;span&gt;&lt;&#x2F;code&gt;&lt;&#x2F;pre&gt;
+&lt;p&gt;Remember that at the &lt;code&gt;Makefile&lt;&#x2F;code&gt;, we put the hello as the second parameter, and we also need to update the parameter index of rest.&lt;&#x2F;p&gt;
+&lt;p&gt;Link the &lt;code&gt;hello&lt;&#x2F;code&gt; to &lt;code&gt;Image&lt;&#x2F;code&gt;, &lt;strong&gt;order matter!&lt;&#x2F;strong&gt;
+We want to put the bootsect, hello, setup and system, so we must follow this order.&lt;&#x2F;p&gt;
+&lt;p&gt;The hello contain 512 bytes and occupied 1 sector, that is the &lt;code&gt;bs&lt;&#x2F;code&gt; and &lt;code&gt;count&lt;&#x2F;code&gt; option for.&lt;&#x2F;p&gt;
+&lt;p&gt;So far, we insert the hello to new image, and we are ready to boot it.&lt;&#x2F;p&gt;
+&lt;h3 id=&quot;how-os-boot&quot;&gt;&lt;a class=&quot;zola-anchor&quot; href=&quot;#how-os-boot&quot; aria-label=&quot;Anchor link for: how-os-boot&quot;&gt;How OS boot?&lt;&#x2F;a&gt;&lt;&#x2F;h3&gt;
+&lt;p&gt;At &lt;code&gt;boot&#x2F;bootsect.s&lt;&#x2F;code&gt;&lt;&#x2F;p&gt;
+&lt;pre style=&quot;background-color:#fafafa;color:#61676c;&quot;&gt;&lt;code&gt;&lt;span&gt;	ljmp    $BOOTSEG, $_start
+&lt;&#x2F;span&gt;&lt;span&gt;_start:
+&lt;&#x2F;span&gt;&lt;span&gt;	mov	$BOOTSEG, %ax
+&lt;&#x2F;span&gt;&lt;span&gt;	mov	%ax, %ds
+&lt;&#x2F;span&gt;&lt;span&gt;	mov	$INITSEG, %ax
+&lt;&#x2F;span&gt;&lt;span&gt;	mov	%ax, %es
+&lt;&#x2F;span&gt;&lt;span&gt;	mov	$256, %cx
+&lt;&#x2F;span&gt;&lt;span&gt;	sub	%si, %si
+&lt;&#x2F;span&gt;&lt;span&gt;	sub	%di, %di
+&lt;&#x2F;span&gt;&lt;span&gt;	rep
+&lt;&#x2F;span&gt;&lt;span&gt;	movsw 
+&lt;&#x2F;span&gt;&lt;span&gt;	ljmp	$INITSEG, $go
+&lt;&#x2F;span&gt;&lt;&#x2F;code&gt;&lt;&#x2F;pre&gt;
+&lt;ol&gt;
+&lt;li&gt;
+&lt;p&gt;Long jump to &lt;code&gt;$BOOTSEG:$_start&lt;&#x2F;code&gt; when OS is loaded by BIOS.&lt;&#x2F;p&gt;
+&lt;&#x2F;li&gt;
+&lt;li&gt;
+&lt;p&gt;Put &lt;code&gt;$BOOTSEG&lt;&#x2F;code&gt; to &lt;code&gt;%ds&lt;&#x2F;code&gt;, &lt;code&gt;$INITSEG&lt;&#x2F;code&gt; to &lt;code&gt;%es&lt;&#x2F;code&gt; and 256 to &lt;code&gt;%cx&lt;&#x2F;code&gt;.&lt;&#x2F;p&gt;
+&lt;&#x2F;li&gt;
+&lt;li&gt;
+&lt;p&gt;Zero the &lt;code&gt;%si&lt;&#x2F;code&gt; and &lt;code&gt;%di&lt;&#x2F;code&gt;.&lt;&#x2F;p&gt;
+&lt;&#x2F;li&gt;
+&lt;li&gt;
+&lt;p&gt;Repeat &lt;code&gt;movsw&lt;&#x2F;code&gt; until &lt;code&gt;%cx&lt;&#x2F;code&gt; is zero (i.e. copy itself to from &lt;code&gt;$BOOTSEG&lt;&#x2F;code&gt; to &lt;code&gt;$INITSEG&lt;&#x2F;code&gt;, total size is 512 bytes).&lt;&#x2F;p&gt;
+&lt;p&gt;Because the counter of &lt;code&gt;rep&lt;&#x2F;code&gt; will decrease by 1 after executed, so the &lt;code&gt;movw&lt;&#x2F;code&gt; will execute 256 times!&lt;&#x2F;p&gt;
+&lt;p&gt;&lt;code&gt;movw&lt;&#x2F;code&gt; will move one word (2 bytes in 16-bits CPU) from &lt;code&gt;%ds:%si&lt;&#x2F;code&gt; to &lt;code&gt;%es:%di&lt;&#x2F;code&gt;.&lt;&#x2F;p&gt;
+&lt;p&gt;First step:&lt;&#x2F;p&gt;
+&lt;pre style=&quot;background-color:#fafafa;color:#61676c;&quot;&gt;&lt;code&gt;&lt;span&gt;%ds = $BOOTSEG
+&lt;&#x2F;span&gt;&lt;span&gt;%si = 0
+&lt;&#x2F;span&gt;&lt;span&gt;%es = $INITSEG
+&lt;&#x2F;span&gt;&lt;span&gt;%di = 0
+&lt;&#x2F;span&gt;&lt;span&gt;
+&lt;&#x2F;span&gt;&lt;span&gt;# Copy from $BOOTSEG:0 to $INITSEG:0
+&lt;&#x2F;span&gt;&lt;span&gt;movw
+&lt;&#x2F;span&gt;&lt;&#x2F;code&gt;&lt;&#x2F;pre&gt;
+&lt;p&gt;Second step:
+Because the &lt;code&gt;%si&lt;&#x2F;code&gt; and &lt;code&gt;%di&lt;&#x2F;code&gt; will increase by 2 (bytes, one word in 16-bits CPU) after done it. So&lt;&#x2F;p&gt;
+&lt;pre style=&quot;background-color:#fafafa;color:#61676c;&quot;&gt;&lt;code&gt;&lt;span&gt;%ds = $BOOTSEG
+&lt;&#x2F;span&gt;&lt;span&gt;%si = 2
+&lt;&#x2F;span&gt;&lt;span&gt;%es = $INITSEG
+&lt;&#x2F;span&gt;&lt;span&gt;%di = 2
+&lt;&#x2F;span&gt;&lt;span&gt;
+&lt;&#x2F;span&gt;&lt;span&gt;# Copy from $BOOTSEG:2 to $INITSEG:2
+&lt;&#x2F;span&gt;&lt;span&gt;movw
+&lt;&#x2F;span&gt;&lt;&#x2F;code&gt;&lt;&#x2F;pre&gt;
+&lt;p&gt;After 256 times, the &lt;code&gt;$BOOTSEG:0&lt;&#x2F;code&gt; - &lt;code&gt;$BOOTSEG:256&lt;&#x2F;code&gt; will copy to  &lt;code&gt;$INITSEG:0&lt;&#x2F;code&gt; - &lt;code&gt;$INITSEG:256&lt;&#x2F;code&gt;. That&#x27;s &lt;code&gt;bootsect&lt;&#x2F;code&gt; itself!&lt;&#x2F;p&gt;
+&lt;&#x2F;li&gt;
+&lt;li&gt;
+&lt;p&gt;Long jump to &lt;code&gt;$INITSEG:$go&lt;&#x2F;code&gt;.&lt;&#x2F;p&gt;
+&lt;&#x2F;li&gt;
+&lt;&#x2F;ol&gt;
+&lt;hr &#x2F;&gt;
+&lt;pre style=&quot;background-color:#fafafa;color:#61676c;&quot;&gt;&lt;code&gt;&lt;span&gt;go:	mov	%cs, %ax 			# after long jump, %cs become $INITSEG
+&lt;&#x2F;span&gt;&lt;span&gt;	mov	%ax, %ds
+&lt;&#x2F;span&gt;&lt;span&gt;	mov	%ax, %es
+&lt;&#x2F;span&gt;&lt;span&gt;# put stack at 0x9ff00.
+&lt;&#x2F;span&gt;&lt;span&gt;	mov	%ax, %ss
+&lt;&#x2F;span&gt;&lt;span&gt;	mov	$0xFF00, %sp		# arbitrary value &amp;gt;&amp;gt;512
+&lt;&#x2F;span&gt;&lt;&#x2F;code&gt;&lt;&#x2F;pre&gt;
+&lt;ol&gt;
+&lt;li&gt;Move &lt;code&gt;$INITSEG&lt;&#x2F;code&gt; to &lt;code&gt;%ds&lt;&#x2F;code&gt;, &lt;code&gt;%es&lt;&#x2F;code&gt; and &lt;code&gt;%ss&lt;&#x2F;code&gt;.
+After long jump, the &lt;code&gt;%cs&lt;&#x2F;code&gt; will store the last segment it jump, that is &lt;code&gt;$INITSEG&lt;&#x2F;code&gt;.&lt;&#x2F;li&gt;
+&lt;li&gt;Put the top of stack &lt;code&gt;%sp&lt;&#x2F;code&gt; to a huge address.&lt;&#x2F;li&gt;
+&lt;&#x2F;ol&gt;
+&lt;hr &#x2F;&gt;
+&lt;pre style=&quot;background-color:#fafafa;color:#61676c;&quot;&gt;&lt;code&gt;&lt;span&gt;# load the setup-sectors directly after the bootblock.
+&lt;&#x2F;span&gt;&lt;span&gt;# Note that &amp;#39;es&amp;#39; is already set up.
+&lt;&#x2F;span&gt;&lt;span&gt;load_setup:
+&lt;&#x2F;span&gt;&lt;span&gt;	mov	$0x0000, %dx		# drive 0, head 0
+&lt;&#x2F;span&gt;&lt;span&gt;	mov	$0x0002, %cx		# sector 2, track 0
+&lt;&#x2F;span&gt;&lt;span&gt;	mov	$0x0200, %bx		# address = 512, in INITSEG
+&lt;&#x2F;span&gt;&lt;span&gt;	.equ    AX, 0x0200+SETUPLEN
+&lt;&#x2F;span&gt;&lt;span&gt;	mov     $AX, %ax		# service 2, nr of sectors
+&lt;&#x2F;span&gt;&lt;span&gt;	int	$0x13			# read it
+&lt;&#x2F;span&gt;&lt;span&gt;	jnc	ok_load_setup		# ok - continue
+&lt;&#x2F;span&gt;&lt;span&gt;	mov	$0x0000, %dx
+&lt;&#x2F;span&gt;&lt;span&gt;	mov	$0x0000, %ax		# reset the diskette
+&lt;&#x2F;span&gt;&lt;span&gt;	int	$0x13
+&lt;&#x2F;span&gt;&lt;span&gt;	jmp	load_setup
+&lt;&#x2F;span&gt;&lt;&#x2F;code&gt;&lt;&#x2F;pre&gt;
+&lt;ol&gt;
+&lt;li&gt;In this time, we want to read drive 0 (floppy), from 0 cylinder, 0 track, from &lt;code&gt;2&lt;&#x2F;code&gt;&#x27;th sector and read &lt;code&gt;SETUPLEN&lt;&#x2F;code&gt; sectors, 0 head to memory based on address &lt;code&gt;$INITSEG:$0x0200&lt;&#x2F;code&gt;. (i.e. load the setup in memory)&lt;&#x2F;li&gt;
+&lt;li&gt;If successfully read it, &lt;code&gt;%cf&lt;&#x2F;code&gt; will not be set, so that &lt;code&gt;jnc	ok_load_setup&lt;&#x2F;code&gt; will jump to &lt;code&gt;ok_load_setup&lt;&#x2F;code&gt;.&lt;&#x2F;li&gt;
+&lt;li&gt;Otherwise, reset the disk and try again.&lt;&#x2F;li&gt;
+&lt;&#x2F;ol&gt;
+&lt;hr &#x2F;&gt;
+&lt;p&gt;&lt;strong&gt;Reference:&lt;&#x2F;strong&gt;&lt;&#x2F;p&gt;
+&lt;h4 id=&quot;drive-table&quot;&gt;&lt;a class=&quot;zola-anchor&quot; href=&quot;#drive-table&quot; aria-label=&quot;Anchor link for: drive-table&quot;&gt;&lt;a rel=&quot;noreferrer&quot; href=&quot;https:&#x2F;&#x2F;en.wikipedia.org&#x2F;wiki&#x2F;INT_13H&quot;&gt;Drive table&lt;&#x2F;a&gt;:&lt;&#x2F;a&gt;&lt;&#x2F;h4&gt;
+&lt;table&gt;&lt;thead&gt;&lt;tr&gt;&lt;th&gt;Register value&lt;&#x2F;th&gt;&lt;th&gt;Meaning&lt;&#x2F;th&gt;&lt;&#x2F;tr&gt;&lt;&#x2F;thead&gt;&lt;tbody&gt;
+&lt;tr&gt;&lt;td&gt;DL = 00h&lt;&#x2F;td&gt;&lt;td&gt;1st floppy disk ( &quot;drive A:&quot; )&lt;&#x2F;td&gt;&lt;&#x2F;tr&gt;
+&lt;tr&gt;&lt;td&gt;DL = 01h&lt;&#x2F;td&gt;&lt;td&gt;2nd floppy disk ( &quot;drive B:&quot; )&lt;&#x2F;td&gt;&lt;&#x2F;tr&gt;
+&lt;tr&gt;&lt;td&gt;DL = 80h&lt;&#x2F;td&gt;&lt;td&gt;1st hard disk&lt;&#x2F;td&gt;&lt;&#x2F;tr&gt;
+&lt;tr&gt;&lt;td&gt;DL = 81h&lt;&#x2F;td&gt;&lt;td&gt;2nd hard disk&lt;&#x2F;td&gt;&lt;&#x2F;tr&gt;
+&lt;tr&gt;&lt;td&gt;DL = e0h&lt;&#x2F;td&gt;&lt;td&gt;CD&#x2F;DVD&lt;&#x2F;td&gt;&lt;&#x2F;tr&gt;
+&lt;&#x2F;tbody&gt;&lt;&#x2F;table&gt;
+&lt;hr &#x2F;&gt;
+&lt;h4 id=&quot;int-13h-ah-02h-read-sectors-from-drive&quot;&gt;&lt;a class=&quot;zola-anchor&quot; href=&quot;#int-13h-ah-02h-read-sectors-from-drive&quot; aria-label=&quot;Anchor link for: int-13h-ah-02h-read-sectors-from-drive&quot;&gt;INT 13h, AH = 02h: &lt;a rel=&quot;noreferrer&quot; href=&quot;https:&#x2F;&#x2F;en.wikipedia.org&#x2F;wiki&#x2F;INT_13H&quot;&gt;Read Sectors From Drive&lt;&#x2F;a&gt;&lt;&#x2F;a&gt;&lt;&#x2F;h4&gt;
+&lt;p&gt;&lt;strong&gt;Parameter:&lt;&#x2F;strong&gt;&lt;&#x2F;p&gt;
+&lt;table&gt;&lt;thead&gt;&lt;tr&gt;&lt;th&gt;Register&lt;&#x2F;th&gt;&lt;th&gt;Meaning&lt;&#x2F;th&gt;&lt;&#x2F;tr&gt;&lt;&#x2F;thead&gt;&lt;tbody&gt;
+&lt;tr&gt;&lt;td&gt;AH&lt;&#x2F;td&gt;&lt;td&gt;02h&lt;&#x2F;td&gt;&lt;&#x2F;tr&gt;
+&lt;tr&gt;&lt;td&gt;AL&lt;&#x2F;td&gt;&lt;td&gt;Sectors To Read Count&lt;&#x2F;td&gt;&lt;&#x2F;tr&gt;
+&lt;tr&gt;&lt;td&gt;CH&lt;&#x2F;td&gt;&lt;td&gt;Cylinder&lt;&#x2F;td&gt;&lt;&#x2F;tr&gt;
+&lt;tr&gt;&lt;td&gt;CL&lt;&#x2F;td&gt;&lt;td&gt;Sector&lt;&#x2F;td&gt;&lt;&#x2F;tr&gt;
+&lt;tr&gt;&lt;td&gt;DH&lt;&#x2F;td&gt;&lt;td&gt;Head&lt;&#x2F;td&gt;&lt;&#x2F;tr&gt;
+&lt;tr&gt;&lt;td&gt;DL&lt;&#x2F;td&gt;&lt;td&gt;Drive&lt;&#x2F;td&gt;&lt;&#x2F;tr&gt;
+&lt;tr&gt;&lt;td&gt;ES:BX&lt;&#x2F;td&gt;&lt;td&gt;Buffer Address Pointer&lt;&#x2F;td&gt;&lt;&#x2F;tr&gt;
+&lt;&#x2F;tbody&gt;&lt;&#x2F;table&gt;
+&lt;p&gt;&lt;strong&gt;Results:&lt;&#x2F;strong&gt;&lt;&#x2F;p&gt;
+&lt;table&gt;&lt;thead&gt;&lt;tr&gt;&lt;th&gt;Register&lt;&#x2F;th&gt;&lt;th&gt;Meaning&lt;&#x2F;th&gt;&lt;&#x2F;tr&gt;&lt;&#x2F;thead&gt;&lt;tbody&gt;
+&lt;tr&gt;&lt;td&gt;CF&lt;&#x2F;td&gt;&lt;td&gt;Set On Error, Clear If No Error&lt;&#x2F;td&gt;&lt;&#x2F;tr&gt;
+&lt;tr&gt;&lt;td&gt;AH&lt;&#x2F;td&gt;&lt;td&gt;Return Code&lt;&#x2F;td&gt;&lt;&#x2F;tr&gt;
+&lt;tr&gt;&lt;td&gt;AL&lt;&#x2F;td&gt;&lt;td&gt;Actual Sectors Read Count&lt;&#x2F;td&gt;&lt;&#x2F;tr&gt;
+&lt;&#x2F;tbody&gt;&lt;&#x2F;table&gt;
+&lt;hr &#x2F;&gt;
+&lt;h4 id=&quot;int-13h-ah-00h-reset-disk-system&quot;&gt;&lt;a class=&quot;zola-anchor&quot; href=&quot;#int-13h-ah-00h-reset-disk-system&quot; aria-label=&quot;Anchor link for: int-13h-ah-00h-reset-disk-system&quot;&gt;INT 13h, AH = 00h: &lt;a rel=&quot;noreferrer&quot; href=&quot;https:&#x2F;&#x2F;en.wikipedia.org&#x2F;wiki&#x2F;INT_13H&quot;&gt;Reset Disk System&lt;&#x2F;a&gt;&lt;&#x2F;a&gt;&lt;&#x2F;h4&gt;
+&lt;p&gt;&lt;strong&gt;Parameter:&lt;&#x2F;strong&gt;&lt;&#x2F;p&gt;
+&lt;table&gt;&lt;thead&gt;&lt;tr&gt;&lt;th&gt;Register&lt;&#x2F;th&gt;&lt;th&gt;Meaning&lt;&#x2F;th&gt;&lt;&#x2F;tr&gt;&lt;&#x2F;thead&gt;&lt;tbody&gt;
+&lt;tr&gt;&lt;td&gt;AH&lt;&#x2F;td&gt;&lt;td&gt;00h&lt;&#x2F;td&gt;&lt;&#x2F;tr&gt;
+&lt;tr&gt;&lt;td&gt;DL&lt;&#x2F;td&gt;&lt;td&gt;Drive (bit 7 set means reset both hard and floppy disks)&lt;&#x2F;td&gt;&lt;&#x2F;tr&gt;
+&lt;&#x2F;tbody&gt;&lt;&#x2F;table&gt;
+&lt;p&gt;&lt;strong&gt;Results:&lt;&#x2F;strong&gt;&lt;&#x2F;p&gt;
+&lt;table&gt;&lt;thead&gt;&lt;tr&gt;&lt;th&gt;Register&lt;&#x2F;th&gt;&lt;th&gt;Meaning&lt;&#x2F;th&gt;&lt;&#x2F;tr&gt;&lt;&#x2F;thead&gt;&lt;tbody&gt;
+&lt;tr&gt;&lt;td&gt;CF&lt;&#x2F;td&gt;&lt;td&gt;Set on error&lt;&#x2F;td&gt;&lt;&#x2F;tr&gt;
+&lt;tr&gt;&lt;td&gt;AH&lt;&#x2F;td&gt;&lt;td&gt;Return Code&lt;&#x2F;td&gt;&lt;&#x2F;tr&gt;
+&lt;&#x2F;tbody&gt;&lt;&#x2F;table&gt;
+&lt;hr &#x2F;&gt;
+&lt;p&gt;We can imitate the procedure to...&lt;&#x2F;p&gt;
+&lt;pre style=&quot;background-color:#fafafa;color:#61676c;&quot;&gt;&lt;code&gt;&lt;span&gt;	.equ HELLOLEN, 1		# nr of hello-sectors
+&lt;&#x2F;span&gt;&lt;span&gt;	.equ HELLOSEG, 0x0100	# hello starts here
+&lt;&#x2F;span&gt;&lt;span&gt;...
+&lt;&#x2F;span&gt;&lt;span&gt;
+&lt;&#x2F;span&gt;&lt;span&gt;go:	mov	%cs, %ax 			# after long jump, %cs become $INITSEG
+&lt;&#x2F;span&gt;&lt;span&gt;	mov	%ax, %ds
+&lt;&#x2F;span&gt;&lt;span&gt;	mov	%ax, %es
+&lt;&#x2F;span&gt;&lt;span&gt;# put stack at 0x9ff00.
+&lt;&#x2F;span&gt;&lt;span&gt;	mov	%ax, %ss
+&lt;&#x2F;span&gt;&lt;span&gt;	mov	$0xFF00, %sp		# arbitrary value &amp;gt;&amp;gt;512
+&lt;&#x2F;span&gt;&lt;span&gt;    
+&lt;&#x2F;span&gt;&lt;span&gt;# Lab 2
+&lt;&#x2F;span&gt;&lt;span&gt;load_hello:
+&lt;&#x2F;span&gt;&lt;span&gt;   mov	$0x0000, %dx		# drive 0, head 0
+&lt;&#x2F;span&gt;&lt;span&gt;   mov	$0x0002, %cx		# sector 2, track 0
+&lt;&#x2F;span&gt;&lt;span&gt;   mov $HELLOSEG, %ax		# segment
+&lt;&#x2F;span&gt;&lt;span&gt;   mov %ax, %es
+&lt;&#x2F;span&gt;&lt;span&gt;   mov	$0x0000, %bx		# offset, address = 0x0100
+&lt;&#x2F;span&gt;&lt;span&gt;   .equ    AX, 0x0200+HELLOLEN
+&lt;&#x2F;span&gt;&lt;span&gt;   mov     $AX, %ax			# service 2, nr of sectors
+&lt;&#x2F;span&gt;&lt;span&gt;   int	$0x13				# read it
+&lt;&#x2F;span&gt;&lt;span&gt;   jnc	ok_load_hello		# ok - continue
+&lt;&#x2F;span&gt;&lt;span&gt;   mov	$0x0000, %dx
+&lt;&#x2F;span&gt;&lt;span&gt;   mov	$0x0000, %ax		# reset the diskette
+&lt;&#x2F;span&gt;&lt;span&gt;   int	$0x13
+&lt;&#x2F;span&gt;&lt;span&gt;   jmp	load_hello
+&lt;&#x2F;span&gt;&lt;span&gt;
+&lt;&#x2F;span&gt;&lt;span&gt;ok_load_hello:
+&lt;&#x2F;span&gt;&lt;span&gt;   ljmp $HELLOSEG, $0 # Jump to hello
+&lt;&#x2F;span&gt;&lt;span&gt;
+&lt;&#x2F;span&gt;&lt;span&gt;...
+&lt;&#x2F;span&gt;&lt;&#x2F;code&gt;&lt;&#x2F;pre&gt;
+&lt;p&gt;&lt;img src=&quot;&#x2F;images&#x2F;posts&#x2F;OSDI-lab2&#x2F;ejJFhn5.png&quot; alt=&quot; &quot; &#x2F;&gt;&lt;&#x2F;p&gt;
+&lt;p&gt;It works!&lt;&#x2F;p&gt;
+&lt;hr &#x2F;&gt;
+&lt;h2 id=&quot;lab2-4-multiboot-support&quot;&gt;&lt;a class=&quot;zola-anchor&quot; href=&quot;#lab2-4-multiboot-support&quot; aria-label=&quot;Anchor link for: lab2-4-multiboot-support&quot;&gt;Lab2.4 - Multiboot support&lt;&#x2F;a&gt;&lt;&#x2F;h2&gt;
+&lt;p&gt;In this experiment, you need to implement a simple keyboard character reader that when user:&lt;&#x2F;p&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;Press ‘1’, it boots the linux-0.11 Image(just like lab1).&lt;&#x2F;p&gt;
+&lt;&#x2F;li&gt;
+&lt;li&gt;
+&lt;p&gt;Press ‘2’, it boots the hello world program.&lt;&#x2F;p&gt;
+&lt;&#x2F;li&gt;
+&lt;&#x2F;ul&gt;
+&lt;pre style=&quot;background-color:#fafafa;color:#61676c;&quot;&gt;&lt;code&gt;&lt;span&gt;go:	mov	%cs, %ax 			# after long jump, %cs become $INITSEG
+&lt;&#x2F;span&gt;&lt;span&gt;	mov	%ax, %ds
+&lt;&#x2F;span&gt;&lt;span&gt;	mov	%ax, %es
+&lt;&#x2F;span&gt;&lt;span&gt;# put stack at 0x9ff00.
+&lt;&#x2F;span&gt;&lt;span&gt;	mov	%ax, %ss
+&lt;&#x2F;span&gt;&lt;span&gt;	mov	$0xFF00, %sp		# arbitrary value &amp;gt;&amp;gt;512
+&lt;&#x2F;span&gt;&lt;span&gt;    
+&lt;&#x2F;span&gt;&lt;span&gt;boot_menu:
+&lt;&#x2F;span&gt;&lt;span&gt;   # Print some inane message
+&lt;&#x2F;span&gt;&lt;span&gt;   mov	$0x03, %ah		# read cursor pos
+&lt;&#x2F;span&gt;&lt;span&gt;   xor	%bh, %bh		# page number
+&lt;&#x2F;span&gt;&lt;span&gt;   int	$0x10
+&lt;&#x2F;span&gt;&lt;span&gt;   
+&lt;&#x2F;span&gt;&lt;span&gt;   mov	$21, %cx		# string length
+&lt;&#x2F;span&gt;&lt;span&gt;   mov	$0x000D, %bx		# page 0, attribute 7 (normal)
+&lt;&#x2F;span&gt;&lt;span&gt;   #lea	option, %bp
+&lt;&#x2F;span&gt;&lt;span&gt;   mov     $option, %bp		# point to message
+&lt;&#x2F;span&gt;&lt;span&gt;   mov	$0x1301, %ax		# write string, move cursor
+&lt;&#x2F;span&gt;&lt;span&gt;   int	$0x10
+&lt;&#x2F;span&gt;&lt;span&gt;
+&lt;&#x2F;span&gt;&lt;span&gt;   mov $0x00, %ah
+&lt;&#x2F;span&gt;&lt;span&gt;   int $0x16
+&lt;&#x2F;span&gt;&lt;span&gt;
+&lt;&#x2F;span&gt;&lt;span&gt;   cmp $49, %al				# 1 ascii
+&lt;&#x2F;span&gt;&lt;span&gt;   je load_setup
+&lt;&#x2F;span&gt;&lt;span&gt;   cmp $50, %al				# 2 ascii
+&lt;&#x2F;span&gt;&lt;span&gt;   je load_hello
+&lt;&#x2F;span&gt;&lt;span&gt;   jmp boot_menu
+&lt;&#x2F;span&gt;&lt;span&gt;
+&lt;&#x2F;span&gt;&lt;span&gt;   ...
+&lt;&#x2F;span&gt;&lt;span&gt; 
+&lt;&#x2F;span&gt;&lt;span&gt;msg1:
+&lt;&#x2F;span&gt;&lt;span&gt;	.byte 13,10
+&lt;&#x2F;span&gt;&lt;span&gt;	.ascii &amp;quot;Loading system ...&amp;quot;
+&lt;&#x2F;span&gt;&lt;span&gt;	.byte 13,10,13,10
+&lt;&#x2F;span&gt;&lt;span&gt;
+&lt;&#x2F;span&gt;&lt;span&gt;option:
+&lt;&#x2F;span&gt;&lt;span&gt;	.byte 13,10
+&lt;&#x2F;span&gt;&lt;span&gt;	.ascii &amp;quot;1) linux, 2) hello&amp;quot;
+&lt;&#x2F;span&gt;&lt;span&gt;	.byte 13,10,13,10
+&lt;&#x2F;span&gt;&lt;&#x2F;code&gt;&lt;&#x2F;pre&gt;
+&lt;ol&gt;
+&lt;li&gt;We locate the cursor.&lt;&#x2F;li&gt;
+&lt;li&gt;Print the string to show the boot option.&lt;&#x2F;li&gt;
+&lt;li&gt;Read the keyboard&lt;&#x2F;li&gt;
+&lt;li&gt;Goto &lt;code&gt;load_setup&lt;&#x2F;code&gt; if pressing 1, goto &lt;code&gt;load_hello&lt;&#x2F;code&gt; if pressing 2.&lt;&#x2F;li&gt;
+&lt;li&gt;Otherwise, go to &lt;code&gt;boot_menu&lt;&#x2F;code&gt; again.&lt;&#x2F;li&gt;
+&lt;&#x2F;ol&gt;
+&lt;hr &#x2F;&gt;
+&lt;p&gt;&lt;strong&gt;Reference:&lt;&#x2F;strong&gt;&lt;&#x2F;p&gt;
+&lt;h4 id=&quot;int-10h-ah-03h-get-cursor-position-and-shape&quot;&gt;&lt;a class=&quot;zola-anchor&quot; href=&quot;#int-10h-ah-03h-get-cursor-position-and-shape&quot; aria-label=&quot;Anchor link for: int-10h-ah-03h-get-cursor-position-and-shape&quot;&gt;INT 10h, AH = 03h: &lt;a rel=&quot;noreferrer&quot; href=&quot;https:&#x2F;&#x2F;en.wikipedia.org&#x2F;wiki&#x2F;INT_10H&quot;&gt;Get cursor position and shape&lt;&#x2F;a&gt;&lt;&#x2F;a&gt;&lt;&#x2F;h4&gt;
+&lt;p&gt;&lt;strong&gt;Parameter:&lt;&#x2F;strong&gt;&lt;&#x2F;p&gt;
+&lt;table&gt;&lt;thead&gt;&lt;tr&gt;&lt;th&gt;Register&lt;&#x2F;th&gt;&lt;th&gt;Meaning&lt;&#x2F;th&gt;&lt;&#x2F;tr&gt;&lt;&#x2F;thead&gt;&lt;tbody&gt;
+&lt;tr&gt;&lt;td&gt;AH&lt;&#x2F;td&gt;&lt;td&gt;03h&lt;&#x2F;td&gt;&lt;&#x2F;tr&gt;
+&lt;tr&gt;&lt;td&gt;BH&lt;&#x2F;td&gt;&lt;td&gt;Page Number&lt;&#x2F;td&gt;&lt;&#x2F;tr&gt;
+&lt;&#x2F;tbody&gt;&lt;&#x2F;table&gt;
+&lt;p&gt;&lt;strong&gt;Results:&lt;&#x2F;strong&gt;&lt;&#x2F;p&gt;
+&lt;table&gt;&lt;thead&gt;&lt;tr&gt;&lt;th&gt;Register&lt;&#x2F;th&gt;&lt;th&gt;Meaning&lt;&#x2F;th&gt;&lt;&#x2F;tr&gt;&lt;&#x2F;thead&gt;&lt;tbody&gt;
+&lt;tr&gt;&lt;td&gt;AX = 0&lt;&#x2F;td&gt;&lt;td&gt;&lt;&#x2F;td&gt;&lt;&#x2F;tr&gt;
+&lt;tr&gt;&lt;td&gt;CH&lt;&#x2F;td&gt;&lt;td&gt;Start scan line&lt;&#x2F;td&gt;&lt;&#x2F;tr&gt;
+&lt;tr&gt;&lt;td&gt;CL&lt;&#x2F;td&gt;&lt;td&gt;End scan line&lt;&#x2F;td&gt;&lt;&#x2F;tr&gt;
+&lt;tr&gt;&lt;td&gt;DH&lt;&#x2F;td&gt;&lt;td&gt;Row&lt;&#x2F;td&gt;&lt;&#x2F;tr&gt;
+&lt;tr&gt;&lt;td&gt;DL&lt;&#x2F;td&gt;&lt;td&gt;Column&lt;&#x2F;td&gt;&lt;&#x2F;tr&gt;
+&lt;&#x2F;tbody&gt;&lt;&#x2F;table&gt;
+&lt;hr &#x2F;&gt;
+&lt;h4 id=&quot;int-10h-ah-13h-write-string&quot;&gt;&lt;a class=&quot;zola-anchor&quot; href=&quot;#int-10h-ah-13h-write-string&quot; aria-label=&quot;Anchor link for: int-10h-ah-13h-write-string&quot;&gt;INT 10h, AH = 13h: &lt;a rel=&quot;noreferrer&quot; href=&quot;https:&#x2F;&#x2F;en.wikipedia.org&#x2F;wiki&#x2F;INT_10H&quot;&gt;Write string&lt;&#x2F;a&gt;&lt;&#x2F;a&gt;&lt;&#x2F;h4&gt;
+&lt;p&gt;&lt;strong&gt;Parameter:&lt;&#x2F;strong&gt;&lt;&#x2F;p&gt;
+&lt;table&gt;&lt;thead&gt;&lt;tr&gt;&lt;th&gt;Register&lt;&#x2F;th&gt;&lt;th&gt;Meaning&lt;&#x2F;th&gt;&lt;&#x2F;tr&gt;&lt;&#x2F;thead&gt;&lt;tbody&gt;
+&lt;tr&gt;&lt;td&gt;AH&lt;&#x2F;td&gt;&lt;td&gt;13h&lt;&#x2F;td&gt;&lt;&#x2F;tr&gt;
+&lt;tr&gt;&lt;td&gt;AL&lt;&#x2F;td&gt;&lt;td&gt;Write mode&lt;&#x2F;td&gt;&lt;&#x2F;tr&gt;
+&lt;tr&gt;&lt;td&gt;BH&lt;&#x2F;td&gt;&lt;td&gt;Page Number&lt;&#x2F;td&gt;&lt;&#x2F;tr&gt;
+&lt;tr&gt;&lt;td&gt;BL&lt;&#x2F;td&gt;&lt;td&gt;Color&lt;&#x2F;td&gt;&lt;&#x2F;tr&gt;
+&lt;tr&gt;&lt;td&gt;CX&lt;&#x2F;td&gt;&lt;td&gt;String length&lt;&#x2F;td&gt;&lt;&#x2F;tr&gt;
+&lt;tr&gt;&lt;td&gt;DH&lt;&#x2F;td&gt;&lt;td&gt;Row&lt;&#x2F;td&gt;&lt;&#x2F;tr&gt;
+&lt;tr&gt;&lt;td&gt;DL&lt;&#x2F;td&gt;&lt;td&gt;Column&lt;&#x2F;td&gt;&lt;&#x2F;tr&gt;
+&lt;tr&gt;&lt;td&gt;ES:EP&lt;&#x2F;td&gt;&lt;td&gt;Offset of string&lt;&#x2F;td&gt;&lt;&#x2F;tr&gt;
+&lt;&#x2F;tbody&gt;&lt;&#x2F;table&gt;
+&lt;hr &#x2F;&gt;
+&lt;h4 id=&quot;int-16h-ah-00h-read-keystroke&quot;&gt;&lt;a class=&quot;zola-anchor&quot; href=&quot;#int-16h-ah-00h-read-keystroke&quot; aria-label=&quot;Anchor link for: int-16h-ah-00h-read-keystroke&quot;&gt;INT 16h, AH = 00h: &lt;a rel=&quot;noreferrer&quot; href=&quot;https:&#x2F;&#x2F;en.wikipedia.org&#x2F;wiki&#x2F;INT_16H&quot;&gt;Read keystroke&lt;&#x2F;a&gt;&lt;&#x2F;a&gt;&lt;&#x2F;h4&gt;
+&lt;p&gt;&lt;strong&gt;Parameter:&lt;&#x2F;strong&gt;&lt;&#x2F;p&gt;
+&lt;table&gt;&lt;thead&gt;&lt;tr&gt;&lt;th&gt;Register&lt;&#x2F;th&gt;&lt;th&gt;Meaning&lt;&#x2F;th&gt;&lt;&#x2F;tr&gt;&lt;&#x2F;thead&gt;&lt;tbody&gt;
+&lt;tr&gt;&lt;td&gt;AH&lt;&#x2F;td&gt;&lt;td&gt;00h&lt;&#x2F;td&gt;&lt;&#x2F;tr&gt;
+&lt;&#x2F;tbody&gt;&lt;&#x2F;table&gt;
+&lt;p&gt;&lt;strong&gt;Results:&lt;&#x2F;strong&gt;&lt;&#x2F;p&gt;
+&lt;table&gt;&lt;thead&gt;&lt;tr&gt;&lt;th&gt;Register&lt;&#x2F;th&gt;&lt;th&gt;Meaning&lt;&#x2F;th&gt;&lt;&#x2F;tr&gt;&lt;&#x2F;thead&gt;&lt;tbody&gt;
+&lt;tr&gt;&lt;td&gt;AH&lt;&#x2F;td&gt;&lt;td&gt;Scan code of the key pressed down&lt;&#x2F;td&gt;&lt;&#x2F;tr&gt;
+&lt;tr&gt;&lt;td&gt;AL&lt;&#x2F;td&gt;&lt;td&gt;ASCII character of the button pressed&lt;&#x2F;td&gt;&lt;&#x2F;tr&gt;
+&lt;&#x2F;tbody&gt;&lt;&#x2F;table&gt;
+&lt;hr &#x2F;&gt;
+&lt;h4 id=&quot;bios-color&quot;&gt;&lt;a class=&quot;zola-anchor&quot; href=&quot;#bios-color&quot; aria-label=&quot;Anchor link for: bios-color&quot;&gt;&lt;a rel=&quot;noreferrer&quot; href=&quot;https:&#x2F;&#x2F;en.wikipedia.org&#x2F;wiki&#x2F;BIOS_color_attributes&quot;&gt;BIOS color&lt;&#x2F;a&gt;:&lt;&#x2F;a&gt;&lt;&#x2F;h4&gt;
+&lt;table&gt;&lt;thead&gt;&lt;tr&gt;&lt;th&gt;Hex&lt;&#x2F;th&gt;&lt;th&gt;Color&lt;&#x2F;th&gt;&lt;&#x2F;tr&gt;&lt;&#x2F;thead&gt;&lt;tbody&gt;
+&lt;tr&gt;&lt;td&gt;0&lt;&#x2F;td&gt;&lt;td&gt;Black&lt;&#x2F;td&gt;&lt;&#x2F;tr&gt;
+&lt;tr&gt;&lt;td&gt;1&lt;&#x2F;td&gt;&lt;td&gt;Blue&lt;&#x2F;td&gt;&lt;&#x2F;tr&gt;
+&lt;tr&gt;&lt;td&gt;2&lt;&#x2F;td&gt;&lt;td&gt;Green&lt;&#x2F;td&gt;&lt;&#x2F;tr&gt;
+&lt;tr&gt;&lt;td&gt;3&lt;&#x2F;td&gt;&lt;td&gt;Cyan&lt;&#x2F;td&gt;&lt;&#x2F;tr&gt;
+&lt;tr&gt;&lt;td&gt;4&lt;&#x2F;td&gt;&lt;td&gt;Red&lt;&#x2F;td&gt;&lt;&#x2F;tr&gt;
+&lt;tr&gt;&lt;td&gt;5&lt;&#x2F;td&gt;&lt;td&gt;Magenta&lt;&#x2F;td&gt;&lt;&#x2F;tr&gt;
+&lt;tr&gt;&lt;td&gt;6&lt;&#x2F;td&gt;&lt;td&gt;Brown&lt;&#x2F;td&gt;&lt;&#x2F;tr&gt;
+&lt;tr&gt;&lt;td&gt;7&lt;&#x2F;td&gt;&lt;td&gt;Light Gray&lt;&#x2F;td&gt;&lt;&#x2F;tr&gt;
+&lt;tr&gt;&lt;td&gt;8&lt;&#x2F;td&gt;&lt;td&gt;Dark Gray&lt;&#x2F;td&gt;&lt;&#x2F;tr&gt;
+&lt;tr&gt;&lt;td&gt;9&lt;&#x2F;td&gt;&lt;td&gt;Light Blue&lt;&#x2F;td&gt;&lt;&#x2F;tr&gt;
+&lt;tr&gt;&lt;td&gt;A&lt;&#x2F;td&gt;&lt;td&gt;Light Green&lt;&#x2F;td&gt;&lt;&#x2F;tr&gt;
+&lt;tr&gt;&lt;td&gt;B&lt;&#x2F;td&gt;&lt;td&gt;Light Cyan&lt;&#x2F;td&gt;&lt;&#x2F;tr&gt;
+&lt;tr&gt;&lt;td&gt;C&lt;&#x2F;td&gt;&lt;td&gt;Light Red&lt;&#x2F;td&gt;&lt;&#x2F;tr&gt;
+&lt;tr&gt;&lt;td&gt;D&lt;&#x2F;td&gt;&lt;td&gt;Light Magenta&lt;&#x2F;td&gt;&lt;&#x2F;tr&gt;
+&lt;tr&gt;&lt;td&gt;E&lt;&#x2F;td&gt;&lt;td&gt;Yellow&lt;&#x2F;td&gt;&lt;&#x2F;tr&gt;
+&lt;tr&gt;&lt;td&gt;F&lt;&#x2F;td&gt;&lt;td&gt;White&lt;&#x2F;td&gt;&lt;&#x2F;tr&gt;
+&lt;&#x2F;tbody&gt;&lt;&#x2F;table&gt;
+&lt;hr &#x2F;&gt;
+&lt;h4 id=&quot;ascii&quot;&gt;&lt;a class=&quot;zola-anchor&quot; href=&quot;#ascii&quot; aria-label=&quot;Anchor link for: ascii&quot;&gt;&lt;a rel=&quot;noreferrer&quot; href=&quot;https:&#x2F;&#x2F;en.wikipedia.org&#x2F;wiki&#x2F;ASCII&quot;&gt;ASCII&lt;&#x2F;a&gt;:&lt;&#x2F;a&gt;&lt;&#x2F;h4&gt;
+&lt;table&gt;&lt;thead&gt;&lt;tr&gt;&lt;th&gt;Dec&lt;&#x2F;th&gt;&lt;th&gt;Meaning&lt;&#x2F;th&gt;&lt;&#x2F;tr&gt;&lt;&#x2F;thead&gt;&lt;tbody&gt;
+&lt;tr&gt;&lt;td&gt;10&lt;&#x2F;td&gt;&lt;td&gt;Line feed (\n)&lt;&#x2F;td&gt;&lt;&#x2F;tr&gt;
+&lt;tr&gt;&lt;td&gt;49&lt;&#x2F;td&gt;&lt;td&gt;1&lt;&#x2F;td&gt;&lt;&#x2F;tr&gt;
+&lt;tr&gt;&lt;td&gt;50&lt;&#x2F;td&gt;&lt;td&gt;2&lt;&#x2F;td&gt;&lt;&#x2F;tr&gt;
+&lt;&#x2F;tbody&gt;&lt;&#x2F;table&gt;
+&lt;hr &#x2F;&gt;
+&lt;pre style=&quot;background-color:#fafafa;color:#61676c;&quot;&gt;&lt;code&gt;&lt;span&gt;load_setup:
+&lt;&#x2F;span&gt;&lt;span&gt;	mov	$0x0000, %dx		# drive 0, head 0
+&lt;&#x2F;span&gt;&lt;span&gt;	mov	$0x0003, %cx		# sector 3, track 0
+&lt;&#x2F;span&gt;&lt;span&gt;	mov	$0x0200, %bx		# address = 512, in INITSEG
+&lt;&#x2F;span&gt;&lt;span&gt;	.equ    AX, 0x0200+SETUPLEN
+&lt;&#x2F;span&gt;&lt;span&gt;	mov     $AX, %ax		# service 2, nr of sectors
+&lt;&#x2F;span&gt;&lt;span&gt;	int	$0x13			# read it
+&lt;&#x2F;span&gt;&lt;span&gt;	jnc	ok_load_setup		# ok - continue
+&lt;&#x2F;span&gt;&lt;span&gt;	mov	$0x0000, %dx
+&lt;&#x2F;span&gt;&lt;span&gt;	mov	$0x0000, %ax		# reset the diskette
+&lt;&#x2F;span&gt;&lt;span&gt;	int	$0x13
+&lt;&#x2F;span&gt;&lt;span&gt;	jmp	load_setup
+&lt;&#x2F;span&gt;&lt;&#x2F;code&gt;&lt;&#x2F;pre&gt;
+&lt;p&gt;&lt;code&gt;load_hello&lt;&#x2F;code&gt; remain the same, but the setup is located at 3rd sector, so we revise the &lt;code&gt;%cl&lt;&#x2F;code&gt; to 0x03.&lt;&#x2F;p&gt;
+&lt;p&gt;It seems that all work are done. However, after making and run it.&lt;&#x2F;p&gt;
+&lt;p&gt;&lt;img src=&quot;&#x2F;images&#x2F;posts&#x2F;OSDI-lab2&#x2F;KB682J1.png&quot; alt=&quot;&quot; &#x2F;&gt;&lt;&#x2F;p&gt;
+&lt;p&gt;Hello runs pretty well.&lt;&#x2F;p&gt;
+&lt;p&gt;After press 1, I want to load the setup, but the OS begin to reboot continuously.&lt;&#x2F;p&gt;
+&lt;p&gt;It seems that we didn&#x27;t run the &lt;code&gt;ljmp	$SETUPSEG, $0&lt;&#x2F;code&gt;.
+Thus, we must continue to trace the rest of code.&lt;&#x2F;p&gt;
+&lt;pre style=&quot;background-color:#fafafa;color:#61676c;&quot;&gt;&lt;code&gt;&lt;span&gt;ok_load_setup:
+&lt;&#x2F;span&gt;&lt;span&gt;
+&lt;&#x2F;span&gt;&lt;span&gt;# Get disk drive parameters, specifically nr of sectors&#x2F;track
+&lt;&#x2F;span&gt;&lt;span&gt;
+&lt;&#x2F;span&gt;&lt;span&gt;	mov	$0x00, %dl
+&lt;&#x2F;span&gt;&lt;span&gt;	mov	$0x0800, %ax		# AH=8 is get drive parameters
+&lt;&#x2F;span&gt;&lt;span&gt;	int	$0x13
+&lt;&#x2F;span&gt;&lt;span&gt;	mov	$0x00, %ch
+&lt;&#x2F;span&gt;&lt;span&gt;	#seg cs
+&lt;&#x2F;span&gt;&lt;span&gt;	mov	%cx, %cs:sectors+0	# %cs means sectors is in %cs
+&lt;&#x2F;span&gt;&lt;span&gt;    ...
+&lt;&#x2F;span&gt;&lt;&#x2F;code&gt;&lt;&#x2F;pre&gt;
+&lt;ol&gt;
+&lt;li&gt;Get sectors of track.&lt;&#x2F;li&gt;
+&lt;li&gt;Set &lt;code&gt;%ch&lt;&#x2F;code&gt; (&lt;code&gt;%cx[15:8]&lt;&#x2F;code&gt;) to &lt;code&gt;0x00&lt;&#x2F;code&gt;.&lt;&#x2F;li&gt;
+&lt;li&gt;Because we boot from floppy (&lt;code&gt;%dl&lt;&#x2F;code&gt; = 0), and its maximum sectors per track will not exceed 256 (18 sectors per track normally), so &lt;code&gt;%cx[7:6]&lt;&#x2F;code&gt; will be &lt;code&gt;0&lt;&#x2F;code&gt;.&lt;&#x2F;li&gt;
+&lt;li&gt;Move &lt;code&gt;%cx&lt;&#x2F;code&gt; to &lt;code&gt;sectors&lt;&#x2F;code&gt;.&lt;&#x2F;li&gt;
+&lt;&#x2F;ol&gt;
+&lt;hr &#x2F;&gt;
+&lt;p&gt;&lt;strong&gt;Reference:&lt;&#x2F;strong&gt;&lt;&#x2F;p&gt;
+&lt;h4 id=&quot;int-13h-ah-08h-read-drive-parameters&quot;&gt;&lt;a class=&quot;zola-anchor&quot; href=&quot;#int-13h-ah-08h-read-drive-parameters&quot; aria-label=&quot;Anchor link for: int-13h-ah-08h-read-drive-parameters&quot;&gt;INT 13h, AH = 08h: &lt;a rel=&quot;noreferrer&quot; href=&quot;https:&#x2F;&#x2F;en.wikipedia.org&#x2F;wiki&#x2F;INT_13H&quot;&gt;Read Drive Parameters&lt;&#x2F;a&gt;&lt;&#x2F;a&gt;&lt;&#x2F;h4&gt;
+&lt;p&gt;&lt;strong&gt;Parameter:&lt;&#x2F;strong&gt;&lt;&#x2F;p&gt;
+&lt;table&gt;&lt;thead&gt;&lt;tr&gt;&lt;th&gt;Register&lt;&#x2F;th&gt;&lt;th&gt;Meaning&lt;&#x2F;th&gt;&lt;&#x2F;tr&gt;&lt;&#x2F;thead&gt;&lt;tbody&gt;
+&lt;tr&gt;&lt;td&gt;AH&lt;&#x2F;td&gt;&lt;td&gt;08h&lt;&#x2F;td&gt;&lt;&#x2F;tr&gt;
+&lt;tr&gt;&lt;td&gt;DL&lt;&#x2F;td&gt;&lt;td&gt;drive index&lt;&#x2F;td&gt;&lt;&#x2F;tr&gt;
+&lt;tr&gt;&lt;td&gt;ES:DI&lt;&#x2F;td&gt;&lt;td&gt;set to 0000h:0000h to work around some buggy BIOS&lt;&#x2F;td&gt;&lt;&#x2F;tr&gt;
+&lt;&#x2F;tbody&gt;&lt;&#x2F;table&gt;
+&lt;p&gt;&lt;strong&gt;Results:&lt;&#x2F;strong&gt;&lt;&#x2F;p&gt;
+&lt;table&gt;&lt;thead&gt;&lt;tr&gt;&lt;th&gt;Register&lt;&#x2F;th&gt;&lt;th&gt;Meaning&lt;&#x2F;th&gt;&lt;&#x2F;tr&gt;&lt;&#x2F;thead&gt;&lt;tbody&gt;
+&lt;tr&gt;&lt;td&gt;CF&lt;&#x2F;td&gt;&lt;td&gt;Set On Error, Clear If No Error&lt;&#x2F;td&gt;&lt;&#x2F;tr&gt;
+&lt;tr&gt;&lt;td&gt;AH&lt;&#x2F;td&gt;&lt;td&gt;Return Code&lt;&#x2F;td&gt;&lt;&#x2F;tr&gt;
+&lt;tr&gt;&lt;td&gt;DL&lt;&#x2F;td&gt;&lt;td&gt;number of hard disk drives&lt;&#x2F;td&gt;&lt;&#x2F;tr&gt;
+&lt;tr&gt;&lt;td&gt;DH&lt;&#x2F;td&gt;&lt;td&gt;logical last index of heads = number_of - 1 (because index starts with 0)&lt;&#x2F;td&gt;&lt;&#x2F;tr&gt;
+&lt;tr&gt;&lt;td&gt;CX&lt;&#x2F;td&gt;&lt;td&gt;[7:6][15:8] logical last index of cylinders = number_of - 1 (because index starts with 0)&lt;br&gt;[5:0] logical last index of sectors per track = number_of (because index starts with 1)&lt;&#x2F;td&gt;&lt;&#x2F;tr&gt;
+&lt;tr&gt;&lt;td&gt;BL&lt;&#x2F;td&gt;&lt;td&gt;drive type (only AT&#x2F;PS2 floppies)&lt;&#x2F;td&gt;&lt;&#x2F;tr&gt;
+&lt;tr&gt;&lt;td&gt;ES:DI&lt;&#x2F;td&gt;&lt;td&gt;pointer to drive parameter table (only for floppies)&lt;&#x2F;td&gt;&lt;&#x2F;tr&gt;
+&lt;&#x2F;tbody&gt;&lt;&#x2F;table&gt;
+&lt;hr &#x2F;&gt;
+&lt;pre style=&quot;background-color:#fafafa;color:#61676c;&quot;&gt;&lt;code&gt;&lt;span&gt;ok_load_setup:
+&lt;&#x2F;span&gt;&lt;span&gt;   ...
+&lt;&#x2F;span&gt;&lt;span&gt;	mov	$SYSSEG, %ax
+&lt;&#x2F;span&gt;&lt;span&gt;	mov	%ax, %es		# segment of 0x010000
+&lt;&#x2F;span&gt;&lt;span&gt;	call	read_it
+&lt;&#x2F;span&gt;&lt;span&gt;	call	kill_motor
+&lt;&#x2F;span&gt;&lt;span&gt;   ...
+&lt;&#x2F;span&gt;&lt;&#x2F;code&gt;&lt;&#x2F;pre&gt;
+&lt;p&gt;Put &lt;code&gt;$SYSSEG&lt;&#x2F;code&gt; in &lt;code&gt;%es&lt;&#x2F;code&gt;, and call read_it.&lt;&#x2F;p&gt;
+&lt;pre style=&quot;background-color:#fafafa;color:#61676c;&quot;&gt;&lt;code&gt;&lt;span&gt;read_it:
+&lt;&#x2F;span&gt;&lt;span&gt;	mov	%es, %ax
+&lt;&#x2F;span&gt;&lt;span&gt;	test	$0x0fff, %ax
+&lt;&#x2F;span&gt;&lt;span&gt;die:	jne 	die			# es must be at 64kB boundary
+&lt;&#x2F;span&gt;&lt;span&gt;	xor 	%bx, %bx		# bx is starting address within segment
+&lt;&#x2F;span&gt;&lt;&#x2F;code&gt;&lt;&#x2F;pre&gt;
+&lt;ol&gt;
+&lt;li&gt;&lt;code&gt;TEST&lt;&#x2F;code&gt; &lt;code&gt;0x0fff&lt;&#x2F;code&gt; and &lt;code&gt;0x1000&lt;&#x2F;code&gt;. &lt;code&gt;TEST&lt;&#x2F;code&gt; is bitwise &lt;code&gt;AND&lt;&#x2F;code&gt; and result of &lt;code&gt;TEST&lt;&#x2F;code&gt; is &lt;code&gt;0&lt;&#x2F;code&gt;, &lt;code&gt;ZF&lt;&#x2F;code&gt; is set to &lt;code&gt;1&lt;&#x2F;code&gt;. &lt;a rel=&quot;noreferrer&quot; href=&quot;https:&#x2F;&#x2F;en.wikipedia.org&#x2F;wiki&#x2F;TEST_(x86_instruction)&quot;&gt;ref&lt;&#x2F;a&gt;&lt;&#x2F;li&gt;
+&lt;li&gt;&lt;code&gt;JNE&lt;&#x2F;code&gt; will jump when &lt;code&gt;ZF&lt;&#x2F;code&gt; is &lt;code&gt;0&lt;&#x2F;code&gt;, so it will continue executing the next instruction. &lt;a rel=&quot;noreferrer&quot; href=&quot;https:&#x2F;&#x2F;en.wikibooks.org&#x2F;wiki&#x2F;X86_Assembly&#x2F;Control_Flow#Jump_Instructions&quot;&gt;ref&lt;&#x2F;a&gt;&lt;&#x2F;li&gt;
+&lt;li&gt;Zero &lt;code&gt;%bx&lt;&#x2F;code&gt;&lt;&#x2F;li&gt;
+&lt;&#x2F;ol&gt;
+&lt;pre style=&quot;background-color:#fafafa;color:#61676c;&quot;&gt;&lt;code&gt;&lt;span&gt;rp_read:
+&lt;&#x2F;span&gt;&lt;span&gt;	mov 	%es, %ax
+&lt;&#x2F;span&gt;&lt;span&gt; 	cmp 	$ENDSEG, %ax		# have we loaded all yet?
+&lt;&#x2F;span&gt;&lt;span&gt;	jb	ok1_read
+&lt;&#x2F;span&gt;&lt;span&gt;	ret
+&lt;&#x2F;span&gt;&lt;&#x2F;code&gt;&lt;&#x2F;pre&gt;
+&lt;ol&gt;
+&lt;li&gt;Put &lt;code&gt;%es&lt;&#x2F;code&gt; to &lt;code&gt;%ax&lt;&#x2F;code&gt; (&lt;code&gt;$SYSSEG&lt;&#x2F;code&gt;).&lt;&#x2F;li&gt;
+&lt;li&gt;Compare &lt;code&gt;$ENGSEG&lt;&#x2F;code&gt;(&lt;code&gt;0x4000&lt;&#x2F;code&gt;) and &lt;code&gt;%ax&lt;&#x2F;code&gt; (&lt;code&gt;0x1000&lt;&#x2F;code&gt;).&lt;&#x2F;li&gt;
+&lt;li&gt;In AT&amp;amp;T syntax, &lt;code&gt;%ax&lt;&#x2F;code&gt; will subtract &lt;code&gt;$ENGSEG&lt;&#x2F;code&gt;. Result is &lt;code&gt;0xD000&lt;&#x2F;code&gt;. &lt;code&gt;SF&lt;&#x2F;code&gt; and &lt;code&gt;CF&lt;&#x2F;code&gt; will be set. &lt;a rel=&quot;noreferrer&quot; href=&quot;https:&#x2F;&#x2F;en.wikibooks.org&#x2F;wiki&#x2F;X86_Assembly&#x2F;Control_Flow#Comparison_Instructions&quot;&gt;ref&lt;&#x2F;a&gt;&lt;&#x2F;li&gt;
+&lt;li&gt;Because &lt;code&gt;jb&lt;&#x2F;code&gt; will jump when &lt;code&gt;CF&lt;&#x2F;code&gt; is 1, so jump to &lt;code&gt;ok1_read&lt;&#x2F;code&gt;. &lt;a rel=&quot;noreferrer&quot; href=&quot;https:&#x2F;&#x2F;en.wikibooks.org&#x2F;wiki&#x2F;X86_Assembly&#x2F;Control_Flow#Jump_Instructions&quot;&gt;ref&lt;&#x2F;a&gt;&lt;&#x2F;li&gt;
+&lt;li&gt;Otherwise, return to last callee.&lt;&#x2F;li&gt;
+&lt;&#x2F;ol&gt;
+&lt;pre style=&quot;background-color:#fafafa;color:#61676c;&quot;&gt;&lt;code&gt;&lt;span&gt;sread:	.word 1+ SETUPLEN	# sectors read of current track
+&lt;&#x2F;span&gt;&lt;span&gt;...
+&lt;&#x2F;span&gt;&lt;span&gt;ok1_read:
+&lt;&#x2F;span&gt;&lt;span&gt;	#seg cs
+&lt;&#x2F;span&gt;&lt;span&gt;	mov	%cs:sectors+0, %ax
+&lt;&#x2F;span&gt;&lt;span&gt;	sub	sread, %ax
+&lt;&#x2F;span&gt;&lt;span&gt;	mov	%ax, %cx
+&lt;&#x2F;span&gt;&lt;span&gt;	shl	$9, %cx
+&lt;&#x2F;span&gt;&lt;span&gt;	add	%bx, %cx
+&lt;&#x2F;span&gt;&lt;span&gt;	jnc 	ok2_read
+&lt;&#x2F;span&gt;&lt;span&gt;	je 	ok2_read
+&lt;&#x2F;span&gt;&lt;span&gt;	xor 	%ax, %ax
+&lt;&#x2F;span&gt;&lt;span&gt;	sub 	%bx, %ax
+&lt;&#x2F;span&gt;&lt;span&gt;	shr 	$9, %ax
+&lt;&#x2F;span&gt;&lt;&#x2F;code&gt;&lt;&#x2F;pre&gt;
+&lt;ol&gt;
+&lt;li&gt;Move &lt;code&gt;sectors&lt;&#x2F;code&gt; to &lt;code&gt;%ax&lt;&#x2F;code&gt; and subtract &lt;code&gt;sread&lt;&#x2F;code&gt;. That is un-read sectors.&lt;&#x2F;li&gt;
+&lt;li&gt;Calculate the total bytes of un-read sectors (512 bytes per sector)  to &lt;code&gt;%cx&lt;&#x2F;code&gt;&lt;&#x2F;li&gt;
+&lt;li&gt;If not greater or eqaul to $2^{16}$ (maximum register capacity), goto &lt;code&gt;ok2_read&lt;&#x2F;code&gt;.&lt;&#x2F;li&gt;
+&lt;li&gt;Otherwise, count the maximum sectors can read (&lt;code&gt;%ax&lt;&#x2F;code&gt;).&lt;&#x2F;li&gt;
+&lt;&#x2F;ol&gt;
+&lt;pre style=&quot;background-color:#fafafa;color:#61676c;&quot;&gt;&lt;code&gt;&lt;span&gt;ok2_read:
+&lt;&#x2F;span&gt;&lt;span&gt;	call 	read_track
+&lt;&#x2F;span&gt;&lt;span&gt;
+&lt;&#x2F;span&gt;&lt;span&gt;...
+&lt;&#x2F;span&gt;&lt;span&gt;
+&lt;&#x2F;span&gt;&lt;span&gt;read_track:
+&lt;&#x2F;span&gt;&lt;span&gt;	push	%ax
+&lt;&#x2F;span&gt;&lt;span&gt;	push	%bx
+&lt;&#x2F;span&gt;&lt;span&gt;	push	%cx
+&lt;&#x2F;span&gt;&lt;span&gt;	push	%dx
+&lt;&#x2F;span&gt;&lt;span&gt;	mov	track, %dx
+&lt;&#x2F;span&gt;&lt;span&gt;	mov	sread, %cx
+&lt;&#x2F;span&gt;&lt;span&gt;	inc	%cx
+&lt;&#x2F;span&gt;&lt;span&gt;	mov	%dl, %ch
+&lt;&#x2F;span&gt;&lt;span&gt;	mov	head, %dx
+&lt;&#x2F;span&gt;&lt;span&gt;	mov	%dl, %dh
+&lt;&#x2F;span&gt;&lt;span&gt;	mov	$0, %dl
+&lt;&#x2F;span&gt;&lt;span&gt;	and	$0x0100, %dx
+&lt;&#x2F;span&gt;&lt;span&gt;	mov	$2, %ah
+&lt;&#x2F;span&gt;&lt;span&gt;	int	$0x13
+&lt;&#x2F;span&gt;&lt;span&gt;	jc	bad_rt
+&lt;&#x2F;span&gt;&lt;span&gt;	pop	%dx
+&lt;&#x2F;span&gt;&lt;span&gt;	pop	%cx
+&lt;&#x2F;span&gt;&lt;span&gt;	pop	%bx
+&lt;&#x2F;span&gt;&lt;span&gt;	pop	%ax
+&lt;&#x2F;span&gt;&lt;span&gt;	ret
+&lt;&#x2F;span&gt;&lt;&#x2F;code&gt;&lt;&#x2F;pre&gt;
+&lt;ol&gt;
+&lt;li&gt;Store all register.&lt;&#x2F;li&gt;
+&lt;li&gt;In this time, we want to read drive 0 (floppy), from 0 cylinder, 0 track, from &lt;code&gt;1+SETUPLEN+1&lt;&#x2F;code&gt;&#x27;th sector and read &lt;code&gt;%al&lt;&#x2F;code&gt; un-read sectors, 0 head to memory based on address &lt;code&gt;$SYSSEG:0x0000&lt;&#x2F;code&gt;. (i.e. load the system in memory)&lt;&#x2F;li&gt;
+&lt;li&gt;If failed, &lt;code&gt;%cf&lt;&#x2F;code&gt; will be set, so that &lt;code&gt;jc	bad_rt&lt;&#x2F;code&gt; will jump to &lt;code&gt;bad_rt&lt;&#x2F;code&gt;.&lt;&#x2F;li&gt;
+&lt;li&gt;Load all registers.&lt;&#x2F;li&gt;
+&lt;&#x2F;ol&gt;
+&lt;p&gt;At this very moment, we have already known the error may come from here. Because the system is located at &lt;code&gt;1 + 1 + 1 + SETUPLEN&lt;&#x2F;code&gt;, so we &lt;strong&gt;must&lt;&#x2F;strong&gt; change &lt;code&gt;sread&lt;&#x2F;code&gt; to &lt;code&gt;1 + 1 + SETUPLEN&lt;&#x2F;code&gt;.&lt;&#x2F;p&gt;
+&lt;hr &#x2F;&gt;
+&lt;p&gt;&lt;strong&gt;Reference:&lt;&#x2F;strong&gt;&lt;&#x2F;p&gt;
+&lt;h4 id=&quot;int-13h-ah-02h-read-sectors-from-drive-1&quot;&gt;&lt;a class=&quot;zola-anchor&quot; href=&quot;#int-13h-ah-02h-read-sectors-from-drive-1&quot; aria-label=&quot;Anchor link for: int-13h-ah-02h-read-sectors-from-drive-1&quot;&gt;INT 13h, AH = 02h: &lt;a rel=&quot;noreferrer&quot; href=&quot;https:&#x2F;&#x2F;en.wikipedia.org&#x2F;wiki&#x2F;INT_13H&quot;&gt;Read Sectors From Drive&lt;&#x2F;a&gt;&lt;&#x2F;a&gt;&lt;&#x2F;h4&gt;
+&lt;p&gt;&lt;strong&gt;Parameter:&lt;&#x2F;strong&gt;&lt;&#x2F;p&gt;
+&lt;table&gt;&lt;thead&gt;&lt;tr&gt;&lt;th&gt;Register&lt;&#x2F;th&gt;&lt;th&gt;Meaning&lt;&#x2F;th&gt;&lt;&#x2F;tr&gt;&lt;&#x2F;thead&gt;&lt;tbody&gt;
+&lt;tr&gt;&lt;td&gt;AH&lt;&#x2F;td&gt;&lt;td&gt;02h&lt;&#x2F;td&gt;&lt;&#x2F;tr&gt;
+&lt;tr&gt;&lt;td&gt;AL&lt;&#x2F;td&gt;&lt;td&gt;Sectors To Read Count&lt;&#x2F;td&gt;&lt;&#x2F;tr&gt;
+&lt;tr&gt;&lt;td&gt;CH&lt;&#x2F;td&gt;&lt;td&gt;Cylinder&lt;&#x2F;td&gt;&lt;&#x2F;tr&gt;
+&lt;tr&gt;&lt;td&gt;CL&lt;&#x2F;td&gt;&lt;td&gt;Sector&lt;&#x2F;td&gt;&lt;&#x2F;tr&gt;
+&lt;tr&gt;&lt;td&gt;DH&lt;&#x2F;td&gt;&lt;td&gt;Head&lt;&#x2F;td&gt;&lt;&#x2F;tr&gt;
+&lt;tr&gt;&lt;td&gt;DL&lt;&#x2F;td&gt;&lt;td&gt;Drive&lt;&#x2F;td&gt;&lt;&#x2F;tr&gt;
+&lt;tr&gt;&lt;td&gt;ES:BX&lt;&#x2F;td&gt;&lt;td&gt;Buffer Address Pointer&lt;&#x2F;td&gt;&lt;&#x2F;tr&gt;
+&lt;&#x2F;tbody&gt;&lt;&#x2F;table&gt;
+&lt;p&gt;&lt;strong&gt;Results:&lt;&#x2F;strong&gt;&lt;&#x2F;p&gt;
+&lt;table&gt;&lt;thead&gt;&lt;tr&gt;&lt;th&gt;Register&lt;&#x2F;th&gt;&lt;th&gt;Meaning&lt;&#x2F;th&gt;&lt;&#x2F;tr&gt;&lt;&#x2F;thead&gt;&lt;tbody&gt;
+&lt;tr&gt;&lt;td&gt;CF&lt;&#x2F;td&gt;&lt;td&gt;Set On Error, Clear If No Error&lt;&#x2F;td&gt;&lt;&#x2F;tr&gt;
+&lt;tr&gt;&lt;td&gt;AH&lt;&#x2F;td&gt;&lt;td&gt;Return Code&lt;&#x2F;td&gt;&lt;&#x2F;tr&gt;
+&lt;tr&gt;&lt;td&gt;AL&lt;&#x2F;td&gt;&lt;td&gt;Actual Sectors Read Count&lt;&#x2F;td&gt;&lt;&#x2F;tr&gt;
+&lt;&#x2F;tbody&gt;&lt;&#x2F;table&gt;
+&lt;hr &#x2F;&gt;
+&lt;p&gt;After change &lt;code&gt;sread&lt;&#x2F;code&gt; to &lt;code&gt; 1 + 1 + SETUP&lt;&#x2F;code&gt;, it works!&lt;&#x2F;p&gt;
+&lt;p&gt;&lt;img src=&quot;&#x2F;images&#x2F;posts&#x2F;OSDI-lab2&#x2F;WGZwVkx.png&quot; alt=&quot; &quot; &#x2F;&gt;&lt;&#x2F;p&gt;
+&lt;hr &#x2F;&gt;
+&lt;h2 id=&quot;questions&quot;&gt;&lt;a class=&quot;zola-anchor&quot; href=&quot;#questions&quot; aria-label=&quot;Anchor link for: questions&quot;&gt;Questions&lt;&#x2F;a&gt;&lt;&#x2F;h2&gt;
+&lt;ol&gt;
+&lt;li&gt;
+&lt;p&gt;What’s the meaning of ljmp $BOOTSEG, $_start(boot&#x2F;bootsect.s)? What is the memory address of the beginning of bootsect.s? What is the value of $_start? From above questions, could you please clearly explain how do you jump to the beginning of hello image?&lt;&#x2F;p&gt;
+&lt;pre style=&quot;background-color:#fafafa;color:#61676c;&quot;&gt;&lt;code&gt;&lt;span&gt;   objdump -D -mi386 -Maddr16,data16 boot&#x2F;bootsect.o
+&lt;&#x2F;span&gt;&lt;&#x2F;code&gt;&lt;&#x2F;pre&gt;
+&lt;p&gt;&lt;img src=&quot;&#x2F;images&#x2F;posts&#x2F;OSDI-lab2&#x2F;lDWVVAr.png&quot; alt=&quot; &quot; &#x2F;&gt;&lt;&#x2F;p&gt;
+&lt;&#x2F;li&gt;
+&lt;li&gt;
+&lt;p&gt;What’s the purpose of es register when the cpu is performing int $0x13 with AH=0x2h?&lt;&#x2F;p&gt;
+&lt;ul&gt;
+&lt;li&gt;base segment of memory address that put read sectors&lt;&#x2F;li&gt;
+&lt;&#x2F;ul&gt;
+&lt;&#x2F;li&gt;
+&lt;li&gt;
+&lt;p&gt;Please change the Hello program’s font color to another&lt;&#x2F;p&gt;
+&lt;ul&gt;
+&lt;li&gt;Change &lt;code&gt;%bl&lt;&#x2F;code&gt; register.&lt;&#x2F;li&gt;
+&lt;&#x2F;ul&gt;
+&lt;&#x2F;li&gt;
+&lt;li&gt;
+&lt;p&gt;If we would like to swap the position of hello and setup in the Image. Where do we need to modify in tools&#x2F;build.sh and bootsect.s?&lt;&#x2F;p&gt;
+&lt;ul&gt;
+&lt;li&gt;The order of Image at &lt;code&gt;tools&#x2F;build.sh&lt;&#x2F;code&gt;&lt;&#x2F;li&gt;
+&lt;li&gt;The starting sector want to read when perform int 13h with AH=02h.&lt;&#x2F;li&gt;
+&lt;&#x2F;ul&gt;
+&lt;&#x2F;li&gt;
+&lt;li&gt;
+&lt;p&gt;Please trace the SeaBIOS code. What are the first and the last instruction of the SeaBIOS? Where are they?&lt;&#x2F;p&gt;
+&lt;ul&gt;
+&lt;li&gt;First instruction: &lt;code&gt;reset_vector&lt;&#x2F;code&gt; @ &lt;code&gt;src&#x2F;romlayout.S&lt;&#x2F;code&gt;&lt;&#x2F;li&gt;
+&lt;li&gt;Last instruction:
+&lt;ul&gt;
+&lt;li&gt;&lt;code&gt;call_boot_entry&lt;&#x2F;code&gt; @ &lt;code&gt;src&#x2F;boot.c&lt;&#x2F;code&gt; in C&lt;&#x2F;li&gt;
+&lt;li&gt;&lt;code&gt;__farcall16&lt;&#x2F;code&gt; @ &lt;code&gt;src&#x2F;romlayout.S&lt;&#x2F;code&gt; in asm&lt;&#x2F;li&gt;
+&lt;&#x2F;ul&gt;
+&lt;&#x2F;li&gt;
+&lt;&#x2F;ul&gt;
+&lt;&#x2F;li&gt;
+&lt;&#x2F;ol&gt;
+</description>
+      </item>
+    </channel>
+</rss>

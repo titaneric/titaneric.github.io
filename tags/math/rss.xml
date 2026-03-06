@@ -1,0 +1,194 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rss xmlns:atom="http://www.w3.org/2005/Atom" version="2.0">
+    <channel>
+      <title>titaneric - math</title>
+      <link>https://www.titaneric.com</link>
+      <description></description>
+      <generator>Zola</generator>
+      <language>en</language>
+      <atom:link href="https://www.titaneric.com/tags/math/rss.xml" rel="self" type="application/rss+xml"/>
+      <lastBuildDate>Tue, 23 Dec 2025 00:00:00 +0000</lastBuildDate>
+      <item>
+          <title>Elliptic Curve Point Addition: Mathematical Foundations for Cryptographic Key Exchange</title>
+          <pubDate>Tue, 23 Dec 2025 00:00:00 +0000</pubDate>
+          <author>Unknown</author>
+          <link>https://www.titaneric.com/posts/elliptic-curve-math/</link>
+          <guid>https://www.titaneric.com/posts/elliptic-curve-math/</guid>
+          <description xml:base="https://www.titaneric.com/posts/elliptic-curve-math/">&lt;p&gt;I&#x27;ve read the fantastic &lt;a rel=&quot;noreferrer&quot; href=&quot;https:&#x2F;&#x2F;curves.xargs.org&quot;&gt;Animated Elliptic Curve&lt;&#x2F;a&gt; exposition and wanted to write up my own detailed notes on the mathematics of elliptic curve point addition and its application to cryptographic key exchange.&lt;&#x2F;p&gt;
+&lt;p&gt;Elliptic curve point addition is the algebraic operation that gives elliptic curves their group structure. That group law—together with scalar multiplication (repeated addition)—is the mathematical foundation for modern public-key protocols such as Elliptic Curve Diffie–Hellman (ECDH) and the key exchanges used in TLS 1.3.&lt;&#x2F;p&gt;
+&lt;p&gt;This note presents a detailed derivation of the point-addition formulas for curves in short Weierstrass form, explains how the formulas are evaluated in a finite field, and adds practical facts and examples drawn from the &lt;a rel=&quot;noreferrer&quot; href=&quot;https:&#x2F;&#x2F;curves.xargs.org&quot;&gt;Animated Elliptic Curve&lt;&#x2F;a&gt; exposition, including small toy curves (Curve61) and references to real-world curves (Curve25519).&lt;&#x2F;p&gt;
+&lt;h2 id=&quot;elliptic-curves-and-point-addition&quot;&gt;&lt;a class=&quot;zola-anchor&quot; href=&quot;#elliptic-curves-and-point-addition&quot; aria-label=&quot;Anchor link for: elliptic-curves-and-point-addition&quot;&gt;Elliptic curves and point addition&lt;&#x2F;a&gt;&lt;&#x2F;h2&gt;
+&lt;p&gt;&lt;strong&gt;Conventions.&lt;&#x2F;strong&gt; We work with the short Weierstrass equation for an elliptic curve:
+$$y^2 = x^3 + a x + b$$
+over either the real numbers (for geometric intuition) or the finite field $\mathbb{F}_p$ (for cryptographic use). Points are written as $P=(x_1,y_1)$ and $Q=(x_2,y_2)$; the point at infinity (the group identity) is denoted $\mathcal{O}$.&lt;&#x2F;p&gt;
+&lt;p&gt;&lt;strong&gt;Overview.&lt;&#x2F;strong&gt; The geometric rule for addition is:&lt;&#x2F;p&gt;
+&lt;ul&gt;
+&lt;li&gt;Draw the line through $P$ and $Q$ (or the tangent at $P$ when $P=Q$).&lt;&#x2F;li&gt;
+&lt;li&gt;Find the third intersection $R&#x27;$ of that line with the curve.&lt;&#x2F;li&gt;
+&lt;li&gt;Reflect $R&#x27;$ across the $x$-axis to get the sum $R=P+Q$.&lt;&#x2F;li&gt;
+&lt;&#x2F;ul&gt;
+&lt;h3 id=&quot;geometric-derivation-and-algebraic-formulas&quot;&gt;&lt;a class=&quot;zola-anchor&quot; href=&quot;#geometric-derivation-and-algebraic-formulas&quot; aria-label=&quot;Anchor link for: geometric-derivation-and-algebraic-formulas&quot;&gt;Geometric derivation and algebraic formulas&lt;&#x2F;a&gt;&lt;&#x2F;h3&gt;
+&lt;ol&gt;
+&lt;li&gt;Adding distinct points ($P\neq Q$).&lt;&#x2F;li&gt;
+&lt;&#x2F;ol&gt;
+&lt;p&gt;Let the line through $P$ and $Q$ have slope $\lambda$ and equation
+$$y = \lambda x + \nu.$$
+The slope is the usual slope of a secant:
+$$\lambda = \frac{y_2 - y_1}{x_2 - x_1}$$
+when working over the reals, and in $\mathbb{F}_p$ we interpret division via modular inverse:
+$$\lambda = (y_2 - y_1)\cdot (x_2 - x_1)^{-1}\pmod p,$$
+where $(x_2-x_1)^{-1}$ is the &lt;a rel=&quot;noreferrer&quot; href=&quot;https:&#x2F;&#x2F;curves.xargs.org&#x2F;#division-multiplicative-inverse&quot;&gt;multiplicative inverse in $\mathbb{F}_p$&lt;&#x2F;a&gt;.&lt;&#x2F;p&gt;
+&lt;p&gt;Substitute $y=\lambda x+\nu$ into $y^2=x^3+ax+b$ and expand to obtain a cubic polynomial in $x$:
+$$\begin{aligned}
+(\lambda x + \nu)^2 &amp;amp;= x^3 + a x + b \
+\lambda^2 x^2 + 2\lambda\nu x + \nu^2 &amp;amp;= x^3 + a x + b.
+\end{aligned}
+$$
+Bring all terms to one side:
+$$
+\begin{aligned}
+x^3 - \lambda^2 x^2 + (a - 2\lambda\nu) x + (b - \nu^2) = 0.
+\end{aligned}
+$$&lt;&#x2F;p&gt;
+&lt;p&gt;Remember we have &lt;a rel=&quot;noreferrer&quot; href=&quot;https:&#x2F;&#x2F;en.wikipedia.org&#x2F;wiki&#x2F;Vieta%27s_formulas&quot;&gt;Vieta&#x27;s formulas&lt;&#x2F;a&gt; relating the roots to the coefficients of a polynomial.:&lt;&#x2F;p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;Given a cubic equation $ P(x) = ax^3 + bx^2 + cx + d = 0 $, the roots $ x_1, x_2, x_3 $ satisfy:
+$$ x_1 + x_2 + x_3 = -\frac{b}{a} $$
+$$ x_1 x_2 + x_1 x_3 + x_2 x_3 = \frac{c}{a} $$
+$$ x_1 x_2 x_3 = -\frac{d}{a} $$&lt;&#x2F;p&gt;
+&lt;&#x2F;blockquote&gt;
+&lt;p&gt;Applying Vieta&#x27;s formulas to our cubic (with $a=1$, $b=-\lambda^2$, $c=a - 2\lambda\nu$, $d=b - \nu^2$) gives the relations among the three $x$-coordinates of the intersection points $P$, $Q$, and $R&#x27;$:&lt;&#x2F;p&gt;
+&lt;p&gt;$$x_1+x_2+x_3 = \lambda^2,$$
+$$x_1x_2 + x_1x_3 + x_2x_3 = a - 2\lambda\nu,$$
+$$x_1x_2x_3 = \nu^2 - b.$$
+The first identity yields the commonly used formula
+$$ x_3 = \lambda^2 - x_1 - x_2. $$&lt;&#x2F;p&gt;
+&lt;p&gt;To obtain $y_3$, compute the $y$-value of the third intersection $R&#x27;$ using the line: $y_3&#x27; = \lambda x_3 + \nu$. Since $\nu = y_1 - \lambda x_1$ we have $y_3&#x27; = \lambda(x_3 - x_1) + y_1$, and reflecting across the $x$-axis gives the sum
+$$ y_3 = -y_3&#x27; = \lambda(x_1 - x_3) - y_1. $$&lt;&#x2F;p&gt;
+&lt;p&gt;These identities hold over $\mathbb{F}_p$ when every division is interpreted as multiplication by an inverse.&lt;&#x2F;p&gt;
+&lt;ol start=&quot;2&quot;&gt;
+&lt;li&gt;Doubling ($P=Q$).&lt;&#x2F;li&gt;
+&lt;&#x2F;ol&gt;
+&lt;p&gt;When $P=Q$ the secant becomes the tangent. Implicit differentiation of $y^2=x^3+ax+b$ gives
+$$\frac{dy}{dx} = \frac{3x^2+a}{2y},$$
+so at $(x_1,y_1)$ the tangent slope is
+$$\lambda = \frac{3x_1^2 + a}{2y_1}.$$
+Substituting into the formulas $ x_3 = \lambda^2 - x_1 - x_2 $ (with $x_2=x_1$) and $y_3 = \lambda(x_1 - x_3) - y_1$ yields
+$$ x_3 = \lambda^2 - 2x_1,\qquad y_3 = \lambda(x_1 - x_3) - y_1. $$&lt;&#x2F;p&gt;
+&lt;p&gt;This concludes the derivation of &lt;a rel=&quot;noreferrer&quot; href=&quot;https:&#x2F;&#x2F;curves.xargs.org&#x2F;#point-addition&quot;&gt;Point Addition&lt;&#x2F;a&gt; formulas.&lt;&#x2F;p&gt;
+&lt;h2 id=&quot;finite-field-arithmetic-practical-cryptography&quot;&gt;&lt;a class=&quot;zola-anchor&quot; href=&quot;#finite-field-arithmetic-practical-cryptography&quot; aria-label=&quot;Anchor link for: finite-field-arithmetic-practical-cryptography&quot;&gt;Finite-field arithmetic (practical cryptography)&lt;&#x2F;a&gt;&lt;&#x2F;h2&gt;
+&lt;p&gt;Elliptic curves used in cryptography are defined over prime fields $\mathbb{F}_p$. To adapt the real-number formulas we perform every operation modulo $p$.&lt;&#x2F;p&gt;
+&lt;ul&gt;
+&lt;li&gt;The field $\mathbb{F}_p$ is the set ${0,1,\dots,p-1}$ with addition and multiplication taken modulo $p$.&lt;&#x2F;li&gt;
+&lt;li&gt;Additive inverse: $-n\equiv p-n \pmod p$.&lt;&#x2F;li&gt;
+&lt;li&gt;Multiplicative inverse: for nonzero $b$ there exists $b^{-1}\in\mathbb{F}_p$ with $b\cdot b^{-1}\equiv1\pmod p$.&lt;&#x2F;li&gt;
+&lt;li&gt;Square roots and residues: for $n\in\mathbb{F}_p$ a square root is an element $y\in\mathbb{F}_p$ satisfying $$y^2 \equiv n \pmod p.$$ If such a $y$ exists then $n$ is a &lt;strong&gt;quadratic residue&lt;&#x2F;strong&gt; modulo $p$ and the two square roots are $y$ and $-y$ (unless $y\equiv0$). If no such $y$ exists then $n$ is a &lt;strong&gt;quadratic non-residue&lt;&#x2F;strong&gt; modulo $p$.&lt;&#x2F;li&gt;
+&lt;&#x2F;ul&gt;
+&lt;p&gt;In the elliptic-curve equation $y^2\equiv x^3+ax+b\pmod p$ define$$r(x) \equiv x^3 + ax + b \pmod p.$$ There exists an $\mathbb{F}_p$-rational point with $x$-coordinate $x$ exactly when $r(x)$ is a quadratic residue, i.e. when there exists $y\in\mathbb{F}_p$ with $y^2\equiv r(x)\pmod p$. In that case the two points are $(x,y)$ and $(x,-y)$.&lt;&#x2F;p&gt;
+&lt;p&gt;The point-addition formulas are the same as in the real case, but every arithmetic operation is performed in $\mathbb{F}_p$. Concretely, for $P\neq Q$:
+$$\lambda \equiv (y_2-y_1)\cdot (x_2-x_1)^{-1} \pmod p,$$
+$$x_3 \equiv \lambda^2 - x_1 - x_2 \pmod p,$$
+$$y_3 \equiv \lambda(x_1 - x_3) - y_1 \pmod p,$$
+and for doubling:$$\lambda \equiv (3x_1^2 + a)\cdot (2y_1)^{-1} \pmod p.$$&lt;&#x2F;p&gt;
+&lt;p&gt;All final $x_3,y_3$ values are reduced modulo $p$.&lt;&#x2F;p&gt;
+&lt;h2 id=&quot;example-point-addition-on-a-toy-curve-curve61&quot;&gt;&lt;a class=&quot;zola-anchor&quot; href=&quot;#example-point-addition-on-a-toy-curve-curve61&quot; aria-label=&quot;Anchor link for: example-point-addition-on-a-toy-curve-curve61&quot;&gt;Example: Point addition on a toy curve Curve61&lt;&#x2F;a&gt;&lt;&#x2F;h2&gt;
+&lt;p&gt;Let $p = 61$ and consider the elliptic curve E defined over the prime field $\mathbb{F}_p$ by
+$$E : y^2 \equiv x^3 + 9x + 1 \pmod{p}.$$
+We write $E(\mathbb{F}_p)$ for the set of $\mathbb{F}_p$-rational points on $E$, i.e. the pairs $(x,y)$ with $x,y \in \mathbb{F}_p$ satisfying the curve equation together with the point at infinity $O$.&lt;&#x2F;p&gt;
+&lt;p&gt;For each $x \in \mathbb{F}_p$ define the right-hand side value
+$$r(x) \equiv x^3 + 9x + 1 \pmod p.$$
+The set of points in $E(\mathbb{F}_p)$ with $x$-coordinate equal to $x$ is nonempty precisely when there exists $y \in \mathbb{F}_p$ with $$y^2 \equiv r(x) \pmod p.$$ In that case the two solutions are $y$ and $-y$ (negatives taken modulo $p$), which give the two points with the same $x$-coordinate.&lt;&#x2F;p&gt;
+&lt;p&gt;Example computations:&lt;&#x2F;p&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;For x = 0:
+$$\begin{aligned}
+r(0) &amp;amp;\equiv 0^3 + 9\cdot0 + 1 \equiv 1 \pmod{61}.
+\end{aligned}$$
+One square root is $y \equiv 1$ since $1 \cdot 1 \equiv 1 \pmod{61}$; the other is $y \equiv -1 \equiv 60 \pmod{61}$. Thus $(0,1),(0,60) \in E(\mathbb{F}_{61})$.&lt;&#x2F;p&gt;
+&lt;&#x2F;li&gt;
+&lt;li&gt;
+&lt;p&gt;For x = 1:
+$$\begin{aligned}
+r(1) &amp;amp;\equiv 1^3 + 9\cdot1 + 1 \equiv 11 \pmod{61}.
+\end{aligned}$$
+Here 11 is a quadratic non-residue in $\mathbb{F_{61}}$, so there is no $y \in \mathbb{F_{61}}$ with $y^2 \equiv 11$; there is no point of $E(\mathbb{F}_{61})$ with $x=1$.&lt;&#x2F;p&gt;
+&lt;&#x2F;li&gt;
+&lt;li&gt;
+&lt;p&gt;For x = 2:
+$$\begin{aligned}
+r(2) &amp;amp;\equiv 2^3 + 9\cdot2 + 1 \equiv 27 \pmod{61}.
+\end{aligned}$$
+One square root is $y \equiv 24$ since $24 \cdot 24 \equiv 576 \equiv 27 \pmod{61}$; the other is $y \equiv -24 \equiv 37 \pmod{61}$. Thus $(2,24),(2,37) \in E(\mathbb{F}_{61})$.&lt;&#x2F;p&gt;
+&lt;&#x2F;li&gt;
+&lt;&#x2F;ul&gt;
+&lt;p&gt;Proceeding similarly for each $x \in \mathbb{F}_p$ produces the full set $E(\mathbb{F}_p)$. The group law on $E(\mathbb{F}_p)$ uses the addition formulas given above, with all arithmetic interpreted modulo $p$.&lt;&#x2F;p&gt;
+&lt;h3 id=&quot;worked-numeric-example-adding-two-points-on-curve61&quot;&gt;&lt;a class=&quot;zola-anchor&quot; href=&quot;#worked-numeric-example-adding-two-points-on-curve61&quot; aria-label=&quot;Anchor link for: worked-numeric-example-adding-two-points-on-curve61&quot;&gt;Worked numeric example: adding two points on Curve61&lt;&#x2F;a&gt;&lt;&#x2F;h3&gt;
+&lt;p&gt;We present a step-by-step modular computation of $P+Q$ with
+$$p=61,\qquad E: y^2\equiv x^3 + 9x + 1\pmod{61},$$
+and take the two points
+$$P=(2,24),\qquad Q=(0,1).$$&lt;&#x2F;p&gt;
+&lt;ol&gt;
+&lt;li&gt;Compute the slope $\lambda$ for distinct points $P\neq Q$:
+$$\lambda \equiv (y_Q-y_P)\cdot(x_Q-x_P)^{-1} \pmod{61}.$$&lt;&#x2F;li&gt;
+&lt;&#x2F;ol&gt;
+&lt;p&gt;$$y_Q-y_P = 1-24 \equiv 1-24 \equiv -23 \equiv 38 \pmod{61}.$$&lt;&#x2F;p&gt;
+&lt;p&gt;$$x_Q-x_P = 0-2 \equiv -2 \equiv 59 \pmod{61}.$$
+We need the inverse of $59$ modulo $61$. Since $59\equiv -2$, its inverse is the inverse of $-2$, which is $-31\equiv 30$ because $(-2)\cdot(-31)=62\equiv1\pmod{61}$. Thus $59^{-1}\equiv 30$.
+So
+$$\lambda \equiv 38\cdot 30 \equiv 1140 \equiv 42 \pmod{61}.$$&lt;&#x2F;p&gt;
+&lt;ol start=&quot;2&quot;&gt;
+&lt;li&gt;
+&lt;p&gt;Compute $x_3$:
+$$x_3 \equiv \lambda^2 - x_P - x_Q \equiv 42^2 - 2 - 0 \equiv 1764 - 2 \equiv 1762\equiv 54 \pmod{61}.$$&lt;&#x2F;p&gt;
+&lt;&#x2F;li&gt;
+&lt;li&gt;
+&lt;p&gt;Compute $y_3$ using $y_3 \equiv \lambda(x_P - x_3) - y_P$:
+$$x_P - x_3 = 2-54 \equiv -52 \equiv 9 \pmod{61}$$
+$$\lambda(x_P-x_3) \equiv 42\cdot 9 =378 \equiv 12 \pmod{61}$$
+$$y_3 \equiv 12 - 24 \equiv -12 \equiv 49 \pmod{61}.$$&lt;&#x2F;p&gt;
+&lt;&#x2F;li&gt;
+&lt;&#x2F;ol&gt;
+&lt;p&gt;Therefore the sum is
+$$P+Q = (54,49) \in E(\mathbb{F}_{61}).$$&lt;&#x2F;p&gt;
+&lt;p&gt;One may verify directly that $(54,49)$ satisfies the curve equation modulo 61, and that adding $P$ and $Q$ by the geometric&#x2F;tangent method produces this same point.&lt;&#x2F;p&gt;
+&lt;h2 id=&quot;efficient-scalar-multiplication&quot;&gt;&lt;a class=&quot;zola-anchor&quot; href=&quot;#efficient-scalar-multiplication&quot; aria-label=&quot;Anchor link for: efficient-scalar-multiplication&quot;&gt;Efficient scalar multiplication&lt;&#x2F;a&gt;&lt;&#x2F;h2&gt;
+&lt;p&gt;Scalar multiplication $nP$ (adding $P$ to itself $n$ times) is the expensive primitive. A naive loop costs O(n) additions; efficient methods use doubling plus addition (binary double-and-add) to achieve O(log n) elliptic-curve additions. For example, if we need to calculate $13P$, we could pre-compute $1P$, $4P$, and $8P$ via doubling, then add the results:
+$$
+\begin{aligned}
+2P &amp;amp;= P + P,\\
+4P &amp;amp;= 2P + 2P,\\
+8P &amp;amp;= 4P + 4P,\\
+13P &amp;amp;= 8P + 4P + P.
+\end{aligned}
+$$&lt;&#x2F;p&gt;
+&lt;h2 id=&quot;cryptographic-key-exchange-using-elliptic-curves&quot;&gt;&lt;a class=&quot;zola-anchor&quot; href=&quot;#cryptographic-key-exchange-using-elliptic-curves&quot; aria-label=&quot;Anchor link for: cryptographic-key-exchange-using-elliptic-curves&quot;&gt;Cryptographic key exchange using elliptic curves&lt;&#x2F;a&gt;&lt;&#x2F;h2&gt;
+&lt;p&gt;Elliptic-curve Diffie–Hellman (ECDH) is the standard key-exchange primitive built from the group law on an elliptic curve. The protocol is simple to state and relies on two related hardness assumptions:&lt;&#x2F;p&gt;
+&lt;ul&gt;
+&lt;li&gt;Elliptic Curve Discrete Logarithm Problem (ECDLP): given $P$ and $Q=kP$ for unknown integer $k$, recover $k$.&lt;&#x2F;li&gt;
+&lt;li&gt;Computational Diffie–Hellman (CDH) on the curve: given $P$, $A=k_aP$, and $B=k_bP$, compute $k_a k_b P$.&lt;&#x2F;li&gt;
+&lt;&#x2F;ul&gt;
+&lt;p&gt;ECDH protocol (informal):&lt;&#x2F;p&gt;
+&lt;ul&gt;
+&lt;li&gt;The peers agree on a curve and a base point $P\in E(\mathbb{F}_p)$ (with known order r).&lt;&#x2F;li&gt;
+&lt;li&gt;Alice picks a private scalar $k_a\in{1,\dots,r-1}$ and sends the public point $A=k_aP$ to Bob.&lt;&#x2F;li&gt;
+&lt;li&gt;Bob picks $k_b$ and sends $B=k_bP$ to Alice.&lt;&#x2F;li&gt;
+&lt;li&gt;Alice computes $S_A=k_a B = k_a(k_bP)=k_a k_b P$.&lt;&#x2F;li&gt;
+&lt;li&gt;Bob computes $S_B=k_b A = k_b(k_aP)=k_b k_a P$.
+Both obtain the same shared point $S=k_a k_b P$.&lt;&#x2F;li&gt;
+&lt;&#x2F;ul&gt;
+&lt;p&gt;Please play the toy example and watch the key exchange animation on &lt;a rel=&quot;noreferrer&quot; href=&quot;https:&#x2F;&#x2F;curves.xargs.org&#x2F;#key-exchange&quot;&gt;curves.xargs.org&lt;&#x2F;a&gt;&lt;&#x2F;p&gt;
+&lt;p&gt;Why an eavesdropper cannot recover the shared key (informal):&lt;&#x2F;p&gt;
+&lt;ul&gt;
+&lt;li&gt;If an attacker sees only $A=k_aP$ and $B=k_bP$, then computing $k_a$ or $k_b$ from $A$ or $B$ alone requires solving the ECDLP; computing $k_a k_b P$ directly from $A$ and $B$ without either scalar requires solving the CDH problem. Both problems are believed to be computationally infeasible for well-chosen curves and sufficiently large parameters (e.g., 256-bit prime fields such as Curve25519). Thus knowledge of $A$ and $B$ does not reveal $k_a$ or $k_b$, nor the derived symmetric key, under standard assumptions.&lt;&#x2F;li&gt;
+&lt;&#x2F;ul&gt;
+&lt;p&gt;The toy curve Curve61 used $\mathbb{F_{61}}$. In practice, cryptographic curves use much larger prime fields (e.g., Curve25519 uses a 255-bit prime, i.e., $\mathbb{F}_{2^{255}-19}$) to ensure security against known attacks.&lt;&#x2F;p&gt;
+&lt;h2 id=&quot;references-and-further-reading&quot;&gt;&lt;a class=&quot;zola-anchor&quot; href=&quot;#references-and-further-reading&quot; aria-label=&quot;Anchor link for: references-and-further-reading&quot;&gt;References and further reading&lt;&#x2F;a&gt;&lt;&#x2F;h2&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;a rel=&quot;noreferrer&quot; href=&quot;https:&#x2F;&#x2F;curves.xargs.org&quot;&gt;The Animated Elliptic Curve&lt;&#x2F;a&gt;&lt;&#x2F;li&gt;
+&lt;li&gt;&lt;a rel=&quot;noreferrer&quot; href=&quot;https:&#x2F;&#x2F;x25519.xargs.org&#x2F;&quot;&gt;Hands-on: X25519 Key Exchange&lt;&#x2F;a&gt;&lt;&#x2F;li&gt;
+&lt;&#x2F;ul&gt;
+</description>
+      </item>
+    </channel>
+</rss>
