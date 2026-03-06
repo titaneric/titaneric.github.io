@@ -15,7 +15,7 @@
   theme: rgb(95%, 55%, 15%),
   name: "Eric",
   surname: "Huang",
-  title: "Senior Site Reliability Engineer",
+  title: "Systems Development Engineer",
   contact: (
     // Uncomment to include phone number:
     // contact(
@@ -45,7 +45,10 @@
   ),
   main: (
     section(
-      content: [#underline(link("https://ti-user-certificates.s3.amazonaws.com/e0df7fbf-a057-42af-8a1f-590912be5460/ca820404-2858-41da-9d18-c3268d010348-huang-chen-yi-80c3b11d-2f72-4183-8271-9743fe40b47d-certificate.pdf", "Certified Kubernetes Administrator")), open-source enthusiast, and detail-oriented software engineer with expertise in automation, observability, and cloud-native solutions. Skilled in problem-solving and system optimization, aiming to enhance reliability, efficiency, and scalability.],
+      content: [
+        // #underline(link("https://ti-user-certificates.s3.amazonaws.com/e0df7fbf-a057-42af-8a1f-590912be5460/ca820404-2858-41da-9d18-c3268d010348-huang-chen-yi-80c3b11d-2f72-4183-8271-9743fe40b47d-certificate.pdf", "Certified Kubernetes Administrator")), open-source enthusiast, and detail-oriented software engineer with expertise in automation, observability, and cloud-native solutions. Skilled in problem-solving and system optimization, aiming to enhance reliability, efficiency, and scalability.
+        Senior SRE with 5+ years of experience in distributed systems. Skilled in Go and Python. Architected GPU-accelerated Kubernetes clusters and custom Terraform providers. Active contributor to eBPF and Observability ecosystems. Certified Kubernetes Administrator (CKA) certified.
+      ],
     ),
     section(
       title: "Work Experience",
@@ -56,11 +59,14 @@
           subTitle: "Sep 2025 – Present",
           subTitleEnd: "Taipei, Taiwan",
           content: list(
-            [Co-maintained next-generation Terraform provider for the successor private cloud platform #underline(link("https://techblog.lycorp.co.jp/ja/20260126b", "Flava")), enabling seamless infrastructure management.
+            [
+              Architected and maintained a custom Terraform provider to automate lifecycle management for a large-scale private cloud platform #underline(link("https://techblog.lycorp.co.jp/ja/20260126b", "Flava")).
             ],
-            [Developed Kustomize and ArgoCD plugin for managing secrets in the internal KMS and secret manager systems, enhancing security and compliance.
+            [
+              Developed Kustomize and ArgoCD plugin for managing secrets in the internal KMS and secret manager systems, enhancing security and compliance.
             ],
-            [Developed a Go SDK to encapsulate the Flava services API, leveraging OpenAPI schema for automatic code generation, ensuring maintainability, unified log formatting, and a client-agnostic design.
+            [
+              Designed and implemented a client-agnostic Go SDK for Flava services, utilizing automatic code generation and consistent log formatting to provide a robust, idiomatic interface similar to the AWS SDK for Go.
             ],
           ),
         ),
@@ -70,11 +76,14 @@
           subTitle: "Dec 2022 – Sep 2025",
           subTitleEnd: "Taipei, Taiwan",
           content: list(
-            [#underline(link("https://techblog.lycorp.co.jp/zh-hant/grafana-loki-upgrade-1", "Optimized log collection pipelines")) and #underline(link("https://techblog.lycorp.co.jp/zh-hant/Loki-io-performance-tunning", "tuned the self-hosted Loki cluster")), *eliminating object storage overhead and reducing costs by 70%, while achieving a 3x increase in log ingestion performance.*
+            [
+              Designed and optimized high-throughput observability pipelines for terabyte-scale telemetry data, achieving a *300% increase* in ingestion performance through #underline(link("https://techblog.lycorp.co.jp/zh-hant/grafana-loki-upgrade-1", "pipeline refactoring")) and #underline(link("https://techblog.lycorp.co.jp/zh-hant/Loki-io-performance-tunning", "Loki configuration tuning")).
             ],
-            [Co-maintained the organization-wide #underline(link("https://engineering.linecorp.com/en/blog/terraform-for-verda", "internal Terraform provider Terda")) and its community as part of a volunteer group. Pioneered Terda adoption at LINE Taiwan and actively advocated for Terraform usage.
+            [
+              Co-maintained the organization-wide #underline(link("https://engineering.linecorp.com/en/blog/terraform-for-verda", "internal Terraform provider Terda")) and its community as part of a volunteer group. Pioneered Terda adoption at LINE Taiwan and actively advocated for Terraform usage.
             ],
-            [#underline(link("https://techblog.lycorp.co.jp/zh-hant/grafana-alloy-best-practice", "Implemented a Grafana Alloy gateway")) to distribute large volume client-side telemetry data sent by Faro SDK, enabling real user monitoring (RUM) and correlating frontend apps with existing observability solutions.
+            [
+              #underline(link("https://techblog.lycorp.co.jp/zh-hant/grafana-alloy-best-practice", "Implemented a Grafana Alloy gateway")) to distribute large volume client-side telemetry data sent by Faro SDK, enabling real user monitoring (RUM) and correlating frontend apps with existing observability solutions.
             ],
             [Created automation tools, including a Slack workflow automation framework and GitHub Actions, to improve operational efficiency and quality.
             ],
@@ -92,7 +101,8 @@
             ],
             // [Managed Kubernetes administration and migration for *8 clusters* (*60+ nodes*) with *95%* and *99%* SLA.
             // ],
-            [Adopted automation tools to construct *production-grade* and *GPU-accelerated* Kubernetes clusters, contributing to upstream #underline(link("https://github.com/kubernetes-sigs/kubespray", "Kubespray")) and backporting to existing playbooks.
+            [
+              Engineered *production-grade*, *GPU-accelerated* Kubernetes clusters for AI workloads; optimized hardware-software integration by contributing upstream fixes to #underline(link("https://github.com/kubernetes-sigs/kubespray", "Kubespray")) to improve cluster reliability
             ],
             // [Developed tools to automate daily routines, configuration management, application deployment, and system validation tasks, significantly reducing operational costs.
             // ],
