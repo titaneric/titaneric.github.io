@@ -1,0 +1,14 @@
+static/latex/resume.typ
+  h_b38ea7e1a183fd 50
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.3.4",
+  "base_commit_sha": "09983a510ad084c21e191658179769a78d678871",
+  "prompts": {},
+  "humans": {
+    "h_b38ea7e1a183fd": {
+      "author": "titaneric"
+    }
+  }
+}
