@@ -1,0 +1,479 @@
+<!DOCTYPE html>
+<html lang="en" class="dark light">
+
+    <head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="base" content="https:&#x2F;&#x2F;www.titaneric.com">
+
+    
+
+    
+    
+    
+        <title>
+            
+                Updating-a-Dictionary
+            
+        </title>
+
+        
+            <meta property="og:title"
+                  content="Updating-a-Dictionary" />
+        
+    
+
+    
+        
+    
+
+    
+        
+    
+
+    
+    <link rel="icon" type="image/png" href=https://www.titaneric.com/icons/favicon-16x16.png />
+
+    
+    
+        <link href=https://www.titaneric.com/fonts.css rel="stylesheet" />
+    
+
+    
+    
+
+    
+    
+        
+            
+            
+
+            <script defer
+                    src="/js/imamu.js"
+                    data-website-id="63f9d7c5-7c47-493b-af29-481374c7531c"
+                    data-host-url="https:&#x2F;&#x2F;api-gateway.umami.dev&#x2F;"></script>
+        
+
+        
+    
+
+    
+    <script defer src=https://www.titaneric.com/js/codeblock.js></script>
+
+    
+    <script defer src=https://www.titaneric.com/js/toc.js></script>
+
+    
+    
+        <script src=https://www.titaneric.com/js/note.js></script>
+    
+
+    
+        
+            <script>
+            MathJax = {
+              tex: {
+                inlineMath: [['$', '$'], ['\\(', '\\)']]
+              }
+            };
+            </script>
+        
+        <script type="text/javascript" id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js">
+        </script>
+    
+
+    
+    
+
+
+    
+    
+        <link rel="stylesheet"
+              type="text/css"
+              href="https://www.titaneric.com/theme/light.css" />
+        <link id="darkModeStyle"
+              rel="stylesheet"
+              type="text/css"
+              href="https://www.titaneric.com/theme/dark.css" />
+    
+
+    <!-- Set the correct theme in the script -->
+
+    
+        <script src=https://www.titaneric.com/js/themetoggle.js></script>
+
+        
+            <script>setTheme(getSavedTheme());</script>
+        
+    
+
+
+    <link rel="stylesheet"
+          type="text/css"
+          media="screen"
+          href="https://www.titaneric.com/main.css" />
+
+    
+
+    
+        <script defer
+                src="https://www.titaneric.com/js/searchElasticlunr.min.js?h=3626c0ef99daa745b31e"></script></head>
+
+
+    <body>
+        <div class="left-content">
+            
+            
+        </div>
+
+        <div class="content">
+            <nav>
+    <div class="left-nav">
+        
+            <a href=https:&#x2F;&#x2F;www.titaneric.com>titaneric</a>
+        
+
+
+        <div class="socials">
+            
+                <a rel="me" href="https:&#x2F;&#x2F;www.linkedin.com&#x2F;in&#x2F;chen-yi-huang&#x2F;" class="social">
+                    <img alt="linkedin" src="https://www.titaneric.com/icons/social/linkedin.svg">
+                </a>
+            
+                <a rel="me" href="https:&#x2F;&#x2F;github.com&#x2F;titaneric&#x2F;" class="social">
+                    <img alt="github" src="https://www.titaneric.com/icons/social/github.svg">
+                </a>
+            
+        </div>
+    </div>
+
+    <div class="right-nav">
+        
+            <a href=https://www.titaneric.com/posts style="margin-right: 0.5em">posts</a>
+        
+            <a href=https://www.titaneric.com/tags style="margin-right: 0.5em">tags</a>
+        
+            <a href=https://www.titaneric.com/categories style="margin-right: 0.5em">categories</a>
+        
+            <a href=https://www.titaneric.com/archive style="margin-right: 0.5em">archive</a>
+        
+            <a href=https://www.titaneric.com/pdfs/resume.pdf style="margin-right: 0.5em">about</a>
+        
+            <a href=https://www.titaneric.com/notes/index.html style="margin-right: 0.5em">notes</a>
+        
+
+        
+            <button id="search-button"
+                    class="search-button"
+                    title="$SHORTCUT to open search">
+                <img src="https://www.titaneric.com/icons/search.svg"
+                    alt="Search"
+                    class="search-icon">
+            </button>
+
+            <div id="searchModal"
+                class="search-modal js"
+                role="dialog"
+                aria-labelledby="modalTitle">
+                <div id="modal-content">
+                    <h1 id="modalTitle" class="page-header">Search</h1>
+                    <div id="searchBar">
+                        <input id="searchInput"
+                            role="combobox"
+                            autocomplete="off"
+                            spellcheck="false"
+                            aria-expanded="false"
+                            aria-controls="results-container"
+                            placeholder="Search..." />
+                        <button id="clear-search" class="clear-button" title="Clear search">
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 -960 960 960">
+                                <path d="m256-200-56-56 224-224-224-224 56-56 224 224 224-224 56 56-224 224 224 224-56 56-224-224-224 224Z" />
+                            </svg>
+                        </button>
+                    </div>
+                    <div id="results-container">
+                        <div id="results-info">
+                            <span id="zero_results" style="display: none;">No results</span>
+                            <span id="one_result" style="display: none;">1 result</span>
+                            <span id="many_results" style="display: none;">$NUMBER results</span>
+                        </div>
+                        <div id="results" role="listbox"></div>
+                    </div>
+                </div>
+            </div>
+        
+
+        
+            <a id="dark-mode-toggle"
+            onclick="toggleTheme(); event.preventDefault();"
+            href="#">
+                <img src="https://www.titaneric.com/icons/sun.svg"
+                    id="sun-icon"
+                    style="filter: invert(1)"
+                    alt="Light" />
+                <img src=https://www.titaneric.com/icons/moon.svg id="moon-icon" alt="Dark" />
+            </a>
+
+            <!-- Initialize the theme toggle icons -->
+            <script>updateItemToggleTheme()</script>
+        
+    </div>
+</nav>
+
+
+            
+            
+    
+<div class="visible-element-observer-root" data-selector="main article p">
+    <main>
+        <article>
+            <div class="title">
+                
+                
+    
+    <div class="page-header">
+        Updating-a-Dictionary
+    </div>
+    
+
+
+                <div class="meta">
+                    
+                        Posted on <time>2019-02-17</time>
+                    
+
+
+                    
+
+                    
+
+                    
+
+                    
+                    
+                        
+                        
+                            
+                        
+
+                        
+                            
+                            :: <a href="https:&#x2F;&#x2F;github.com&#x2F;titaneric&#x2F;titaneric.github.io&#x2F;tree&#x2F;master&#x2F;content&#x2F;posts&#x2F;Updating-a-Dictionary.md" target="_blank" rel="noopener noreferrer">Source Code</a>
+                        
+                    
+
+                    
+                    
+
+                    
+                    
+                        <span class="tags-label"> :: </span>
+                        <span class="tags">
+                                <a href="https://www.titaneric.com/tags/problem/"
+                                   class="post-tag">problem</a>
+                            
+                                <a href="https://www.titaneric.com/tags/c/"
+                                   class="post-tag">c++</a>
+                            
+                        </span>
+                    
+
+                    
+
+                </div>
+            </div>
+
+            
+
+            <section class="body">
+                <h1 id="updating-a-dictionary"><a class="zola-anchor" href="#updating-a-dictionary" aria-label="Anchor link for: updating-a-dictionary"><a rel="noreferrer" href="https://uva.onlinejudge.org/index.php?option=com_onlinejudge&amp;Itemid=8&amp;page=show_problem&amp;problem=3948">Updating a Dictionary</a></a></h1>
+<h2 id="solution"><a class="zola-anchor" href="#solution" aria-label="Anchor link for: solution">Solution</a></h2>
+<ol>
+<li>Use the regex to parse key, value.</li>
+<li>Save the parsed keys, values to real map.</li>
+<li>Compare two maps.
+<ol>
+<li>Use the overloading = operator to compare if two maps have no difference.</li>
+<li>The intersection between current map's keys and previous map's keys is possible the edit one or equal one.</li>
+<li>The difference between current map and intersection mentioned at 3.2 is the new one.</li>
+<li>The difference between previous map and intersection mentioned at 3.2 is the delete one.</li>
+<li>At last, filter the keys that corresponding value of current map and previous map are not the same. That is the edit one.</li>
+</ol>
+</li>
+</ol>
+<h2 id="what-i-learn"><a class="zola-anchor" href="#what-i-learn" aria-label="Anchor link for: what-i-learn">What I learn</a></h2>
+<ol>
+<li>Use the regex lib at C++ for the first time.</li>
+<li>Practice the C++ 11. E.g., copy_if, lambda.</li>
+</ol>
+<h2 id="code"><a class="zola-anchor" href="#code" aria-label="Anchor link for: code">Code</a></h2>
+<pre data-lang="c++" style="background-color:#fafafa;color:#61676c;" class="language-c++ "><code class="language-c++" data-lang="c++"><span style="color:#fa6e32;">#include </span><span style="color:#86b300;">&lt;iostream&gt;
+</span><span style="color:#fa6e32;">#include </span><span style="color:#86b300;">&lt;map&gt;
+</span><span style="color:#fa6e32;">#include </span><span style="color:#86b300;">&lt;algorithm&gt;
+</span><span style="color:#fa6e32;">#include </span><span style="color:#86b300;">&lt;string&gt;
+</span><span style="color:#fa6e32;">#include </span><span style="color:#86b300;">&lt;regex&gt;
+</span><span style="color:#fa6e32;">#include </span><span style="color:#86b300;">&lt;vector&gt;
+</span><span style="color:#fa6e32;">#include </span><span style="color:#86b300;">&lt;set&gt;
+</span><span style="color:#fa6e32;">#include </span><span style="color:#86b300;">&lt;iterator&gt;
+</span><span>
+</span><span style="color:#fa6e32;">using namespace</span><span> std</span><span style="color:#61676ccc;">;
+</span><span>
+</span><span>regex </span><span style="color:#f29718;">key_regex</span><span>(</span><span style="color:#86b300;">&quot;([a-z]+)&quot;</span><span>)</span><span style="color:#61676ccc;">;
+</span><span>regex </span><span style="color:#f29718;">value_regex</span><span>(</span><span style="color:#86b300;">&quot;([0-9]+)&quot;</span><span>)</span><span style="color:#61676ccc;">;
+</span><span>
+</span><span style="color:#fa6e32;">void </span><span style="color:#f29718;">parse2Dict</span><span>(string </span><span style="color:#ed9366;">&amp;</span><span style="color:#ff8f40;">line</span><span style="color:#61676ccc;">,</span><span> map&lt;string</span><span style="color:#61676ccc;">,</span><span> string&gt; </span><span style="color:#ed9366;">&amp;</span><span style="color:#ff8f40;">dict</span><span>)
+</span><span>{
+</span><span>    </span><span style="color:#fa6e32;">auto</span><span> key_begin </span><span style="color:#ed9366;">= </span><span style="color:#f29718;">sregex_iterator</span><span>(line</span><span style="color:#ed9366;">.</span><span style="color:#f29718;">begin</span><span>()</span><span style="color:#61676ccc;">,</span><span> line</span><span style="color:#ed9366;">.</span><span style="color:#f29718;">end</span><span>()</span><span style="color:#61676ccc;">,</span><span> key_regex)</span><span style="color:#61676ccc;">;
+</span><span>    </span><span style="color:#fa6e32;">auto</span><span> key_end </span><span style="color:#ed9366;">= </span><span style="color:#f29718;">sregex_iterator</span><span>()</span><span style="color:#61676ccc;">;
+</span><span>
+</span><span>    </span><span style="color:#fa6e32;">auto</span><span> value_begin </span><span style="color:#ed9366;">= </span><span style="color:#f29718;">sregex_iterator</span><span>(line</span><span style="color:#ed9366;">.</span><span style="color:#f29718;">begin</span><span>()</span><span style="color:#61676ccc;">,</span><span> line</span><span style="color:#ed9366;">.</span><span style="color:#f29718;">end</span><span>()</span><span style="color:#61676ccc;">,</span><span> value_regex)</span><span style="color:#61676ccc;">;
+</span><span>    </span><span style="color:#fa6e32;">auto</span><span> value_end </span><span style="color:#ed9366;">= </span><span style="color:#f29718;">sregex_iterator</span><span>()</span><span style="color:#61676ccc;">;
+</span><span>    </span><span style="color:#fa6e32;">for </span><span>(</span><span style="color:#fa6e32;">auto</span><span> k </span><span style="color:#ed9366;">=</span><span> key_begin</span><span style="color:#61676ccc;">,</span><span> v </span><span style="color:#ed9366;">=</span><span> value_begin</span><span style="color:#61676ccc;">;</span><span> k </span><span style="color:#ed9366;">!=</span><span> key_end </span><span style="color:#ed9366;">&amp;&amp;</span><span> v </span><span style="color:#ed9366;">!=</span><span> value_end</span><span style="color:#61676ccc;">; </span><span style="color:#ed9366;">++</span><span>k</span><span style="color:#61676ccc;">, </span><span style="color:#ed9366;">++</span><span>v)
+</span><span>    {
+</span><span>        dict[k</span><span style="color:#ed9366;">-&gt;</span><span style="color:#f29718;">str</span><span>()] </span><span style="color:#ed9366;">=</span><span> v</span><span style="color:#ed9366;">-&gt;</span><span style="color:#f29718;">str</span><span>()</span><span style="color:#61676ccc;">;
+</span><span>    }
+</span><span>}
+</span><span style="color:#fa6e32;">void </span><span style="color:#f29718;">output</span><span>(</span><span style="color:#fa6e32;">char </span><span style="color:#ff8f40;">op</span><span style="color:#61676ccc;">,</span><span> set&lt;string&gt; </span><span style="color:#ed9366;">&amp;</span><span style="color:#ff8f40;">target</span><span>)
+</span><span>{
+</span><span>    vector&lt;string&gt; </span><span style="color:#f29718;">target_vec</span><span>(target</span><span style="color:#ed9366;">.</span><span style="color:#f29718;">begin</span><span>()</span><span style="color:#61676ccc;">,</span><span> target</span><span style="color:#ed9366;">.</span><span style="color:#f29718;">end</span><span>())</span><span style="color:#61676ccc;">;
+</span><span>    cout </span><span style="color:#ed9366;">&lt;&lt;</span><span> op</span><span style="color:#61676ccc;">;
+</span><span>    </span><span style="color:#fa6e32;">for </span><span>(</span><span style="color:#fa6e32;">auto</span><span> k </span><span style="color:#ed9366;">:</span><span> target_vec)
+</span><span>    {
+</span><span>        cout </span><span style="color:#ed9366;">&lt;&lt;</span><span> k</span><span style="color:#61676ccc;">;
+</span><span>        </span><span style="color:#fa6e32;">if </span><span>(k </span><span style="color:#ed9366;">!=</span><span> target_vec</span><span style="color:#ed9366;">.</span><span style="color:#f29718;">back</span><span>())
+</span><span>            cout </span><span style="color:#ed9366;">&lt;&lt; </span><span style="color:#86b300;">&quot;,&quot;</span><span style="color:#61676ccc;">;
+</span><span>    }
+</span><span>    cout </span><span style="color:#ed9366;">&lt;&lt;</span><span> endl</span><span style="color:#61676ccc;">;
+</span><span>}
+</span><span style="color:#fa6e32;">void </span><span style="color:#f29718;">compareDict</span><span>(map&lt;string</span><span style="color:#61676ccc;">,</span><span> string&gt; </span><span style="color:#ed9366;">&amp;</span><span style="color:#ff8f40;">previous</span><span style="color:#61676ccc;">,</span><span> map&lt;string</span><span style="color:#61676ccc;">,</span><span> string&gt; </span><span style="color:#ed9366;">&amp;</span><span style="color:#ff8f40;">current</span><span>)
+</span><span>{
+</span><span>    </span><span style="color:#fa6e32;">if </span><span>(previous </span><span style="color:#ed9366;">==</span><span> current)
+</span><span>    {
+</span><span>        </span><span style="color:#f07171;">printf</span><span>(</span><span style="color:#86b300;">&quot;No changes</span><span style="color:#4cbf99;">\n</span><span style="color:#86b300;">&quot;</span><span>)</span><span style="color:#61676ccc;">;
+</span><span>    }
+</span><span>    </span><span style="color:#fa6e32;">else
+</span><span>    {
+</span><span>        set&lt;string&gt; previous_key</span><span style="color:#61676ccc;">;
+</span><span>        </span><span style="color:#fa6e32;">for </span><span>(</span><span style="color:#fa6e32;">auto</span><span> iter </span><span style="color:#ed9366;">:</span><span> previous)
+</span><span>        {
+</span><span>            previous_key</span><span style="color:#ed9366;">.</span><span style="color:#f29718;">insert</span><span>(iter</span><span style="color:#ed9366;">.</span><span>first)</span><span style="color:#61676ccc;">;
+</span><span>        }
+</span><span>
+</span><span>        set&lt;string&gt; current_key</span><span style="color:#61676ccc;">;
+</span><span>        </span><span style="color:#fa6e32;">for </span><span>(</span><span style="color:#fa6e32;">auto</span><span> iter </span><span style="color:#ed9366;">:</span><span> current)
+</span><span>        {
+</span><span>            current_key</span><span style="color:#ed9366;">.</span><span style="color:#f29718;">insert</span><span>(iter</span><span style="color:#ed9366;">.</span><span>first)</span><span style="color:#61676ccc;">;
+</span><span>        }
+</span><span>
+</span><span>        </span><span style="font-style:italic;color:#abb0b6;">// *
+</span><span>        set&lt;string&gt; possible_star</span><span style="color:#61676ccc;">;
+</span><span>        </span><span style="color:#f29718;">set_intersection</span><span>(current_key</span><span style="color:#ed9366;">.</span><span style="color:#f29718;">begin</span><span>()</span><span style="color:#61676ccc;">,</span><span> current_key</span><span style="color:#ed9366;">.</span><span style="color:#f29718;">end</span><span>()</span><span style="color:#61676ccc;">,</span><span> previous_key</span><span style="color:#ed9366;">.</span><span style="color:#f29718;">begin</span><span>()</span><span style="color:#61676ccc;">,</span><span> previous_key</span><span style="color:#ed9366;">.</span><span style="color:#f29718;">end</span><span>()</span><span style="color:#61676ccc;">, </span><span style="color:#f29718;">inserter</span><span>(possible_star</span><span style="color:#61676ccc;">,</span><span> possible_star</span><span style="color:#ed9366;">.</span><span style="color:#f29718;">begin</span><span>()))</span><span style="color:#61676ccc;">;
+</span><span>
+</span><span>        </span><span style="font-style:italic;color:#abb0b6;">// +
+</span><span>        set&lt;string&gt; plus</span><span style="color:#61676ccc;">;
+</span><span>        </span><span style="color:#f29718;">set_difference</span><span>(current_key</span><span style="color:#ed9366;">.</span><span style="color:#f29718;">begin</span><span>()</span><span style="color:#61676ccc;">,</span><span> current_key</span><span style="color:#ed9366;">.</span><span style="color:#f29718;">end</span><span>()</span><span style="color:#61676ccc;">,</span><span> possible_star</span><span style="color:#ed9366;">.</span><span style="color:#f29718;">begin</span><span>()</span><span style="color:#61676ccc;">,</span><span> possible_star</span><span style="color:#ed9366;">.</span><span style="color:#f29718;">end</span><span>()</span><span style="color:#61676ccc;">, </span><span style="color:#f29718;">inserter</span><span>(plus</span><span style="color:#61676ccc;">,</span><span> plus</span><span style="color:#ed9366;">.</span><span style="color:#f29718;">begin</span><span>()))</span><span style="color:#61676ccc;">;
+</span><span>        </span><span style="color:#fa6e32;">if </span><span>(plus</span><span style="color:#ed9366;">.</span><span style="color:#f29718;">size</span><span>())
+</span><span>            </span><span style="color:#f29718;">output</span><span>(</span><span style="color:#86b300;">&#39;+&#39;</span><span style="color:#61676ccc;">,</span><span> plus)</span><span style="color:#61676ccc;">;
+</span><span>
+</span><span>        </span><span style="font-style:italic;color:#abb0b6;">// -
+</span><span>        set&lt;string&gt; minus</span><span style="color:#61676ccc;">;
+</span><span>        </span><span style="color:#f29718;">set_difference</span><span>(previous_key</span><span style="color:#ed9366;">.</span><span style="color:#f29718;">begin</span><span>()</span><span style="color:#61676ccc;">,</span><span> previous_key</span><span style="color:#ed9366;">.</span><span style="color:#f29718;">end</span><span>()</span><span style="color:#61676ccc;">,</span><span> possible_star</span><span style="color:#ed9366;">.</span><span style="color:#f29718;">begin</span><span>()</span><span style="color:#61676ccc;">,</span><span> possible_star</span><span style="color:#ed9366;">.</span><span style="color:#f29718;">end</span><span>()</span><span style="color:#61676ccc;">, </span><span style="color:#f29718;">inserter</span><span>(minus</span><span style="color:#61676ccc;">,</span><span> minus</span><span style="color:#ed9366;">.</span><span style="color:#f29718;">begin</span><span>()))</span><span style="color:#61676ccc;">;
+</span><span>        </span><span style="color:#fa6e32;">if </span><span>(minus</span><span style="color:#ed9366;">.</span><span style="color:#f29718;">size</span><span>())
+</span><span>            </span><span style="color:#f29718;">output</span><span>(</span><span style="color:#86b300;">&#39;-&#39;</span><span style="color:#61676ccc;">,</span><span> minus)</span><span style="color:#61676ccc;">;
+</span><span>
+</span><span>        </span><span style="font-style:italic;color:#abb0b6;">// *
+</span><span>        set&lt;string&gt; star</span><span style="color:#61676ccc;">;
+</span><span>        </span><span style="color:#f29718;">copy_if</span><span>(possible_star</span><span style="color:#ed9366;">.</span><span style="color:#f29718;">begin</span><span>()</span><span style="color:#61676ccc;">,</span><span> possible_star</span><span style="color:#ed9366;">.</span><span style="color:#f29718;">end</span><span>()</span><span style="color:#61676ccc;">, </span><span style="color:#f29718;">inserter</span><span>(star</span><span style="color:#61676ccc;">,</span><span> star</span><span style="color:#ed9366;">.</span><span style="color:#f29718;">begin</span><span>())</span><span style="color:#61676ccc;">, </span><span>[</span><span style="color:#ed9366;">&amp;</span><span>](string k) { </span><span style="color:#fa6e32;">return</span><span> current[k] </span><span style="color:#ed9366;">!=</span><span> previous[k]</span><span style="color:#61676ccc;">; </span><span>})</span><span style="color:#61676ccc;">;
+</span><span>        </span><span style="color:#fa6e32;">if </span><span>(star</span><span style="color:#ed9366;">.</span><span style="color:#f29718;">size</span><span>())
+</span><span>            </span><span style="color:#f29718;">output</span><span>(</span><span style="color:#86b300;">&#39;*&#39;</span><span style="color:#61676ccc;">,</span><span> star)</span><span style="color:#61676ccc;">;
+</span><span>    }
+</span><span>}
+</span><span style="color:#fa6e32;">int </span><span style="color:#f29718;">main</span><span>()
+</span><span>{
+</span><span>    </span><span style="color:#fa6e32;">int</span><span> n</span><span style="color:#61676ccc;">;
+</span><span>    string line</span><span style="color:#61676ccc;">;
+</span><span>    </span><span style="color:#f07171;">scanf</span><span>(</span><span style="color:#86b300;">&quot;</span><span style="color:#ff8f40;">%d</span><span style="color:#86b300;">&quot;</span><span style="color:#61676ccc;">, </span><span style="color:#ed9366;">&amp;</span><span>n)</span><span style="color:#61676ccc;">;
+</span><span>    </span><span style="color:#f29718;">getline</span><span>(cin</span><span style="color:#61676ccc;">,</span><span> line)</span><span style="color:#61676ccc;">;
+</span><span>
+</span><span>    </span><span style="color:#fa6e32;">for </span><span>(</span><span style="color:#fa6e32;">int</span><span> i </span><span style="color:#ed9366;">= </span><span style="color:#ff8f40;">0</span><span style="color:#61676ccc;">;</span><span> i </span><span style="color:#ed9366;">&lt;</span><span> n</span><span style="color:#61676ccc;">;</span><span> i</span><span style="color:#ed9366;">++</span><span>)
+</span><span>    {
+</span><span>        </span><span style="color:#f29718;">getline</span><span>(cin</span><span style="color:#61676ccc;">,</span><span> line)</span><span style="color:#61676ccc;">;
+</span><span>        map&lt;string</span><span style="color:#61676ccc;">,</span><span> string&gt; previous_map</span><span style="color:#61676ccc;">;
+</span><span>        </span><span style="color:#f29718;">parse2Dict</span><span>(line</span><span style="color:#61676ccc;">,</span><span> previous_map)</span><span style="color:#61676ccc;">;
+</span><span>
+</span><span>        </span><span style="color:#f29718;">getline</span><span>(cin</span><span style="color:#61676ccc;">,</span><span> line)</span><span style="color:#61676ccc;">;
+</span><span>        map&lt;string</span><span style="color:#61676ccc;">,</span><span> string&gt; current_map</span><span style="color:#61676ccc;">;
+</span><span>        </span><span style="color:#f29718;">parse2Dict</span><span>(line</span><span style="color:#61676ccc;">,</span><span> current_map)</span><span style="color:#61676ccc;">;
+</span><span>
+</span><span>        </span><span style="color:#f29718;">compareDict</span><span>(previous_map</span><span style="color:#61676ccc;">,</span><span> current_map)</span><span style="color:#61676ccc;">;
+</span><span>        cout </span><span style="color:#ed9366;">&lt;&lt;</span><span> endl</span><span style="color:#61676ccc;">;
+</span><span>    }
+</span><span>
+</span><span>    </span><span style="color:#fa6e32;">return </span><span style="color:#ff8f40;">0</span><span style="color:#61676ccc;">;
+</span><span>}
+</span></code></pre>
+
+            </section>
+        </article>
+    </main>
+</div>
+
+
+
+            
+                
+            
+
+            
+        </div>
+
+        <div class="right-content">
+            
+    
+    
+        <div class="toc">
+    <div class="heading">Table of Contents</div>
+    <ul class="toc-list">
+        
+            <li class="parent">
+                
+                <a href="https://www.titaneric.com/posts/updating-a-dictionary/#updating-a-dictionary">Updating a Dictionary</a>
+
+                
+                    <ul>
+                    
+                        
+                        <li>
+                            <a href="https://www.titaneric.com/posts/updating-a-dictionary/#solution">Solution</a>
+                        </li>
+
+                        
+                    
+                        
+                        <li>
+                            <a href="https://www.titaneric.com/posts/updating-a-dictionary/#what-i-learn">What I learn</a>
+                        </li>
+
+                        
+                    
+                        
+                        <li>
+                            <a href="https://www.titaneric.com/posts/updating-a-dictionary/#code">Code</a>
+                        </li>
+
+                        
+                    
+                    </ul>
+                
+            </li>
+        
+    </ul>
+</div>
+
+    
+
+        </div>
+    </body>
+
+</html>

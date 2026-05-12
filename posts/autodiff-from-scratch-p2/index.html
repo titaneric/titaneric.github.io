@@ -1,0 +1,478 @@
+<!DOCTYPE html>
+<html lang="en" class="dark light">
+
+    <head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="base" content="https:&#x2F;&#x2F;www.titaneric.com">
+
+    
+
+    
+    
+    
+        <title>
+            
+                Build a DL Library from Scratch (Part2) - Backpropagation
+            
+        </title>
+
+        
+            <meta property="og:title"
+                  content="Build a DL Library from Scratch (Part2) - Backpropagation" />
+        
+    
+
+    
+        
+    
+
+    
+        
+    
+
+    
+    <link rel="icon" type="image/png" href=https://www.titaneric.com/icons/favicon-16x16.png />
+
+    
+    
+        <link href=https://www.titaneric.com/fonts.css rel="stylesheet" />
+    
+
+    
+    
+
+    
+    
+        
+            
+            
+
+            <script defer
+                    src="/js/imamu.js"
+                    data-website-id="63f9d7c5-7c47-493b-af29-481374c7531c"
+                    data-host-url="https:&#x2F;&#x2F;api-gateway.umami.dev&#x2F;"></script>
+        
+
+        
+    
+
+    
+    <script defer src=https://www.titaneric.com/js/codeblock.js></script>
+
+    
+    <script defer src=https://www.titaneric.com/js/toc.js></script>
+
+    
+    
+        <script src=https://www.titaneric.com/js/note.js></script>
+    
+
+    
+        
+            <script>
+            MathJax = {
+              tex: {
+                inlineMath: [['$', '$'], ['\\(', '\\)']]
+              }
+            };
+            </script>
+        
+        <script type="text/javascript" id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js">
+        </script>
+    
+
+    
+    
+
+
+    
+    
+        <link rel="stylesheet"
+              type="text/css"
+              href="https://www.titaneric.com/theme/light.css" />
+        <link id="darkModeStyle"
+              rel="stylesheet"
+              type="text/css"
+              href="https://www.titaneric.com/theme/dark.css" />
+    
+
+    <!-- Set the correct theme in the script -->
+
+    
+        <script src=https://www.titaneric.com/js/themetoggle.js></script>
+
+        
+            <script>setTheme(getSavedTheme());</script>
+        
+    
+
+
+    <link rel="stylesheet"
+          type="text/css"
+          media="screen"
+          href="https://www.titaneric.com/main.css" />
+
+    
+
+    
+        <script defer
+                src="https://www.titaneric.com/js/searchElasticlunr.min.js?h=3626c0ef99daa745b31e"></script></head>
+
+
+    <body>
+        <div class="left-content">
+            
+            
+        </div>
+
+        <div class="content">
+            <nav>
+    <div class="left-nav">
+        
+            <a href=https:&#x2F;&#x2F;www.titaneric.com>titaneric</a>
+        
+
+
+        <div class="socials">
+            
+                <a rel="me" href="https:&#x2F;&#x2F;www.linkedin.com&#x2F;in&#x2F;chen-yi-huang&#x2F;" class="social">
+                    <img alt="linkedin" src="https://www.titaneric.com/icons/social/linkedin.svg">
+                </a>
+            
+                <a rel="me" href="https:&#x2F;&#x2F;github.com&#x2F;titaneric&#x2F;" class="social">
+                    <img alt="github" src="https://www.titaneric.com/icons/social/github.svg">
+                </a>
+            
+        </div>
+    </div>
+
+    <div class="right-nav">
+        
+            <a href=https://www.titaneric.com/posts style="margin-right: 0.5em">posts</a>
+        
+            <a href=https://www.titaneric.com/tags style="margin-right: 0.5em">tags</a>
+        
+            <a href=https://www.titaneric.com/categories style="margin-right: 0.5em">categories</a>
+        
+            <a href=https://www.titaneric.com/archive style="margin-right: 0.5em">archive</a>
+        
+            <a href=https://www.titaneric.com/pdfs/resume.pdf style="margin-right: 0.5em">about</a>
+        
+            <a href=https://www.titaneric.com/notes/index.html style="margin-right: 0.5em">notes</a>
+        
+
+        
+            <button id="search-button"
+                    class="search-button"
+                    title="$SHORTCUT to open search">
+                <img src="https://www.titaneric.com/icons/search.svg"
+                    alt="Search"
+                    class="search-icon">
+            </button>
+
+            <div id="searchModal"
+                class="search-modal js"
+                role="dialog"
+                aria-labelledby="modalTitle">
+                <div id="modal-content">
+                    <h1 id="modalTitle" class="page-header">Search</h1>
+                    <div id="searchBar">
+                        <input id="searchInput"
+                            role="combobox"
+                            autocomplete="off"
+                            spellcheck="false"
+                            aria-expanded="false"
+                            aria-controls="results-container"
+                            placeholder="Search..." />
+                        <button id="clear-search" class="clear-button" title="Clear search">
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 -960 960 960">
+                                <path d="m256-200-56-56 224-224-224-224 56-56 224 224 224-224 56 56-224 224 224 224-56 56-224-224-224 224Z" />
+                            </svg>
+                        </button>
+                    </div>
+                    <div id="results-container">
+                        <div id="results-info">
+                            <span id="zero_results" style="display: none;">No results</span>
+                            <span id="one_result" style="display: none;">1 result</span>
+                            <span id="many_results" style="display: none;">$NUMBER results</span>
+                        </div>
+                        <div id="results" role="listbox"></div>
+                    </div>
+                </div>
+            </div>
+        
+
+        
+            <a id="dark-mode-toggle"
+            onclick="toggleTheme(); event.preventDefault();"
+            href="#">
+                <img src="https://www.titaneric.com/icons/sun.svg"
+                    id="sun-icon"
+                    style="filter: invert(1)"
+                    alt="Light" />
+                <img src=https://www.titaneric.com/icons/moon.svg id="moon-icon" alt="Dark" />
+            </a>
+
+            <!-- Initialize the theme toggle icons -->
+            <script>updateItemToggleTheme()</script>
+        
+    </div>
+</nav>
+
+
+            
+            
+    
+<div class="visible-element-observer-root" data-selector="main article p">
+    <main>
+        <article>
+            <div class="title">
+                
+                
+    
+    <div class="page-header">
+        Build a DL Library from Scratch (Part2) - Backpropagation
+    </div>
+    
+
+
+                <div class="meta">
+                    
+                        Posted on <time>2021-04-04</time>
+                    
+
+
+                    
+
+                    
+
+                    
+
+                    
+                    
+                        
+                        
+                            
+                        
+
+                        
+                            
+                            :: <a href="https:&#x2F;&#x2F;github.com&#x2F;titaneric&#x2F;titaneric.github.io&#x2F;tree&#x2F;master&#x2F;content&#x2F;posts&#x2F;autodiff from scratch p2.md" target="_blank" rel="noopener noreferrer">Source Code</a>
+                        
+                    
+
+                    
+                    
+
+                    
+                    
+                        <span class="tags-label"> :: </span>
+                        <span class="tags">
+                                <a href="https://www.titaneric.com/tags/deep-learning/"
+                                   class="post-tag">deep-learning</a>
+                            
+                        </span>
+                    
+
+                    
+
+                </div>
+            </div>
+
+            
+
+            <section class="body">
+                <h2 id="introduction"><a class="zola-anchor" href="#introduction" aria-label="Anchor link for: introduction">Introduction</a></h2>
+<p>Previously, I talked about my motivation and introduced some background including the computational graph and backpropagation algorithm. Let's move on to learn something new!</p>
+<h2 id="background"><a class="zola-anchor" href="#background" aria-label="Anchor link for: background">Background</a></h2>
+<h3 id="auto-differentiation"><a class="zola-anchor" href="#auto-differentiation" aria-label="Anchor link for: auto-differentiation">Auto-Differentiation</a></h3>
+<p>Equipped with chain rule and fundamental derivative, we could calculate the gradient of given function w.r.t. any variable by auto-differentiation.</p>
+<p>We may refresh our memory by reviewing the previous example again. Before that, we should introduce some terms used in this post.</p>
+<p><img src="/images/posts/autodiff-from-scratch-p2/autodiff-series-term.png" alt=" " /></p>
+<p>
+Given a function \(h = f(x,y)\), we know that \(x\) and \(y\) is the input for function \(f\), and the \(h\) is the result. This is the forward pass.
+</p>
+<p>
+When calculating the gradient of this function, we need backpropagation. Suppose that the loss \(L\) is the final result and the \(\frac{\partial{L}}{\partial{h}}\) is already calculated in the last node which is also called <b>upstream</b>.
+</p>
+<p>
+We may derive the gradient of function \(f\) w.r.t. input \(x\). Cause function \(f\) is the fundamental operation like multiplication, add or exponential. We could easily receive the derivative result \(\frac{\partial{h}}{\partial{x}}\) called <b>local gradient</b>.
+</p>
+<p>
+Finally, we have \(\frac{\partial{L}}{\partial{x}}\) called <b>downstream</b> by chain rule \(\frac{\partial{L}}{\partial{x}}=\frac{\partial{L}}{\partial{h}}\cdot\frac{\partial{h}}{\partial{x}}\). Downstream is the upstream to the next node, gradient is similar to water flow passing through each operation nodes to the derivative target.
+</p>
+We may re-visit the last example to illustrate the autodiff. We will step by step (or node by node) to derive the result.
+<p>
+Given a sigmoid function, We want to get the derivative of function \(y\) w.r.t. \(z\).
+\[y = \frac{1}{1 + e^{-z}}\]
+</p>
+<h4 id="reciprocal-operator"><a class="zola-anchor" href="#reciprocal-operator" aria-label="Anchor link for: reciprocal-operator">Reciprocal operator</a></h4>
+<p><img src="/images/posts/autodiff-from-scratch-p2/autodiff-series-sigmoid-reciprocal.png" alt=" " /></p>
+<p>⚠ <em><strong>Notice that upstream here is constant 1 for outermost operation (the closest one to output) in the computational graph. In fact, it is not 1, it is the tensor filled with scalar 1 which shape is equal to the output.</strong></em></p>
+<h4 id="add-operator"><a class="zola-anchor" href="#add-operator" aria-label="Anchor link for: add-operator">Add operator</a></h4>
+<p><img src="/images/posts/autodiff-from-scratch-p2/autodiff-series-sigmoid-add.png" alt=" " /></p>
+<h4 id="exponential-operator"><a class="zola-anchor" href="#exponential-operator" aria-label="Anchor link for: exponential-operator">Exponential operator</a></h4>
+<p><img src="/images/posts/autodiff-from-scratch-p2/autodiff-series-sigmoid-exp.png" alt=" " /></p>
+<h4 id="negative-operator"><a class="zola-anchor" href="#negative-operator" aria-label="Anchor link for: negative-operator">Negative operator</a></h4>
+<p><img src="/images/posts/autodiff-from-scratch-p2/autodiff-series-sigmoid-neg.png" alt=" " /></p>
+<h4 id="validation"><a class="zola-anchor" href="#validation" aria-label="Anchor link for: validation">Validation</a></h4>
+<p>
+Downstream \(\frac{\partial{L}}{\partial{z}}=\frac{\partial{L}}{\partial{d}}=1 \cdot -1(1+e^{-z})^{-2}\cdot 1 \cdot e^{-z} \cdot -1\) is the final result we want. We could validate the result by numerical way that we learned in the Calculas class, which is
+\[f'(x) = \lim_{\epsilon\to 0} \frac{f(x + \epsilon) - f(x)}{\epsilon}\]
+</p>
+<p>⚠ <em><strong>Notice that this validation could validate almost any function which could be used in the unit test. This could be found in various deep learning frameworks.</strong></em></p>
+<p>
+We could feed \(z=0\) and \(\epsilon=0.01\) to original function \(f(z)=\frac{1}{1+e^{-z}}\).
+\[f(0)=\frac{1}{1+1}=\frac{1}{2}=0.5\]
+\[f(0+0.01)=\frac{1}{1+e^{-0.01}}\approx\frac{1}{1+0.99}\approx 0.5025\]
+\[f'(0)=\frac{f(0+0.01)-f(0)}{0.01}\approx\frac{0.5025-0.5}{0.01}=0.25\]
+</p>
+<p>
+Next, we feed \(z=0\) to \(\frac{\partial{L}}{\partial{z}}\) that we computed earlier,
+\[\frac{\partial{L}}{\partial{z}}\Bigr|_{\substack{z=0}}=1 \cdot -1(1+e^{0})^{-2}\cdot 1 \cdot e^{0} \cdot -1=1 \cdot -1(2)^{-2} \cdot 1 \cdot -1 = 0.25\]
+We find that both result is identical, which means that our auto-differentiation is correct!
+<p>We almost finish, but what if the operation has multiple upstreams? We need the multivariate chain rule.</p>
+</p>
+<h3 id="multivariate-chain-rule"><a class="zola-anchor" href="#multivariate-chain-rule" aria-label="Anchor link for: multivariate-chain-rule">Multivariate chain rule</a></h3>
+<p>
+Consider a function \(f\), which is composed by another two function \(g(x)\) and \(h(x)\), corresponding \(f'(x)\) is
+\[\frac{\partial{f}}{\partial{x}}=\frac{\partial{f}}{\partial{h}}\cdot\frac{\partial{h}}{\partial{x}}+\frac{\partial{f}}{\partial{g}}\cdot\frac{\partial{g}}{\partial{x}}\]
+</p>
+<p>
+Again, give a tiny example which is commonly seen in the neural networks, a subset of linear layer \(f(x)=g(x)+h(x)\) where \(h(x)=w_1x\) and \(g(x)=w_2x\). The computational graph of this function is similar to the following. We could see that x has two upstreams, which could leverage multivariate chain rule to derive the derivative.
+</p>
+<p><img src="/images/posts/autodiff-from-scratch-p2/autodiff-series-multivariate.png" alt=" " /></p>
+<h4 id="add-operator-1"><a class="zola-anchor" href="#add-operator-1" aria-label="Anchor link for: add-operator-1">Add operator</a></h4>
+<p><img src="/images/posts/autodiff-from-scratch-p2/autodiff-series-multivariate-add.png" alt=" " /></p>
+<h4 id="mul-operator"><a class="zola-anchor" href="#mul-operator" aria-label="Anchor link for: mul-operator">Mul operator</a></h4>
+<p><img src="/images/posts/autodiff-from-scratch-p2/autodiff-series-multivariate-mul.png" alt=" " /></p>
+<h4 id="validation-1"><a class="zola-anchor" href="#validation-1" aria-label="Anchor link for: validation-1">Validation</a></h4>
+<p>
+In the Mul operator, we have \(\frac{\partial{f}}{\partial{x}}=w_1+w_2\). Likewise, we could validate it in the numerical manner.
+</p>
+<p>
+Let \(w_1=2, w_2=3, x=0\) and \(\epsilon=0.01\), we have
+\[f(0)=0\]
+\[f(0.01)=0.01\cdot2+0.01\cdot0.01=0.05\]
+\[f'(0)=\frac{0.05-0}{0.01}=5\]
+</p>
+<p>
+In our result, we have
+\[\frac{\partial{f}}{\partial{x}}\Bigr|_{\substack{x=0}}=2+3=5\]
+<p>Again, they are identical which proves that the gradient is correct!</p>
+</p>
+<h2 id="conclusion"><a class="zola-anchor" href="#conclusion" aria-label="Anchor link for: conclusion">Conclusion</a></h2>
+<p>In this post, we take lots of time to derive the gradient by auto-differentiation and introduce the concepts called multivariate chain rule, I hope that the reader can see the beauty of autodiff and start to think about how autodiff could be implemented because we will implement it in the following series which may take some posts to illustrate the idea. Please stay tuned and we will get back!</p>
+
+            </section>
+        </article>
+    </main>
+</div>
+
+
+
+            
+                
+            
+
+            
+        </div>
+
+        <div class="right-content">
+            
+    
+    
+        <div class="toc">
+    <div class="heading">Table of Contents</div>
+    <ul class="toc-list">
+        
+            <li class="parent">
+                
+                <a href="https://www.titaneric.com/posts/autodiff-from-scratch-p2/#introduction">Introduction</a>
+
+                
+            </li>
+        
+            <li class="parent">
+                
+                <a href="https://www.titaneric.com/posts/autodiff-from-scratch-p2/#background">Background</a>
+
+                
+                    <ul>
+                    
+                        
+                        <li>
+                            <a href="https://www.titaneric.com/posts/autodiff-from-scratch-p2/#auto-differentiation">Auto-Differentiation</a>
+                        </li>
+
+                        
+                            <ul>
+                                
+                                    <li>
+                                        <a href="https://www.titaneric.com/posts/autodiff-from-scratch-p2/#reciprocal-operator">Reciprocal operator</a>
+                                    </li>
+                                
+                                    <li>
+                                        <a href="https://www.titaneric.com/posts/autodiff-from-scratch-p2/#add-operator">Add operator</a>
+                                    </li>
+                                
+                                    <li>
+                                        <a href="https://www.titaneric.com/posts/autodiff-from-scratch-p2/#exponential-operator">Exponential operator</a>
+                                    </li>
+                                
+                                    <li>
+                                        <a href="https://www.titaneric.com/posts/autodiff-from-scratch-p2/#negative-operator">Negative operator</a>
+                                    </li>
+                                
+                                    <li>
+                                        <a href="https://www.titaneric.com/posts/autodiff-from-scratch-p2/#validation">Validation</a>
+                                    </li>
+                                
+                            </ul>
+                        
+                    
+                        
+                        <li>
+                            <a href="https://www.titaneric.com/posts/autodiff-from-scratch-p2/#multivariate-chain-rule">Multivariate chain rule</a>
+                        </li>
+
+                        
+                            <ul>
+                                
+                                    <li>
+                                        <a href="https://www.titaneric.com/posts/autodiff-from-scratch-p2/#add-operator-1">Add operator</a>
+                                    </li>
+                                
+                                    <li>
+                                        <a href="https://www.titaneric.com/posts/autodiff-from-scratch-p2/#mul-operator">Mul operator</a>
+                                    </li>
+                                
+                                    <li>
+                                        <a href="https://www.titaneric.com/posts/autodiff-from-scratch-p2/#validation-1">Validation</a>
+                                    </li>
+                                
+                            </ul>
+                        
+                    
+                    </ul>
+                
+            </li>
+        
+            <li class="parent">
+                
+                <a href="https://www.titaneric.com/posts/autodiff-from-scratch-p2/#conclusion">Conclusion</a>
+
+                
+            </li>
+        
+    </ul>
+</div>
+
+    
+
+        </div>
+    </body>
+
+</html>

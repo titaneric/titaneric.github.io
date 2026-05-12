@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rss xmlns:atom="http://www.w3.org/2005/Atom" version="2.0">
+    <channel>
+      <title>titaneric - python</title>
+      <link>https://www.titaneric.com</link>
+      <description></description>
+      <generator>Zola</generator>
+      <language>en</language>
+      <atom:link href="https://www.titaneric.com/tags/python/rss.xml" rel="self" type="application/rss+xml"/>
+      <lastBuildDate>Thu, 31 Jan 2019 00:00:00 +0000</lastBuildDate>
+      <item>
+          <title>Find-Minimum-in-Rotated-Sorted-Array</title>
+          <pubDate>Thu, 31 Jan 2019 00:00:00 +0000</pubDate>
+          <author>Unknown</author>
+          <link>https://www.titaneric.com/posts/find-minimum-in-rotated-sorted-array/</link>
+          <guid>https://www.titaneric.com/posts/find-minimum-in-rotated-sorted-array/</guid>
+          <description xml:base="https://www.titaneric.com/posts/find-minimum-in-rotated-sorted-array/">&lt;h1 id=&quot;find-minimum-in-rotated-sorted-array-153&quot;&gt;&lt;a class=&quot;zola-anchor&quot; href=&quot;#find-minimum-in-rotated-sorted-array-153&quot; aria-label=&quot;Anchor link for: find-minimum-in-rotated-sorted-array-153&quot;&gt;&lt;a rel=&quot;noreferrer&quot; href=&quot;https:&#x2F;&#x2F;leetcode.com&#x2F;problems&#x2F;find-minimum-in-rotated-sorted-array&#x2F;&quot;&gt;Find Minimum in Rotated Sorted Array (#153)&lt;&#x2F;a&gt;&lt;&#x2F;a&gt;&lt;&#x2F;h1&gt;
+&lt;h2 id=&quot;description&quot;&gt;&lt;a class=&quot;zola-anchor&quot; href=&quot;#description&quot; aria-label=&quot;Anchor link for: description&quot;&gt;Description&lt;&#x2F;a&gt;&lt;&#x2F;h2&gt;
+&lt;p&gt;Suppose an array sorted in ascending order is rotated at some pivot unknown to you beforehand.
+(i.e.,  &lt;code&gt;[0,1,2,4,5,6,7]&lt;&#x2F;code&gt; might become  &lt;code&gt;[4,5,6,7,0,1,2]&lt;&#x2F;code&gt;).
+Find the minimum element.
+You may assume no duplicate exists in the array.&lt;&#x2F;p&gt;
+&lt;hr &#x2F;&gt;
+&lt;h2 id=&quot;example&quot;&gt;&lt;a class=&quot;zola-anchor&quot; href=&quot;#example&quot; aria-label=&quot;Anchor link for: example&quot;&gt;Example&lt;&#x2F;a&gt;&lt;&#x2F;h2&gt;
+&lt;h3 id=&quot;example-1&quot;&gt;&lt;a class=&quot;zola-anchor&quot; href=&quot;#example-1&quot; aria-label=&quot;Anchor link for: example-1&quot;&gt;Example 1&lt;&#x2F;a&gt;&lt;&#x2F;h3&gt;
+&lt;pre style=&quot;background-color:#fafafa;color:#61676c;&quot;&gt;&lt;code&gt;&lt;span&gt;Input: [3, 4, 5, 1, 2]
+&lt;&#x2F;span&gt;&lt;span&gt;Output: 1
+&lt;&#x2F;span&gt;&lt;&#x2F;code&gt;&lt;&#x2F;pre&gt;
+&lt;h3 id=&quot;example-2&quot;&gt;&lt;a class=&quot;zola-anchor&quot; href=&quot;#example-2&quot; aria-label=&quot;Anchor link for: example-2&quot;&gt;Example 2&lt;&#x2F;a&gt;&lt;&#x2F;h3&gt;
+&lt;pre style=&quot;background-color:#fafafa;color:#61676c;&quot;&gt;&lt;code&gt;&lt;span&gt;Input: [4, 5, 6, 7, 0, 1, 2]
+&lt;&#x2F;span&gt;&lt;span&gt;Output: 0
+&lt;&#x2F;span&gt;&lt;&#x2F;code&gt;&lt;&#x2F;pre&gt;
+&lt;hr &#x2F;&gt;
+&lt;h2 id=&quot;solution&quot;&gt;&lt;a class=&quot;zola-anchor&quot; href=&quot;#solution&quot; aria-label=&quot;Anchor link for: solution&quot;&gt;Solution&lt;&#x2F;a&gt;&lt;&#x2F;h2&gt;
+&lt;h3 id=&quot;solution-i-reference&quot;&gt;&lt;a class=&quot;zola-anchor&quot; href=&quot;#solution-i-reference&quot; aria-label=&quot;Anchor link for: solution-i-reference&quot;&gt;Solution I (&lt;a rel=&quot;noreferrer&quot; href=&quot;https:&#x2F;&#x2F;leetcode.com&#x2F;articles&#x2F;find-minimum-in-rotated-sorted-array&#x2F;&quot;&gt;Reference&lt;&#x2F;a&gt;)&lt;&#x2F;a&gt;&lt;&#x2F;h3&gt;
+&lt;h4 id=&quot;observation&quot;&gt;&lt;a class=&quot;zola-anchor&quot; href=&quot;#observation&quot; aria-label=&quot;Anchor link for: observation&quot;&gt;Observation&lt;&#x2F;a&gt;&lt;&#x2F;h4&gt;
+&lt;p&gt;If the sorted array is not rotated, the last element &lt;em&gt;&lt;strong&gt;always&lt;&#x2F;strong&gt;&lt;&#x2F;em&gt; larger than first element.&lt;&#x2F;p&gt;
+&lt;pre style=&quot;background-color:#fafafa;color:#61676c;&quot;&gt;&lt;code&gt;&lt;span&gt;[2, 3, 4, 5, 6, 7]
+&lt;&#x2F;span&gt;&lt;span&gt; ^              ^
+&lt;&#x2F;span&gt;&lt;&#x2F;code&gt;&lt;&#x2F;pre&gt;
+&lt;p&gt;However, if the sorted array is rotated, we want to find the &lt;code&gt;Infection Point&lt;&#x2F;code&gt; (i.e. the point whose left element is maximum and right element is minimum).&lt;&#x2F;p&gt;
+&lt;pre style=&quot;background-color:#fafafa;color:#61676c;&quot;&gt;&lt;code&gt;&lt;span&gt;[4, 5, 6, 7, 2, 3]
+&lt;&#x2F;span&gt;&lt;span&gt;           ^
+&lt;&#x2F;span&gt;&lt;&#x2F;code&gt;&lt;&#x2F;pre&gt;
+&lt;p&gt;Furthermore,&lt;&#x2F;p&gt;
+&lt;ul&gt;
+&lt;li&gt;All the elements to the left of inflection point &amp;gt; first element of the array.&lt;&#x2F;li&gt;
+&lt;li&gt;All the elements to the right of inflection point &amp;lt; first element of the array.&lt;&#x2F;li&gt;
+&lt;&#x2F;ul&gt;
+&lt;hr &#x2F;&gt;
+&lt;h4 id=&quot;algorithm&quot;&gt;&lt;a class=&quot;zola-anchor&quot; href=&quot;#algorithm&quot; aria-label=&quot;Anchor link for: algorithm&quot;&gt;Algorithm&lt;&#x2F;a&gt;&lt;&#x2F;h4&gt;
+&lt;p&gt;&lt;img src=&quot;https:&#x2F;&#x2F;i.imgur.com&#x2F;goTfIbm.png&quot; alt=&quot;&quot; &#x2F;&gt;&lt;&#x2F;p&gt;
+&lt;pre style=&quot;background-color:#fafafa;color:#61676c;&quot;&gt;&lt;code&gt;&lt;span&gt;[5, 1, 2, 4, 5]
+&lt;&#x2F;span&gt;&lt;span&gt; l     m     r
+&lt;&#x2F;span&gt;&lt;span&gt; &amp;lt;-----
+&lt;&#x2F;span&gt;&lt;span&gt;
+&lt;&#x2F;span&gt;&lt;span&gt;[5, 1, 2, 4, 5]
+&lt;&#x2F;span&gt;&lt;span&gt; l  r
+&lt;&#x2F;span&gt;&lt;span&gt; m
+&lt;&#x2F;span&gt;&lt;&#x2F;code&gt;&lt;&#x2F;pre&gt;
+&lt;pre style=&quot;background-color:#fafafa;color:#61676c;&quot;&gt;&lt;code&gt;&lt;span&gt;[4, 5, 6, 7, 2, 3]
+&lt;&#x2F;span&gt;&lt;span&gt; l     m        r
+&lt;&#x2F;span&gt;&lt;span&gt;         -------&amp;gt;
+&lt;&#x2F;span&gt;&lt;span&gt;
+&lt;&#x2F;span&gt;&lt;span&gt;[4, 5, 6, 7, 2, 3]
+&lt;&#x2F;span&gt;&lt;span&gt;          l  m  r
+&lt;&#x2F;span&gt;&lt;&#x2F;code&gt;&lt;&#x2F;pre&gt;
+&lt;p&gt;
+Time Complexity:\(O(log\,n)\),
+Space Complexity:\(O(1)\)
+&lt;&#x2F;p&gt;
+---
+&lt;h4 id=&quot;code&quot;&gt;&lt;a class=&quot;zola-anchor&quot; href=&quot;#code&quot; aria-label=&quot;Anchor link for: code&quot;&gt;Code&lt;&#x2F;a&gt;&lt;&#x2F;h4&gt;
+&lt;pre data-lang=&quot;python&quot; style=&quot;background-color:#fafafa;color:#61676c;&quot; class=&quot;language-python &quot;&gt;&lt;code class=&quot;language-python&quot; data-lang=&quot;python&quot;&gt;&lt;span style=&quot;color:#fa6e32;&quot;&gt;class &lt;&#x2F;span&gt;&lt;span style=&quot;color:#399ee6;&quot;&gt;Solution&lt;&#x2F;span&gt;&lt;span&gt;:
+&lt;&#x2F;span&gt;&lt;span&gt;    &lt;&#x2F;span&gt;&lt;span style=&quot;color:#fa6e32;&quot;&gt;def &lt;&#x2F;span&gt;&lt;span style=&quot;color:#f29718;&quot;&gt;findMin&lt;&#x2F;span&gt;&lt;span&gt;(&lt;&#x2F;span&gt;&lt;span style=&quot;color:#ff8f40;&quot;&gt;self&lt;&#x2F;span&gt;&lt;span style=&quot;color:#61676ccc;&quot;&gt;, &lt;&#x2F;span&gt;&lt;span style=&quot;color:#ff8f40;&quot;&gt;nums&lt;&#x2F;span&gt;&lt;span&gt;):
+&lt;&#x2F;span&gt;&lt;span&gt;        &lt;&#x2F;span&gt;&lt;span style=&quot;font-style:italic;color:#abb0b6;&quot;&gt;&amp;quot;&amp;quot;&amp;quot;
+&lt;&#x2F;span&gt;&lt;span style=&quot;font-style:italic;color:#abb0b6;&quot;&gt;        :type nums: List[int]
+&lt;&#x2F;span&gt;&lt;span style=&quot;font-style:italic;color:#abb0b6;&quot;&gt;        :rtype: int
+&lt;&#x2F;span&gt;&lt;span style=&quot;font-style:italic;color:#abb0b6;&quot;&gt;        &amp;quot;&amp;quot;&amp;quot;
+&lt;&#x2F;span&gt;&lt;span&gt;
+&lt;&#x2F;span&gt;&lt;span&gt;        &lt;&#x2F;span&gt;&lt;span style=&quot;color:#fa6e32;&quot;&gt;if &lt;&#x2F;span&gt;&lt;span style=&quot;color:#f07171;&quot;&gt;len&lt;&#x2F;span&gt;&lt;span&gt;(nums) &lt;&#x2F;span&gt;&lt;span style=&quot;color:#ed9366;&quot;&gt;== &lt;&#x2F;span&gt;&lt;span style=&quot;color:#ff8f40;&quot;&gt;1&lt;&#x2F;span&gt;&lt;span&gt;:
+&lt;&#x2F;span&gt;&lt;span&gt;            &lt;&#x2F;span&gt;&lt;span style=&quot;color:#fa6e32;&quot;&gt;return &lt;&#x2F;span&gt;&lt;span&gt;nums[&lt;&#x2F;span&gt;&lt;span style=&quot;color:#ff8f40;&quot;&gt;0&lt;&#x2F;span&gt;&lt;span&gt;]
+&lt;&#x2F;span&gt;&lt;span&gt;
+&lt;&#x2F;span&gt;&lt;span&gt;
+&lt;&#x2F;span&gt;&lt;span&gt;        l, h &lt;&#x2F;span&gt;&lt;span style=&quot;color:#ed9366;&quot;&gt;= &lt;&#x2F;span&gt;&lt;span style=&quot;color:#ff8f40;&quot;&gt;0&lt;&#x2F;span&gt;&lt;span&gt;, &lt;&#x2F;span&gt;&lt;span style=&quot;color:#f07171;&quot;&gt;len&lt;&#x2F;span&gt;&lt;span&gt;(nums) &lt;&#x2F;span&gt;&lt;span style=&quot;color:#ed9366;&quot;&gt;- &lt;&#x2F;span&gt;&lt;span style=&quot;color:#ff8f40;&quot;&gt;1
+&lt;&#x2F;span&gt;&lt;span&gt;
+&lt;&#x2F;span&gt;&lt;span&gt;        &lt;&#x2F;span&gt;&lt;span style=&quot;color:#fa6e32;&quot;&gt;if &lt;&#x2F;span&gt;&lt;span&gt;nums[h] &lt;&#x2F;span&gt;&lt;span style=&quot;color:#ed9366;&quot;&gt;&amp;gt; &lt;&#x2F;span&gt;&lt;span&gt;nums[l]:
+&lt;&#x2F;span&gt;&lt;span&gt;            &lt;&#x2F;span&gt;&lt;span style=&quot;color:#fa6e32;&quot;&gt;return &lt;&#x2F;span&gt;&lt;span&gt;nums[l]
+&lt;&#x2F;span&gt;&lt;span&gt;
+&lt;&#x2F;span&gt;&lt;span&gt;        &lt;&#x2F;span&gt;&lt;span style=&quot;color:#fa6e32;&quot;&gt;while &lt;&#x2F;span&gt;&lt;span&gt;l &lt;&#x2F;span&gt;&lt;span style=&quot;color:#ed9366;&quot;&gt;&amp;lt;= &lt;&#x2F;span&gt;&lt;span&gt;h:
+&lt;&#x2F;span&gt;&lt;span&gt;            m &lt;&#x2F;span&gt;&lt;span style=&quot;color:#ed9366;&quot;&gt;= &lt;&#x2F;span&gt;&lt;span&gt;l &lt;&#x2F;span&gt;&lt;span style=&quot;color:#ed9366;&quot;&gt;+ &lt;&#x2F;span&gt;&lt;span&gt;(h &lt;&#x2F;span&gt;&lt;span style=&quot;color:#ed9366;&quot;&gt;- &lt;&#x2F;span&gt;&lt;span&gt;l) &lt;&#x2F;span&gt;&lt;span style=&quot;color:#ed9366;&quot;&gt;&#x2F;&#x2F; &lt;&#x2F;span&gt;&lt;span style=&quot;color:#ff8f40;&quot;&gt;2
+&lt;&#x2F;span&gt;&lt;span&gt;            &lt;&#x2F;span&gt;&lt;span style=&quot;color:#fa6e32;&quot;&gt;if &lt;&#x2F;span&gt;&lt;span&gt;nums[m] &lt;&#x2F;span&gt;&lt;span style=&quot;color:#ed9366;&quot;&gt;&amp;gt; &lt;&#x2F;span&gt;&lt;span&gt;nums[m &lt;&#x2F;span&gt;&lt;span style=&quot;color:#ed9366;&quot;&gt;+ &lt;&#x2F;span&gt;&lt;span style=&quot;color:#ff8f40;&quot;&gt;1&lt;&#x2F;span&gt;&lt;span&gt;]:
+&lt;&#x2F;span&gt;&lt;span&gt;                &lt;&#x2F;span&gt;&lt;span style=&quot;color:#fa6e32;&quot;&gt;return &lt;&#x2F;span&gt;&lt;span&gt;nums[m &lt;&#x2F;span&gt;&lt;span style=&quot;color:#ed9366;&quot;&gt;+ &lt;&#x2F;span&gt;&lt;span style=&quot;color:#ff8f40;&quot;&gt;1&lt;&#x2F;span&gt;&lt;span&gt;]
+&lt;&#x2F;span&gt;&lt;span&gt;            &lt;&#x2F;span&gt;&lt;span style=&quot;color:#fa6e32;&quot;&gt;if &lt;&#x2F;span&gt;&lt;span&gt;nums[m &lt;&#x2F;span&gt;&lt;span style=&quot;color:#ed9366;&quot;&gt;- &lt;&#x2F;span&gt;&lt;span style=&quot;color:#ff8f40;&quot;&gt;1&lt;&#x2F;span&gt;&lt;span&gt;] &lt;&#x2F;span&gt;&lt;span style=&quot;color:#ed9366;&quot;&gt;&amp;gt; &lt;&#x2F;span&gt;&lt;span&gt;nums[m]:
+&lt;&#x2F;span&gt;&lt;span&gt;                &lt;&#x2F;span&gt;&lt;span style=&quot;color:#fa6e32;&quot;&gt;return &lt;&#x2F;span&gt;&lt;span&gt;nums[m]
+&lt;&#x2F;span&gt;&lt;span&gt;
+&lt;&#x2F;span&gt;&lt;span&gt;            &lt;&#x2F;span&gt;&lt;span style=&quot;color:#fa6e32;&quot;&gt;if &lt;&#x2F;span&gt;&lt;span&gt;nums[m] &lt;&#x2F;span&gt;&lt;span style=&quot;color:#ed9366;&quot;&gt;&amp;gt; &lt;&#x2F;span&gt;&lt;span&gt;nums[&lt;&#x2F;span&gt;&lt;span style=&quot;color:#ff8f40;&quot;&gt;0&lt;&#x2F;span&gt;&lt;span&gt;]:
+&lt;&#x2F;span&gt;&lt;span&gt;                l &lt;&#x2F;span&gt;&lt;span style=&quot;color:#ed9366;&quot;&gt;= &lt;&#x2F;span&gt;&lt;span&gt;m &lt;&#x2F;span&gt;&lt;span style=&quot;color:#ed9366;&quot;&gt;+ &lt;&#x2F;span&gt;&lt;span style=&quot;color:#ff8f40;&quot;&gt;1
+&lt;&#x2F;span&gt;&lt;span&gt;            &lt;&#x2F;span&gt;&lt;span style=&quot;color:#fa6e32;&quot;&gt;else&lt;&#x2F;span&gt;&lt;span&gt;:
+&lt;&#x2F;span&gt;&lt;span&gt;                h &lt;&#x2F;span&gt;&lt;span style=&quot;color:#ed9366;&quot;&gt;= &lt;&#x2F;span&gt;&lt;span&gt;m &lt;&#x2F;span&gt;&lt;span style=&quot;color:#ed9366;&quot;&gt;- &lt;&#x2F;span&gt;&lt;span style=&quot;color:#ff8f40;&quot;&gt;1
+&lt;&#x2F;span&gt;&lt;&#x2F;code&gt;&lt;&#x2F;pre&gt;
+</description>
+      </item>
+    </channel>
+</rss>

@@ -1,0 +1,599 @@
+<!DOCTYPE html>
+<html lang="en" class="dark light">
+
+    <head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="base" content="https:&#x2F;&#x2F;www.titaneric.com">
+
+    
+
+    
+    
+    
+        <title>
+            
+                Grafana Loki Series (I) - Upgrading Loki with a Canary Deployment: Enhancing Performance and Reducing Costs
+            
+        </title>
+
+        
+            <meta property="og:title"
+                  content="Grafana Loki Series (I) - Upgrading Loki with a Canary Deployment: Enhancing Performance and Reducing Costs" />
+        
+    
+
+    
+        
+    
+
+    
+        
+    
+
+    
+    <link rel="icon" type="image/png" href=https://www.titaneric.com/icons/favicon-16x16.png />
+
+    
+    
+        <link href=https://www.titaneric.com/fonts.css rel="stylesheet" />
+    
+
+    
+    
+
+    
+    
+        
+            
+            
+
+            <script defer
+                    src="/js/imamu.js"
+                    data-website-id="63f9d7c5-7c47-493b-af29-481374c7531c"
+                    data-host-url="https:&#x2F;&#x2F;api-gateway.umami.dev&#x2F;"></script>
+        
+
+        
+    
+
+    
+    <script defer src=https://www.titaneric.com/js/codeblock.js></script>
+
+    
+    <script defer src=https://www.titaneric.com/js/toc.js></script>
+
+    
+    
+        <script src=https://www.titaneric.com/js/note.js></script>
+    
+
+    
+        
+            <script>
+            MathJax = {
+              tex: {
+                inlineMath: [['$', '$'], ['\\(', '\\)']]
+              }
+            };
+            </script>
+        
+        <script type="text/javascript" id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js">
+        </script>
+    
+
+    
+    
+
+
+    
+    
+        <link rel="stylesheet"
+              type="text/css"
+              href="https://www.titaneric.com/theme/light.css" />
+        <link id="darkModeStyle"
+              rel="stylesheet"
+              type="text/css"
+              href="https://www.titaneric.com/theme/dark.css" />
+    
+
+    <!-- Set the correct theme in the script -->
+
+    
+        <script src=https://www.titaneric.com/js/themetoggle.js></script>
+
+        
+            <script>setTheme(getSavedTheme());</script>
+        
+    
+
+
+    <link rel="stylesheet"
+          type="text/css"
+          media="screen"
+          href="https://www.titaneric.com/main.css" />
+
+    
+
+    
+        <script defer
+                src="https://www.titaneric.com/js/searchElasticlunr.min.js?h=3626c0ef99daa745b31e"></script></head>
+
+
+    <body>
+        <div class="left-content">
+            
+            
+        </div>
+
+        <div class="content">
+            <nav>
+    <div class="left-nav">
+        
+            <a href=https:&#x2F;&#x2F;www.titaneric.com>titaneric</a>
+        
+
+
+        <div class="socials">
+            
+                <a rel="me" href="https:&#x2F;&#x2F;www.linkedin.com&#x2F;in&#x2F;chen-yi-huang&#x2F;" class="social">
+                    <img alt="linkedin" src="https://www.titaneric.com/icons/social/linkedin.svg">
+                </a>
+            
+                <a rel="me" href="https:&#x2F;&#x2F;github.com&#x2F;titaneric&#x2F;" class="social">
+                    <img alt="github" src="https://www.titaneric.com/icons/social/github.svg">
+                </a>
+            
+        </div>
+    </div>
+
+    <div class="right-nav">
+        
+            <a href=https://www.titaneric.com/posts style="margin-right: 0.5em">posts</a>
+        
+            <a href=https://www.titaneric.com/tags style="margin-right: 0.5em">tags</a>
+        
+            <a href=https://www.titaneric.com/categories style="margin-right: 0.5em">categories</a>
+        
+            <a href=https://www.titaneric.com/archive style="margin-right: 0.5em">archive</a>
+        
+            <a href=https://www.titaneric.com/pdfs/resume.pdf style="margin-right: 0.5em">about</a>
+        
+            <a href=https://www.titaneric.com/notes/index.html style="margin-right: 0.5em">notes</a>
+        
+
+        
+            <button id="search-button"
+                    class="search-button"
+                    title="$SHORTCUT to open search">
+                <img src="https://www.titaneric.com/icons/search.svg"
+                    alt="Search"
+                    class="search-icon">
+            </button>
+
+            <div id="searchModal"
+                class="search-modal js"
+                role="dialog"
+                aria-labelledby="modalTitle">
+                <div id="modal-content">
+                    <h1 id="modalTitle" class="page-header">Search</h1>
+                    <div id="searchBar">
+                        <input id="searchInput"
+                            role="combobox"
+                            autocomplete="off"
+                            spellcheck="false"
+                            aria-expanded="false"
+                            aria-controls="results-container"
+                            placeholder="Search..." />
+                        <button id="clear-search" class="clear-button" title="Clear search">
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 -960 960 960">
+                                <path d="m256-200-56-56 224-224-224-224 56-56 224 224 224-224 56 56-224 224 224 224-56 56-224-224-224 224Z" />
+                            </svg>
+                        </button>
+                    </div>
+                    <div id="results-container">
+                        <div id="results-info">
+                            <span id="zero_results" style="display: none;">No results</span>
+                            <span id="one_result" style="display: none;">1 result</span>
+                            <span id="many_results" style="display: none;">$NUMBER results</span>
+                        </div>
+                        <div id="results" role="listbox"></div>
+                    </div>
+                </div>
+            </div>
+        
+
+        
+            <a id="dark-mode-toggle"
+            onclick="toggleTheme(); event.preventDefault();"
+            href="#">
+                <img src="https://www.titaneric.com/icons/sun.svg"
+                    id="sun-icon"
+                    style="filter: invert(1)"
+                    alt="Light" />
+                <img src=https://www.titaneric.com/icons/moon.svg id="moon-icon" alt="Dark" />
+            </a>
+
+            <!-- Initialize the theme toggle icons -->
+            <script>updateItemToggleTheme()</script>
+        
+    </div>
+</nav>
+
+
+            
+            
+    
+<div class="visible-element-observer-root" data-selector="main article p">
+    <main>
+        <article>
+            <div class="title">
+                
+                
+    
+    <div class="page-header">
+        Grafana Loki Series (I) - Upgrading Loki with a Canary Deployment: Enhancing Performance and Reducing Costs
+    </div>
+    
+
+
+                <div class="meta">
+                    
+                        Posted on <time>2025-02-14</time>
+                    
+
+
+                    
+
+                    
+
+                    
+
+                    
+                    
+                        
+                        
+                            
+                        
+
+                        
+                            
+                            :: <a href="https:&#x2F;&#x2F;github.com&#x2F;titaneric&#x2F;titaneric.github.io&#x2F;tree&#x2F;master&#x2F;content&#x2F;posts&#x2F;grafana-loki-upgrade-1.md" target="_blank" rel="noopener noreferrer">Source Code</a>
+                        
+                    
+
+                    
+                    
+
+                    
+                    
+                        <span class="tags-label"> :: </span>
+                        <span class="tags">
+                                <a href="https://www.titaneric.com/tags/k8s/"
+                                   class="post-tag">k8s</a>
+                            
+                                <a href="https://www.titaneric.com/tags/monitoring/"
+                                   class="post-tag">monitoring</a>
+                            
+                        </span>
+                    
+
+                    
+
+                </div>
+            </div>
+
+            
+
+            <section class="body">
+                <p><img src="https://vos.line-scdn.net/landpress-content-v2-vcfc68aynwenkh3bno0ixfx8/7ebbf0334cc14d71818a451b89847db8.png?updatedAt=1739524743000" alt="" />
+<em><p style="text-align:center">Generated by Microsoft Designer</p></em></p>
+<h2 id="tldr"><a class="zola-anchor" href="#tldr" aria-label="Anchor link for: tldr">TLDR</a></h2>
+<ul>
+<li>At LINE Taiwan, we decided to upgrade Loki using a canary deployment strategy.</li>
+<li>Replaced Promtail with Vector to handle logs and send them to Loki.</li>
+<li>Used Vector to replicate real traffic to the new Loki, helping us adjust Loki configurations.</li>
+<li>Improved Loki labels with Vector, significantly enhancing Loki's performance.</li>
+<li>Ultimately saved nearly 70% in machine costs, minimizing backend storage burden.</li>
+</ul>
+<h2 id="background"><a class="zola-anchor" href="#background" aria-label="Anchor link for: background">Background</a></h2>
+<h3 id="observability-platform"><a class="zola-anchor" href="#observability-platform" aria-label="Anchor link for: observability-platform">Observability Platform</a></h3>
+<p>LINE Taiwan's observability platform primarily uses the Grafana ecosystem, utilizing Grafana as a dashboard and a medium for searching logs, metrics, and traces. For metrics, we use a Prometheus API-compatible system provided by the company. For logs, we use a self-built Loki cluster, and for traces, we use a self-built Tempo cluster.</p>
+<p>At that time, our Loki cluster version was 2.8, deployed using the <code>grafana/loki-distributed</code> helm chart, with backend storage using an S3 API-compatible Object Storage system provided by the company. Notably, we set up 10 sharding buckets according to the <a rel="noreferrer" href="https://grafana.com/docs/loki/latest/configure/#s3_storage_config">Loki config</a> to distribute bucket traffic. The Loki's cache used the company's Redis Service. Due to the numerous projects and teams, we enabled the <a rel="noreferrer" href="https://grafana.com/docs/loki/latest/operations/multi-tenancy/">multi-tenant</a> setting.</p>
+<h3 id="loki-upgrade"><a class="zola-anchor" href="#loki-upgrade" aria-label="Anchor link for: loki-upgrade">Loki Upgrade</a></h3>
+<p>At the end of last year, the SRE team planned to upgrade the Loki cluster to version 3.3. By then, Loki had an officially maintained <code>grafana/loki</code> helm chart, and the <a rel="noreferrer" href="https://grafana.com/docs/loki/latest/setup/install/helm/install-scalable/#deploying-the-helm-chart-for-development-and-testing">installation documentation</a> directly used this helm chart for installation, no longer relying on the community-maintained <code>grafana/loki-distributed</code> helm chart. The <a rel="noreferrer" href="https://grafana.com/docs/loki/latest/setup/migrate/migrate-from-distributed/">official Loki documentation</a> also mentioned how to migrate from the <code>grafana/loki-distributed</code> helm chart to the <code>grafana/loki</code> helm chart, suggesting that the old helm chart would be deprecated. After reviewing the official migration process, we found it inconvenient to implement. Considering various factors and the sufficient resources of the observability cluster, we decided to build a second new Loki cluster using the <code>grafana/loki</code> helm chart, hoping to solve the existing Loki issues through new architecture, processes, and configurations.</p>
+<p>When designing the migration process, we aimed to let the new Loki cluster handle production traffic directly and tune Loki's configuration during the process. Once the performance tuning was satisfactory, we could gradually announce it for beta and production use. Therefore, designing a smooth migration process was our primary goal, which is the focus of this article. Detailed Loki configuration adjustments will be discussed in the next article.</p>
+<h2 id="method"><a class="zola-anchor" href="#method" aria-label="Anchor link for: method">Method</a></h2>
+<h3 id="migrating-from-promtail-to-vector"><a class="zola-anchor" href="#migrating-from-promtail-to-vector" aria-label="Anchor link for: migrating-from-promtail-to-vector">Migrating from Promtail to Vector</a></h3>
+<p>As mentioned earlier, we wanted to run two Loki clusters concurrently during the migration, both receiving the same logs, which required effort on the log collector side. At that time, we used Grafana's <a rel="noreferrer" href="https://grafana.com/docs/loki/latest/send-data/promtail/">Promtail</a>. Although Promtail could set a second Loki endpoint, its configuration was hard to maintain, and the official documentation stated that Promtail was no longer accepting updates, focusing instead on the development of <a rel="noreferrer" href="https://grafana.com/docs/loki/latest/send-data/alloy/">Alloy</a>.</p>
+<p>When considering which log collector to replace, we evaluated the following needs:</p>
+<ul>
+<li>Properly collect Kubernetes logs with basic k8s metadata.</li>
+<li>Allow sending logs to Loki.</li>
+<li>Perform basic log processing, such as masking sensitive data or adjusting Loki labels.</li>
+</ul>
+<p>Although <a rel="noreferrer" href="https://grafana.com/docs/loki/latest/send-data/alloy/">Alloy</a> met these requirements and we had used it in <a rel="noreferrer" href="https://techblog.lycorp.co.jp/zh-hant/grafana-alloy-best-practice">other scenarios</a>, we recalled that our lead mentioned <a rel="noreferrer" href="https://vector.dev/">Vector</a> was popular. After evaluating its features, we found it not only met our current needs, but also had the following advantages:</p>
+<ul>
+<li>Developed in Rust, requiring fewer resources to run compared to Promtail or Alloy developed in Golang.</li>
+<li>Rich ecosystem of <a rel="noreferrer" href="https://vector.dev/components/">Vector Components</a>, allowing us to choose suitable components based on the environment and scenario.</li>
+<li>Provided the <a rel="noreferrer" href="https://vector.dev/docs/reference/vrl/">Vector Remap Language (VRL)</a> syntax, supporting numerous <a rel="noreferrer" href="https://vector.dev/docs/reference/vrl/functions/">functions</a>, making it easy to process logs as needed.</li>
+<li>Offered convenient <a rel="noreferrer" href="https://vector.dev/docs/reference/configuration/unit-tests/">Unit Tests</a> to verify the correctness of VRL scripts.</li>
+</ul>
+<p>We decided to replace Promtail with Vector, following this process:</p>
+<ol>
+<li>Migrate the existing Promtail configuration to Vector configuration: This included the <a rel="noreferrer" href="https://vector.dev/docs/reference/configuration/sources/kubernetes_logs/">Kubernetes logs source</a>, <a rel="noreferrer" href="https://vector.dev/docs/reference/configuration/sinks/loki/">Loki sink</a>, and custom <a rel="noreferrer" href="https://vector.dev/docs/reference/configuration/transforms/remap/">Remap transform</a> components. We also wrote multiple Unit Tests to ensure the Vector configuration worked correctly.</li>
+</ol>
+<pre data-lang="yaml" style="background-color:#fafafa;color:#61676c;" class="language-yaml "><code class="language-yaml" data-lang="yaml"><span style="color:#399ee6;">sources</span><span style="color:#61676ccc;">:
+</span><span>  </span><span style="color:#399ee6;">kubernetes_logs</span><span style="color:#61676ccc;">:
+</span><span>    </span><span style="color:#399ee6;">type</span><span style="color:#61676ccc;">: </span><span style="color:#86b300;">kubernetes_logs
+</span><span>
+</span><span style="color:#399ee6;">transforms</span><span style="color:#61676ccc;">:
+</span><span>  </span><span style="color:#399ee6;">add_metadata</span><span style="color:#61676ccc;">:
+</span><span>    </span><span style="color:#399ee6;">type</span><span style="color:#61676ccc;">: </span><span style="color:#86b300;">&quot;remap&quot;
+</span><span>    </span><span style="color:#399ee6;">inputs</span><span style="color:#61676ccc;">:
+</span><span>    - </span><span style="color:#86b300;">kubernetes_logs
+</span><span>    </span><span style="color:#399ee6;">source</span><span style="color:#61676ccc;">: </span><span style="color:#fa6e32;">|
+</span><span style="color:#86b300;">      # custom transformation by VRL
+</span><span style="color:#86b300;">    
+</span><span style="color:#399ee6;">sinks</span><span style="color:#61676ccc;">:
+</span><span>  </span><span style="color:#399ee6;">loki</span><span style="color:#61676ccc;">:
+</span><span>    </span><span style="color:#399ee6;">type</span><span style="color:#61676ccc;">: </span><span style="color:#86b300;">loki
+</span><span>    </span><span style="color:#399ee6;">inputs</span><span style="color:#61676ccc;">: </span><span>[ </span><span style="color:#86b300;">add_metadata </span><span>]
+</span><span>    </span><span style="color:#399ee6;">endpoint</span><span style="color:#61676ccc;">: </span><span style="color:#86b300;">&quot;${LOKI_ENDPOINT}&quot;
+</span><span>    </span><span style="color:#399ee6;">tenant_id</span><span style="color:#61676ccc;">: </span><span style="color:#86b300;">&quot;{{ .tenant_id }}&quot;
+</span><span>    </span><span style="color:#399ee6;">encoding</span><span style="color:#61676ccc;">:
+</span><span>      </span><span style="color:#399ee6;">codec</span><span style="color:#61676ccc;">: </span><span style="color:#86b300;">raw_message
+</span><span>    </span><span style="color:#399ee6;">labels</span><span style="color:#61676ccc;">:
+</span><span>      </span><span style="color:#86b300;">&quot;*&quot;</span><span style="color:#61676ccc;">: </span><span style="color:#86b300;">&quot;{{ .loki_labels }}&quot;
+</span></code></pre>
+<ol start="2">
+<li>Replace Promtail with Vector: Our replacement process was as follows:
+<ol>
+<li>First, synchronize Vector, during which the old Loki would temporarily handle double the traffic (Promtail + Vector).</li>
+<li>Remove Promtail to avoid Loki's rate limit errors affecting Vector.</li>
+<li>Use Vector's own retry mechanism to send logs to Loki normally.</li>
+</ol>
+</li>
+</ol>
+<p>After the replacement, we observed that not only did Loki operate normally, but Vector also required less than 30% of the memory usage compared to Promtail, validating Vector's high performance.</p>
+<h3 id="gradually-increasing-sample-log-traffic"><a class="zola-anchor" href="#gradually-increasing-sample-log-traffic" aria-label="Anchor link for: gradually-increasing-sample-log-traffic">Gradually Increasing Sample Log Traffic</a></h3>
+<p>Vector provides the <a rel="noreferrer" href="https://vector.dev/docs/reference/configuration/transforms/sample/">Sample transform</a> feature, allowing us to set a sample rate to sample incoming logs. This is generally used in scenarios with extremely high log volumes, setting a small but sufficient sample rate for troubleshooting, reducing the burden on the log system and backend storage. However, we decided to leverage this feature to help us smoothly migrate Loki. The specific process is as follows:</p>
+<ol>
+<li>Define the <a rel="noreferrer" href="https://vector.dev/docs/reference/configuration/transforms/sample/">Sample transform</a>, inputting the <code>add_metadata</code> component processed by VRL. The following example uses a 10% (1/10) sample rate.</li>
+</ol>
+<pre data-lang="yaml" style="background-color:#fafafa;color:#61676c;" class="language-yaml "><code class="language-yaml" data-lang="yaml"><span style="color:#399ee6;">transforms</span><span style="color:#61676ccc;">:
+</span><span>  </span><span style="color:#399ee6;">add_metadata</span><span style="color:#61676ccc;">:
+</span><span>    </span><span style="color:#399ee6;">type</span><span style="color:#61676ccc;">: </span><span style="color:#86b300;">&quot;remap&quot;
+</span><span>    </span><span style="color:#399ee6;">inputs</span><span style="color:#61676ccc;">:
+</span><span>    - </span><span style="color:#86b300;">kubernetes_logs
+</span><span>    </span><span style="color:#399ee6;">source</span><span style="color:#61676ccc;">: </span><span style="color:#fa6e32;">|
+</span><span style="color:#86b300;">      # custom transformation by VRL
+</span><span style="color:#86b300;">    
+</span><span>  </span><span style="color:#399ee6;">sample_log</span><span style="color:#61676ccc;">:
+</span><span>    </span><span style="color:#399ee6;">type</span><span style="color:#61676ccc;">: </span><span style="color:#86b300;">sample
+</span><span>    </span><span style="color:#399ee6;">inputs</span><span style="color:#61676ccc;">:
+</span><span>    - </span><span style="color:#86b300;">add_metadata
+</span><span>    </span><span style="color:#399ee6;">rate</span><span style="color:#61676ccc;">: </span><span style="color:#ff8f40;">10
+</span></code></pre>
+<ol start="2">
+<li>Define a new Loki sink, changing the <code>endpoint</code> to the new Loki and the input to the <code>sample_log</code> component name. In the following example, <code>loki-v3</code> is the new Loki sink, and its input is <code>sample_log</code> instead of <code>add_metadata</code>.</li>
+</ol>
+<pre data-lang="yaml" style="background-color:#fafafa;color:#61676c;" class="language-yaml "><code class="language-yaml" data-lang="yaml"><span style="color:#399ee6;">sinks</span><span style="color:#61676ccc;">:
+</span><span>  </span><span style="color:#399ee6;">loki</span><span style="color:#61676ccc;">:
+</span><span>    </span><span style="color:#399ee6;">type</span><span style="color:#61676ccc;">: </span><span style="color:#86b300;">loki
+</span><span>    </span><span style="color:#399ee6;">inputs</span><span style="color:#61676ccc;">: </span><span>[ </span><span style="color:#86b300;">add_metadata </span><span>]
+</span><span>    </span><span style="color:#399ee6;">endpoint</span><span style="color:#61676ccc;">: </span><span style="color:#86b300;">&quot;${LOKI_ENDPOINT}&quot;
+</span><span>    </span><span style="color:#399ee6;">tenant_id</span><span style="color:#61676ccc;">: </span><span style="color:#86b300;">&quot;{{ .tenant_id }}&quot;
+</span><span>    </span><span style="color:#399ee6;">encoding</span><span style="color:#61676ccc;">:
+</span><span>      </span><span style="color:#399ee6;">codec</span><span style="color:#61676ccc;">: </span><span style="color:#86b300;">raw_message
+</span><span>    </span><span style="color:#399ee6;">labels</span><span style="color:#61676ccc;">:
+</span><span>      </span><span style="color:#86b300;">&quot;*&quot;</span><span style="color:#61676ccc;">: </span><span style="color:#86b300;">&quot;{{ .loki_labels }}&quot;
+</span><span>  </span><span style="color:#399ee6;">loki-v3</span><span style="color:#61676ccc;">:
+</span><span>    </span><span style="color:#399ee6;">type</span><span style="color:#61676ccc;">: </span><span style="color:#86b300;">loki
+</span><span>    </span><span style="color:#399ee6;">inputs</span><span style="color:#61676ccc;">: </span><span>[ </span><span style="color:#86b300;">sample_log </span><span>]
+</span><span>    </span><span style="color:#399ee6;">endpoint</span><span style="color:#61676ccc;">: </span><span style="color:#86b300;">&quot;${LOKI_V3_ENDPOINT}&quot;
+</span><span>    </span><span style="color:#399ee6;">tenant_id</span><span style="color:#61676ccc;">: </span><span style="color:#86b300;">&quot;{{ .tenant_id }}&quot;
+</span><span>    </span><span style="color:#399ee6;">encoding</span><span style="color:#61676ccc;">:
+</span><span>      </span><span style="color:#399ee6;">codec</span><span style="color:#61676ccc;">: </span><span style="color:#86b300;">raw_message
+</span><span>    </span><span style="color:#399ee6;">labels</span><span style="color:#61676ccc;">:
+</span><span>      </span><span style="color:#86b300;">&quot;*&quot;</span><span style="color:#61676ccc;">: </span><span style="color:#86b300;">&quot;{{ .loki_labels }}&quot;
+</span></code></pre>
+<ol start="3">
+<li>
+<p>Synchronize the Vector configuration to the cluster, confirming that the new Loki is receiving a small amount of logs from the real environment. At this point, we can focus on tuning Loki.</p>
+</li>
+<li>
+<p>As Loki tuning progresses, gradually increase the sample rate from 10%, 33%, 50% to the final 100%, proving that the new Loki can robustly handle production log traffic.</p>
+</li>
+</ol>
+<h3 id="improving-loki-labels"><a class="zola-anchor" href="#improving-loki-labels" aria-label="Anchor link for: improving-loki-labels">Improving Loki Labels</a></h3>
+<p>When using Promtail as the log collector, we set the following labels:</p>
+<ul>
+<li>cluster: k8s cluster name</li>
+<li>namespace: k8s namespace</li>
+<li>container: pod container name defined in <code>spec.containers.name</code></li>
+<li>app: <code>app.kubernetes.io/name</code>, <code>app</code> pod labels, or pod name</li>
+<li>component: <code>app.kubernetes.io/component</code> or <code>component</code> pod labels</li>
+<li>instance: <code>app.kubernetes.io/instance</code> or <code>instance</code> pod labels</li>
+<li>nodename: node name where the pod is deployed</li>
+<li>pod: pod name</li>
+<li>stream: log is <code>stderr</code> or <code>stdout</code></li>
+</ul>
+<p>After thoroughly reading <a rel="noreferrer" href="https://grafana.com/blog/2023/12/20/the-concise-guide-to-grafana-loki-everything-you-need-to-know-about-labels/">The concise guide to Grafana Loki: Everything you need to know about labels</a>, we realized that our current label design was very inefficient for Loki storage and search. Therefore, we decided to significantly improve the labels.</p>
+<p>We decided to remove high cardinality labels like <code>pod</code> and <code>nodename</code> and place them in <a rel="noreferrer" href="https://grafana.com/docs/loki/latest/get-started/labels/structured-metadata/?pg=blog&amp;plcmt=body-txt">structured metadata</a>. Although its retrieval speed is not as fast as labels, this approach aligns with official recommendations and can potentially speed up searches by introducing <a rel="noreferrer" href="https://grafana.com/docs/loki/latest/operations/bloom-filters/">Bloom Filters</a>. We also added labels like <code>availability_zone</code>, <code>nodepool</code>, and <code>trace_id</code> to aid in log searches.</p>
+<p>We made special adjustments to the <code>app</code> label. Besides the aforementioned app-related pod labels, if the pod had a parent resource (e.g., daemonset, statefulset, or deployment), we extracted the pod owner's field, processed it, and wrote it into the <code>app</code> label.</p>
+<p>We also made special adjustments for pods generated by k8s client libraries or controllers. These are usually one-time job tasks or pods without parent resources but with complex suffixes in their names. In such cases, we need to actively check which <code>app</code> labels have not been processed. The following <a rel="noreferrer" href="https://grafana.com/docs/loki/latest/query/logcli/logcli-tutorial/#checking-series-cardinality">logcli</a> command can help identify streams with unprocessed labels in different Loki tenants.</p>
+<pre data-lang="bash" style="background-color:#fafafa;color:#61676c;" class="language-bash "><code class="language-bash" data-lang="bash"><span style="color:#fa6e32;">export </span><span>LOKI_ADDR</span><span style="color:#ed9366;">=&lt;</span><span>loki-gateway</span><span style="color:#ed9366;">&gt;
+</span><span style="color:#fa6e32;">export </span><span>LOKI_ORG_ID</span><span style="color:#ed9366;">=&lt;</span><span>tenant-id</span><span style="color:#ed9366;">&gt;
+</span><span style="color:#f29718;">logcli</span><span> series </span><span style="color:#86b300;">&#39;{}&#39;
+</span></code></pre>
+<p>After these operations, we expected to see two significant changes in the <a rel="noreferrer" href="https://github.com/grafana/loki/blob/main/production/loki-mixin-compiled/dashboards/loki-operational.json">Loki Operational Dashboard</a>.</p>
+<h4 id="streams"><a class="zola-anchor" href="#streams" aria-label="Anchor link for: streams">Streams</a></h4>
+<p>The results below show that the number of streams written decreased significantly from a peak of 20K to 3K. This change in stream numbers will improve chunk utilization, as explained later.</p>
+<table><thead><tr><th>Before</th><th>After</th></tr></thead><tbody>
+<tr><td><img src="https://vos.line-scdn.net/landpress-content-v2-vcfc68aynwenkh3bno0ixfx8/993ccf977b9b4e8ca123c7400113cc0f.png?updatedAt=1739524948000" width="700" height="150" /></td><td><img src="https://vos.line-scdn.net/landpress-content-v2-vcfc68aynwenkh3bno0ixfx8/c0aab6613b19447ba19aae6ee8d395c5.png?updatedAt=1739524958000"  width="700" height="150" /></td></tr>
+</tbody></table>
+<h4 id="chunk-flush-reason"><a class="zola-anchor" href="#chunk-flush-reason" aria-label="Anchor link for: chunk-flush-reason">Chunk Flush Reason</a></h4>
+<p>The chart below shows that the <strong>full</strong> Chunk Flush Reason increased from 70% to over 90%. In theory, the total log volume remains unchanged, but the reduced number of streams means each stream needs to handle more logs, accelerating chunk writes and leading to more <strong>full</strong> Chunk Flush Reasons.</p>
+<table><thead><tr><th>Before</th><th>After</th></tr></thead><tbody>
+<tr><td><img src="https://vos.line-scdn.net/landpress-content-v2-vcfc68aynwenkh3bno0ixfx8/2e73cc7626fd41259a3cc4e6edba98ba.png?updatedAt=1739524974000" width="700" height="150" /></td><td><img src="https://vos.line-scdn.net/landpress-content-v2-vcfc68aynwenkh3bno0ixfx8/61d1990e3bb3496f9b1dcbff3cf59b1e.png?updatedAt=1739524983000"  width="700" height="150" /></td></tr>
+</tbody></table>
+<h2 id="results"><a class="zola-anchor" href="#results" aria-label="Anchor link for: results">Results</a></h2>
+<p>In addition to the increased <strong>full</strong> Chunk Flush Reason and reduced stream numbers, improving Loki labels brought the following benefits.</p>
+<h3 id="higher-ingester-write-performance"><a class="zola-anchor" href="#higher-ingester-write-performance" aria-label="Anchor link for: higher-ingester-write-performance">Higher Ingester Write Performance</a></h3>
+<p>The table below shows the resource differences required for Ingester before and after improving Loki labels. The number of Ingester replicas decreased to about 30% of the original, and memory usage decreased to less than 25%. Since we set pod anti-affinity for Ingesters, the number of worker nodes matches the number of Ingesters, saving an estimated 70,000 yen per month.</p>
+<table><thead><tr><th></th><th>Ingester's #replicas</th><th>CPU core</th><th>memory usage in GB</th><th>dedicated worker node</th></tr></thead><tbody>
+<tr><td>Before</td><td>30</td><td>10</td><td>90</td><td>30</td></tr>
+<tr><td>After</td><td>12</td><td>7.5</td><td>21</td><td>12</td></tr>
+</tbody></table>
+<h3 id="completely-eliminated-object-storage-rate-limit-occurrences"><a class="zola-anchor" href="#completely-eliminated-object-storage-rate-limit-occurrences" aria-label="Anchor link for: completely-eliminated-object-storage-rate-limit-occurrences">Completely Eliminated Object Storage Rate Limit Occurrences</a></h3>
+<p>Another benefit of improving Loki labels is the elimination of frequent rate limit errors (429) in Object Storage. The following charts show the differences in 4xx HTTP status code errors before and after the improvement, indicating that no errors occurred in the buckets used by the new Loki. We believe this is due to the high <strong>full</strong> Chunk Flush Reason in the new Loki, combined with Compactor compressing remaining unfilled chunks, resulting in almost all chunks being data-intensive. Compared to using multiple sparse chunks, fewer dense chunks can store the same log volume, reducing the number of Object Storage API requests during log queries and eliminating rate limits. Additionally, increasing the number of sharding buckets from 10 to 20 also helped.</p>
+<table><thead><tr><th>Before</th><th>After</th></tr></thead><tbody>
+<tr><td><img src="https://vos.line-scdn.net/landpress-content-v2-vcfc68aynwenkh3bno0ixfx8/5ba2e53b5b8d4963944d25be4c7cca9b.png?updatedAt=1739525018000" width="700" height="150" /></td><td><img src="https://vos.line-scdn.net/landpress-content-v2-vcfc68aynwenkh3bno0ixfx8/24f2bcbf7e2c4fc588ad7342dbb39ece.png?updatedAt=1739525034000"  width="700" height="150" /></td></tr>
+</tbody></table>
+<h2 id="conclusion"><a class="zola-anchor" href="#conclusion" aria-label="Anchor link for: conclusion">Conclusion</a></h2>
+<p>In this article, we introduced how we smoothly migrated the Loki cluster, especially by replacing Promtail with Vector and extensively using Vector's powerful <a rel="noreferrer" href="https://vector.dev/docs/reference/vrl/">Vector Remap Language</a> and rich <a rel="noreferrer" href="https://vector.dev/components/">Vector Components</a>. This helped us migrate without affecting existing users and allowed the new Loki to receive logs from the production environment using sampling techniques.</p>
+<p>With actual log traffic, we could focus on tuning the new Loki configuration. Following official recommendations, we made special adjustments to Loki labels, significantly reducing the resources needed for log writes and eliminating potential Object Storage burdens during log queries.</p>
+<p>Additionally, Vector offers a <a rel="noreferrer" href="https://vector.dev/docs/reference/configuration/transforms/log_to_metric/">Log to Metric Transform</a> feature that can directly convert numerical values recorded in logs into Prometheus metrics. We used this feature to improve our <a rel="noreferrer" href="https://techblog.lycorp.co.jp/zh-hant/grafana-alloy-best-practice">previous Alloy experience</a>, replacing Loki Ruler and thereby reducing Loki's load. It's worth mentioning that I encountered some areas for improvement while using Vector and attempted to make some <a rel="noreferrer" href="https://github.com/vectordotdev/vector/pulls?q=is%3Apr+is%3Amerged+author%3Atitaneric">contributions to Vector</a>, hoping that Vector can develop even better.</p>
+<p>Finally, the improvements to Loki labels mentioned earlier may cause potential loads on Loki's Distributor and other components, requiring special tuning. More details on Loki configuration adjustments will be discussed in the next article. Stay tuned!</p>
+
+            </section>
+        </article>
+    </main>
+</div>
+
+
+
+            
+                
+            
+
+            
+        </div>
+
+        <div class="right-content">
+            
+    
+    
+        <div class="toc">
+    <div class="heading">Table of Contents</div>
+    <ul class="toc-list">
+        
+            <li class="parent">
+                
+                <a href="https://www.titaneric.com/posts/grafana-loki-upgrade-1/#tldr">TLDR</a>
+
+                
+            </li>
+        
+            <li class="parent">
+                
+                <a href="https://www.titaneric.com/posts/grafana-loki-upgrade-1/#background">Background</a>
+
+                
+                    <ul>
+                    
+                        
+                        <li>
+                            <a href="https://www.titaneric.com/posts/grafana-loki-upgrade-1/#observability-platform">Observability Platform</a>
+                        </li>
+
+                        
+                    
+                        
+                        <li>
+                            <a href="https://www.titaneric.com/posts/grafana-loki-upgrade-1/#loki-upgrade">Loki Upgrade</a>
+                        </li>
+
+                        
+                    
+                    </ul>
+                
+            </li>
+        
+            <li class="parent">
+                
+                <a href="https://www.titaneric.com/posts/grafana-loki-upgrade-1/#method">Method</a>
+
+                
+                    <ul>
+                    
+                        
+                        <li>
+                            <a href="https://www.titaneric.com/posts/grafana-loki-upgrade-1/#migrating-from-promtail-to-vector">Migrating from Promtail to Vector</a>
+                        </li>
+
+                        
+                    
+                        
+                        <li>
+                            <a href="https://www.titaneric.com/posts/grafana-loki-upgrade-1/#gradually-increasing-sample-log-traffic">Gradually Increasing Sample Log Traffic</a>
+                        </li>
+
+                        
+                    
+                        
+                        <li>
+                            <a href="https://www.titaneric.com/posts/grafana-loki-upgrade-1/#improving-loki-labels">Improving Loki Labels</a>
+                        </li>
+
+                        
+                            <ul>
+                                
+                                    <li>
+                                        <a href="https://www.titaneric.com/posts/grafana-loki-upgrade-1/#streams">Streams</a>
+                                    </li>
+                                
+                                    <li>
+                                        <a href="https://www.titaneric.com/posts/grafana-loki-upgrade-1/#chunk-flush-reason">Chunk Flush Reason</a>
+                                    </li>
+                                
+                            </ul>
+                        
+                    
+                    </ul>
+                
+            </li>
+        
+            <li class="parent">
+                
+                <a href="https://www.titaneric.com/posts/grafana-loki-upgrade-1/#results">Results</a>
+
+                
+                    <ul>
+                    
+                        
+                        <li>
+                            <a href="https://www.titaneric.com/posts/grafana-loki-upgrade-1/#higher-ingester-write-performance">Higher Ingester Write Performance</a>
+                        </li>
+
+                        
+                    
+                        
+                        <li>
+                            <a href="https://www.titaneric.com/posts/grafana-loki-upgrade-1/#completely-eliminated-object-storage-rate-limit-occurrences">Completely Eliminated Object Storage Rate Limit Occurrences</a>
+                        </li>
+
+                        
+                    
+                    </ul>
+                
+            </li>
+        
+            <li class="parent">
+                
+                <a href="https://www.titaneric.com/posts/grafana-loki-upgrade-1/#conclusion">Conclusion</a>
+
+                
+            </li>
+        
+    </ul>
+</div>
+
+    
+
+        </div>
+    </body>
+
+</html>
