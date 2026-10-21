@@ -7,10 +7,12 @@ jobs:
   get_resume:
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@v4
+    - uses: actions/checkout@v7.0.1
 
-    - uses: typst-community/setup-typst@v4
+    - uses: typst-community/setup-typst@v5.3.0
       id: setup-typst
+      with:
+        typst-version: '0.15.1'
 
     - name: Compile resume by typst
       run: |
@@ -18,7 +20,7 @@ jobs:
 
     - name: Get changed files
       id: changed-files
-      uses: dorny/paths-filter@v2
+      uses: dorny/paths-filter@v4.0.3
       with:
         base: HEAD
         filters: |
@@ -27,7 +29,7 @@ jobs:
         
     - name: commit downloaded resume
       if: steps.changed-files.outputs.typst_dest == 'true'
-      uses: stefanzweifel/git-auto-commit-action@v4
+      uses: stefanzweifel/git-auto-commit-action@v7.2.0
       with:
         commit_message: Update resume by bot
         file_pattern: 'static/pdfs/resume.pdf'
@@ -37,12 +39,12 @@ jobs:
     needs: get_resume
     steps:
     # Checkout
-    - uses: actions/checkout@v4
+    - uses: actions/checkout@v7.0.1
       with:
         ref: "master"
     - name: Generate GitHub App Token
       id: app-token
-      uses: actions/create-github-app-token@v1
+      uses: actions/create-github-app-token@v3.3.0
       with:
         app-id: ${{ vars.GH_APP_ID }}
         private-key: ${{ secrets.GH_APP_PVT_KEY }}
@@ -51,7 +53,7 @@ jobs:
 
     # The action's version tags follow the version of Zola that should be used to build.
     - name: shalzz/zola-deploy-action
-      uses: shalzz/zola-deploy-action@v0.21.0
+      uses: shalzz/zola-deploy-action@v0.23.6
       
       env:
         # Target branch
@@ -60,7 +62,7 @@ jobs:
         GITHUB_TOKEN: ${{steps.app-token.outputs.token}}
         # CHECK_LINKS: true
     - name: Dispatch the notes to deploy itself
-      uses: peter-evans/repository-dispatch@v3
+      uses: peter-evans/repository-dispatch@v4.0.1
       with:
         token: ${{ steps.app-token.outputs.token }}
         repository: titaneric/notes

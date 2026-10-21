@@ -46,7 +46,7 @@ Grafana Faro是JS的library，可以引用在前端的應用中，用來蒐集�
 
 在這架構上，台灣的SRE在Kubernetes上部署了Traefik或Contour Ingress Controller，再上層的服務包含Tempo, Loki, ArgoCD, Grafana。
 
-{{ pdf(source="//www.slideshare.net/slideshow/embed_code/key/gxSQKJ88aLrpQS", start=18)}}
+{{ <pdf source="//www.slideshare.net/slideshow/embed_code/key/gxSQKJ88aLrpQS" start={18} /> }}
 
 ## 應用團隊監控架構
 
@@ -58,7 +58,7 @@ log主要會將stdout及stderr寫到節點上的log file上存放，我們使用
 
 trace會先拋到cluster上的otel collector(Deployment部暑)上，一樣會先做些前處理(memory限制，限制每一個span的attributes數量等)，因為數量比較大我們選擇先拋到Kafka topic上，之後會在SRE cluster進行處理。
 
-{{ pdf(source="//www.slideshare.net/slideshow/embed_code/key/gxSQKJ88aLrpQS", start=19)}}
+{{ <pdf source="//www.slideshare.net/slideshow/embed_code/key/gxSQKJ88aLrpQS" start={19} /> }}
 
 ## SRE監控架構
 
@@ -66,7 +66,7 @@ trace會先拋到cluster上的otel collector(Deployment部暑)上，一樣會先
 
 在metrics部分，我們僅是使用Prometheus remote read功能讀取其他團隊的遠端Prometheus；在logs部分，透過Loki push API打進來的logs都會被Loki cluster消化，並存放到兼容S3 API的Object Storage中；SRE cluster上會另外部署一套otel collector，負責consume來自Kafka topic的trace，之後送進Tempo cluster進一步消化，也存在Object Storage中，
 
-{{ pdf(source="//www.slideshare.net/slideshow/embed_code/key/gxSQKJ88aLrpQS", start=20)}}
+{{ <pdf source="//www.slideshare.net/slideshow/embed_code/key/gxSQKJ88aLrpQS" start={20} /> }}
 
 # 如何設計Alloy
 
@@ -95,7 +95,7 @@ Alloy收進來的log是直接透過`loki.write`直接拋到SRE掌管的Loki clus
 
 Alloy會開啟`faro.receiver`元件功能，在Alloy Deployment前面會掛一個k8s Service，不同於一般的ClusterIP，我們選擇LoadBalancer type，底層的controller聆聽到之後會自動在cluster前面再創建一個LoadBalancer，基本上這樣就可以供應用程式使用。不過Faro SDK蒐集到的telemetry資料並不是直接進入這個LB，前面會再經過一個gateway。
 
-{{ pdf(source="//www.slideshare.net/slideshow/embed_code/key/gxSQKJ88aLrpQS", start=23)}}
+{{ <pdf source="//www.slideshare.net/slideshow/embed_code/key/gxSQKJ88aLrpQS" start={23} /> }}
 
 ## SRE端Alloy Gateway架構
 
@@ -103,7 +103,7 @@ Alloy會開啟`faro.receiver`元件功能，在Alloy Deployment前面會掛一�
 
 我們使用了Contour提供的HTTPProxy，將相同domain但不同path的請求，送到應用團隊cluster的Alloy入口LB。也用了Endpoint及Service將Alloy入口LB的IP作為k8s service的封裝。
 
-{{ pdf(source="//www.slideshare.net/slideshow/embed_code/key/gxSQKJ88aLrpQS", start=24)}}
+{{ <pdf source="//www.slideshare.net/slideshow/embed_code/key/gxSQKJ88aLrpQS" start={24} /> }}
 
 ## 設計緣由
 
@@ -139,4 +139,4 @@ Faro SDK預設的trace propagation格式是使用W3C Trace Context，但是我�
 
 # 完整投影片
 
-{{ pdf(source="//www.slideshare.net/slideshow/embed_code/key/gxSQKJ88aLrpQS")}}
+{{ <pdf source="//www.slideshare.net/slideshow/embed_code/key/gxSQKJ88aLrpQS" /> }}

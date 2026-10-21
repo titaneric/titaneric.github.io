@@ -7,4 +7,4 @@ categories = ["Learning"]
 tags = ["k8s", "deep dive", "monitoring"]
 +++
 
-{{ pdf(source="//www.slideshare.net/slideshow/embed_code/key/Hu3wS60GLyDXVk")}}
+{{ <pdf source="//www.slideshare.net/slideshow/embed_code/key/Hu3wS60GLyDXVk" /> }}

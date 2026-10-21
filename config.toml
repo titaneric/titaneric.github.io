@@ -14,10 +14,17 @@ taxonomies = [
 
 build_search_index = true
 
+# These posts contain literal template syntax in code examples or equations.
+skip_content_templating = [
+    "posts/grafana-loki-upgrade-*.md",
+    "posts/autodiff from scratch p1.md",
+]
+
 [markdown]
-highlight_code = true
-highlight_theme = "ayu-light"
 external_links_no_referrer = true
+
+[markdown.highlighting]
+theme = "ayu-light"
 
 [extra]
 theme = "toggle"
@@ -56,6 +63,12 @@ enabled = true
 
 [extra.analytics.umami]
 website_id = "63f9d7c5-7c47-493b-af29-481374c7531c"
+
+[extra.analytics.goatcounter]
+user = ""
+
+[extra.analytics.google]
+tracking_id = ""
 
 # [languages.zh]
 # generate_feeds = true                                     # there will be a feed for French content

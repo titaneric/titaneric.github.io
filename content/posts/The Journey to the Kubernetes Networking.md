@@ -7,7 +7,7 @@ categories = ["Learning"]
 tags = ["networking", "k8s", "Linux"]
 +++
 
-{{ pdf(source="//www.slideshare.net/slideshow/embed_code/key/r7psH28xitqtMZ")}}
+{{ <pdf source="//www.slideshare.net/slideshow/embed_code/key/r7psH28xitqtMZ" /> }}
 
 Still lost the following information.
 
