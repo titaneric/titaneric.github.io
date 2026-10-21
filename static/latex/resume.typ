@@ -1,18 +1,20 @@
 #import "template.typ": *
 
 #set page(
+  paper: "a4",
+  fill: rgb("#f8f5ec"),
   margin: (
-    left: 10mm,
-    right: 10mm,
-    top: 15mm,
-    bottom: 15mm,
+    left: 8mm,
+    right: 8mm,
+    top: 8mm,
+    bottom: 8mm,
   ),
 )
 
 // #set text(font: "Mulish")
 
 #show: project.with(
-  theme: rgb(95%, 55%, 15%),
+  theme: rgb("#b44123"),
   name: "Eric",
   surname: "Huang",
   title: "Senior Site Reliability Engineer",
@@ -62,14 +64,10 @@
           subTitle: "Sep 2025 – Present",
           subTitleEnd: "Taipei, Taiwan",
           content: list(
+            [Co-created and maintain the #underline(link("https://techblog.lycorp.co.jp/ja/20260126b", "Flava")) Terraform provider, adopted by internal Flava IaC orchestration; review Terda community contributions and collaborate with Flava product teams on officially supported resources.],
+            [Created and architected the Go SDK adopted as the official SDK for the Flava Terraform provider and used by Flava CLI plugins, unifying access to *30+* cloud services through shared authentication, service discovery, and automated client generation.],
             [
-              Architected and maintained a custom Terraform provider to automate lifecycle management for a large-scale private cloud platform #underline(link("https://techblog.lycorp.co.jp/ja/20260126b", "Flava")).
-            ],
-            [
-              Developed Kustomize and ArgoCD plugin for managing secrets in the internal KMS and secret manager systems, enhancing security and compliance.
-            ],
-            [
-              Designed and implemented a client-agnostic Go SDK for Flava services, utilizing automatic code generation and consistent log formatting to provide a robust, idiomatic interface similar to the AWS SDK for Go.
+              Built a Go-based secrets integration toolkit for Kustomize, Argo CD, and GitHub Actions, adopted across 10 teams, enabling deployment-time secret retrieval and KMS-backed decryption to keep plaintext secrets out of Git.
             ],
           ),
         ),
@@ -88,10 +86,10 @@
             [
               #underline(link("https://techblog.lycorp.co.jp/zh-hant/grafana-alloy-best-practice", "Implemented a Grafana Alloy gateway")) to distribute large volume client-side telemetry data sent by Faro SDK, enabling real user monitoring (RUM) and correlating frontend apps with existing observability solutions.
             ],
-            [Created automation tools, including a Slack workflow automation framework and GitHub Actions, to improve operational efficiency and quality.
-            ],
-            [Designed and implemented an internal infrastructure cost calculator and dashboards, providing spending visibility and enabling cost optimization.
-            ],
+            // [Created automation tools, including a Slack workflow automation framework and GitHub Actions, to improve operational efficiency and quality.
+            // ],
+            // [Designed and implemented an internal infrastructure cost calculator and dashboards, providing spending visibility and enabling cost optimization.
+            // ],
           ),
         ),
         subSection(

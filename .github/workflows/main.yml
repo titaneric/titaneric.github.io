@@ -14,7 +14,7 @@ jobs:
 
     - name: Compile resume by typst
       run: |
-        typst compile static/latex/resume.typ static/pdfs/resume.pdf
+        typst compile --font-path static/latex/fonts static/latex/resume.typ static/pdfs/resume.pdf
 
     - name: Get changed files
       id: changed-files

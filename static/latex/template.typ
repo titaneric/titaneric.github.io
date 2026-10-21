@@ -1,3 +1,9 @@
+// Editorial palette and type from the Fullbleed report and invoice samples.
+#let ink = rgb("#17382e")
+#let rust = rgb("#b44123")
+#let muted = rgb("#5b6c64")
+#let rule = rgb("#9eafa4")
+
 #let contact(text: "", link: none, type: "") = {
   (text: text, link: link, type: type)
 }
@@ -11,154 +17,89 @@
 }
 
 #let project(
-  theme: rgb("#4273B0"),
+  theme: rust,
   name: "",
   surname: "",
   title: none,
-  contact: (text: [], link: ""),
-  skills: (
-    languages: (),
-  ),
-  main: (title: "", content: []),
+  contact: (),
+  skills: (languages: ()),
+  main: (),
   sidebar: (),
   body,
 ) = {
-  let backgroundTitle(content) = heading(
-    level: 1,
-    numbering: none,
-    text(
-      fill: theme,
-      size: 1.25em,
-      weight: "bold",
-      [
-        #{
-          content
-        }
-        #v(-0.75em)
-        #line(length: 100%, stroke: 1pt + theme)
-      ],
-    ),
-  )
+  set text(font: "Inter", size: 9.6pt, fill: ink)
+  set par(leading: 4pt)
+  set list(indent: 10pt, body-indent: 3pt, spacing: 4pt)
 
-  let secondaryTitle(content) = {
-    text(weight: "bold", size: 1.125em, content)
-  }
+  let icon(name) = box(height: 11pt, baseline: 1pt, image(name + ".svg", alt: name))
 
-  let italicColorTitle(content) = {
-    text(style: "italic", size: 1.125em, theme, content)
-  }
-
-
-  let formattedName = stack(
-    dir: ltr,
-    spacing: 1em,
-    text(strong[#name], weight: 100, 4.5em),
-    text(strong[#surname], weight: 100, 4.5em, fill: rgb(95%, 55%, 15%, 80%)),
-  )
-
-  let formattedTitle = text(strong[#title], weight: 100, 1.5em)
-
-  let titleColumn = align(center)[
-    #stack(
-      dir: ttb,
-      spacing: 1.5em,
-      formattedName,
-      formattedTitle,
-    )
+  let section-title(label) = [
+    #v(4pt)
+    #text(font: "Bebas Neue", size: 17pt, fill: ink, tracking: .4pt)[#label]
+    #v(1pt)
   ]
-  let icon(name, shift: 1.5pt) = {
-    box(
-      baseline: shift,
-      height: 10pt,
-      image(name + ".svg"),
-    )
-  }
 
-  let contactColumn = align(left)[#stack(
-      dir: ttb,
-      spacing: 0.25em,
-      ..contact.map(c => {
-        if c.link == none [
-          #icon(c.type)
-          #c.text
-        ] else [
-          #icon(c.type)
-          #underline(link(c.link, text(c.text)))
-        ]
-      }),
-    )]
+  let entry(item) = [
+    #if item.title != "" or item.titleEnd != none { [
+      #text(weight: "bold", size: 9pt)[#item.title]
+      #if item.titleEnd != none { [#h(4pt)#text(fill: muted, size: 8pt)[#item.titleEnd]] }
+      #v(1pt)
+    ] }
+    #if item.subTitle != none or item.subTitleEnd != none { [
+      #text(fill: theme, size: 7.7pt)[
+        #if item.subTitle != none { item.subTitle }
+        #if item.subTitleEnd != none { [#if item.subTitle != none { [ · ] }#item.subTitleEnd] }
+      ]
+      #v(2pt)
+    ] }
+    #item.content
+  ]
 
-
-  grid(
-    columns: (2fr, 1fr),
-    column-gutter: 1em,
-    titleColumn, contactColumn,
-  )
-
-  set par(justify: true)
-
-  let parseSubSections(subSections) = {
-    stack(
-      dir: ttb,
-      spacing: 1em,
-      ..subSections.map(s => {
-        [
-          #if s.title != "" {
-            box([
-              #secondaryTitle(s.title)
-              #h(1fr)
-              #italicColorTitle(s.titleEnd)
-            ])
-          }
-          #if s.subTitle != none or s.subTitleEnd != none {
-            box[
-              #text(9pt)[
-                #if s.subTitle != none {
-                  [#icon("calendar") #s.subTitle]
-                }
-                #h(1fr)
-                #icon("location") #s.subTitleEnd]
-            ]
-          }
-          #s.content
-        ]
-      }),
-    )
-  }
-
-  let parseSection(section) = {
-    stack(
-      dir: ttb,
-      spacing: 1em,
-      ..section.map(m => {
-        if m.title == "" {
-          [
-            #m.content
-          ]
-        } else {
-          [
-            #backgroundTitle(m.title)
-            #parseSubSections(m.content)
-          ]
+  let render-sections(sections, entry-gap: 2pt) = {
+    for s in sections {
+      if s.title == "" {
+        s.content
+        v(5pt)
+      } else {
+        section-title(s.title)
+        for item in s.content {
+          entry(item)
+          v(entry-gap)
         }
-      }),
-    )
+      }
+    }
   }
 
-  let mainSection = parseSection(main)
-  let sidebarSection = parseSection(sidebar)
+  // A compact masthead keeps the report's display/serif pairing without
+  // sacrificing space for the resume's work history.
+  grid(
+    columns: (2fr, 1fr),
+    column-gutter: 17pt,
+    align: (top, left + horizon),
+    [
+      #stack(
+        dir: ttb,
+        spacing: 9pt,
+        text(font: "DM Serif Display", size: 31pt)[#name #surname],
+        text(font: "Bebas Neue", size: 15pt, fill: theme, tracking: .5pt)[#title],
+        block(width: 100%)[#main.first().content],
+      )
+    ],
+    [
+      #set text(size: 10pt)
+      #for c in contact {
+        [#icon(c.type) #if c.link == none { c.text } else { link(c.link, c.text) } #linebreak()]
+      }
+    ],
+  )
 
-  // line(length: 100%, stroke: 1pt + theme)
+  v(8pt)
 
   grid(
     columns: (2fr, 1fr),
-    column-gutter: 1em,
-    mainSection, sidebarSection,
+    column-gutter: 17pt,
+    [#render-sections(main.slice(1))],
+    [#set text(size: 9pt)
+     #render-sections(sidebar, entry-gap: 0pt)],
   )
-
-  // Main body.
-  // set par(justify: true)
-  // show: columns.with(3, gutter: 1.3em)
-
-  // body
 }
