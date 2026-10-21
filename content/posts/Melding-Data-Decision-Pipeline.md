@@ -7,4 +7,4 @@ categories = ["Learning"]
 tags = ["study"]
 +++
 
-{{ pdf(source="//www.slideshare.net/slideshow/embed_code/key/3bSAVwTac8gxnZ")}}
+{{ <pdf source="//www.slideshare.net/slideshow/embed_code/key/3bSAVwTac8gxnZ" /> }}

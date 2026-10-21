@@ -7,4 +7,4 @@ categories = ["Learning"]
 tags = ["linux", "os"]
 +++
 
-{{ pdf(source="//www.slideshare.net/slideshow/embed_code/key/waN15T9pwKey5O")}}
+{{ <pdf source="//www.slideshare.net/slideshow/embed_code/key/waN15T9pwKey5O" /> }}
