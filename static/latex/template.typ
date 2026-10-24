@@ -35,7 +35,13 @@
 
   let section-title(label) = [
     #v(4pt)
-    #text(font: "Bebas Neue", size: 17pt, fill: ink, tracking: .4pt)[#label]
+    #grid(
+      columns: (3pt, 1fr),
+      column-gutter: 7pt,
+      align: horizon,
+      rect(width: 3pt, height: 14pt, fill: theme, stroke: none),
+      text(font: "Bebas Neue", size: 17pt, fill: ink, tracking: .4pt)[#label],
+    )
     #v(1pt)
   ]
 
