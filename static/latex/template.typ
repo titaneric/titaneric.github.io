@@ -81,7 +81,7 @@
   grid(
     columns: (2fr, 1fr),
     column-gutter: 17pt,
-    align: (top, left + horizon),
+    align: left + top,
     [
       #stack(
         dir: ttb,
