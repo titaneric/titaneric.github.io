@@ -51,7 +51,7 @@
         // #underline(link("https://ti-user-certificates.s3.amazonaws.com/e0df7fbf-a057-42af-8a1f-590912be5460/ca820404-2858-41da-9d18-c3268d010348-huang-chen-yi-80c3b11d-2f72-4183-8271-9743fe40b47d-certificate.pdf", "Certified Kubernetes Administrator")), open-source enthusiast, and detail-oriented software engineer with expertise in automation, observability, and cloud-native solutions. Skilled in problem-solving and system optimization, aiming to enhance reliability, efficiency, and scalability.
         // SDE
         // Senior SRE with 5+ years of experience in distributed systems. Skilled in Go and Python. Architected GPU-accelerated Kubernetes clusters and custom Terraform providers. Active contributor to eBPF and Observability ecosystems. Certified Kubernetes Administrator (CKA) certified, #underline(link("https://www.credly.com/badges/da30ee8c-5767-46ef-bb88-524ccbd24e6a", "Grafana Champion")).
-        Senior SRE with 5+ years of experience specializing in the reliability and scalability of high-concurrency distributed systems. Skilled in Go and Python, with a proven track record of optimizing high-throughput observability pipelines and architecting GPU-accelerated infrastructure. CKA and #underline(link("https://www.credly.com/badges/da30ee8c-5767-46ef-bb88-524ccbd24e6a", "Grafana Champion")).
+        Building reliable distributed systems with 5+ years of experience in observability, Kubernetes, and cloud infrastructure. Develops Go tooling adopted across teams and optimizes terabyte-scale telemetry pipelines. Certified Kubernetes Administrator (CKA) and #underline(link("https://www.credly.com/badges/da30ee8c-5767-46ef-bb88-524ccbd24e6a", "Grafana Champion")).
 
       ],
     ),
