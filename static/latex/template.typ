@@ -42,7 +42,7 @@
       rect(width: 3pt, height: 14pt, fill: theme, stroke: none),
       text(font: "Bebas Neue", size: 17pt, fill: ink, tracking: .4pt)[#label],
     )
-    #v(1pt)
+    #v(4pt)
   ]
 
   let entry(item) = [
@@ -81,7 +81,7 @@
   grid(
     columns: (2fr, 1fr),
     column-gutter: 17pt,
-    align: left + top,
+    align: (top, left + bottom),
     [
       #stack(
         dir: ttb,
@@ -94,12 +94,11 @@
     [
       #set text(size: 10pt)
       #for c in contact {
-        [#icon(c.type) #if c.link == none { c.text } else { link(c.link, c.text) } #linebreak()]
+        [#icon(c.type) #if c.link == none { c.text } else { link(c.link, c.text) }]
+        if c != contact.last() { linebreak() }
       }
     ],
   )
-
-  v(8pt)
 
   grid(
     columns: (2fr, 1fr),
