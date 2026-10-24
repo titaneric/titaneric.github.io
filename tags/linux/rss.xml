@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rss xmlns:atom="http://www.w3.org/2005/Atom" version="2.0">
+    <channel>
+      <title>titaneric - Linux</title>
+      <link>https://www.titaneric.com</link>
+      <description></description>
+      <generator>Zola</generator>
+      <language>en</language>
+      <atom:link href="https://www.titaneric.com/tags/linux/rss.xml" rel="self" type="application/rss+xml"/>
+      <lastBuildDate>Wed, 08 Feb 2023 00:00:00 +0000</lastBuildDate>
+      <item>
+          <title>The Journey to the Kubernetes Networkiing</title>
+          <pubDate>Wed, 08 Feb 2023 00:00:00 +0000</pubDate>
+          <author>Unknown</author>
+          <link>https://www.titaneric.com/posts/the-journey-to-the-kubernetes-networking/</link>
+          <guid>https://www.titaneric.com/posts/the-journey-to-the-kubernetes-networking/</guid>
+          <description xml:base="https://www.titaneric.com/posts/the-journey-to-the-kubernetes-networking/">&lt;div&gt;
+    &lt;iframe src=&quot;//www.slideshare.net/slideshow/embed_code/key/r7psH28xitqtMZ&quot; frameborder=&quot;0&quot; width=&quot;900&quot; height=&quot;600&quot;
+        marginwidth=&quot;0&quot; marginheight=&quot;0&quot; scrolling=&quot;no&quot;
+        style=&quot;border:1px solid #CCC; border-width:1px; margin-bottom:5px; max-width: 100%;&quot; allowfullscreen&gt; &lt;/iframe&gt;
+&lt;/div&gt;
+&lt;p&gt;Still lost the following information.&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;BGP&lt;/li&gt;
+&lt;li&gt;&lt;a rel=&quot;noreferrer external&quot; href=&quot;https://www.rfc-editor.org/rfc/rfc3927&quot;&gt;linked-local address&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;Ingress&lt;/li&gt;
+&lt;li&gt;API gateway&lt;/li&gt;
+&lt;li&gt;External Load Balancing&lt;/li&gt;
+&lt;li&gt;service mesh&lt;/li&gt;
+&lt;/ul&gt;
+</description>
+      </item>
+      <item>
+          <title>Buddy-system</title>
+          <pubDate>Mon, 23 Sep 2019 00:00:00 +0000</pubDate>
+          <author>Unknown</author>
+          <link>https://www.titaneric.com/posts/buddy-system/</link>
+          <guid>https://www.titaneric.com/posts/buddy-system/</guid>
+          <description xml:base="https://www.titaneric.com/posts/buddy-system/">&lt;div&gt;
+    &lt;iframe src=&quot;//www.slideshare.net/slideshow/embed_code/key/waN15T9pwKey5O&quot; frameborder=&quot;0&quot; width=&quot;900&quot; height=&quot;600&quot;
+        marginwidth=&quot;0&quot; marginheight=&quot;0&quot; scrolling=&quot;no&quot;
+        style=&quot;border:1px solid #CCC; border-width:1px; margin-bottom:5px; max-width: 100%;&quot; allowfullscreen&gt; &lt;/iframe&gt;
+&lt;/div&gt;
+</description>
+      </item>
+    </channel>
+</rss>

@@ -1,0 +1,728 @@
+
+<!DOCTYPE html>
+<html lang="en" class="dark light">
+
+    
+<head>
+    
+
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="base" content="https://www.titaneric.com" />
+
+    
+
+    
+
+    
+    
+    
+        <title>
+            
+                Shor&#39;s Algorithm: Understanding the QFT Interference
+            
+        </title>
+
+        
+            <meta property="og:title"
+                  content="Shor&#39;s Algorithm: Understanding the QFT Interference" />
+        
+    
+
+    
+        
+    
+
+    
+        
+    
+
+    
+    
+        <link rel="icon"
+              type="image/png"
+              href="https://www.titaneric.com/icons/favicon-16x16.png" />
+    
+
+    
+    
+        <link href=https://www.titaneric.com/fonts.css rel="stylesheet" />
+    
+
+    
+    
+        
+            
+            
+
+            <script defer
+                    src="https://www.titaneric.com/js/imamu.js"
+                    data-website-id="63f9d7c5-7c47-493b-af29-481374c7531c"
+                    data-host-url="https://api-gateway.umami.dev/"></script>
+        
+
+        
+
+        
+    
+
+    
+    
+        <script defer src=https://www.titaneric.com/js/codeblock.js></script>
+    
+
+    
+    
+        <script defer src=https://www.titaneric.com/js/toc.js></script>
+    
+
+    
+    
+        <script defer src=https://www.titaneric.com/js/note.js></script>
+    
+
+    
+        <script>
+            MathJax = {
+                tex: {
+                    inlineMath: [
+                        ['$', '$'],
+                        ['\\(', '\\)']
+                    ]
+                }
+            };
+        </script>
+        <script type="text/javascript" id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@4/tex-mml-chtml.js">
+        </script>
+    
+
+    
+    
+
+
+    
+
+    
+    
+
+    
+    
+        <link rel="stylesheet"
+              type="text/css"
+              href="https://www.titaneric.com/theme/light.css" />
+        <link id="darkModeStyle"
+              rel="stylesheet"
+              type="text/css"
+              href="https://www.titaneric.com/theme/dark.css" />
+    
+
+    
+        
+            <script>
+                var themeToggleMode = "toggle";
+            </script>
+        
+        <script src=https://www.titaneric.com/js/themetoggle.js></script>
+
+        
+            <script>
+                setTheme(getSavedTheme());
+            </script>
+        
+    
+
+
+    <link rel="stylesheet"
+          type="text/css"
+          media="screen"
+          href="https://www.titaneric.com/main.css" />
+
+    
+
+    
+        <script defer
+                src="https://www.titaneric.com/js/searchElasticlunr.min.js?h=3626c0ef99daa745b31e"></script>
+
+</head>
+
+
+    <body>
+        
+
+        <div class="left-content">
+            
+            
+        </div>
+
+        <div class="content">
+            <nav>
+    <div class="left-nav">
+        
+            <a href=https://www.titaneric.com>titaneric</a>
+        
+
+
+        <div class="socials">
+            
+                
+            
+            
+                <a rel='me' href="https://www.linkedin.com/in/chen-yi-huang/" class="social">
+                    <img alt="linkedin"
+                         src="https://www.titaneric.com/icons/social/linkedin.svg" />
+                </a>
+            
+                <a rel='me' href="https://github.com/titaneric/" class="social">
+                    <img alt="github"
+                         src="https://www.titaneric.com/icons/social/github.svg" />
+                </a>
+            
+        </div>
+    </div>
+
+    <div class="right-nav">
+        
+            <a href=https://www.titaneric.com/posts style="margin-right: 0.5em">posts</a>
+        
+            <a href=https://www.titaneric.com/tags style="margin-right: 0.5em">tags</a>
+        
+            <a href=https://www.titaneric.com/categories style="margin-right: 0.5em">categories</a>
+        
+            <a href=https://www.titaneric.com/archive style="margin-right: 0.5em">archive</a>
+        
+            <a href=https://www.titaneric.com/pdfs/resume.pdf style="margin-right: 0.5em">about</a>
+        
+            <a href=https://www.titaneric.com/notes/index.html style="margin-right: 0.5em">notes</a>
+        
+
+        
+            <button id="search-button"
+                    class="search-button"
+                    title="$SHORTCUT to open search">
+                <img src="https://www.titaneric.com/icons/search.svg"
+                     alt="Search"
+                     class="search-icon" />
+            </button>
+
+            <div id="searchModal"
+                 class="search-modal js"
+                 role="dialog"
+                 aria-labelledby="modalTitle">
+                <div id="modal-content">
+                    <h1 id="modalTitle" class="page-header">
+                        Search
+                    </h1>
+                    <div id="searchBar">
+                        <input id="searchInput"
+                               role="combobox"
+                               autocomplete="off"
+                               spellcheck="false"
+                               aria-expanded="false"
+                               aria-controls="results-container"
+                               placeholder="Search..." />
+                        <button id="clear-search" class="clear-button" title="Clear search">
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 -960 960 960">
+                                <path d="m256-200-56-56 224-224-224-224 56-56 224 224 224-224 56 56-224 224 224 224-56 56-224-224-224 224Z" />
+                            </svg>
+                        </button>
+                    </div>
+                    <div id="results-container">
+                        <div id="results-info">
+                            <span id="zero_results" style="display: none;">No results</span>
+                            <span id="one_result" style="display: none;">1 result</span>
+                            <span id="many_results" style="display: none;">$NUMBER results</span>
+                        </div>
+                        <div id="results" role="listbox">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        
+
+        
+        
+            <a id="dark-mode-toggle"
+               onclick="toggleTheme(); event.preventDefault();"
+               href="#">
+                <img src="https://www.titaneric.com/icons/sun.svg" id="sun-icon" alt="Light" />
+                <img src="https://www.titaneric.com/icons/moon.svg"
+                     id="moon-icon"
+                     style="filter: invert(1)"
+                     alt="Dark" />
+                
+            </a>
+
+            <!-- Initialize the theme toggle icons -->
+            <script>
+                updateItemToggleTheme()
+            </script>
+        
+    </div>
+</nav>
+
+
+            
+            
+    
+<div class="visible-element-observer-root" data-selector="main article p">
+    <main>
+        <article>
+            <div class="title">
+                
+                
+
+    <div class="page-header">
+        Shor&#39;s Algorithm: Understanding the QFT Interference
+    </div>
+
+
+
+                <div class="meta">
+                    
+                        Posted on <time>2025-12-17</time>
+                    
+
+
+                    
+
+                    
+
+                    
+
+                    
+                    
+                        
+                        
+                            
+                        
+
+                        
+                            
+                            :: <a href="https://github.com/titaneric/titaneric.github.io/tree/master/content/posts/shor-algorithm-part1.md" target="_blank" rel="noopener noreferrer">Source Code</a>
+                        
+                    
+
+                    
+                    
+
+                    
+                    
+
+                    
+
+                </div>
+            </div>
+
+            
+
+            <section class="body">
+                <h3 id="intuition-from-the-analogy"><a class="zola-anchor" href="#intuition-from-the-analogy" aria-label="Anchor link for: intuition-from-the-analogy">Intuition from the analogy</a></h3>
+<p>Think of each possible period as a “clock” with a thumbtack under it. When you apply the QFT, each element of the periodic sequence contributes a little vector toward each candidate period. For wrong periods those vectors point all over and mostly cancel; for the true period they align and add up, so the corresponding thumbtack “travels farthest.” That’s the constructive interference picture Scott uses: only for the true period do all contributions point the same way.</p>
+<h3 id="setup-of-the-periodic-state"><a class="zola-anchor" href="#setup-of-the-periodic-state" aria-label="Anchor link for: setup-of-the-periodic-state">Setup of the periodic state</a></h3>
+<p>We have a function $f(r)=x^r \bmod N$ with period $P$. Prepare a uniform superposition over exponents and their function values:
+$$
+\frac{1}{\sqrt{M}}\sum_{r=0}^{M-1} |r\rangle,|f(r)\rangle.
+$$
+Measuring the second register to a value $y$ leaves the first register in a uniform superposition over all inputs that map to $y$, which are spaced by the period:
+$$
+\frac{1}{\sqrt{K}}\sum_{k=0}^{K-1} |r_0 + kP\rangle,
+$$
+where $K\approx M/P$ (limited by the range $0\le r \le M-1$). This encodes the spacing $P$ directly in the input register.</p>
+<h3 id="the-qft-action-and-interference"><a class="zola-anchor" href="#the-qft-action-and-interference" aria-label="Anchor link for: the-qft-action-and-interference">The QFT action and interference</a></h3>
+<p>The Quantum Fourier Transform on $M$ basis states is
+$$
+|r\rangle \mapsto \frac{1}{\sqrt{M}}\sum_{s=0}^{M-1} e^{2\pi i rs/M},|s\rangle.
+$$
+Applying it to the periodic superposition yields amplitude at output basis (|s\rangle):
+$$
+A_s ;=; \frac{1}{\sqrt{KM}} \sum_{k=0}^{K-1} e^{2\pi i (r_0 + kP)s/M}
+;=; \frac{e^{2\pi i r_0 s/M}}{\sqrt{KM}} \sum_{k=0}^{K-1} \left(e^{2\pi i Ps/M}\right)^k.
+$$
+The inner sum is a geometric series. If $e^{2\pi i Ps/M} = 1$ (i.e., $Ps \equiv 0 \pmod{M}$), then every term points in the same complex direction and the sum equals $K$ — a large, aligned contribution. Otherwise, the terms wrap around the unit circle and largely cancel, giving a small magnitude bounded by
+$$
+\left|\sum_{k=0}^{K-1} \left(e^{2\pi i Ps/M}\right)^k\right|
+;=;
+\left|\frac{1 - e^{2\pi i KPs/M}}{1 - e^{2\pi i Ps/M}}\right|
+;\text{which is }\ll K \text{ when } e^{2\pi i Ps/M}\ne 1.
+$$
+This is the precise math for “only the true period’s contributions point the same way.” Peaks occur at $s$ that are integer multiples of $M/P$.</p>
+<h3 id="worked-example-with-a-clean-period"><a class="zola-anchor" href="#worked-example-with-a-clean-period" aria-label="Anchor link for: worked-example-with-a-clean-period">Worked example with a clean period</a></h3>
+<ul>
+<li><strong>Setup:</strong> Let $M=16$ and suppose measuring the second register produced a period-$P=4$ superposition:
+$$
+\frac{1}{\sqrt{4}}\left(|r_0\rangle + |r_0+4\rangle + |r_0+8\rangle + |r_0+12\rangle\right).
+$$</li>
+<li><strong>QFT amplitude:</strong> For any output index $s$,
+$$
+A_s = \frac{e^{2\pi i r_0 s/16}}{\sqrt{4\cdot16}}
+\sum_{k=0}^{3} \left(e^{2\pi i \cdot 4s/16}\right)^k
+= \frac{e^{2\pi i r_0 s/16}}{8}
+\sum_{k=0}^{3} \left(e^{2\pi i s/4}\right)^k.
+$$</li>
+<li><strong>Constructive cases:</strong> If $s\in{0,4,8,12}$, then $e^{2\pi i s/4}=1$ and the sum equals $4$, so $|A_s|=4/8=1/2$. These are large peaks.</li>
+<li><strong>Destructive cases:</strong> For other $s$, the four phasors point in directions 0°, 90°, 180°, 270° (or similar), summing near zero; hence $|A_s|$ is small.
+Measuring after the QFT returns one of $s\in{0,4,8,12}$ with high probability. From any such $s$, the spacing $\Delta s=4$ reveals $P = M/\Delta s = 16/4 = 4$.</li>
+</ul>
+<h3 id="extracting-the-period-in-general"><a class="zola-anchor" href="#extracting-the-period-in-general" aria-label="Anchor link for: extracting-the-period-in-general">Extracting the period in general</a></h3>
+<ul>
+<li><strong>Observation:</strong> Measured $s$ will be close to some multiple of $M/P$. Writing $s/M \approx j/P$ for integer $j$, use continued fractions to recover $P$. Repeating a few times yields $P$ with high probability.</li>
+<li><strong>Analogy tie-in:</strong> Each term in the periodic superposition contributes a phasor to each candidate frequency $s$. When $s$ matches the true period’s frequency, all phasors align and add (big thumbtack drift). Else, they point in different directions and cancel (small drift).</li>
+</ul>
+<blockquote>
+<p>Only for the “true” period do the contributions from different universes all point in the same direction — that’s exactly the geometric-series alignment case above, where $e^{2\pi i Ps/M}=1$.
+Perfect — let’s slow down and unpack those two points carefully.</p>
+</blockquote>
+<p>Perfect — let’s slow down and unpack those two points carefully.</p>
+<hr />
+<h2 id="small-blue-diamond-1-what-is-a-s"><a class="zola-anchor" href="#small-blue-diamond-1-what-is-a-s" aria-label="Anchor link for: small-blue-diamond-1-what-is-a-s">🔹 1. What is (A_s)?</a></h2>
+<p>When we apply the Quantum Fourier Transform (QFT) to a periodic superposition, we want to know the <strong>amplitude</strong> (the complex weight) of each possible output state (|s\rangle).</p>
+<ul>
+<li>Think of the QFT as redistributing the “probability mass” across different output labels (s).</li>
+<li>For each output basis state (|s\rangle), the QFT assigns a complex number (A_s).</li>
+<li>That number (A_s) tells us:
+<ul>
+<li><strong>Magnitude</strong>: how likely we are to measure (s).</li>
+<li><strong>Phase</strong>: the direction of the contribution in the complex plane.</li>
+</ul>
+</li>
+</ul>
+<p>So (A_s) is just the <strong>amplitude of the output state (|s\rangle)</strong> after applying the QFT.<br />
+When we measure, the probability of seeing (|s\rangle) is (|A_s|^2).</p>
+<hr />
+<h2 id="small-blue-diamond-2-why-does-e-2-pi-i-p-s-m-wrap-around-the-unit-circle"><a class="zola-anchor" href="#small-blue-diamond-2-why-does-e-2-pi-i-p-s-m-wrap-around-the-unit-circle" aria-label="Anchor link for: small-blue-diamond-2-why-does-e-2-pi-i-p-s-m-wrap-around-the-unit-circle">🔹 2. Why does (e^{2\pi i P s / M}) “wrap around the unit circle”?</a></h2>
+<p>Let’s decode the term:</p>
+<p>$$
+e^{2\pi i \theta} = \cos(2\pi \theta) + i \sin(2\pi \theta).
+$$</p>
+<p>This is Euler’s formula. It represents a point on the <strong>unit circle</strong> in the complex plane:</p>
+<ul>
+<li>Real part = $\cos(2\pi \theta)$.</li>
+<li>Imaginary part = $\sin(2\pi \theta)$.</li>
+<li>Always has magnitude 1.</li>
+</ul>
+<p>Now, in our case the term is:</p>
+<p>$$
+e^{2\pi i P s / M}.
+$$</p>
+<ul>
+<li>(P) = the period of the sequence.</li>
+<li>(s) = the output index we’re testing.</li>
+<li>(M) = the total size of the register.</li>
+</ul>
+<p>So this term is a complex number of magnitude 1, pointing at an angle (2\pi \cdot (Ps/M)).<br />
+If we raise it to powers (like ((e^{2\pi i Ps/M})^k)), each successive term is another point on the unit circle, rotated by that angle.</p>
+<hr />
+<h2 id="small-blue-diamond-3-why-does-this-matter-for-interference"><a class="zola-anchor" href="#small-blue-diamond-3-why-does-this-matter-for-interference" aria-label="Anchor link for: small-blue-diamond-3-why-does-this-matter-for-interference">🔹 3. Why does this matter for interference?</a></h2>
+<p>The amplitude (A_s) involves a sum:</p>
+<p>[
+\sum_{k=0}^{K-1} \left(e^{2\pi i Ps/M}\right)^k.
+]</p>
+<p>This is a geometric series of points on the unit circle.</p>
+<ul>
+<li>If (e^{2\pi i Ps/M} = 1), then every term points in the same direction (all contributions align). The sum is large ((K)).</li>
+<li>If (e^{2\pi i Ps/M} \neq 1), then each term points in a slightly rotated direction. As you add them, they “wrap around” the circle and mostly cancel out. The sum is small.</li>
+</ul>
+<p>This is exactly the constructive vs. destructive interference:</p>
+<ul>
+<li><strong>True period</strong> → contributions align → big amplitude (A_s).</li>
+<li><strong>Wrong period</strong> → contributions cancel → small amplitude (A_s).</li>
+</ul>
+<hr />
+<h2 id="small-blue-diamond-4-visual-analogy"><a class="zola-anchor" href="#small-blue-diamond-4-visual-analogy" aria-label="Anchor link for: small-blue-diamond-4-visual-analogy">🔹 4. Visual analogy</a></h2>
+<p>Imagine walking around a circle:</p>
+<ul>
+<li>If the step size is 0° (i.e., angle = 0), every step lands on the same spot. After (K) steps, you’re far from the origin (big sum).</li>
+<li>If the step size is 90°, you walk around the circle: first east, then north, then west, then south. After 4 steps, you’re back at the origin (sum cancels).</li>
+<li>If the step size is some other angle, you spiral around and the contributions partially cancel.</li>
+</ul>
+<p>That’s why the exponential term “wraps around the unit circle.”</p>
+<hr />
+<p>✅ So:</p>
+<ul>
+<li>(A_s) = amplitude of output state (|s\rangle).</li>
+<li>(e^{2\pi i Ps/M}) is a unit circle rotation. If it equals 1, all contributions align (constructive interference). Otherwise, they wrap around and cancel (destructive interference).</li>
+</ul>
+<hr />
+<p>Would you like me to <strong>draw this out with a simple geometric series example</strong> (say (M=8, P=4)) so you can literally see the points on the unit circle adding up? That’s often the moment where interference becomes crystal clear.</p>
+<h2 id="dart-the-goal"><a class="zola-anchor" href="#dart-the-goal" aria-label="Anchor link for: dart-the-goal">🎯 The Goal</a></h2>
+<h2 id="we-want-to-find-the-period-of-a-sequence-like-x-x-2-x-3-dots-mod-n-this-period-is-the-key-to-factoring-n-the-question-is-how-can-a-quantum-computer-help-us-find-that-period-efficiently"><a class="zola-anchor" href="#we-want-to-find-the-period-of-a-sequence-like-x-x-2-x-3-dots-mod-n-this-period-is-the-key-to-factoring-n-the-question-is-how-can-a-quantum-computer-help-us-find-that-period-efficiently" aria-label="Anchor link for: we-want-to-find-the-period-of-a-sequence-like-x-x-2-x-3-dots-mod-n-this-period-is-the-key-to-factoring-n-the-question-is-how-can-a-quantum-computer-help-us-find-that-period-efficiently">We want to find the <strong>period</strong> of a sequence like:
+[
+x, x^2, x^3, \dots \mod N
+]
+This period is the key to factoring (N).
+The question is: how can a quantum computer help us find that period efficiently?</a></h2>
+<h2 id="jigsaw-step-1-what-does-superposition-mean-here"><a class="zola-anchor" href="#jigsaw-step-1-what-does-superposition-mean-here" aria-label="Anchor link for: jigsaw-step-1-what-does-superposition-mean-here">🧩 Step 1: What Does “Superposition” Mean Here?</a></h2>
+<p>Think of a quantum computer as being able to store <strong>many possibilities at once</strong>.</p>
+<ul>
+<li>A classical computer stores one number at a time.</li>
+<li>A quantum computer can store a <strong>wave-like mixture</strong> of many numbers simultaneously.
+So instead of computing just one exponent (x^r \mod N), a quantum computer can prepare a state that contains <strong>all exponents at once</strong>.</li>
+</ul>
+<hr />
+<h2 id="jigsaw-step-2-the-superposition-state"><a class="zola-anchor" href="#jigsaw-step-2-the-superposition-state" aria-label="Anchor link for: jigsaw-step-2-the-superposition-state">🧩 Step 2: The Superposition State</a></h2>
+<p>Mathematically, we write this as:
+[
+\frac{1}{\sqrt{M}} \sum_{r=0}^{M-1} |r\rangle |x^r \mod N\rangle
+]
+Let’s break this down:</p>
+<ul>
+<li>The symbol (|r\rangle) means “the quantum computer is storing the number (r).”</li>
+<li>The symbol (|x^r \mod N\rangle) means “the computer also stores the result of (x^r \mod N).”</li>
+<li>The big sum means we’re storing <strong>all values of (r) at once</strong>, from 0 up to (M-1).</li>
+<li>The factor (1/\sqrt{M}) just makes sure probabilities add up correctly.
+So this is a <strong>superposition of all exponents and their modular results</strong>.</li>
+</ul>
+<hr />
+<h2 id="jigsaw-step-3-why-this-helps"><a class="zola-anchor" href="#jigsaw-step-3-why-this-helps" aria-label="Anchor link for: jigsaw-step-3-why-this-helps">🧩 Step 3: Why This Helps</a></h2>
+<p>If you measure the second part (the result (x^r \mod N)), the state collapses to only those (r) values that give the same result.</p>
+<ul>
+<li>Example: If the period is 4, then (r=0,4,8,12,\dots) all give the same result.</li>
+<li>After measurement, the quantum computer is left with a superposition of those (r) values.
+So now we have a quantum state that encodes the <strong>periodic structure</strong> directly.</li>
+</ul>
+<hr />
+<h2 id="jigsaw-step-4-extracting-the-period"><a class="zola-anchor" href="#jigsaw-step-4-extracting-the-period" aria-label="Anchor link for: jigsaw-step-4-extracting-the-period">🧩 Step 4: Extracting the Period</a></h2>
+<p>Here’s where the <strong>Quantum Fourier Transform (QFT)</strong> comes in.
+The QFT is a mathematical operation that takes a periodic pattern and turns it into <strong>sharp peaks</strong> at multiples of the period.
+Formally, the QFT maps:
+[
+|r\rangle \mapsto \frac{1}{\sqrt{M}} \sum_{s=0}^{M-1} e^{2\pi i rs / M} |s\rangle
+]
+This looks complicated, but the key idea is:</p>
+<ul>
+<li>It mixes all the values of (r) together using complex exponentials (like sine and cosine waves).</li>
+<li>If the input has a hidden period, the output will show spikes at positions related to that period.</li>
+</ul>
+<hr />
+<h2 id="jigsaw-step-5-measurement"><a class="zola-anchor" href="#jigsaw-step-5-measurement" aria-label="Anchor link for: jigsaw-step-5-measurement">🧩 Step 5: Measurement</a></h2>
+<p>After applying the QFT, we measure the quantum state.</p>
+<ul>
+<li>The measurement gives us a number (s).</li>
+<li>That number is strongly correlated with the true period (P).</li>
+<li>By repeating the process a few times and using a classical trick (continued fractions), we can deduce (P).</li>
+</ul>
+<hr />
+<h2 id="sparkles-putting-it-all-together"><a class="zola-anchor" href="#sparkles-putting-it-all-together" aria-label="Anchor link for: sparkles-putting-it-all-together">✨ Putting It All Together</a></h2>
+<ol>
+<li><strong>Superposition</strong>: Store all exponents (x^r \mod N) at once.</li>
+<li><strong>Measurement</strong>: Collapse to a periodic subset of exponents.</li>
+<li><strong>QFT</strong>: Transform the periodic pattern into sharp peaks.</li>
+<li><strong>Measurement again</strong>: Read out a number that reveals the period.
+This is the “math setup” in plain terms: the quantum computer encodes the periodicity into its wave-like state, and the QFT is the tool that makes the hidden period observable.</li>
+</ol>
+<hr />
+<p>This is Euler’s formula. It represents a point on the <strong>unit circle</strong> in the complex plane:</p>
+<ul>
+<li>Real part = (\cos(2\pi \theta)).</li>
+<li>Imaginary part = (\sin(2\pi \theta)).</li>
+<li>Always has magnitude 1.
+Now, in our case the term is:
+[
+e^{2\pi i P s / M}.
+]</li>
+<li>(P) = the period of the sequence.</li>
+<li>(s) = the output index we’re testing.</li>
+<li>(M) = the total size of the register.
+So this term is a complex number of magnitude 1, pointing at an angle (2\pi \cdot (Ps/M)).
+If we raise it to powers (like ((e^{2\pi i Ps/M})^k)), each successive term is another point on the unit circle, rotated by that angle.</li>
+</ul>
+<hr />
+<h2 id="small-blue-diamond-3-why-does-this-matter-for-interference-1"><a class="zola-anchor" href="#small-blue-diamond-3-why-does-this-matter-for-interference-1" aria-label="Anchor link for: small-blue-diamond-3-why-does-this-matter-for-interference-1">🔹 3. Why does this matter for interference?</a></h2>
+<p>The amplitude (A_s) involves a sum:
+[
+\sum_{k=0}^{K-1} \left(e^{2\pi i Ps/M}\right)^k.
+]
+This is a geometric series of points on the unit circle.</p>
+<ul>
+<li>If (e^{2\pi i Ps/M} = 1), then every term points in the same direction (all contributions align). The sum is large ((K)).</li>
+<li>If (e^{2\pi i Ps/M} \neq 1), then each term points in a slightly rotated direction. As you add them, they “wrap around” the circle and mostly cancel out. The sum is small.
+This is exactly the constructive vs. destructive interference:</li>
+<li><strong>True period</strong> → contributions align → big amplitude (A_s).</li>
+<li><strong>Wrong period</strong> → contributions cancel → small amplitude (A_s).</li>
+</ul>
+<hr />
+<h2 id="small-blue-diamond-4-visual-analogy-1"><a class="zola-anchor" href="#small-blue-diamond-4-visual-analogy-1" aria-label="Anchor link for: small-blue-diamond-4-visual-analogy-1">🔹 4. Visual analogy</a></h2>
+<p>Imagine walking around a circle:</p>
+<ul>
+<li>If the step size is 0° (i.e., angle = 0), every step lands on the same spot. After (K) steps, you’re far from the origin (big sum).</li>
+<li>If the step size is 90°, you walk around the circle: first east, then north, then west, then south. After 4 steps, you’re back at the origin (sum cancels).</li>
+<li>If the step size is some other angle, you spiral around and the contributions partially cancel.
+That’s why the exponential term “wraps around the unit circle.”</li>
+</ul>
+<hr />
+<p>✅ So:</p>
+<ul>
+<li>(A_s) = amplitude of output state (|s\rangle).</li>
+<li>(e^{2\pi i Ps/M}) is a unit circle rotation. If it equals 1, all contributions align (constructive interference). Otherwise, they wrap around and cancel (destructive interference).</li>
+</ul>
+<hr />
+
+            </section>
+        </article>
+    </main>
+</div>
+
+
+
+            
+                
+            
+
+            
+        </div>
+
+        <div class="right-content">
+            
+    
+    
+        <div class="toc">
+    <div class="heading">
+        Table of Contents
+    </div>
+    <ul class="toc-list">
+        
+            <li class="parent">
+                
+                <a href="https://www.titaneric.com/posts/shor-algorithm-part1/#intuition-from-the-analogy">Intuition from the analogy</a>
+
+                
+            </li>
+        
+            <li class="parent">
+                
+                <a href="https://www.titaneric.com/posts/shor-algorithm-part1/#setup-of-the-periodic-state">Setup of the periodic state</a>
+
+                
+            </li>
+        
+            <li class="parent">
+                
+                <a href="https://www.titaneric.com/posts/shor-algorithm-part1/#the-qft-action-and-interference">The QFT action and interference</a>
+
+                
+            </li>
+        
+            <li class="parent">
+                
+                <a href="https://www.titaneric.com/posts/shor-algorithm-part1/#worked-example-with-a-clean-period">Worked example with a clean period</a>
+
+                
+            </li>
+        
+            <li class="parent">
+                
+                <a href="https://www.titaneric.com/posts/shor-algorithm-part1/#extracting-the-period-in-general">Extracting the period in general</a>
+
+                
+            </li>
+        
+            <li class="parent">
+                
+                <a href="https://www.titaneric.com/posts/shor-algorithm-part1/#small-blue-diamond-1-what-is-a-s">🔹 1. What is (A_s)?</a>
+
+                
+            </li>
+        
+            <li class="parent">
+                
+                <a href="https://www.titaneric.com/posts/shor-algorithm-part1/#small-blue-diamond-2-why-does-e-2-pi-i-p-s-m-wrap-around-the-unit-circle">🔹 2. Why does (e^{2\pi i P s / M}) “wrap around the unit circle”?</a>
+
+                
+            </li>
+        
+            <li class="parent">
+                
+                <a href="https://www.titaneric.com/posts/shor-algorithm-part1/#small-blue-diamond-3-why-does-this-matter-for-interference">🔹 3. Why does this matter for interference?</a>
+
+                
+            </li>
+        
+            <li class="parent">
+                
+                <a href="https://www.titaneric.com/posts/shor-algorithm-part1/#small-blue-diamond-4-visual-analogy">🔹 4. Visual analogy</a>
+
+                
+            </li>
+        
+            <li class="parent">
+                
+                <a href="https://www.titaneric.com/posts/shor-algorithm-part1/#dart-the-goal">🎯 The Goal</a>
+
+                
+            </li>
+        
+            <li class="parent">
+                
+                <a href="https://www.titaneric.com/posts/shor-algorithm-part1/#we-want-to-find-the-period-of-a-sequence-like-x-x-2-x-3-dots-mod-n-this-period-is-the-key-to-factoring-n-the-question-is-how-can-a-quantum-computer-help-us-find-that-period-efficiently">We want to find the period of a sequence like:[x, x^2, x^3, \dots \mod N]This period is the key to factoring (N).The question is: how can a quantum computer help us find that period efficiently?</a>
+
+                
+            </li>
+        
+            <li class="parent">
+                
+                <a href="https://www.titaneric.com/posts/shor-algorithm-part1/#jigsaw-step-1-what-does-superposition-mean-here">🧩 Step 1: What Does “Superposition” Mean Here?</a>
+
+                
+            </li>
+        
+            <li class="parent">
+                
+                <a href="https://www.titaneric.com/posts/shor-algorithm-part1/#jigsaw-step-2-the-superposition-state">🧩 Step 2: The Superposition State</a>
+
+                
+            </li>
+        
+            <li class="parent">
+                
+                <a href="https://www.titaneric.com/posts/shor-algorithm-part1/#jigsaw-step-3-why-this-helps">🧩 Step 3: Why This Helps</a>
+
+                
+            </li>
+        
+            <li class="parent">
+                
+                <a href="https://www.titaneric.com/posts/shor-algorithm-part1/#jigsaw-step-4-extracting-the-period">🧩 Step 4: Extracting the Period</a>
+
+                
+            </li>
+        
+            <li class="parent">
+                
+                <a href="https://www.titaneric.com/posts/shor-algorithm-part1/#jigsaw-step-5-measurement">🧩 Step 5: Measurement</a>
+
+                
+            </li>
+        
+            <li class="parent">
+                
+                <a href="https://www.titaneric.com/posts/shor-algorithm-part1/#sparkles-putting-it-all-together">✨ Putting It All Together</a>
+
+                
+            </li>
+        
+            <li class="parent">
+                
+                <a href="https://www.titaneric.com/posts/shor-algorithm-part1/#small-blue-diamond-3-why-does-this-matter-for-interference-1">🔹 3. Why does this matter for interference?</a>
+
+                
+            </li>
+        
+            <li class="parent">
+                
+                <a href="https://www.titaneric.com/posts/shor-algorithm-part1/#small-blue-diamond-4-visual-analogy-1">🔹 4. Visual analogy</a>
+
+                
+            </li>
+        
+    </ul>
+</div>
+
+    
+
+        </div>
+        
+
+    </body>
+
+</html>

@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rss xmlns:atom="http://www.w3.org/2005/Atom" version="2.0">
+    <channel>
+      <title>titaneric - python</title>
+      <link>https://www.titaneric.com</link>
+      <description></description>
+      <generator>Zola</generator>
+      <language>en</language>
+      <atom:link href="https://www.titaneric.com/tags/python/rss.xml" rel="self" type="application/rss+xml"/>
+      <lastBuildDate>Thu, 31 Jan 2019 00:00:00 +0000</lastBuildDate>
+      <item>
+          <title>Find-Minimum-in-Rotated-Sorted-Array</title>
+          <pubDate>Thu, 31 Jan 2019 00:00:00 +0000</pubDate>
+          <author>Unknown</author>
+          <link>https://www.titaneric.com/posts/find-minimum-in-rotated-sorted-array/</link>
+          <guid>https://www.titaneric.com/posts/find-minimum-in-rotated-sorted-array/</guid>
+          <description xml:base="https://www.titaneric.com/posts/find-minimum-in-rotated-sorted-array/">&lt;h1 id=&quot;find-minimum-in-rotated-sorted-array-153&quot;&gt;&lt;a class=&quot;zola-anchor&quot; href=&quot;#find-minimum-in-rotated-sorted-array-153&quot; aria-label=&quot;Anchor link for: find-minimum-in-rotated-sorted-array-153&quot;&gt;&lt;a rel=&quot;noreferrer external&quot; href=&quot;https://leetcode.com/problems/find-minimum-in-rotated-sorted-array/&quot;&gt;Find Minimum in Rotated Sorted Array (#153)&lt;/a&gt;&lt;/a&gt;&lt;/h1&gt;
+&lt;h2 id=&quot;description&quot;&gt;&lt;a class=&quot;zola-anchor&quot; href=&quot;#description&quot; aria-label=&quot;Anchor link for: description&quot;&gt;Description&lt;/a&gt;&lt;/h2&gt;
+&lt;p&gt;Suppose an array sorted in ascending order is rotated at some pivot unknown to you beforehand.
+(i.e.,  &lt;code&gt;[0,1,2,4,5,6,7]&lt;/code&gt; might become  &lt;code&gt;[4,5,6,7,0,1,2]&lt;/code&gt;).
+Find the minimum element.
+You may assume no duplicate exists in the array.&lt;/p&gt;
+&lt;hr /&gt;
+&lt;h2 id=&quot;example&quot;&gt;&lt;a class=&quot;zola-anchor&quot; href=&quot;#example&quot; aria-label=&quot;Anchor link for: example&quot;&gt;Example&lt;/a&gt;&lt;/h2&gt;
+&lt;h3 id=&quot;example-1&quot;&gt;&lt;a class=&quot;zola-anchor&quot; href=&quot;#example-1&quot; aria-label=&quot;Anchor link for: example-1&quot;&gt;Example 1&lt;/a&gt;&lt;/h3&gt;
+&lt;pre class=&quot;giallo&quot; style=&quot;color: #5C6166; background-color: #F8F9FA;&quot; &gt;&lt;code data-lang=&quot;plain&quot;&gt;&lt;span class=&quot;giallo-l&quot;&gt;&lt;span&gt;Input: [3, 4, 5, 1, 2]&lt;/span&gt;&lt;/span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span&gt;Output: 1&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;h3 id=&quot;example-2&quot;&gt;&lt;a class=&quot;zola-anchor&quot; href=&quot;#example-2&quot; aria-label=&quot;Anchor link for: example-2&quot;&gt;Example 2&lt;/a&gt;&lt;/h3&gt;
+&lt;pre class=&quot;giallo&quot; style=&quot;color: #5C6166; background-color: #F8F9FA;&quot; &gt;&lt;code data-lang=&quot;plain&quot;&gt;&lt;span class=&quot;giallo-l&quot;&gt;&lt;span&gt;Input: [4, 5, 6, 7, 0, 1, 2]&lt;/span&gt;&lt;/span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span&gt;Output: 0&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;
+&lt;hr /&gt;
+&lt;h2 id=&quot;solution&quot;&gt;&lt;a class=&quot;zola-anchor&quot; href=&quot;#solution&quot; aria-label=&quot;Anchor link for: solution&quot;&gt;Solution&lt;/a&gt;&lt;/h2&gt;
+&lt;h3 id=&quot;solution-i-reference&quot;&gt;&lt;a class=&quot;zola-anchor&quot; href=&quot;#solution-i-reference&quot; aria-label=&quot;Anchor link for: solution-i-reference&quot;&gt;Solution I (&lt;a rel=&quot;noreferrer external&quot; href=&quot;https://leetcode.com/articles/find-minimum-in-rotated-sorted-array/&quot;&gt;Reference&lt;/a&gt;)&lt;/a&gt;&lt;/h3&gt;
+&lt;h4 id=&quot;observation&quot;&gt;&lt;a class=&quot;zola-anchor&quot; href=&quot;#observation&quot; aria-label=&quot;Anchor link for: observation&quot;&gt;Observation&lt;/a&gt;&lt;/h4&gt;
+&lt;p&gt;If the sorted array is not rotated, the last element &lt;em&gt;&lt;strong&gt;always&lt;/strong&gt;&lt;/em&gt; larger than first element.&lt;/p&gt;
+&lt;pre class=&quot;giallo&quot; style=&quot;color: #5C6166; background-color: #F8F9FA;&quot; &gt;&lt;code data-lang=&quot;plain&quot;&gt;&lt;span class=&quot;giallo-l&quot;&gt;&lt;span&gt;[2, 3, 4, 5, 6, 7]&lt;/span&gt;&lt;/span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span&gt; ^              ^&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;However, if the sorted array is rotated, we want to find the &lt;code&gt;Infection Point&lt;/code&gt; (i.e. the point whose left element is maximum and right element is minimum).&lt;/p&gt;
+&lt;pre class=&quot;giallo&quot; style=&quot;color: #5C6166; background-color: #F8F9FA;&quot; &gt;&lt;code data-lang=&quot;plain&quot;&gt;&lt;span class=&quot;giallo-l&quot;&gt;&lt;span&gt;[4, 5, 6, 7, 2, 3]&lt;/span&gt;&lt;/span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span&gt;           ^&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;Furthermore,&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;All the elements to the left of inflection point &amp;gt; first element of the array.&lt;/li&gt;
+&lt;li&gt;All the elements to the right of inflection point &amp;lt; first element of the array.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;hr /&gt;
+&lt;h4 id=&quot;algorithm&quot;&gt;&lt;a class=&quot;zola-anchor&quot; href=&quot;#algorithm&quot; aria-label=&quot;Anchor link for: algorithm&quot;&gt;Algorithm&lt;/a&gt;&lt;/h4&gt;
+&lt;p&gt;&lt;img src=&quot;https://i.imgur.com/goTfIbm.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+&lt;pre class=&quot;giallo&quot; style=&quot;color: #5C6166; background-color: #F8F9FA;&quot; &gt;&lt;code data-lang=&quot;plain&quot;&gt;&lt;span class=&quot;giallo-l&quot;&gt;&lt;span&gt;[5, 1, 2, 4, 5]&lt;/span&gt;&lt;/span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span&gt; l     m     r&lt;/span&gt;&lt;/span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span&gt; &amp;lt;-----&lt;/span&gt;&lt;/span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;/span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span&gt;[5, 1, 2, 4, 5]&lt;/span&gt;&lt;/span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span&gt; l  r&lt;/span&gt;&lt;/span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span&gt; m&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;pre class=&quot;giallo&quot; style=&quot;color: #5C6166; background-color: #F8F9FA;&quot; &gt;&lt;code data-lang=&quot;plain&quot;&gt;&lt;span class=&quot;giallo-l&quot;&gt;&lt;span&gt;[4, 5, 6, 7, 2, 3]&lt;/span&gt;&lt;/span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span&gt; l     m        r&lt;/span&gt;&lt;/span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span&gt;         -------&amp;gt;&lt;/span&gt;&lt;/span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;/span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span&gt;[4, 5, 6, 7, 2, 3]&lt;/span&gt;&lt;/span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span&gt;          l  m  r&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;
+Time Complexity:\(O(log\,n)\),
+Space Complexity:\(O(1)\)
+&lt;/p&gt;
+---
+&lt;h4 id=&quot;code&quot;&gt;&lt;a class=&quot;zola-anchor&quot; href=&quot;#code&quot; aria-label=&quot;Anchor link for: code&quot;&gt;Code&lt;/a&gt;&lt;/h4&gt;
+&lt;pre class=&quot;giallo&quot; style=&quot;color: #5C6166; background-color: #F8F9FA;&quot; &gt;&lt;code data-lang=&quot;python&quot;&gt;&lt;span class=&quot;giallo-l&quot;&gt;&lt;span style=&quot;color: #FA8532;&quot;&gt;class&lt;/span&gt;&lt;span style=&quot;color: #22A4E6;&quot;&gt; Solution&lt;/span&gt;&lt;span&gt;:&lt;/span&gt;&lt;/span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span style=&quot;color: #FA8532;&quot;&gt;    def&lt;/span&gt;&lt;span style=&quot;color: #EBA400;&quot;&gt; findMin&lt;/span&gt;&lt;span&gt;(&lt;/span&gt;&lt;span style=&quot;color: #A37ACC;&quot;&gt;self&lt;/span&gt;&lt;span style=&quot;color: #5C6166B3;&quot;&gt;,&lt;/span&gt;&lt;span style=&quot;color: #A37ACC;&quot;&gt; nums&lt;/span&gt;&lt;span&gt;):&lt;/span&gt;&lt;/span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span style=&quot;color: #86B300;&quot;&gt;        &amp;quot;&amp;quot;&amp;quot;&lt;/span&gt;&lt;/span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span style=&quot;color: #86B300;&quot;&gt;        :type nums: List[int]&lt;/span&gt;&lt;/span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span style=&quot;color: #86B300;&quot;&gt;        :rtype: int&lt;/span&gt;&lt;/span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span style=&quot;color: #86B300;&quot;&gt;        &amp;quot;&amp;quot;&amp;quot;&lt;/span&gt;&lt;/span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;/span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span style=&quot;color: #FA8532;&quot;&gt;        if&lt;/span&gt;&lt;span style=&quot;color: #F07171;&quot;&gt; len&lt;/span&gt;&lt;span&gt;(nums)&lt;/span&gt;&lt;span style=&quot;color: #F2A191;&quot;&gt; ==&lt;/span&gt;&lt;span style=&quot;color: #A37ACC;&quot;&gt; 1&lt;/span&gt;&lt;span style=&quot;color: #5C6166B3;&quot;&gt;:&lt;/span&gt;&lt;/span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span style=&quot;color: #FA8532;&quot;&gt;            return&lt;/span&gt;&lt;span&gt; nums[&lt;/span&gt;&lt;span style=&quot;color: #A37ACC;&quot;&gt;0&lt;/span&gt;&lt;span&gt;]&lt;/span&gt;&lt;/span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;/span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;/span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span&gt;        l&lt;/span&gt;&lt;span style=&quot;color: #5C6166B3;&quot;&gt;,&lt;/span&gt;&lt;span&gt; h&lt;/span&gt;&lt;span style=&quot;color: #F2A191;&quot;&gt; =&lt;/span&gt;&lt;span style=&quot;color: #A37ACC;&quot;&gt; 0&lt;/span&gt;&lt;span style=&quot;color: #5C6166B3;&quot;&gt;,&lt;/span&gt;&lt;span style=&quot;color: #F07171;&quot;&gt; len&lt;/span&gt;&lt;span&gt;(nums)&lt;/span&gt;&lt;span style=&quot;color: #F2A191;&quot;&gt; -&lt;/span&gt;&lt;span style=&quot;color: #A37ACC;&quot;&gt; 1&lt;/span&gt;&lt;/span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;/span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span style=&quot;color: #FA8532;&quot;&gt;        if&lt;/span&gt;&lt;span&gt; nums[h]&lt;/span&gt;&lt;span style=&quot;color: #F2A191;&quot;&gt; &amp;gt;&lt;/span&gt;&lt;span&gt; nums[l]&lt;/span&gt;&lt;span style=&quot;color: #5C6166B3;&quot;&gt;:&lt;/span&gt;&lt;/span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span style=&quot;color: #FA8532;&quot;&gt;            return&lt;/span&gt;&lt;span&gt; nums[l]&lt;/span&gt;&lt;/span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;/span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span style=&quot;color: #FA8532;&quot;&gt;        while&lt;/span&gt;&lt;span&gt; l&lt;/span&gt;&lt;span style=&quot;color: #F2A191;&quot;&gt; &amp;lt;=&lt;/span&gt;&lt;span&gt; h&lt;/span&gt;&lt;span style=&quot;color: #5C6166B3;&quot;&gt;:&lt;/span&gt;&lt;/span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span&gt;            m&lt;/span&gt;&lt;span style=&quot;color: #F2A191;&quot;&gt; =&lt;/span&gt;&lt;span&gt; l&lt;/span&gt;&lt;span style=&quot;color: #F2A191;&quot;&gt; +&lt;/span&gt;&lt;span&gt; (h&lt;/span&gt;&lt;span style=&quot;color: #F2A191;&quot;&gt; -&lt;/span&gt;&lt;span&gt; l)&lt;/span&gt;&lt;span style=&quot;color: #F2A191;&quot;&gt; //&lt;/span&gt;&lt;span style=&quot;color: #A37ACC;&quot;&gt; 2&lt;/span&gt;&lt;/span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span style=&quot;color: #FA8532;&quot;&gt;            if&lt;/span&gt;&lt;span&gt; nums[m]&lt;/span&gt;&lt;span style=&quot;color: #F2A191;&quot;&gt; &amp;gt;&lt;/span&gt;&lt;span&gt; nums[m&lt;/span&gt;&lt;span style=&quot;color: #F2A191;&quot;&gt; +&lt;/span&gt;&lt;span style=&quot;color: #A37ACC;&quot;&gt; 1&lt;/span&gt;&lt;span&gt;]&lt;/span&gt;&lt;span style=&quot;color: #5C6166B3;&quot;&gt;:&lt;/span&gt;&lt;/span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span style=&quot;color: #FA8532;&quot;&gt;                return&lt;/span&gt;&lt;span&gt; nums[m&lt;/span&gt;&lt;span style=&quot;color: #F2A191;&quot;&gt; +&lt;/span&gt;&lt;span style=&quot;color: #A37ACC;&quot;&gt; 1&lt;/span&gt;&lt;span&gt;]&lt;/span&gt;&lt;/span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span style=&quot;color: #FA8532;&quot;&gt;            if&lt;/span&gt;&lt;span&gt; nums[m&lt;/span&gt;&lt;span style=&quot;color: #F2A191;&quot;&gt; -&lt;/span&gt;&lt;span style=&quot;color: #A37ACC;&quot;&gt; 1&lt;/span&gt;&lt;span&gt;]&lt;/span&gt;&lt;span style=&quot;color: #F2A191;&quot;&gt; &amp;gt;&lt;/span&gt;&lt;span&gt; nums[m]&lt;/span&gt;&lt;span style=&quot;color: #5C6166B3;&quot;&gt;:&lt;/span&gt;&lt;/span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span style=&quot;color: #FA8532;&quot;&gt;                return&lt;/span&gt;&lt;span&gt; nums[m]&lt;/span&gt;&lt;/span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;/span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span style=&quot;color: #FA8532;&quot;&gt;            if&lt;/span&gt;&lt;span&gt; nums[m]&lt;/span&gt;&lt;span style=&quot;color: #F2A191;&quot;&gt; &amp;gt;&lt;/span&gt;&lt;span&gt; nums[&lt;/span&gt;&lt;span style=&quot;color: #A37ACC;&quot;&gt;0&lt;/span&gt;&lt;span&gt;]&lt;/span&gt;&lt;span style=&quot;color: #5C6166B3;&quot;&gt;:&lt;/span&gt;&lt;/span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span&gt;                l&lt;/span&gt;&lt;span style=&quot;color: #F2A191;&quot;&gt; =&lt;/span&gt;&lt;span&gt; m&lt;/span&gt;&lt;span style=&quot;color: #F2A191;&quot;&gt; +&lt;/span&gt;&lt;span style=&quot;color: #A37ACC;&quot;&gt; 1&lt;/span&gt;&lt;/span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span style=&quot;color: #FA8532;&quot;&gt;            else&lt;/span&gt;&lt;span style=&quot;color: #5C6166B3;&quot;&gt;:&lt;/span&gt;&lt;/span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span&gt;                h&lt;/span&gt;&lt;span style=&quot;color: #F2A191;&quot;&gt; =&lt;/span&gt;&lt;span&gt; m&lt;/span&gt;&lt;span style=&quot;color: #F2A191;&quot;&gt; -&lt;/span&gt;&lt;span style=&quot;color: #A37ACC;&quot;&gt; 1&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;</description>
+      </item>
+    </channel>
+</rss>
