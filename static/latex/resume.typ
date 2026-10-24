@@ -51,7 +51,7 @@
         // #underline(link("https://ti-user-certificates.s3.amazonaws.com/e0df7fbf-a057-42af-8a1f-590912be5460/ca820404-2858-41da-9d18-c3268d010348-huang-chen-yi-80c3b11d-2f72-4183-8271-9743fe40b47d-certificate.pdf", "Certified Kubernetes Administrator")), open-source enthusiast, and detail-oriented software engineer with expertise in automation, observability, and cloud-native solutions. Skilled in problem-solving and system optimization, aiming to enhance reliability, efficiency, and scalability.
         // SDE
         // Senior SRE with 5+ years of experience in distributed systems. Skilled in Go and Python. Architected GPU-accelerated Kubernetes clusters and custom Terraform providers. Active contributor to eBPF and Observability ecosystems. Certified Kubernetes Administrator (CKA) certified, #underline(link("https://www.credly.com/badges/da30ee8c-5767-46ef-bb88-524ccbd24e6a", "Grafana Champion")).
-        Senior SRE with 5+ years of experience specializing in the reliability and scalability of high-concurrency distributed systems. Skilled in Go and Python, with a proven track record of optimizing high-throughput observability pipelines and architecting GPU-accelerated infrastructure. CKA and #underline(link("https://www.credly.com/badges/da30ee8c-5767-46ef-bb88-524ccbd24e6a", "Grafana Champion")).
+        Building reliable distributed systems with 5+ years of experience in observability, Kubernetes, and cloud infrastructure. Develops Go tooling adopted across teams and optimizes terabyte-scale telemetry pipelines. Certified Kubernetes Administrator (CKA) and #underline(link("https://www.credly.com/badges/da30ee8c-5767-46ef-bb88-524ccbd24e6a", "Grafana Champion")).
 
       ],
     ),
@@ -66,7 +66,7 @@
           content: list(
             [Co-created and maintain the #underline(link("https://techblog.lycorp.co.jp/ja/20260126b", "Flava")) Terraform provider, *adopted by internal Flava IaC orchestration*; review Terda community contributions and collaborate with Flava product teams on officially supported resources.],
             [Created and architected the Go SDK adopted as the official SDK for the Flava Terraform provider and used by Flava CLI plugins, unifying access to *30+* cloud services through shared authentication, service discovery, and automated client generation.],
-            [Designed and implemented a dual-write pipeline for migrating Loki from Verda to Flava, using Vector DaemonSets to send logs to the existing cluster and Kafka, with managed Vector consumers buffering delivery to the target cluster to smooth ingestion spikes.],
+            [Designed and implemented a dual-write pipeline for Loki migration from Verda to Flava, using Vector agents to maintain ingestion into the existing cluster while feeding a Kafka-backed, stream-based topology for the target cluster, buffering delivery through Vector consumers to smooth ingestion spikes.],
             [
               Built a Go-based secrets integration toolkit for Kustomize, Argo CD, and GitHub Actions, adopted across *10* teams, enabling deployment-time secret retrieval and KMS-backed decryption to keep plaintext secrets out of Git.
             ],

@@ -86,8 +86,8 @@
       #stack(
         dir: ttb,
         spacing: 9pt,
-        text(font: "DM Serif Display", size: 31pt)[#name #surname],
-        text(font: "Bebas Neue", size: 15pt, fill: theme, tracking: .5pt)[#title],
+        pad(bottom: 4pt, text(font: "DM Serif Display", size: 31pt)[#name #surname]),
+        pad(bottom: 1pt, text(font: "Inter", size: 12pt, weight: "medium", fill: theme)[#title]),
         block(width: 100%)[#main.first().content],
       )
     ],
